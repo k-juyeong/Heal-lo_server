@@ -34,7 +34,7 @@ public class FacilityController {
 
     @GetMapping("/api")
     public String connect(Model model) {
-        int resultCount = facilitySVC.connect();
+        Integer resultCount = facilitySVC.connect();
 
         model.addAttribute("resultCount", resultCount);
         return "facility/publicApiStatus";
@@ -53,7 +53,7 @@ public class FacilityController {
         criteria.setFctype(totalCountCriteria.getFctype());
         criteria.setFcaddr(totalCountCriteria.getFcaddr());
         criteria.setFcname(totalCountCriteria.getFcname());
-        int totalCount = facilitySVC.getTotalCount(criteria);
+        Integer totalCount = facilitySVC.getTotalCount(criteria);
 
         Map<String, Object> data = new HashMap<>();
         data.put("totalCount", totalCount);

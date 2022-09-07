@@ -42,7 +42,7 @@ a:hover {color: inherit;}
 .review-lists .review-card__info .date {margin-bottom: 18px;font-size: 16px;}
 .review-lists .review-card__star {position: absolute;top: 24px;right: 0;font-size: 1.5em;}
 .review-lists .preview-contents {padding: 12px 36px;}
-.review-lists .review-btn-wrap {display: flex;position: absolute;bottom: 0;right: 0;}
+.review-lists .review-btn-wrap {display: flex;position: absolute;left: 130px;top: 0;}
 .review-lists .review-btn-wrap .btn-review {margin: 8px 2px;padding: 8px;}
 
 /* 이미지 미리보기 */

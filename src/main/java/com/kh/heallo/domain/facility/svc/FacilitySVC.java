@@ -11,7 +11,7 @@ public interface FacilitySVC {
     /**
      * 공공데이터 연동
      */
-    int connect();
+    Integer connect();
 
     /**
      * 운동시설 조건검색
@@ -25,14 +25,14 @@ public interface FacilitySVC {
      * @param criteria 검색조건
      * @return 결과 수
      */
-    int getTotalCount(Criteria criteria);
+    Integer getTotalCount(Criteria criteria);
 
     /**
      * 운동시설 평균평점 수정
      * @param fcno 운동시설번호
      * @return  결과 수
      */
-    int updateToScore(Long fcno);
+    Integer updateToScore(Long fcno);
 
     /**
      * 운동시설 상세검색
@@ -61,6 +61,6 @@ public interface FacilitySVC {
      * @param bmno 즐겨찾기번호
      * @return 결과 수
      */
-    int deleteBookmark(Long bmno);
+    Integer deleteBookmark(Long bmno);
 
 }

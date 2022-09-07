@@ -310,7 +310,6 @@ function createPagination(totalPage) {
     a.addEventListener('click', ({target}) => {
       requstStatus = false;
       currentPage = parseInt(target.textContent);  //현재 페이지 저장
-      console.log(currentPage)
 
       const loca = selectedCgLocaSave.level2 == '전체' ? selectedCgLocaSave.level1 : `${selectedCgLocaSave.level1} ${selectedCgLocaSave.level2}`;
       const type = selectedTypeCgSave;
@@ -332,7 +331,6 @@ function createPagination(totalPage) {
             requstStatus = true;
             const jsonData = JSON.parse(xhr.responseText);
 
-            console.log(jsonData);
             //이전 목록들 초기화
             [...$searchedLists.children].filter(ele => ele.classList.contains('searched-lists__item'))
             .forEach(ele => ele.remove());
@@ -395,7 +393,6 @@ function createPagination(totalPage) {
       console.log(limitPage)
 
       currentPage = limitPage*pageLv + 1;
-
       const paginationWrap = createPagination(totalPage);
       $searchedLists.appendChild(paginationWrap);
     })

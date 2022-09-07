@@ -4,6 +4,8 @@ import com.kh.heallo.domain.facility.Bookmark;
 import com.kh.heallo.domain.facility.Criteria;
 import com.kh.heallo.domain.facility.Facility;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,42 +17,87 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class FacilityDAOImpl implements FacilityDAO{
 
     private final JdbcTemplate jdbcTemplate;
 
-    /**
-     * 공공데이터 연동
-     * @param facility 운동시설
-     * @return 결과 수
-     */
     @Override
-    public int connect(Facility facility) {
+    public boolean isConnected(Facility facility) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" MERGE INTO facility fc1 ");
-        sql.append(" USING (SELECT count(*) cnt from facility ");
+        sql.append(" SELECT fcno cnt from facility ");
         sql.append("          where fcname = ? ");
-        sql.append("            and fcaddr = ?) fc2 ");
-        sql.append(" ON (cnt > 0) ");
-        sql.append(" WHEN MATCHED ");
-        sql.append(" THEN update set   fcname = ?, fctype = ?, fchomepage = ?, fctel = ?, ");
-        sql.append("                   fclat = ?, fclng = ?, fcaddr = ?, fcpostcode = ?, fcstatus = ? ");
-        sql.append("             where fcname = ? or fcaddr = ? ");
-        sql.append(" WHEN NOT MATCHED ");
-        sql.append(" THEN insert values (facility_fcno_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+        sql.append("            and fcaddr = ? ");
 
-        int resultCount = jdbcTemplate.update(
+        Long fcno = null;
+        try {
+            fcno = jdbcTemplate.queryForObject(sql.toString(), Long.class, facility.getFcname(), facility.getFcaddr());
+        } catch (DataAccessException e) {
+            log.info("DataAccessException {}", e.getMessage());
+        }
+        return fcno != null ? true : false;
+    }
+
+    @Override
+    public Long add(Facility facility) {
+        String sql = "insert into facility values (facility_fcno_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"fcno"});
+            ps.setString(1, facility.getFcname());
+            ps.setString(2, facility.getFctype());
+            ps.setString(3, facility.getFchomepage());
+            ps.setString(4, facility.getFctel());
+            ps.setDouble(5, facility.getFclat());
+            ps.setDouble(6, facility.getFclng());
+            ps.setString(7, facility.getFcaddr());
+            ps.setString(8, facility.getFcpostcode());
+            ps.setString(9, facility.getFcstatus());
+            ps.setString(10, facility.getFcimg());
+            ps.setDouble(11, facility.getFcscore());
+            return ps;
+        },keyHolder);
+
+        return Long.valueOf(keyHolder.getKeys().get("fcno").toString());
+    }
+
+    @Override
+    public Integer update(Facility facility) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" update facility ");
+        sql.append("            set   fcname = ?, fctype = ?, fchomepage = ?, fctel = ?,  ");
+        sql.append("                  fclat = ?, fclng = ?, fcaddr = ?, fcpostcode = ?, fcstatus = ? ");
+        sql.append("            where fcname = ? or fcaddr = ? ");
+
+        Integer resultCount = jdbcTemplate.update(
                 sql.toString(),
-                facility.getFcname(), facility.getFcaddr(),
-                facility.getFcname(), facility.getFctype(), facility.getFchomepage(), facility.getFctel(),
-                facility.getFclat(), facility.getFclng(), facility.getFcaddr(), facility.getFcpostcode(), facility.getFcstatus(),
-                facility.getFcname(), facility.getFcaddr(),
-                facility.getFcname(), facility.getFctype(), facility.getFchomepage(), facility.getFctel(),
-                facility.getFclat(), facility.getFclng(), facility.getFcaddr(), facility.getFcpostcode(), facility.getFcstatus(),
-                facility.getFcimg(), facility.getFcscore()
+                facility.getFcname(),
+                facility.getFctype(),
+                facility.getFchomepage(),
+                facility.getFctel(),
+                facility.getFclat(),
+                facility.getFclng(),
+                facility.getFcaddr(),
+                facility.getFcpostcode(),
+                facility.getFcstatus(),
+                facility.getFcname(),
+                facility.getFcaddr()
         );
 
         return resultCount;
+    }
+
+    /**
+     * 운동시설 삭제
+     * @param fcno
+     * @return 결과 수
+     */
+    @Override
+    public Integer delete(Long fcno) {
+        String sql = "delete facility where fcno = ? ";
+
+        return jdbcTemplate.update(sql, fcno);
     }
 
     /**
@@ -68,17 +115,22 @@ public class FacilityDAOImpl implements FacilityDAO{
         sql.append("                    and fctype like ?) fc ");
         sql.append("        where fc.rowno > ? and fc.rowno <= ? ");
 
-        int endPage = criteria.getPageNo() * criteria.getNumOfRow();
-        int startPage = endPage - criteria.getNumOfRow();
-        List<Facility> foundFacilityList = jdbcTemplate.query(
-                sql.toString(),
-                new BeanPropertyRowMapper<>(Facility.class),
-                criteria.getFcname(),
-                criteria.getFcaddr(),
-                criteria.getFctype(),
-                startPage,
-                endPage
-        );
+        Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
+        Integer startPage = endPage - criteria.getNumOfRow();
+        List<Facility> foundFacilityList = null;
+        try {
+            foundFacilityList = jdbcTemplate.query(
+                    sql.toString(),
+                    new BeanPropertyRowMapper<>(Facility.class),
+                    criteria.getFcname(),
+                    criteria.getFcaddr(),
+                    criteria.getFctype(),
+                    startPage,
+                    endPage
+            );
+        } catch (DataAccessException e) {
+            log.info("DataAccessException {}", e.getMessage());
+        }
 
         return foundFacilityList;
     }
@@ -89,7 +141,7 @@ public class FacilityDAOImpl implements FacilityDAO{
      * @return 결과 수
      */
     @Override
-    public int getTotalCount(Criteria criteria) {
+    public Integer getTotalCount(Criteria criteria) {
         StringBuffer sql = new StringBuffer();
         sql.append("   select count(*) fctotal from facility ");
         sql.append("      where fcname like ? ");
@@ -113,14 +165,14 @@ public class FacilityDAOImpl implements FacilityDAO{
      * @return 결과 수
      */
     @Override
-    public int updateScore(Long fcno) {
+    public Integer updateScore(Long fcno) {
         StringBuffer sql = new StringBuffer();
         sql.append("      update facility ");
         sql.append("        set fcscore = (select nvl(round(avg(rvscore),1),0) rvavg from review ");
         sql.append("                        where review.fcno = ?) ");
         sql.append("        where fcno = ? ");
 
-        int resultCount = jdbcTemplate.update(sql.toString(), fcno, fcno);
+        Integer resultCount = jdbcTemplate.update(sql.toString(), fcno, fcno);
 
         return resultCount;
     }
@@ -134,7 +186,12 @@ public class FacilityDAOImpl implements FacilityDAO{
     public Facility findByFcno(Long fcno) {
         String sql = "select * from facility where fcno = ? ";
 
-        Facility foundFacility = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Facility.class), fcno);
+        Facility foundFacility = null;
+        try {
+            foundFacility = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Facility.class), fcno);
+        } catch (DataAccessException e) {
+            log.info("DataAccessException {}", e.getMessage());
+        }
 
         return foundFacility;
     }
@@ -182,10 +239,10 @@ public class FacilityDAOImpl implements FacilityDAO{
      * @return 결과 수
      */
     @Override
-    public int deleteBookmark(Long bmno) {
+    public Integer deleteBookmark(Long bmno) {
         String sql = "delete bookmark where  bmno = ? ";
 
-        int resultCount = jdbcTemplate.update(sql, bmno);
+        Integer resultCount = jdbcTemplate.update(sql, bmno);
 
         return resultCount;
     }

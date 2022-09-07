@@ -253,6 +253,9 @@ function reviewListRander(data) {
 
     const reviewCard = 
     makeElements('div',{class : 'review-card', id : `${data.rvno}`},
+        makeElements('div',{class : 'review-btn-wrap'},
+            makeElements('button',{class : 'review-update btn-review'},'수정'),
+            makeElements('button',{class : 'review-delete btn-review'},'삭제')),
         makeElements('div',{class : 'review-card__info'},
             makeElements('div',{class : 'rating-score review-card__star'},
                 makeElements('div',{class : 'outer-star'},'★★★★★',
@@ -321,9 +324,9 @@ function createPagination(totalPage) {
     //페이지 생성
     let pageLv = Math.ceil(currentPage/limitPage);
     let startIdx = currentPage;
-    let lastIdx = currentPage + (limitPage - 1);
+    let lastIdx = currentPage + limitPage;
 
-    for (startIdx; startIdx <= lastIdx && startIdx <= totalPage; startIdx++) {
+    for (startIdx; startIdx < lastIdx && startIdx <= totalPage; startIdx++) {
         const page = document.createElement('li');
         page.setAttribute('class', 'page-item');
         const a = document.createElement('a');
@@ -332,7 +335,8 @@ function createPagination(totalPage) {
         a.textContent = startIdx;
 
         // 페이지 클릭 이벤트
-        a.addEventListener('click', (e) => {
+        a.addEventListener('click', ({target}) => {
+            currentPage = parseInt(target.textContent);  //현재 페이지 저장
 
             // 이전 목록들 초기화
             [...$reviewLists.children].filter(ele => ele.classList.contains('review-card'))
@@ -367,7 +371,8 @@ function createPagination(totalPage) {
         paginationLis.unshift(page);
 
         a.addEventListener('click', e => {
-            currentPage -= limitPage;
+
+            currentPage = limitPage*pageLv - (limitPage*2-1);
             const paginationWrap = createPagination(totalPage);
             $reviewLists.appendChild(paginationWrap);
         })
@@ -385,7 +390,8 @@ function createPagination(totalPage) {
         paginationLis.push(page);
 
         a.addEventListener('click', e => {
-            currentPage += limitPage;
+
+            currentPage = limitPage*pageLv + 1;
             const paginationWrap = createPagination(totalPage);
             $reviewLists.appendChild(paginationWrap);
         })

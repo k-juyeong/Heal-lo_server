@@ -7,12 +7,17 @@ import java.util.List;
 
 public interface FacilityDAO {
 
+    boolean isConnected(Facility facility);
+
+    Long add(Facility facility);
+
+    Integer update(Facility facility);
+
     /**
-     * 공공데이터 연동
-     * @param facility 운동시설
+     * 운동시설 삭제
      * @return 결과 수
      */
-    int connect(Facility facility);
+    Integer delete(Long fcno);
 
     /**
      * 운동시설 조건검색
@@ -26,14 +31,14 @@ public interface FacilityDAO {
      * @param criteria 검색조건
      * @return 결과 수
      */
-    int getTotalCount(Criteria criteria);
+    Integer getTotalCount(Criteria criteria);
 
     /**
      * 운동시설 평균평점 수정
      * @param fcno 운동시설번호
      * @return  결과 수
      */
-    int updateScore(Long fcno);
+    Integer updateScore(Long fcno);
 
     /**
      * 운동시설 상세검색
@@ -62,6 +67,6 @@ public interface FacilityDAO {
      * @param bmno 즐겨찾기번호
      * @return 결과 수
      */
-    int deleteBookmark(Long bmno);
+    Integer deleteBookmark(Long bmno);
 
 }
