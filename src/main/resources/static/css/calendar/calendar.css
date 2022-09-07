@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+/* * {outline: 1px solid red;} */
+
+/* 달력 상단 메뉴 */
+#container {width: 80%; height: 40vh; margin: 6% auto;}
+#container .calendar {display: flex; flex-direction: column; justify-content: center; align-items: center; width: 90%; height: 80%; margin: 7% auto;}
+#container .calendar .calendar__top {flex: 1; width: 90%;}
+#container .calendar .calendar__nav {flex: 1; display: flex; flex-direction: column; width: 90%; text-align: center;}
+#container .calendar .calendar__nav .calendar__selected-month {flex: 1; margin-bottom: 10px; font-weight: 400; font-size: 35px;}
+#container .calendar .calendar__nav .calendar__move-month {flex: 0.8; display: flex; justify-content: center; margin-top: 15px;}
+#container .calendar .calendar__nav .calendar__move-month .calendar__go-prev, .calendar__go-next {float: left; position: relative; width: 40px; height: 40px; margin-right: 20px;}
+#container .calendar .calendar__nav .calendar__move-month .calendar__go-prev::after {border-left: 5px solid var(--color-others-header);}
+#container .calendar .calendar__nav .calendar__move-month .calendar__go-prev::after, .calendar__go-next::after {position: absolute; top: 8px; left: 10px; width: 18px; height: 18px; border-top: 5px solid var(--color-others-header); transform: rotate(-45deg); content: ''; cursor: pointer;}
+#container .calendar .calendar__nav .calendar__move-month .calendar__go-today {font-weight: 500; font-size: 30px; cursor: pointer;}
+#container .calendar .calendar__nav .calendar__move-month .calendar__go-next {margin-left: 20px;}
+#container .calendar .calendar__nav .calendar__move-month .calendar__go-next::after {border-right: 5px solid var(--color-others-header); transform: rotate(45deg);}
+
+/* 달력 메인 */
+#container .calendar .calendar__main {flex: 8; display: flex; flex-direction: column; width: 80%; height: 20vh; margin-top: 20px; text-align: center;}
+#container .calendar .calendar__main .calendar__days {flex: 0.4; display: flex; background-color: #ddd;}
+#container .calendar .calendar__main .calendar__days .calendar__day:nth-child(7n+1), #container .calendar .calendar__main .calendar__dates .calendar__date:nth-child(7n+1) {color: #D13E3E;}
+#container .calendar .calendar__main .calendar__days .calendar__day {flex: 1; margin: auto auto; font-size: 25px;}
+#container .calendar .calendar__main .calendar__days .calendar__day:nth-child(7n), #container .calendar .calendar__main .calendar__dates .calendar__date:nth-child(7n) {color: #396EE2;}
+#container .calendar .calendar__main .calendar__dates {flex: 5; display: flex; flex-wrap: wrap;}
+#container .calendar .calendar__main .calendar__dates .calendar__prevDate, .calendar__date, .calendar__nextDate {width: calc(100%/7); padding-top: 10px; font-size: 18px; background-color: #eee;}
+#container .calendar .calendar__main .calendar__dates .calendar__date {cursor: pointer;}
+#container .calendar .calendar__main .calendar__dates .calendar__date.today {position: relative; color: #FFF; z-index: 100;}
+#container .calendar .calendar__main .calendar__dates .calendar__date.today::before {display: block; position: absolute; top: 20px; left: 50%; width: 30px; height: 30px; border-radius: 50%; background-color: var(--color-others-header); z-index: -1; transform: translate(-50%,-50%); content: '';}

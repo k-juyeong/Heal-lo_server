@@ -1,0 +1,58 @@
+@charset "utf-8";
+
+#container .content {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  #container .text-box {
+    flex: 2;
+  }
+  #container .text-box .my-page p {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-left: 30px;
+  }
+  #container .text-box .information p {
+    font-size: 1.3rem;
+    font-weight: 550;
+    margin-top: 40px;
+    margin-left: 30px;
+  }
+  #container .text-box .activity p {
+    font-size: 1.3rem;
+    font-weight: 550;
+    margin-top: 40px;
+    margin-left: 30px;
+  }
+
+  .history {
+    flex: 6;
+    display: flex; 
+    flex-direction: column;
+  }
+  .history .menu {
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 1.6rem; font-weight: bold;
+    margin: 40px 0px;
+  }
+
+  .history .menu .notice:hover{scale: 1.2; transition: all 0.8s;}
+  .history .menu .coment:hover{scale: 1.2; transition: all 0.8s;}
+  .history .menu .review:hover{scale: 1.2; transition: all 0.8s;}
+
+  .history .record {
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 5px;
+  }
+  .history .record .title {flex: 6; text-align: center; font-size: 1.3rem; font-weight: 300;}
+  .history .record .dateline {flex: 2; text-align: center; font-size: 1.3rem; font-weight: 300;}
+  .history .record .star {flex: 2; text-align: center; font-size: 1.3rem; font-weight: 300;}
+
+  .history .substance {display:flex; padding-top: 50px;padding-right: 10px;padding-left: 10px; padding-bottom: 20px; border-bottom: 1px solid #ccc;}
+  .history .substance a {flex:6; text-align: center; font-size: 1.3rem;} 
+  .history .substance .substance-dateline,.substance-star {flex: 2; text-align: center; font-size: 1.3rem};

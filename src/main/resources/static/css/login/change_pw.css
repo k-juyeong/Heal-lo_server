@@ -1,0 +1,62 @@
+@charset "utf=8";
+
+#container {
+    height: 600px;
+  }
+
+  #changePwContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .none {
+    flex: 1;
+    position: relative;
+  }
+
+  #changePwContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #changePwFont {
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-top: 130px;
+    margin-bottom: 40px;
+  }
+  #changePw {
+    padding: 10px 2px;
+    margin-bottom: 25px;
+    width: 250px;
+  }
+
+  #changePwR {
+    padding: 10px 2px;
+    margin-bottom: 25px;
+    width: 250px;
+  }
+
+  #btn {
+    width: 50px;
+    background-color: #16a085;
+    color: white;
+    margin-left: 200px;
+  }
+
+  #changeWarning {
+    position: absolute;
+    top: 200px;
+  }
+
+  .change-warning-font {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .change-warning-subfont {
+    font-size: 1rem;
+    font-weight: 300;
+  }

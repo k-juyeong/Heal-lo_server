@@ -1,0 +1,80 @@
+/* 공통 */
+#container {display: flex;justify-content: center;align-items: center;flex-direction: column;position: relative;height: auto;}
+a:hover {color: inherit;}
+.hr {width: 100%;height: 1px;margin: 0 auto;background-color: rgb(187, 183, 183);}
+.review-score {color: rgb(172, 172, 31);}
+
+/* 시설정보-헤더 */
+.facility-header::before {content: ' ';display: block;}
+.facility-header {display: flex;justify-content: space-between;width: 500px;margin-top: 82px;font-size: 2.8rem;} 
+.facility-title {display: flex;align-items: center;}
+.facility-header .favorite-icon {display: block;font-size: 56px;color: #acadae;transition: all 0.3s;cursor: pointer;}
+.facility-header .favorite-icon:hover {color: rgba(255, 155, 172, 0.462);}
+
+/* 시설 정보-바디 */
+.facility-body {display: flex;align-items: center;width: 100%;min-width: 1200px;padding: 26px 120px;font-size: 1.2rem;}
+.facility-body .img-wrap {display: flex;justify-content: center;align-items: center;}
+.facility-body .img-wrap .facility-img {width: 500px;height: 500px;border-radius: 32px;box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;}
+
+/* 시설 정보-상세 */
+.facility-body .facility-detail-wrap {display: flex;flex-direction: column;justify-content: space-between;width: 100%;  height: 100%;margin-left: 72px;}
+.facility-detail__title {padding: 20px 0;font-weight: 700;}
+.facility-detail__info {padding: 8px;}
+
+/* 리뷰 정보 */
+.review {display: flex;flex-direction: column;justify-content: center;align-items: center;width: 80%;margin-bottom: 24px;padding-top: 120px;box-sizing: content-box;}
+.review-header {display: flex;justify-content: space-between;width: 60%;min-width: 700px;max-width: 1000px;}
+.review-header .total-info {display: flex;justify-content: center;align-items: flex-end;font-size: 18px;}
+.review-header__main {display: flex;flex-direction: column;border-radius: 36px;}
+.review-header__main > div[class^=review-header] {margin-top: 22px;}
+.review-header__top {display: flex;justify-content: center;align-items: center;}
+.review-header__title {width: 700px;font-size: 1.5rem;opacity: 0.8;}
+.review-header__star {font-size: 2.5rem;}
+.review-header__score {margin: 8px;font-size: 1.5rem;}
+.write-btn-wrap {display: flex;align-items: flex-end;}
+.write-btn-wrap .btn-review {display: inline-block;height: 40px;}
+.review-lists {width: 700px;margin-top: 48px;}
+.review-lists .review-card {position: relative;display: flex;min-width: 600px;margin: 36px 0;border-bottom: 1px solid rgba(134, 132, 132, 0.368);}
+.review-lists .review-card__img {flex-grow: 0;flex-shrink: 0;width: 100px;height: 100px;margin-right: 24px;border-radius: 50%;background-color: azure;}
+.review-lists .review-card__img img {width: 100%;height: 100%;border-radius: 50%;}
+.review-lists .review-card__info {display: flex;flex-direction: column;justify-content: space-around;width: 100%;margin: 12px 0;padding: 0 32px;font-size: 1rem;border-width: 400;}
+.review-lists .review-card__info .user-name {font-size: 16px;font-weight: 600;}
+.review-lists .review-card__info .date {margin-bottom: 18px;font-size: 16px;}
+.review-lists .review-card__star {position: absolute;top: 24px;right: 0;font-size: 1.5em;}
+.review-lists .preview-contents {padding: 12px 36px;}
+.review-lists .review-btn-wrap {display: flex;position: absolute;bottom: 0;right: 0;}
+.review-lists .review-btn-wrap .btn-review {margin: 8px 2px;padding: 8px;}
+
+/* 이미지 미리보기 */
+.preview-wrap {margin: 0 36px;}
+.preview-wrap img {width: 100px;height: 100px;margin: 4px;}
+.btn-moreview {position: absolute;right: 0;bottom: 120px;padding: 6px; border-radius: 12px;border-style: none;background-color: #cfe4f9;cursor: pointer;}
+
+/* 페이지네이션 */
+.pagination-wrap {display: flex;justify-content: center;}
+.pagination-wrap .pagination a {font-weight: 700;color: var(--color-main-header);border-radius: 0px;cursor: pointer;}
+.on {background-color: #dee2e6;}
+
+/* 별점 */
+.rating-score {flex: 1;flex-direction: column;display: flex;align-items: center;font-size: 48px;}
+.rating-score p {font-size: 18px;}
+.rating-score .text-score {margin: 12px;font-size: 32px;}
+.rating-score .text-score::after{content: '점';}
+.rating-score .outer-star {position: relative;color: #D6D6D6;pointer-events: none;}
+.rating-score .inner-star {position: absolute; left: 0;width: 0;color: gold;overflow: hidden;}
+.rating-score .change-score {position: absolute;left: 0; width: 100%;height: 100%;opacity: 0;cursor: pointer;pointer-events: auto;}
+
+/* 기타 */
+.fixed-menu-wrap {display: flex;justify-content: flex-end;position: sticky;top: 30%;min-width: 1200px;height: 0;}
+.fixed-menu {display: flex;flex-direction: column;justify-content: center;align-items: center;min-height: 170px;padding: 8px;font-size: 32px;color: var(--color-main-header);border-radius: 12px;background-color: #dbdee144;}
+.fixed-menu a {display: block;padding: 4px;transition: all 0.3s;}
+.fixed-menu a:hover {color: var(--color-main-header);transform: scale(1.12);}
+.btn-review {color: white;border-style: none;border-radius: 4px;background-color: var(--color-others-header);}
+
+/* 이미지 확대 */
+#modal .modal-body {padding: 0;}
+#modal .modal-header {position: absolute;right: 0;font-size: 36px;border-style: none;z-index: 5;}
+#modal .modal-header button {background-color: white;}
+#modal .modal-body img {width: 100%;}
+
+

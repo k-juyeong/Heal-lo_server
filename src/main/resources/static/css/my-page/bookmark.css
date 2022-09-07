@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+#container { display: flex; }
+#container .content {display: flex; flex-direction: column; flex: 3; }
+.none { flex: 1; }
+
+#container .content .bookmark-font {display: flex; flex-direction: column; justify-content: space-around; height: 70px; padding: 10px; margin-bottom: 20px;}
+#container .content .bookmark-font .my-bookmark {font-size: 1.5rem; font-weight: 500; margin: 10px;}
+
+#container .content .bookmark-sub-font {display: flex; }
+#container .content .bookmark-sub-font .new {font-size: 1.2rem; font-weight: 300; margin: 10px;}
+#container .content .bookmark-sub-font .grade {font-size: 1.2rem; font-weight: 300; margin: 10px;}
+
+#container .bookmark {display: flex; padding: 20px; justify-content: space-around; border: 1px solid #f39c12; border-radius: 10px; margin-bottom: 15px;}
+#container .bookmark img {height: 200px; width: 300px;}
+#container .bookmark ul {padding: 5px;}
+#container .bookmark ul>li:nth-child(1) {padding: 5px; margin-top: 20px; margin-bottom: 30px; font-size: 1.5rem; font-weight: 500;}
+#container .bookmark ul>li:nth-child(2) {padding: 5px; }
+#container .bookmark ul>li:nth-child(3) {padding: 5px; }
+#container .bookmark ul>li:nth-child(4) {padding: 5px; }
+#container .bookmark i {font-size: 2rem; height: 30px;}
+#container .bookmark i:hover {color: rgba(255, 155, 172, 0.462); transition: all 0.3s;}
+
+.bookmark-btn-color { color: rgba(255, 155, 172, 0.462); }

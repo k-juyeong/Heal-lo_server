@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+#container {height:600px; border-top:3px solid #777;}  
+
+#idText {display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;}
+#container #idText #seccessId {margin-bottom: 30px; margin-right: 70px; font-size: 2rem; font-weight: 500;}
+#container #idText #seccessIdSub {margin-left: 120px; margin-bottom: 200px; margin-right: 70px; font-size: 1.3rem; font-weight: 300;}
+
+#container .btn__login {margin-left: 250px; margin-right: 20px; background-color: #16a085; color: white;}
+#container .btn__pw { background-color: #16a085; color: white;}

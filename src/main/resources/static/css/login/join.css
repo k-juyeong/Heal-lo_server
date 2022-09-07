@@ -1,0 +1,105 @@
+@charset "utf-8";
+#header .header__banner .header__main-logo .header__main-title {
+  color: var(--color-main-header);
+}
+.container {
+  display: block;
+  background-color: white;
+  border-radius: 3px;
+  padding: 1em;
+}
+
+.container .join {
+  display: flex;
+  width: 70%;
+  justify-content: center;
+  text-align: center;
+  margin: 40px auto;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.container .join .join__name {
+  display: flex;
+  font-size: 24px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.container .join .join__form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 1em;
+  margin: auto;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.container .join .join__form .error_next_box{
+  font-size: 0.8em;
+  /* color:red; */
+  margin-left: 10px;
+}
+
+p {
+  margin: 0;
+  align-self: center;
+}
+
+.join__form .join__info {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.join__form .join__info label {
+  display: flex;
+  width: 100px;
+  padding: 1em;
+  min-width: 100px;
+}
+.container input {
+  /* flex: 4; */
+  padding: 0.5em;
+  border-radius: 5px;
+  border: 1px solid black;
+  width: 160px;
+  margin: 5px;
+}
+
+.container #domain-txt,
+.container #domain-list,
+.container .btn {
+  width: 100px;
+}
+.container #domain-list {
+  height: 35px;
+  align-self: center;
+}
+
+.container .join .join__form .btn {
+  margin-left: 20px;
+  border: none;
+  background-color: var(--color-main-header);
+  color: white;
+}
+.container .join .join__form .btn:hover{
+  cursor: pointer;
+}
+
+#sign{
+  text-align: end;
+}
+.container .join__btn {
+  border: none;
+  padding: 1em;
+  font-size: 1.1em;
+  background-color:white;
+}
+.container .join__btn:hover {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.459);
+}
+

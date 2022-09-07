@@ -1,0 +1,129 @@
+@charset "utf-8";
+
+/* 전체 컨테이너 */
+#wrapper {
+  width: 80%;
+  min-width: 900px;
+  max-width: 1600px;
+  margin: 0px auto;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+/*header 영역*/
+#header {
+  position: relative;
+}
+
+/* 탑 메뉴 */
+#header .header__menu-top {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 14px;
+}
+#header .header__menu-top .header__my-menu {
+  display: inline-block;
+  margin: 10px 8px;
+  cursor: pointer;
+}
+
+/* 베너 */
+#header .header__banner {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 220px;
+}
+#header .header__banner .header__main-logo .header__main-title {
+  font-size: 102px;
+  font-weight: 500;
+  color: var(--color-others-header);
+}
+#header .header__banner .header__main-logo .header__sub-title {
+  font-weight: 500;
+  font-size: 36px;
+}
+#header .header__banner .header__sitemenu {
+  position: absolute;
+  right: 2px;
+  font-size: 36px;
+  text-align: center;
+  cursor: pointer;
+}
+#header .header__banner .header__sitemenu .header__sitemenu-info {
+  position: absolute;
+  font-size: 12px;
+  opacity: 0;
+  transition-duration: 0.5s;
+  transition-property: opacity;
+  transition-delay: 0.1s;
+  text-align: center;
+}
+#header .header__banner .header__sitemenu .header__site-icon {
+  margin: 0px 8px;
+  transition: all 0.5s;
+  transform: scale(1);
+  cursor: pointer;
+}
+#header .header__banner .header__sitemenu .header__site-icon:hover {
+  color: var(--color-main-header);
+  transform: scale(1.23);
+}
+
+/*main 영역*/
+#container {
+  height: 1200px;
+  border-top: 3px solid rgb(168, 166, 166);
+}
+
+/*footer 영역*/
+#footer {
+  padding: 40px;
+  line-height: 18px;
+  border-top: 2.5px solid rgb(155, 147, 147);
+}
+#footer .inner {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 56px;
+  margin-top: 30px;
+}
+#footer .inner ul {
+  margin-left: 70px;
+}
+#footer .inner h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* 미디어쿼리 (태블릿)*/
+@media (max-width: 1024px) {
+  #header .header__banner {
+    height: 600px;
+  }
+  #header .header__banner .header__sitemenu {
+    position: relative;
+    margin-top: 48px;
+  }
+  #header .header__banner .header__sitemenu .site-icon {
+    margin: 24px 36px;
+    font-size: 66px;
+  }
+  #header .header__banner .header__sitemenu .sitemenu-info {
+    font-size: 22px;
+  }
+  #header .header__banner .header__main h1 {
+    font-size: 162px;
+    font-weight: 500;
+    color: var(--color-others-header);
+  }
+  #header .header__banner .header__main p {
+    font-weight: 500;
+    font-size: 48px;
+  }
+}
+
+/* 미디어쿼리 (모바일) 예정~*/
+@media (max-width: 768px) {
+}
