@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.review.svc;
 
+import com.kh.heallo.domain.review.Criteria;
 import com.kh.heallo.domain.review.Review;
 
 import java.util.List;
@@ -15,27 +16,35 @@ public interface ReviewSVC {
 
     /**
      * 리뷰 조회(페이징)
-     * @param Fcno
-     * @param pageno
+     * @param fcno
+     * @param criteria
      * @return 리뷰 리스트
      */
-    List<Review> findListByFcno(Long Fcno, Integer pageno);
+    List<Review> findListByFcno(Long fcno, Criteria criteria);
+
+    /**
+     * 리뷰 단일조회
+     * @param rvno 리뷰번호
+     * @return 리뷰
+     */
+    Review findByRvno(Long rvno);
 
     /**
      * 리뷰등록
      * @param fcno
      * @param memno
+     * @param review 리뷰내용
      * @return 결과 수
      */
-    Integer add(Long memno,Long fcno);
+    Long add(Long memno,Long fcno, Review review);
 
     /**
      * 리뷰수정
-     * @param fcno
-     * @param memno
+     * @param rvno
+     * @param review
      * @return 결과 수
      */
-    Integer update(Long memno,Long fcno);
+    Integer update(Long rvno,Review review);
 
     /**
      * 리뷰삭제

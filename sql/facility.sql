@@ -22,28 +22,23 @@ alter table facility add constraint facility_fcscore_ck check (fcscore between 0
 -- 운동시설 시퀀스
 create sequence facility_fcno_seq;
 
--- 운동시설 등록
-MERGE INTO facility fc1
-    USING (SELECT count(*) cnt from facility
-           where fcname = '운동시설bb1'
-             and fcaddr = '서울특별시 xxx') fc2
-    ON (cnt > 0)
-    WHEN MATCHED THEN update set
-        fcname = '운동시설bb1',
-        fctype = '당구장업',
-        fchomepage = null,
-        fctel = '010-1111-9999',
-        fclat = 36.9626006263,
-        fclng = 127.2392144698,
-        fcaddr = '서울특별시 xxx',
-        fcpostcode = 27472,
-        fcstatus = '폐업'
-    where fcname = '운동시설bb1'
-                    or fcaddr = '서울특별시 xxx'
-WHEN NOT MATCHED THEN insert values
-                      (facility_fcno_seq.nextval, '운동시설bb1', '당구장업', null, '010-1111-9999',
-                      36.9626006263, 127.2392144698, '서울특별시 xxx', 27472, '폐업',
-                      'https://cdn.pixabay.com/photo/2020/04/03/20/49/gym-5000169_960_720.jpg',0);
+-- 운동시설 중복 체크
+SELECT fcno cnt from facility
+    where fcname = 1
+        and fcaddr = '울산광역시';
+
+-- 운동시설 저장
+insert into facility values
+      (facility_fcno_seq.nextval, '운동시설bb1', '당구장업', null, '010-1111-9999',
+      36.9626006263, 127.2392144698, '서울특별시 xxx', 27472, '폐업',
+      'https://cdn.pixabay.com/photo/2020/04/03/20/49/gym-5000169_960_720.jpg',0);
+
+-- 운동시설 업데이트
+update facility set fcname = '운동시설bb1',fctype = '당구장업',fchomepage = null,fctel = '010-1111-9999',
+                    fclat = 36.9626006263,fclng = 127.2392144698,fcaddr = '서울특별시 xxx',fcpostcode = 27472,
+                    fcstatus = '폐업'
+where fcname = '운동시설bb1'
+   or fcaddr = '서울특별시 xxx';
 
 -- 운동시설 삭제
 delete facility where fcno = 1;

@@ -2,7 +2,6 @@ package com.kh.heallo.domain.facility.svc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.heallo.domain.facility.Bookmark;
 import com.kh.heallo.domain.facility.Criteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.FacilityJson;
@@ -27,6 +26,7 @@ public class FacilitySVCImpl implements FacilitySVC{
     private static final int NUM_OF_ROWS = 10000;
     private final FacilityDAO facilityDAO;
     private final ObjectMapper objectMapper;
+
 
     /**
      * 공공데이터 연동
@@ -77,7 +77,7 @@ public class FacilitySVCImpl implements FacilitySVC{
                         exampleImages[idx]
                 );
 
-                if(!facilityDAO.isConnected(facility)) facilityDAO.add(facility);
+                if(!facilityDAO.contains(facility)) facilityDAO.add(facility);
                 else facilityDAO.update(facility);
 
                 resultCount++;
@@ -187,42 +187,4 @@ public class FacilitySVCImpl implements FacilitySVC{
 
         return foundFacility;
     }
-
-    /**
-     * 로그인 계정 즐겨찾기 목록 조회
-     * @param memno 회원번호
-     * @return 즐겨찾기 리스트
-     */
-    @Override
-    public List<Bookmark> findBookmarkListByMemno(Long memno) {
-        List<Bookmark> bookmarkListByMemno = facilityDAO.findBookmarkListByMemno(memno);
-        return bookmarkListByMemno;
-    }
-
-    /**
-     * 즐겨찾기추가
-     *
-     * @param fcno  운동시설번호
-     * @param memno 회원번호
-     * @return 즐겨찾기 번호
-     */
-    @Override
-    public Long addBookmark(Long memno, Long fcno) {
-        Long bmno = facilityDAO.addBookmark(memno, fcno);
-
-        return bmno;
-    }
-
-    /**
-     * 즐겨찾기 삭제
-     * @param bmno 즐겨찾기번호
-     */
-    @Override
-    public Integer deleteBookmark(Long bmno) {
-        Integer resultCount = facilityDAO.deleteBookmark(bmno);
-
-        return resultCount;
-    }
-
-
 }

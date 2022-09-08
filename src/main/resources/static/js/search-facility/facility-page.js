@@ -1,223 +1,223 @@
-import makeElements from "../../module/create-elememt.js";
+import makeElements from "../module/create-elememt.js";
 
 // 리뷰 테스트 데이터
-const reviews = {
-    status : '200',
-    msg : "정상",
-    item : {
-        totalcount : 112,
-        items :
-        [
-            {   
-                rvno : 1,        
-                rvcontents : `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernatur.`,  
-                rvscore : 1.5,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 2,
-                memninkname : 'abc1234',     
-                imgs : [
-                    'https://images.unsplash.com/photo-1637666062717-1c6bcfa4a4df?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nzd8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                    'https://images.unsplash.com/photo-1637666218229-1fe0a9419267?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8ODh8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                ]  
-            },
-            {   
-                rvno : 4,        
-                rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,  
-                rvscore : 2.5,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 3,
-                memninkname : 'abc1235',
-                imgs : [
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
-                ]                
-            },
-            {   
-                rvno : 4,        
-                rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,  
-                rvscore : 2.5,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 3,
-                memninkname : 'abc1235',
-                imgs : [
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
-                ]                
-            },
-            {   
-                rvno : 4,        
-                rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,  
-                rvscore : 2.5,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 3,
-                memninkname : 'abc1235',
-                imgs : [
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
-                ]                
-            },
-            {   
-                rvno : 4,        
-                rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,  
-                rvscore : 2.5,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 3,
-                memninkname : 'abc1235',
-                imgs : [
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
-                ]                
-            },
-            {   
-                rvno : 4,        
-                rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,  
-                rvscore : 2.5,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 3,
-                memninkname : 'abc1235',
-                imgs : [
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
-                ]                
-            },
-            {   
-                rvno : 4,        
-                rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
-                aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,  
-                rvscore : 2.5,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 3,
-                memninkname : 'abc1235',
-                imgs : [
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
-                    'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
-                ]                
-            },
-            {   
-                rvno : 1,        
-                rvcontents : '시설이 좋아요3',  
-                rvscore : 4.5,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 4,
-                memninkname : 'abc1236',
-                imgs: null              
-            },
-            {   
-                rvno : 1,        
-                rvcontents : '시설이 좋아요4',  
-                rvscore : 3,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 5,
-                memninkname : 'abc1237',
-                imgs : [
-                    'https://cdn.pixabay.com/photo/2013/03/09/14/38/gym-91849_960_720.jpg',
-                ]                
-            },
-            {   
-                rvno : 1,        
-                rvcontents : '시설이 좋아요5',  
-                rvscore : 4.5,     
-                rvcdate : '2022/08/30',    
-                rvudate : '2022/08/30',   
-                fcno : 1,  
-                memno : 8,
-                memninkname : 'abc1238'              
-            },
-        ]
-    }
-}
+// const reviews = {
+//     status : '200',
+//     msg : "정상",
+//     item : {
+//         totalcount : 112,
+//         items :
+//         [
+//             {
+//                 rvno : 1,
+//                 rvcontents : `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.
+//                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernatur.`,
+//                 rvscore : 1.5,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 2,
+//                 memninkname : 'abc1234',
+//                 imgs : [
+//                     'https://images.unsplash.com/photo-1637666062717-1c6bcfa4a4df?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nzd8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+//                     'https://images.unsplash.com/photo-1637666218229-1fe0a9419267?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8ODh8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                 ]
+//             },
+//             {
+//                 rvno : 4,
+//                 rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,
+//                 rvscore : 2.5,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 3,
+//                 memninkname : 'abc1235',
+//                 imgs : [
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
+//                 ]
+//             },
+//             {
+//                 rvno : 4,
+//                 rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,
+//                 rvscore : 2.5,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 3,
+//                 memninkname : 'abc1235',
+//                 imgs : [
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
+//                 ]
+//             },
+//             {
+//                 rvno : 4,
+//                 rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,
+//                 rvscore : 2.5,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 3,
+//                 memninkname : 'abc1235',
+//                 imgs : [
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
+//                 ]
+//             },
+//             {
+//                 rvno : 4,
+//                 rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,
+//                 rvscore : 2.5,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 3,
+//                 memninkname : 'abc1235',
+//                 imgs : [
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
+//                 ]
+//             },
+//             {
+//                 rvno : 4,
+//                 rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,
+//                 rvscore : 2.5,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 3,
+//                 memninkname : 'abc1235',
+//                 imgs : [
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
+//                 ]
+//             },
+//             {
+//                 rvno : 4,
+//                 rvcontents : `    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur
+//                 aspernaturipsum dolor sit amet consectetur adipisicing elit. Doloremque praesentium consectetur`,
+//                 rvscore : 2.5,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 3,
+//                 memninkname : 'abc1235',
+//                 imgs : [
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg',
+//                     'https://cdn.pixabay.com/photo/2014/11/11/15/24/gym-526995_960_720.jpg'
+//                 ]
+//             },
+//             {
+//                 rvno : 1,
+//                 rvcontents : '시설이 좋아요3',
+//                 rvscore : 4.5,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 4,
+//                 memninkname : 'abc1236',
+//                 imgs: null
+//             },
+//             {
+//                 rvno : 1,
+//                 rvcontents : '시설이 좋아요4',
+//                 rvscore : 3,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 5,
+//                 memninkname : 'abc1237',
+//                 imgs : [
+//                     'https://cdn.pixabay.com/photo/2013/03/09/14/38/gym-91849_960_720.jpg',
+//                 ]
+//             },
+//             {
+//                 rvno : 1,
+//                 rvcontents : '시설이 좋아요5',
+//                 rvscore : 4.5,
+//                 rvcdate : '2022/08/30',
+//                 rvudate : '2022/08/30',
+//                 fcno : 1,
+//                 memno : 8,
+//                 memninkname : 'abc1238'
+//             },
+//         ]
+//     }
+// }
 
 //dom 접근
 const $reviewLists = document.querySelector('.review-lists');
@@ -347,7 +347,7 @@ function createPagination(totalPage) {
 
             //클릭 표시
             [...$reviewLists.querySelectorAll('a')].forEach(ele => ele.classList.remove('on'));
-            e.target.classList.add('on');
+            target.classList.add('on');
         });
         page.appendChild(a);
         paginationLis.push(page);

@@ -112,7 +112,6 @@ public class ReviewDAOImpl implements ReviewDAO{
 
         log.info("key {}",keyHolder.getKeys());
 
-
         return Long.valueOf(keyHolder.getKeys().get("rvno").toString());
     }
 

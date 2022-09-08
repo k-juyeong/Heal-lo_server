@@ -1,16 +1,30 @@
 package com.kh.heallo.domain.facility.dao;
 
-import com.kh.heallo.domain.facility.Bookmark;
 import com.kh.heallo.domain.facility.Criteria;
 import com.kh.heallo.domain.facility.Facility;
 import java.util.List;
 
 public interface FacilityDAO {
 
-    boolean isConnected(Facility facility);
+    /**
+     * 운동시설 중복체크
+     * @param facility 운동시설
+     * @return true,false
+     */
+    boolean contains(Facility facility);
 
+    /**
+     * 운동시설 등록
+     * @param facility 운동시설
+     * @return 시퀀스 번호
+     */
     Long add(Facility facility);
 
+    /**
+     * 운동시설 업데이트
+     * @param facility 운동시설
+     * @return 결과 수
+     */
     Integer update(Facility facility);
 
     /**
@@ -27,7 +41,7 @@ public interface FacilityDAO {
     List<Facility> search(Criteria criteria);
 
     /**
-     * 운동시설 조건검색 결과 수
+     * 운동시설 조건검색 totalCount
      * @param criteria 검색조건
      * @return 결과 수
      */
@@ -46,27 +60,5 @@ public interface FacilityDAO {
      * @return  운동시설
      */
     Facility findByFcno(Long fcno);
-
-    /**
-     * 로그인 계정 즐겨찾기 목록 조회
-     * @param memno 회원번호
-     * @return  즐겨찾기 리스트
-     */
-    List<Bookmark> findBookmarkListByMemno(Long memno);
-
-    /**
-     * 즐겨찾기추가
-     * @param fcno 운동시설번호
-     * @param memno 회원번호
-     * @return 결과 수
-     */
-    Long addBookmark( Long memno, Long fcno);
-
-    /**
-     * 즐겨찾기 삭제
-     * @param bmno 즐겨찾기번호
-     * @return 결과 수
-     */
-    Integer deleteBookmark(Long bmno);
 
 }

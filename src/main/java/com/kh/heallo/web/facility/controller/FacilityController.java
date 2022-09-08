@@ -14,10 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -32,6 +29,7 @@ public class FacilityController {
 
     private final FacilitySVC facilitySVC;
 
+    //공공데이터 연동
     @GetMapping("/api")
     public String connect(Model model) {
         Integer resultCount = facilitySVC.connect();
@@ -40,12 +38,14 @@ public class FacilityController {
         return "facility/publicApiStatus";
     }
 
+    //운동시설 검색페이지
     @GetMapping
     public String searchView() {
 
         return "facility/search-facility";
     }
 
+    //검색 토탈 카운트
     @ResponseBody
     @GetMapping("/total")
     public ResponseEntity<ResponseMsg> totalCount(@ModelAttribute TotalCountCriteria totalCountCriteria) {
@@ -64,6 +64,7 @@ public class FacilityController {
         return new ResponseEntity<>(responseMsg,headers,HttpStatus.OK);
     }
 
+    //검색 결과(페이징)
     @ResponseBody
     @GetMapping("/list")
     public ResponseEntity<ResponseMsg> search(@ModelAttribute SearchCriteria searchCriteria) {
@@ -84,4 +85,12 @@ public class FacilityController {
         return new ResponseEntity<>(responseMsg,headers,HttpStatus.OK);
     }
 
+    //운동시설 상세페이지
+    @GetMapping("/{fcno}")
+    public String findByFcno(@PathVariable("fcno") Long fcno, Model model) {
+        Facility foundFacility = facilitySVC.findByFcno(fcno);
+        model.addAttribute("facility",foundFacility);
+
+        return "/facility/facility-detail";
+    }
 }

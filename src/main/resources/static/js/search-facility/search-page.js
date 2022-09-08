@@ -219,9 +219,16 @@ function createList(itemData) {
                   makeElements('p', {class: 'item-sub item-tel'}, itemData.fctel),
                   makeElements('p', {class: 'item-sub item-addr'},itemData.fcaddr))));
 
+  //맵 유틸기능(지도이동)
   listWrap.querySelector('.move-map-icon').addEventListener('click',() => {
     mapUtil.moveMap(itemData.fclat,itemData.fclng)
   })
+
+  //운동시설 제목 클릭 이벤트
+  listWrap.querySelector('.item-title').addEventListener('click',() => {
+    location.href = `/facilities/${itemData.fcno}`;
+  })
+
   return listWrap;
 }
 

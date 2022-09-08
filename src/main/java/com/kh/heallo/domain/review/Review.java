@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,5 +20,6 @@ public class Review {
     private double fcno;
     private double memno;
     private String memninkname;
+    private List<Object> imageFiles;
 
 }
