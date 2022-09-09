@@ -1,6 +1,6 @@
 package com.kh.heallo.domain.facility.dao;
 
-import com.kh.heallo.domain.facility.Criteria;
+import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +73,7 @@ class FacilityDAOImplTest {
     @Test
     @DisplayName("운동시설 조건검색")
     void search() {
-        Criteria criteria = new Criteria("울산광역시%","%당구장업%","%TEST%",1,10);
+        FacilityCriteria criteria = new FacilityCriteria("울산광역시%","%당구장업%","%TEST%",1,10);
         List<Facility> searchedList = facilityDAO.search(criteria);
 
         assertThat(searchedList).contains(defaultBean);
@@ -83,7 +83,7 @@ class FacilityDAOImplTest {
     @Test
     @DisplayName("운동시설 조건검색 결과 수")
     void getTotalCount() {
-        Criteria criteria = new Criteria("울산광역시%","%당구장업%","%TEST%",1,10);
+        FacilityCriteria criteria = new FacilityCriteria("울산광역시%","%당구장업%","%TEST%",1,10);
         Integer totalCount = facilityDAO.getTotalCount(criteria);
 
         assertThat(totalCount).isEqualTo(1);

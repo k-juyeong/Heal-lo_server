@@ -39,12 +39,12 @@ where review.rvno = 1;
 
 --  리뷰 조회(페이징)
 select *
-from (select review.* ,member.memninkname
+from (select rownum rvnum, review.* ,member.memninkname
       from (select * from review
             order by rvcdate desc) review, member
       where review.memno = member.memno
-        and review.fcno = 1)
-where rownum > 0 and rownum <= 10;
+        and review.fcno = 4535)
+where rvnum > 0 and rownum <= 10;
 
 -- 리뷰 단일조회
 select * from review where rvno = 1;

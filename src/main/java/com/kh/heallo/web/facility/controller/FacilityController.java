@@ -1,11 +1,10 @@
 package com.kh.heallo.web.facility.controller;
 
-import com.kh.heallo.domain.facility.Criteria;
+import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
 import com.kh.heallo.web.ResponseMsg;
 import com.kh.heallo.web.facility.dto.SearchCriteria;
-import com.kh.heallo.web.facility.dto.TotalCountCriteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -45,14 +44,14 @@ public class FacilityController {
         return "facility/search-facility";
     }
 
-    //검색 토탈 카운트
+    //검색 전체 갯수
     @ResponseBody
     @GetMapping("/total")
-    public ResponseEntity<ResponseMsg> totalCount(@ModelAttribute TotalCountCriteria totalCountCriteria) {
-        Criteria criteria = new Criteria();
-        criteria.setFctype(totalCountCriteria.getFctype());
-        criteria.setFcaddr(totalCountCriteria.getFcaddr());
-        criteria.setFcname(totalCountCriteria.getFcname());
+    public ResponseEntity<ResponseMsg> totalCount(@ModelAttribute SearchCriteria searchCriteria) {
+        FacilityCriteria criteria = new FacilityCriteria();
+        criteria.setFctype(searchCriteria.getFctype());
+        criteria.setFcaddr(searchCriteria.getFcaddr());
+        criteria.setFcname(searchCriteria.getFcname());
         Integer totalCount = facilitySVC.getTotalCount(criteria);
 
         Map<String, Object> data = new HashMap<>();
@@ -68,7 +67,7 @@ public class FacilityController {
     @ResponseBody
     @GetMapping("/list")
     public ResponseEntity<ResponseMsg> search(@ModelAttribute SearchCriteria searchCriteria) {
-        Criteria criteria = new Criteria();
+        FacilityCriteria criteria = new FacilityCriteria();
         criteria.setFctype(searchCriteria.getFctype());
         criteria.setFcaddr(searchCriteria.getFcaddr());
         criteria.setFcname(searchCriteria.getFcname());
@@ -77,7 +76,7 @@ public class FacilityController {
         List<Facility> facilityList = facilitySVC.search(criteria);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("items", facilityList);
+        data.put("facilities", facilityList);
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         ResponseMsg responseMsg = new ResponseMsg("OK","성공", data);

@@ -22,6 +22,8 @@ export default function makeElements(name, attributes, ...contents){
       //문자열이면 텍스트노드생성
       if( typeof child == 'string') {
         child =document.createTextNode(child);
+      } else {
+
       }
       node.appendChild(child);
     }

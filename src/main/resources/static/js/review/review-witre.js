@@ -4,10 +4,9 @@ import makeElements from '../module/create-elememt.js'
 const $changeScore = document.querySelector('.change-score');
 const $inputImg = document.querySelector('.input-img');
 const $previewWrap = document.querySelector('.preview-wrap');
-const $textarea = document.querySelector('.textarea');
 const $RegBtn = document.querySelector('.btn-reg');
 
-let ratingScore = 0;
+let ratingScore = 5;
 let uploadImgs = [];
 
 //별점 변경 이벤트
@@ -15,7 +14,6 @@ $changeScore.addEventListener('input',({target}) => {
     const value = target.value
     document.querySelector('.inner-star').style.width = `${target.value * 10}%`;
     ratingScore = parseInt(value)/2;
-
     document.querySelector('.text-score').textContent = ratingScore;
 })
 
@@ -32,8 +30,6 @@ $inputImg.addEventListener('change',({target}) => {
         alert('최대 업로드 수 초과');
         return;
     }
-
-
 
     [...files].forEach(ele => {
         const reader = new FileReader();
@@ -59,21 +55,30 @@ $inputImg.addEventListener('change',({target}) => {
 
 //등록 버튼 이벤트
 $RegBtn.addEventListener('click', () => {
-    const submitData = {
-        ratingScore : ratingScore,
-        imgs : uploadImgs,
-        contents : $textarea.value
-    }
+    const contents = document.querySelector('.textarea').value;
+    console.log(document.querySelector('.textarea'));
+    const fcno = document.querySelector('.facility-card').dataset.fcno;
+    const formData = new FormData();
+    formData.append('rvscore', ratingScore);
+    formData.append('rvcontents', contents);
+    uploadImgs?.forEach(ele => {
+        formData.append('attachedImage', ele);
+    })
 
-    // requestPublicApi(submitData);
-})
-
-// 서버에 외부api 통신요청(GET,Accept = json)
-function requestPublicApi(data) {
     const xhr = new XMLHttpRequest();
-    const url = 'http://localhost:9080/public/review'; //매핑url은 수정 가능성 있음
-    
-    xhr.open('POST',url);
-    xhr.send(JSON.stringify(data));
-} 
+    const url = `/reviews/${fcno}/add`;
+    xhr.open('POST', url);
+    xhr.send(formData);
+
+    xhr.addEventListener('readystatechange', () => {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
+                location.href = xhr.getResponseHeader("location");
+            } else {
+                console.log("에러");
+            }
+        }
+    });
+});
+
 

@@ -2,7 +2,7 @@ package com.kh.heallo.domain.facility.svc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.heallo.domain.facility.Criteria;
+import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.FacilityJson;
 import com.kh.heallo.domain.facility.dao.FacilityDAO;
@@ -48,7 +48,6 @@ public class FacilitySVCImpl implements FacilitySVC{
         Integer totalCount = Integer.parseInt(String.valueOf(publicConnectApi(1, 2).getResponse().getBody().getTotalCount()));
         Integer resultCount = 0;
         for (int i = 0; i < totalCount / NUM_OF_ROWS; i++) {
-            resultCount = 0;
             FacilityJson jsonObjectToFacility = publicConnectApi(i+1, NUM_OF_ROWS);
 
             for (FacilityJson.Response.Body.Items.Item item : jsonObjectToFacility.getResponse().getBody().getItems().getItem()) {
@@ -140,7 +139,7 @@ public class FacilitySVCImpl implements FacilitySVC{
      * @return 운동시설리스트
      */
     @Override
-    public List<Facility> search(Criteria criteria) {
+    public List<Facility> search(FacilityCriteria criteria) {
         criteria.setFcaddr(criteria.getFcaddr()+"%");
         criteria.setFcname("%"+criteria.getFcname()+"%");
         criteria.setFctype("%"+criteria.getFctype()+"%");
@@ -155,7 +154,7 @@ public class FacilitySVCImpl implements FacilitySVC{
      * @return 결과 수
      */
     @Override
-    public Integer getTotalCount(Criteria criteria) {
+    public Integer getTotalCount(FacilityCriteria criteria) {
         criteria.setFcaddr(criteria.getFcaddr()+"%");
         criteria.setFcname("%"+criteria.getFcname()+"%");
         criteria.setFctype("%"+criteria.getFctype()+"%");

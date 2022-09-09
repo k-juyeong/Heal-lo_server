@@ -54,7 +54,7 @@
     <main id="container">
 
       <!-- 시설 정보 wrap -->
-      <section class="facility" th:object="${facility}">
+      <section class="facility" th:attr="data-fcno=${facility.getFcno}" th:object="${facility}" >
 
         <!-- 시설 정보 헤더 -->
         <article class="facility-header">
@@ -123,24 +123,24 @@
         </article>
       </section>
 
-      <!-- 리뷰 -->
-      <section class="review" id="reviewContainer"> 
-        <p class="review-header__title">리뷰</p> 
+      <!-- 사이드 메뉴바 -->
+      <div class="fixed-menu-wrap">
+        <div class="fixed-menu">
+          <a href="#container" class="move-top"><i class="fa-solid fa-arrow-up-long"></i></a>
+          <a href="#" class=""><i class="fa-solid fa-location-dot header__site-icon"></i></a>
+          <a href="#" class=""><i class="fa-solid fa-book-open header__site-icon"></i></a>
+          <a href="#" class=""><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
+        </div>
+      </div> 
 
-        <!-- 사이드 메뉴바 -->
-        <div class="fixed-menu-wrap">
-          <div class="fixed-menu">
-            <a href="#container" class="move-top"><i class="fa-solid fa-arrow-up-long"></i></a>
-            <a href="#" class=""><i class="fa-solid fa-location-dot header__site-icon"></i></a>
-            <a href="#" class=""><i class="fa-solid fa-book-open header__site-icon"></i></a>
-            <a href="#" class=""><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
-          </div>
-        </div> 
+      <!-- 리뷰 -->
+      <section class="review" id="review">
+        <p class="review-header__title">리뷰</p> 
 
         <!-- 리뷰 헤더 -->
         <article class="review-header">
           <div class="total-info">
-            <p class="total">전체 리뷰 : <span class="review-cnt">18개</span></p>
+            <p class="total">전체 리뷰 : <span class="review-cnt">0개</span></p>
           </div>
 
           <!-- 리뷰 헤더-메인 -->
@@ -165,12 +165,31 @@
 
         <!-- 리뷰 목록 -->
         <article class="review-lists">
+          <div class="empty-message">
+            <p>리뷰가 없습니다. 리뷰를 달아주세요!</p>
+          </div>
+<!--        <div class="review-card">-->
+<!--          <div class="review-card__info">-->
+<!--            <div class="rating-score review-card__star">-->
+<!--              <div class="outer-star">-->
+<!--                ★★★★★-->
+<!--                <span class="inner-star">-->
+<!--                    ★★★★★-->
+<!--                </span>-->
+<!--              </div>   -->
+<!--            </div>-->
+<!--            <span class="user-name">이재진</span>-->
+<!--            <span class="date">2022.09.09</span>-->
+<!--            <p class="preview-contents moreview-on" disabled>Lorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit amet </p>-->
+<!--          </div>-->
+<!--          <div class="preview-wrap"></div>-->
+<!--        </div>-->
 
           <!-- 페이징 -->
           <nav aria-label="Page navigation example" class="pagination-wrap">
             <ul class="pagination pagination-md">
               <li class="page-item">
-                <a class="page-link shadow-none" href="#reviewContainer" aria-label="Previous">
+                <a class="page-link shadow-none" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>

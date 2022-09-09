@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.review;
 
+import com.kh.heallo.domain.file.FileData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,6 @@ public class Review {
     private double fcno;
     private double memno;
     private String memninkname;
-    private List<Object> imageFiles;
+    private List<FileData> attachedImage;
 
 }

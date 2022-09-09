@@ -1,6 +1,6 @@
 package com.kh.heallo.domain.facility.dao;
 
-import com.kh.heallo.domain.facility.Criteria;
+import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -123,7 +123,7 @@ public class FacilityDAOImpl implements FacilityDAO{
      */
     //조건검색(페이징)
     @Override
-    public List<Facility> search(Criteria criteria) {
+    public List<Facility> search(FacilityCriteria criteria) {
         StringBuffer sql = new StringBuffer();
         sql.append("    select * ");
         sql.append("        from (select rownum rowno, facility.* from facility ");
@@ -159,7 +159,7 @@ public class FacilityDAOImpl implements FacilityDAO{
      */
     //조검검색 total
     @Override
-    public Integer getTotalCount(Criteria criteria) {
+    public Integer getTotalCount(FacilityCriteria criteria) {
         StringBuffer sql = new StringBuffer();
         sql.append("   select count(*) fctotal from facility ");
         sql.append("      where fcname like ? ");

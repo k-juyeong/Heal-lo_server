@@ -1,9 +1,8 @@
 package com.kh.heallo.domain.review.dao;
 
 
-import com.kh.heallo.domain.review.Criteria;
+import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.Review;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,7 +62,7 @@ class ReviewDAOImplTest {
     @Test
     @DisplayName("운동시설의 리뷰 목록 리스트 조회")
     void findListByFcno() {
-        Criteria criteria = new Criteria();
+        ReviewCriteria criteria = new ReviewCriteria();
         criteria.setPageNo(1);
         criteria.setNumOfRow(5);
         List<Review> reviewList = reviewDAO.findListByFcno(1L, criteria);

@@ -14,7 +14,6 @@ public class FacilityDetail {
     private double fclat;	    //위도			NUMBER
     private double fclng;       //경도			NUMBER
     private String fcaddr;      //주소			VARCHAR2
-    private String fcpostcode;  //우편번호		NUMBER
     private String fcstatus;    //운영상태		VARCHAR2
     private String fcimg;       //대표이미지		VARCHAR2
     private double fcscore;     //평균평점	    NUMBER

@@ -1,7 +1,7 @@
 package com.kh.heallo.domain.review.dao;
 
 import com.kh.heallo.domain.review.Review;
-import com.kh.heallo.domain.review.Criteria;
+import com.kh.heallo.domain.review.ReviewCriteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -61,18 +61,18 @@ public class ReviewDAOImpl implements ReviewDAO{
      * @return 리뷰 리스트
      */
     @Override
-    public List<Review> findListByFcno(Long fcno, Criteria criteria) {
+    public List<Review> findListByFcno(Long fcno, ReviewCriteria criteria) {
         Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
         Integer startPage = endPage - criteria.getNumOfRow();
 
         StringBuffer sql = new StringBuffer();
         sql.append("  select * ");
-        sql.append("          from (select rownum rvpageno, review.* ,member.memninkname ");
+        sql.append("          from (select rownum rowno, review.* ,member.memninkname ");
         sql.append("                  from (select * from review ");
         sql.append("                          order by rvcdate desc) review, member ");
         sql.append("                  where review.memno = member.memno ");
         sql.append("                  and review.fcno = ?) ");
-        sql.append("  where rownum > ? and rownum <= ? ");
+        sql.append("  where rowno > ? and rowno <= ? ");
 
         List<Review> reviewList = null;
         try {

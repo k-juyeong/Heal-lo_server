@@ -1,6 +1,6 @@
 package com.kh.heallo.domain.facility.dao;
 
-import com.kh.heallo.domain.facility.Criteria;
+import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import java.util.List;
 
@@ -38,14 +38,14 @@ public interface FacilityDAO {
      * @param criteria 검색조건
      * @return 운동시설리스트
      */
-    List<Facility> search(Criteria criteria);
+    List<Facility> search(FacilityCriteria criteria);
 
     /**
      * 운동시설 조건검색 totalCount
      * @param criteria 검색조건
      * @return 결과 수
      */
-    Integer getTotalCount(Criteria criteria);
+    Integer getTotalCount(FacilityCriteria criteria);
 
     /**
      * 운동시설 평균평점 수정

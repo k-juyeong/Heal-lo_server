@@ -1,6 +1,7 @@
 package com.kh.heallo.domain.review.svc;
 
-import com.kh.heallo.domain.review.Criteria;
+import com.kh.heallo.domain.file.FileData;
+import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.dao.ReviewDAO;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +36,10 @@ public class ReviewSVCImpl implements ReviewSVC{
      * @return 리뷰 리스트
      */
     @Override
-    public List<Review> findListByFcno(Long fcno, Criteria criteria) {
+    public List<Review> findListByFcno(Long fcno, ReviewCriteria criteria) {
         List<Review> reviewList = reviewDAO.findListByFcno(fcno, criteria);
 
-        //반목문으로 리뷰에 해당하는 이미지 파일 요청
-        //
-        //
+        //파일 요청
 
         return reviewList;
     }
@@ -53,7 +52,11 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Review findByRvno(Long rvno) {
-        return reviewDAO.findByRvno(rvno);
+        Review review = reviewDAO.findByRvno(rvno);
+
+        //파일 요청
+//        review.setAttachedImage();
+        return review;
     }
 
     /**
@@ -65,7 +68,13 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Long add(Long memno, Long fcno, Review review) {
-        return reviewDAO.add(memno, fcno, review);
+        //리뷰저장
+        Long rvno = reviewDAO.add(memno, fcno, review);
+
+        //파일저장
+        List<FileData> attachedImage = review.getAttachedImage();
+
+        return rvno;
     }
 
     /**

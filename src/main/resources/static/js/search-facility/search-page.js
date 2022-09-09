@@ -242,7 +242,7 @@ function search() {
 
   // 검색 결과 수 조회
   const xhr = new XMLHttpRequest();
-  const url = 'http://localhost:9080/facilities/total';
+  const url = '/facilities/total';
   const queryPram = `?fcaddr=${loca}&fctype=${type}&fcname=${text}`;
   console.log(queryPram);
   xhr.open('GET',url + queryPram);
@@ -326,7 +326,7 @@ function createPagination(totalPage) {
 
       //검색 결과 조회
       const xhr = new XMLHttpRequest();
-      const url = 'http://localhost:9080/facilities/list';
+      const url = '/facilities/list';
       const queryPram = `?fcaddr=${loca}&fctype=${type}&fcname=${text}&pageNo=${pageNO}&numOfRow=${numOfRow}`;
       console.log(queryPram);
       xhr.open('GET',url + queryPram);
@@ -343,11 +343,11 @@ function createPagination(totalPage) {
             .forEach(ele => ele.remove());
 
             //새 목록 생성
-            jsonData.data.items.forEach(ele => $searchedLists.prepend(createList(ele)));
+            jsonData.data.facilities.forEach(ele => $searchedLists.prepend(createList(ele)));
             $searchedLists.scrollTop = 0;
 
             //운동시설 마커 생성
-            mapUtil.makeMarkers(jsonData.data.items);
+            mapUtil.makeMarkers(jsonData.data.facilities);
 
             //클릭 표시
             [...$searchedLists.querySelectorAll('a')].forEach(ele => ele.classList.remove('on'));
@@ -362,7 +362,7 @@ function createPagination(totalPage) {
     });
     page.appendChild(a);
     paginationLis.push(page);
-    if(startIdx == currentPage) a.click();
+    a.textContent == currentPage && a.click();
   }
 
   //이전 페이지 생성
