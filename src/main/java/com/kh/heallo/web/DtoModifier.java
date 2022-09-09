@@ -62,7 +62,6 @@ public class DtoModifier {
         return facilityDto;
     }
 
-
     public Review getReview(Long fcno, AddReviewForm addReviewForm, long memno) {
         Review review = new Review();
         review.setRvcontents(addReviewForm.getRvcontents());
