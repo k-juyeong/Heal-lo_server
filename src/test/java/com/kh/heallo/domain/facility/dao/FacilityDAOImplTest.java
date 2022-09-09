@@ -5,10 +5,7 @@ import com.kh.heallo.domain.facility.Facility;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-<<<<<<< HEAD
 
-=======
->>>>>>> 20bd31f3fb8879fcc4ebdaa5d91cf338040d2852
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
