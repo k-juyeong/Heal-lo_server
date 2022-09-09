@@ -1,97 +1,106 @@
 package com.kh.heallo.domain.facility.dao;
 
-import com.kh.heallo.domain.facility.Bookmark;
 import com.kh.heallo.domain.facility.Criteria;
 import com.kh.heallo.domain.facility.Facility;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 20bd31f3fb8879fcc4ebdaa5d91cf338040d2852
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FacilityDAOImplTest {
 
     @Autowired
     private FacilityDAO facilityDAO;
+    private static Facility defaultBean;
 
     @Order(1)
     @Test
-    @DisplayName("운동시설 상세조회")
-    void findByFcno() {
-        Facility foundFacility = facilityDAO.findByFcno(399L);
+    @DisplayName("false 운동시설 등록")
+    void add() {
+        defaultBean = new Facility("TEST", "당구장업", ".", "010-1111",
+                                    35.121, 121.121, "울산광역시 X", "15151", "정상운영", "#");
+        Long connectedFcno = facilityDAO.add(defaultBean);
+        defaultBean.setFcno(connectedFcno);
 
-        assertThat(foundFacility).isNotNull();
+        assertThat(connectedFcno).isNotNull();
     }
 
     @Order(2)
     @Test
-    @DisplayName("운동시설 조건검색")
-    void search() {
-        Criteria criteria = new Criteria("울산광역시%","%당구장업%","%%",1,10);
-        List<Facility> searchedList = facilityDAO.search(criteria);
-        Facility foundFacility = facilityDAO.findByFcno(399L);
+    @DisplayName("운동시설 상세조회")
+    void findByFcno() {
+        Facility foundFacility = facilityDAO.findByFcno(defaultBean.getFcno());
 
-        assertThat(searchedList).contains(foundFacility);
+        assertThat(foundFacility.getFcno()).isEqualTo(defaultBean.getFcno());
+        assertThat(foundFacility.getFcname()).isEqualTo(defaultBean.getFcname());
+        assertThat(foundFacility.getFcaddr()).isEqualTo(defaultBean.getFcaddr());
     }
 
     @Order(3)
     @Test
-    @DisplayName("운동시설 조건검색 결과 수")
-    void getTotalCount() {
-        Criteria criteria = new Criteria("울산광역시%","%당구장업%","%%",1,10);
-        int totalCount = facilityDAO.getTotalCount(criteria);
+    @DisplayName("운동시설 중복체크")
+    void contains() {
+        boolean connected = facilityDAO.contains(defaultBean);
 
-        assertThat(totalCount).isGreaterThan(0);
+        assertThat(connected).isTrue();
     }
 
     @Order(4)
     @Test
-    @DisplayName("즐겨찾기 추가")
-    void addBookmark() {
-        Long cnt1 = facilityDAO.addBookmark(1L, 1L);
-        Long cnt2 = facilityDAO.addBookmark(1L, 2L);
-        Long cnt3 = facilityDAO.addBookmark(1L, 3L);
+    @DisplayName("true 운동시설 업데이트")
+    void update() {
+        defaultBean.setFcstatus("폐업");
+        Integer resultCount = facilityDAO.update(defaultBean);
+        Facility foundFacility = facilityDAO.findByFcno(defaultBean.getFcno());
 
-        assertThat(cnt1).isNotNull();
-        assertThat(cnt2).isNotNull();
-        assertThat(cnt3).isNotNull();
+        assertThat(foundFacility.getFcstatus()).isEqualTo("폐업");
     }
 
     @Order(5)
     @Test
-    @DisplayName("회원의 즐겨찾기 전체 조회")
-    void findBookmarkListByMemno() {
-        List<Bookmark> bookmarkListByMemno = facilityDAO.findBookmarkListByMemno(1L);
+    @DisplayName("운동시설 평균평점 업데이트")
+    void updateScore() {
+        Integer resultCount = facilityDAO.updateScore(defaultBean.getFcno());
 
-        assertThat(bookmarkListByMemno.size()).isEqualTo(3);
+        assertThat(resultCount).isEqualTo(1);
     }
 
     @Order(6)
     @Test
-    @DisplayName("즐겨찾기 삭제")
-    void deleteBookmark() {
-        List<Bookmark> bookmarkListByMemno = facilityDAO.findBookmarkListByMemno(1L);
-        int resultCount = 0;
-        for (Bookmark bookmark : bookmarkListByMemno) {
-            resultCount += facilityDAO.deleteBookmark(bookmark.getBmno());
-        }
+    @DisplayName("운동시설 조건검색")
+    void search() {
+        Criteria criteria = new Criteria("울산광역시%","%당구장업%","%TEST%",1,10);
+        List<Facility> searchedList = facilityDAO.search(criteria);
 
-        assertThat(resultCount).isEqualTo(3);
+        assertThat(searchedList).contains(defaultBean);
     }
 
     @Order(7)
     @Test
-    @DisplayName("운동시설 평균평점 업데이트")
-    void updateScore() {
-        int resultCount = facilityDAO.updateScore(399L);
+    @DisplayName("운동시설 조건검색 결과 수")
+    void getTotalCount() {
+        Criteria criteria = new Criteria("울산광역시%","%당구장업%","%TEST%",1,10);
+        Integer totalCount = facilityDAO.getTotalCount(criteria);
 
-        assertThat(resultCount).isEqualTo(1);
+        assertThat(totalCount).isEqualTo(1);
+    }
+
+    @Order(8)
+    @Test
+    @DisplayName("운동시설 삭제")
+    void delete() {
+        Integer resultCount = facilityDAO.delete(defaultBean.getFcno());
+        Facility foundFacility = facilityDAO.findByFcno(defaultBean.getFcno());
+
+        assertThat(foundFacility).isNull();
     }
 
 }

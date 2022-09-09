@@ -5,8 +5,8 @@ create table review (
     rvscore      number(2,1),
     rvcdate      date,
     rvudate      date,
-    fcno         number(8),
-    memno        number(8)
+    memno        number(8),
+    fcno         number(8)
 );
 
 -- 제약조건
@@ -25,3 +25,34 @@ alter table review add constraint review_rvscore_ck check (rvscore between 0 and
 
 -- 시퀀스
 create sequence review_rvno_seq;
+
+-- 리뷰 등록
+insert into review
+values(review_rvno_seq.nextval, '시설이 좋아요1', 4.5, sysdate, sysdate, 1, 1);
+
+-- 리뷰 수정
+update review set
+                  rvcontents = '시설이 별로에요',
+                  rvscore = 1.5,
+                  rvudate = sysdate
+where review.rvno = 1;
+
+--  리뷰 조회(페이징)
+select *
+from (select review.* ,member.memninkname
+      from (select * from review
+            order by rvcdate desc) review, member
+      where review.memno = member.memno
+        and review.fcno = 1)
+where rownum > 0 and rownum <= 10;
+
+-- 리뷰 단일조회
+select * from review where rvno = 1;
+
+-- 리뷰 total count 조회
+select count(fcno) rvtotal from review
+where fcno = 1;
+
+-- 리뷰 삭제
+delete review
+  where rvno = 2;

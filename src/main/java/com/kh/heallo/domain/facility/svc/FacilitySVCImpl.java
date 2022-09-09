@@ -2,7 +2,6 @@ package com.kh.heallo.domain.facility.svc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.heallo.domain.facility.Bookmark;
 import com.kh.heallo.domain.facility.Criteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.FacilityJson;
@@ -28,11 +27,12 @@ public class FacilitySVCImpl implements FacilitySVC{
     private final FacilityDAO facilityDAO;
     private final ObjectMapper objectMapper;
 
+
     /**
      * 공공데이터 연동
      */
     @Override
-    public int connect() {
+    public Integer connect() {
         String[] exampleImages = new String[]{
                 "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Z3ltfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=60",
                 "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=400&q=60",
@@ -45,8 +45,8 @@ public class FacilitySVCImpl implements FacilitySVC{
                 "https://cdn.pixabay.com/photo/2013/03/09/14/38/gym-91849_960_720.jpg",
                 "https://cdn.pixabay.com/photo/2020/04/03/20/49/gym-5000169_960_720.jpg"
         };
-        int totalCount = Integer.parseInt(String.valueOf(publicConnectApi(1, 2).getResponse().getBody().getTotalCount()));
-        int resultCount = 0;
+        Integer totalCount = Integer.parseInt(String.valueOf(publicConnectApi(1, 2).getResponse().getBody().getTotalCount()));
+        Integer resultCount = 0;
         for (int i = 0; i < totalCount / NUM_OF_ROWS; i++) {
             resultCount = 0;
             FacilityJson jsonObjectToFacility = publicConnectApi(i+1, NUM_OF_ROWS);
@@ -61,9 +61,8 @@ public class FacilitySVCImpl implements FacilitySVC{
                                 item.getFcobNm().equals("-") ||
                                 item.getFaciRoadAddr1().equals("-") ||
                                 item.getFaciTel().equals("-")
-                ) {
-                    continue;
-                }
+                ) continue;
+
                 int idx = (int) (Math.random() * 10);
                 Facility facility = new Facility(
                         item.getFaciNm(),
@@ -77,7 +76,11 @@ public class FacilitySVCImpl implements FacilitySVC{
                         item.getFaciStat(),
                         exampleImages[idx]
                 );
-                resultCount += facilityDAO.connect(facility);
+
+                if(!facilityDAO.contains(facility)) facilityDAO.add(facility);
+                else facilityDAO.update(facility);
+
+                resultCount++;
             }
         }
 
@@ -85,7 +88,7 @@ public class FacilitySVCImpl implements FacilitySVC{
     }
 
     //공공데이터 연동 메서드
-    private FacilityJson publicConnectApi(int pageNo, int numOfRows) {
+    private FacilityJson publicConnectApi(Integer pageNo, Integer numOfRows) {
         StringBuilder sb = null;
         try {
             StringBuilder urlBuilder = new StringBuilder("http://www.kspo.or.kr/openapi/service/sportsNewFacilInfoService/getNewFacilInfoList"); /*URL*/
@@ -152,11 +155,11 @@ public class FacilitySVCImpl implements FacilitySVC{
      * @return 결과 수
      */
     @Override
-    public int getTotalCount(Criteria criteria) {
+    public Integer getTotalCount(Criteria criteria) {
         criteria.setFcaddr(criteria.getFcaddr()+"%");
         criteria.setFcname("%"+criteria.getFcname()+"%");
         criteria.setFctype("%"+criteria.getFctype()+"%");
-        int totalCount = facilityDAO.getTotalCount(criteria);
+        Integer totalCount = facilityDAO.getTotalCount(criteria);
 
         return totalCount;
     }
@@ -167,8 +170,8 @@ public class FacilitySVCImpl implements FacilitySVC{
      * @return 결과 수
      */
     @Override
-    public int updateToScore(Long fcno) {
-        int resultCount = facilityDAO.updateScore(fcno);
+    public Integer updateToScore(Long fcno) {
+        Integer resultCount = facilityDAO.updateScore(fcno);
 
         return resultCount;
     }
@@ -184,42 +187,4 @@ public class FacilitySVCImpl implements FacilitySVC{
 
         return foundFacility;
     }
-
-    /**
-     * 로그인 계정 즐겨찾기 목록 조회
-     * @param memno 회원번호
-     * @return 즐겨찾기 리스트
-     */
-    @Override
-    public List<Bookmark> findBookmarkListByMemno(Long memno) {
-        List<Bookmark> bookmarkListByMemno = facilityDAO.findBookmarkListByMemno(memno);
-        return bookmarkListByMemno;
-    }
-
-    /**
-     * 즐겨찾기추가
-     *
-     * @param fcno  운동시설번호
-     * @param memno 회원번호
-     * @return 즐겨찾기 번호
-     */
-    @Override
-    public Long addBookmark(Long memno, Long fcno) {
-        Long bmno = facilityDAO.addBookmark(memno, fcno);
-
-        return bmno;
-    }
-
-    /**
-     * 즐겨찾기 삭제
-     * @param bmno 즐겨찾기번호
-     */
-    @Override
-    public int deleteBookmark(Long bmno) {
-        int resultCount = facilityDAO.deleteBookmark(bmno);
-
-        return resultCount;
-    }
-
-
 }

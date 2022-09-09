@@ -1,4 +1,4 @@
-package com.kh.heallo.domain.facility;
+package com.kh.heallo.domain.bookmark;
 
 import lombok.Data;
 
