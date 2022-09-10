@@ -2,10 +2,11 @@ package com.kh.heallo.web.review.controller;
 
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
-import com.kh.heallo.domain.file.FileData;
+import com.kh.heallo.domain.uploadfile.FileData;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.svc.ReviewSVC;
+import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
 import com.kh.heallo.web.ResponseMsg;
 import com.kh.heallo.web.facility.dto.FacilityDto;
 import com.kh.heallo.web.FileSetting;
@@ -15,6 +16,8 @@ import com.kh.heallo.web.review.dto.SearchCriteria;
 import com.kh.heallo.web.review.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,13 +26,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/reviews")
@@ -46,7 +50,6 @@ public class ReviewController {
     @ResponseBody
     @GetMapping("/{fcno}/total")
     public ResponseEntity<ResponseMsg> getTotalCount(@PathVariable("fcno") Long fcno) {
-
         //Get totalCount
         Integer totalCount = reviewSVC.getTotalCount(fcno);
         Map<String, Object> data = new HashMap<>();
@@ -60,12 +63,15 @@ public class ReviewController {
         return new ResponseEntity<>(responseMsg, headers, HttpStatus.OK);
     }
 
+    //해당 운동시설 리뷰 리스트 조회(페이징)
     @ResponseBody
     @GetMapping("/{fcno}/list")
     public ResponseEntity<ResponseMsg> findListByFcno(
             @PathVariable("fcno") Long fcno,
             @ModelAttribute SearchCriteria searchCriteria
     ) {
+        //Test 회원
+        long memno = 3L;
 
         //SearchCriteria => ReviewCriteria
         ReviewCriteria reviewCriteria = dtoModifier.getReviewCriteria(searchCriteria);
@@ -74,7 +80,7 @@ public class ReviewController {
         List<Review> FoundReviewList = reviewSVC.findListByFcno(fcno, reviewCriteria);
 
         //List<Review> => List<ReviewDto>
-        List<ReviewDto> reviewList = dtoModifier.getReviewDtos(FoundReviewList);
+        List<ReviewDto> reviewList = dtoModifier.getReviewDtos(FoundReviewList,memno);
 
         //Create ResponseEntity
         Map<String, Object> data = new HashMap<>();
@@ -86,42 +92,66 @@ public class ReviewController {
         return new ResponseEntity<>(responseMsg,headers,HttpStatus.OK);
     }
 
+    //이미지 연결
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:" + fileSetting.getFullPath(filename));
+    }
+
+    //리뷰 등록 폼 이동
     @GetMapping("/{fcno}/add")
     public String addForm(@PathVariable("fcno") Long fcno, Model model) {
+        //Get Facility
         Facility foundFacility = facilitySVC.findByFcno(fcno);
 
         //Facility => facilityDto
         FacilityDto facilityDto = dtoModifier.getFacilityDto(foundFacility);
 
-        //model (facilityDto,AddReviewForm)
+        //model addAttribute
         model.addAttribute("facility",facilityDto);
         model.addAttribute("reviewForm", new AddReviewForm());
 
         return "/review/review-write";
     }
 
+    //리뷰 등록 처리
     @ResponseBody
     @PostMapping("/{fcno}/add")
     public ResponseEntity add(
             @PathVariable("fcno") Long fcno,
             @ModelAttribute("reviewForm") AddReviewForm addReviewForm
     ) {
-        long memno = 1L; //임시 회원
-
-        log.info("addReviewForm {}",addReviewForm);
+        //Test 회원
+        long memno = 3L;
 
         //AddReviewForm => Review
-        Review review = dtoModifier.getReview(fcno, addReviewForm, memno);
+        Review review = dtoModifier.getReview(addReviewForm);
+        review.setFcno(fcno);
+        review.setMemno(memno);
 
         //MultipartFile => FileData
         if(addReviewForm.getAttachedImage() != null) {
             List<MultipartFile> imageFiles = addReviewForm.getAttachedImage();
-            List<FileData> fileDataList = fileSetting.getFileDataList(imageFiles);
+            List<FileData> fileDataList = imageFiles.stream().map(multipartFile -> {
+                FileData fileData = null;
+                try {
+                    String localFileName = fileSetting.transForTo(multipartFile);
+                    fileData = fileSetting.getFileData(multipartFile, localFileName);
+                } catch (IOException e) {
+                    log.info("파일 저장중 exception 발생 {}", e.getMessage());
+                }
+
+                return fileData;
+            }).collect(Collectors.toList());
             review.setAttachedImage(fileDataList);
         }
 
         //Add Review
-        reviewSVC.add(1L, fcno, review);
+        reviewSVC.add(memno, fcno, review);
+
+        //Update Facility By Fcscore
+        facilitySVC.updateToScore(fcno);
 
         //Create ResponseEntity
         HttpHeaders headers= new HttpHeaders();
@@ -130,4 +160,5 @@ public class ReviewController {
 
         return new ResponseEntity(headers,HttpStatus.OK);
     }
+
 }

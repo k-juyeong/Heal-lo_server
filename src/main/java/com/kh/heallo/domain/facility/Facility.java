@@ -8,18 +8,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Facility {
-    private Long fcno;          //운동시설번호    NUMBER
-    private String fcname;	    //운동시설명		VARCHAR2
-    private String fctype;      //시설분류		VARCHAR2
-    private String fchomepage;  //홈페이지		VARCHAR2
-    private String fctel;       //전화번호		VARCHAR2
-    private double fclat;	    //위도			NUMBER
-    private double fclng;       //경도			NUMBER
-    private String fcaddr;      //주소			VARCHAR2
-    private String fcpostcode;  //우편번호		NUMBER
-    private String fcstatus;    //운영상태		VARCHAR2
-    private String fcimg;       //대표이미지		VARCHAR2
-    private double fcscore;     //평균평점	    NUMBER
+    private Long fcno;          //운동시설번호
+    private String fcname;	    //운동시설명
+    private String fctype;      //시설분류
+    private String fchomepage;  //홈페이지
+    private String fctel;       //전화번호
+    private double fclat;	    //위도
+    private double fclng;       //경도
+    private String fcaddr;      //주소
+    private String fcpostcode;  //우편번호
+    private String fcstatus;    //운영상태
+    private String fcimg;       //대표이미지
+    private double fcscore;     //평균평점
 
     public Facility(String fcname, String fctype, String fchomepage, String fctel, double fclat, double fclng, String fcaddr, String fcpostCode, String fcstatus, String fcimg) {
         this.fcname = fcname;

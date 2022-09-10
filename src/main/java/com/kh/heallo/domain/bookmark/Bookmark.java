@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Bookmark {
-    private Long bmno;
-    private Long memno;
-    private Long fcno;
+    private Long bmno;      //즐겨찾기번호
+    private Long memno;     //회원버호
+    private Long fcno;      //운동시설번호
 }

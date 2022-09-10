@@ -3,6 +3,7 @@ package com.kh.heallo.web.facility.controller;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
+import com.kh.heallo.web.DtoModifier;
 import com.kh.heallo.web.ResponseMsg;
 import com.kh.heallo.web.facility.dto.SearchCriteria;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,15 @@ import java.util.Map;
 public class FacilityController {
 
     private final FacilitySVC facilitySVC;
+    private final DtoModifier dtoModifier;
 
     //공공데이터 연동
     @GetMapping("/api")
     public String connect(Model model) {
+        //Get resultCount
         Integer resultCount = facilitySVC.connect();
 
+        //model addAttribute]
         model.addAttribute("resultCount", resultCount);
         return "facility/publicApiStatus";
     }
@@ -48,12 +52,13 @@ public class FacilityController {
     @ResponseBody
     @GetMapping("/total")
     public ResponseEntity<ResponseMsg> totalCount(@ModelAttribute SearchCriteria searchCriteria) {
-        FacilityCriteria criteria = new FacilityCriteria();
-        criteria.setFctype(searchCriteria.getFctype());
-        criteria.setFcaddr(searchCriteria.getFcaddr());
-        criteria.setFcname(searchCriteria.getFcname());
-        Integer totalCount = facilitySVC.getTotalCount(criteria);
+        //SearchCriteria => FacilityCriteria
+        FacilityCriteria facilityCriteria = dtoModifier.getFacilityCriteria(searchCriteria);
 
+        //Get totalCount
+        Integer totalCount = facilitySVC.getTotalCount(facilityCriteria);
+
+        //Create ResponseEntity
         Map<String, Object> data = new HashMap<>();
         data.put("totalCount", totalCount);
         HttpHeaders headers= new HttpHeaders();
@@ -67,14 +72,13 @@ public class FacilityController {
     @ResponseBody
     @GetMapping("/list")
     public ResponseEntity<ResponseMsg> search(@ModelAttribute SearchCriteria searchCriteria) {
-        FacilityCriteria criteria = new FacilityCriteria();
-        criteria.setFctype(searchCriteria.getFctype());
-        criteria.setFcaddr(searchCriteria.getFcaddr());
-        criteria.setFcname(searchCriteria.getFcname());
-        criteria.setPageNo(searchCriteria.getPageNo());
-        criteria.setNumOfRow(searchCriteria.getNumOfRow());
+        //SearchCriteria => FacilityCriteria
+        FacilityCriteria criteria = dtoModifier.getFacilityCriteria(searchCriteria);
+
+        //Get List<Facility>
         List<Facility> facilityList = facilitySVC.search(criteria);
 
+        //Create ResponseEntity
         Map<String, Object> data = new HashMap<>();
         data.put("facilities", facilityList);
         HttpHeaders headers= new HttpHeaders();
@@ -87,7 +91,10 @@ public class FacilityController {
     //운동시설 상세페이지
     @GetMapping("/{fcno}")
     public String findByFcno(@PathVariable("fcno") Long fcno, Model model) {
+        //Get Facility
         Facility foundFacility = facilitySVC.findByFcno(fcno);
+
+        //model addAttribute
         model.addAttribute("facility",foundFacility);
 
         return "/facility/facility-detail";

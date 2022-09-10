@@ -46,7 +46,8 @@ function reviewListRequest() {
 
                 //기존노드 삭제
                 [...$reviewLists.children].forEach(ele => ele.remove());
-                $reviewLists.nextElementSibling.remove();
+                console.log($reviewLists)
+                console.log($reviewLists.nextElementSibling)
 
                 //총 검색 결과 표시
                 const $resultCount = document.querySelector('.review-cnt')
@@ -73,9 +74,9 @@ function reviewListRender(data) {
 
     const reviewCard =
     makeElements('div',{class : 'review-card', id : `${data.rvno}`},
-        makeElements('div',{class : 'review-btn-wrap'},
+        data.login ? makeElements('div',{class : 'review-btn-wrap'},
             makeElements('button',{class : 'review-update btn-review'},'수정'),
-            makeElements('button',{class : 'review-delete btn-review'},'삭제')),
+            makeElements('button',{class : 'review-delete btn-review'},'삭제')) : '',
         makeElements('div',{class : 'review-card__info'},
             makeElements('div',{class : 'rating-score review-card__star'},
                 makeElements('div',{class : 'outer-star'},'★★★★★',
@@ -103,7 +104,7 @@ function reviewListRender(data) {
     //이미지 미리보기 생성
     data.imageFiles?.forEach(ele => {
         const img =  document.createElement('img');
-        img.setAttribute('src',ele.src);
+        img.setAttribute('src',`/reviews/images/${ele.localFileName}`);
         img.setAttribute('data-bs-toggle','modal');
         img.setAttribute('data-bs-target','#modal');
         img.style.cursor = 'pointer';
@@ -200,10 +201,10 @@ function createPagination(totalPage) {
         paginationLis.unshift(page);
 
         a.addEventListener('click', e => {
-
+            $reviewLists.nextElementSibling.remove();
             currentPage = limitPage*pageLv - (limitPage*2-1);
             const paginationWrap = createPagination(totalPage);
-            $reviewLists.appendChild(paginationWrap);
+            $reviewLists.after(paginationWrap);
         })
     }
 
@@ -219,10 +220,10 @@ function createPagination(totalPage) {
         paginationLis.push(page);
 
         a.addEventListener('click', e => {
-
+            $reviewLists.nextElementSibling.remove();
             currentPage = limitPage*pageLv + 1;
             const paginationWrap = createPagination(totalPage);
-            $reviewLists.appendChild(paginationWrap);
+            $reviewLists.after(paginationWrap);
         })
     }
 

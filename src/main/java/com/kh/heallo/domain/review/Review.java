@@ -1,6 +1,6 @@
 package com.kh.heallo.domain.review;
 
-import com.kh.heallo.domain.file.FileData;
+import com.kh.heallo.domain.uploadfile.FileData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,14 +13,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Review {
 
-    private Long rvno;
-    private String rvcontents;
-    private double rvscore;
-    private LocalDateTime rvcdate;
-    private LocalDateTime rvudate;
-    private double fcno;
-    private double memno;
-    private String memninkname;
-    private List<FileData> attachedImage;
+    private Long rvno;                      //리뷰번호
+    private String rvcontents;              //리뷰컨텐츠
+    private double rvscore;                 //리뷰별점
+    private LocalDateTime rvcdate;          //등록날짜
+    private LocalDateTime rvudate;          //수정날짜
+    private double fcno;                    //운동시설번호
+    private double memno;                   //회원번호
+    private String memninkname;             //회원닉네임
+    private List<FileData> attachedImage;   //등록이미지들
 
 }

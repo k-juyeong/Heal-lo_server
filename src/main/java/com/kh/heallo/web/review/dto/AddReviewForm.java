@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddReviewForm {
-    private String rvcontents;
-    private double rvscore;
-    private List<MultipartFile> attachedImage;
+    private String rvcontents;                  //리뷰컨텐츠
+    private double rvscore;                     //리뷰별점
+    private List<MultipartFile> attachedImage;  //업로드이미지들
 }

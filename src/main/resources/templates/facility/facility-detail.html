@@ -146,10 +146,10 @@
           <!-- 리뷰 헤더-메인 -->
           <div class="review-header__main">
             <div class="rating-score">
-              <p class="text-score">0.0</p>
+              <p class="text-score" th:text="${facility.fcscore}">0.0</p>
               <div class="outer-star">
                   ★★★★★
-                  <span class="inner-star">
+                  <span class="inner-star" th:style="|width:${#numbers.formatInteger(facility.fcscore*20,1)}%|">
                       ★★★★★
                   </span>
                   <input class="change-score" type="range" value="1" step="1" min="0" max="10">
@@ -168,6 +168,7 @@
           <div class="empty-message">
             <p>리뷰가 없습니다. 리뷰를 달아주세요!</p>
           </div>
+
 <!--        <div class="review-card">-->
 <!--          <div class="review-card__info">-->
 <!--            <div class="rating-score review-card__star">-->
@@ -176,49 +177,50 @@
 <!--                <span class="inner-star">-->
 <!--                    ★★★★★-->
 <!--                </span>-->
-<!--              </div>   -->
+<!--              </div>-->
 <!--            </div>-->
 <!--            <span class="user-name">이재진</span>-->
 <!--            <span class="date">2022.09.09</span>-->
 <!--            <p class="preview-contents moreview-on" disabled>Lorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit ametLorem, ipsum dolor sit amet </p>-->
 <!--          </div>-->
-<!--          <div class="preview-wrap"></div>-->
+<!--          <div class="preview-wrap">-->
+<!--            <img src="https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" data-bs-toggle="modal" data-bs-target="#modal">-->
+<!--          </div>-->
 <!--        </div>-->
-
-          <!-- 페이징 -->
-          <nav aria-label="Page navigation example" class="pagination-wrap">
-            <ul class="pagination pagination-md">
-              <li class="page-item">
-                <a class="page-link shadow-none" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link shadow-none" href="#reviewContainer">1</a></li>
-              <li class="page-item"><a class="page-link shadow-none" href="#reviewContainer">2</a></li>
-              <li class="page-item"><a class="page-link shadow-none" href="#reviewContainer">3</a></li>
-              <li class="page-item">
-                <a class="page-link shadow-none" href="#reviewContainer" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
         </article>
-      
-        <!-- 이미지 확대 뷰 -->
-        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                      <img src="" alt="">
-                  </div>
-              </div>
-            </div>
-        </div>
+        <!-- 페이징 -->
+        <nav aria-label="Page navigation example" class="pagination-wrap">
+          <ul class="pagination pagination-md">
+            <li class="page-item">
+              <a class="page-link shadow-none" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link shadow-none" href="#reviewContainer">1</a></li>
+            <li class="page-item"><a class="page-link shadow-none" href="#reviewContainer">2</a></li>
+            <li class="page-item"><a class="page-link shadow-none" href="#reviewContainer">3</a></li>
+            <li class="page-item">
+              <a class="page-link shadow-none" href="#reviewContainer" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </section>
+
+      <!-- 이미지 확대 뷰 -->
+      <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <img src="" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <!-- footer -->

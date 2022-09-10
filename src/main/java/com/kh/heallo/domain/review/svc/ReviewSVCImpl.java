@@ -1,14 +1,17 @@
 package com.kh.heallo.domain.review.svc;
 
-import com.kh.heallo.domain.file.FileData;
+import com.kh.heallo.domain.uploadfile.FileData;
 import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.dao.ReviewDAO;
+import com.kh.heallo.domain.uploadfile.dao.UploadFileDAO;
+import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -16,6 +19,7 @@ import java.util.List;
 public class ReviewSVCImpl implements ReviewSVC{
 
     private final ReviewDAO reviewDAO;
+    private final UploadFileSVC uploadFileSVC;
 
     /**
      * 리뷰 조회 결과 수
@@ -39,7 +43,11 @@ public class ReviewSVCImpl implements ReviewSVC{
     public List<Review> findListByFcno(Long fcno, ReviewCriteria criteria) {
         List<Review> reviewList = reviewDAO.findListByFcno(fcno, criteria);
 
-        //파일 요청
+        reviewList = reviewList.stream().map(review -> {
+            List<FileData> imageList = uploadFileSVC.findImagesByRvno(review.getRvno());
+            review.setAttachedImage(imageList);
+            return review;
+        }).collect(Collectors.toList());
 
         return reviewList;
     }
@@ -68,11 +76,18 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Long add(Long memno, Long fcno, Review review) {
-        //리뷰저장
+        Integer[] resultCount = {0};
         Long rvno = reviewDAO.add(memno, fcno, review);
 
-        //파일저장
-        List<FileData> attachedImage = review.getAttachedImage();
+        List<FileData> fileDataList = review.getAttachedImage();
+        if(fileDataList != null) {
+            fileDataList.stream().forEach(fileData -> {
+                resultCount[0] += uploadFileSVC.ReviewFileUpload(rvno, fileData);
+            });
+            if (resultCount[0] == fileDataList.size()) {
+                log.info("파일업로드 중 오류발생 {}",fileDataList);
+            }
+        }
 
         return rvno;
     }
