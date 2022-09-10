@@ -1,6 +1,5 @@
 package com.kh.heallo.domain.member;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
