@@ -55,7 +55,7 @@ public class MemberDAOImpl implements  MemberDAO{
 
     sql.append("select memid,mempw,memtel,memnickname,mememail,memname ");
     sql.append("  from member ");
-    sql.append(" where pw=' ? ' ");
+    sql.append(" where pw= ? ");
 
     Member findedMember = null;
     try{
@@ -74,8 +74,22 @@ public class MemberDAOImpl implements  MemberDAO{
    */
   @Override
   public int update(String mempw, Member member) {
-    
-    return 0;
+    int result = 0;
+    StringBuffer sql = new StringBuffer();
+
+    sql.append("update MEMBER (MEMPW,MEMTEL,MEMNINKNAME,MEMEMAIL,MEMNAME,MEMUDATE) ");
+    sql.append("   set MEMPW= ?, ");
+    sql.append("       MEMTEL= ?, ");
+    sql.append("       MEMNINKNAME= ?, ");
+    sql.append("       MEMEMAIL= ?, ");
+    sql.append("       MEMNAME= ?, ");
+    sql.append("       MEMUDATE = sysdate ");
+    sql.append(" where MEMPW= ? ");
+
+    result = jdbcTemplate.update(sql.toString(),member.getMempw(), member.getMemtel(),
+            member.getMemninkname(), member.getMememail(), member.getMemname(),member.getMemudate(),member.getMempw());
+
+    return result;
   }
 
   /**
@@ -85,7 +99,11 @@ public class MemberDAOImpl implements  MemberDAO{
    */
   @Override
   public int del(String mempw) {
+    int result = 0;
+    String sql = "delete from MEMBER where MEMPW= ? ";
 
-    return 0;
+    result = jdbcTemplate.update(sql, mempw);
+
+    return result;
   }
 }
