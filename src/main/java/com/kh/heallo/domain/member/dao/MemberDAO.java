@@ -32,6 +32,12 @@ public interface MemberDAO {
    * @return
    */
   int del(String mempw);
+
+  /**
+   * 신규 회원아이디(내부관리용) 생성
+   * @return 회원아이디
+   */
+  Long generateMemno();
 }
 
 
