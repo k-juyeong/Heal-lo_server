@@ -61,7 +61,7 @@ public class MemberDAOImpl implements  MemberDAO{
   public Member findByPw(String mempw) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("select memid,mempw,memtel,memnickname,mememail,memname ");
+    sql.append("select memno,memid,mempw,memtel,memnickname,mememail,memname,memcode ");
     sql.append("  from member ");
     sql.append(" where pw= ? ");
 
@@ -81,8 +81,7 @@ public class MemberDAOImpl implements  MemberDAO{
    * @return  수정건수
    */
   @Override
-  public int update(String mempw, Member member) {
-    int result = 0;
+  public void update(String mempw, Member member) {
     StringBuffer sql = new StringBuffer();
 
     sql.append("update MEMBER ");
@@ -94,10 +93,8 @@ public class MemberDAOImpl implements  MemberDAO{
     sql.append("       MEMUDATE = sysdate ");
     sql.append(" where MEMPW = ? ");
 
-    result = jdbcTemplate.update(sql.toString(),member.getMempw(), member.getMemtel(),
+    jdbcTemplate.update(sql.toString(),member.getMempw(), member.getMemtel(),
             member.getMemnickname(), member.getMememail(), member.getMemname(),member.getMemudate(),member.getMempw());
-
-    return result;
   }
 
   /**
@@ -106,12 +103,9 @@ public class MemberDAOImpl implements  MemberDAO{
    * @return
    */
   @Override
-  public int del(String mempw) {
-    int result = 0;
-    String sql = "delete from MEMBER where MEMPW= ? ";
+  public void del(String mempw) {
+    String sql = "delete MEMBER where MEMPW= ? ";
 
-    result = jdbcTemplate.update(sql, mempw);
-
-    return result;
+    jdbcTemplate.update(sql, mempw);
   }
 }

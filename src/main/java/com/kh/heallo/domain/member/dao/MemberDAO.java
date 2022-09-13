@@ -25,14 +25,14 @@ public interface MemberDAO {
    * @param member 수정할 정보
    * @return  수정건수
    */
-  int update(String mempw, Member member);
+  void update(String mempw, Member member);
 
   /**
    * 탈퇴
    * @param mempw 비밀번호
    * @return
    */
-  int del(String mempw);
+  void del(String mempw);
 
 }
 
