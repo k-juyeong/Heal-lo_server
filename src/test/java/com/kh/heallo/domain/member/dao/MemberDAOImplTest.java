@@ -25,7 +25,7 @@ public class MemberDAOImplTest {
     member.setMemid("proteen1");
     member.setMempw("naim1111");
     member.setMemtel("010-1234-5618");
-    member.setMemninkname("테스터1");
+    member.setMemnickname("테스터1");
     member.setMememail("test1@test.com");
     member.setMemname("박지훈");
     member.setMemcode("normal");
