@@ -87,7 +87,7 @@ public class MemberDAOImpl implements  MemberDAO{
     sql.append(" where MEMPW= ? ");
 
     result = jdbcTemplate.update(sql.toString(),member.getMempw(), member.getMemtel(),
-            member.getMemninkname(), member.getMememail(), member.getMemname(),member.getMemudate(),member.getMempw());
+            member.getMemnickname(), member.getMememail(), member.getMemname(),member.getMemudate(),member.getMempw());
 
     return result;
   }
