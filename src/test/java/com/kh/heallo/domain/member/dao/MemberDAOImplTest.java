@@ -22,9 +22,17 @@ public class MemberDAOImplTest {
   @Order(1)
   void join(){
     Member member = new Member();
-    member.setMemid("proteen1"); member.setMempw("naim1111"); member.setMemtel("010-1234-5618");
-    member.setMemninkname("테스터1"); member.setMememail("test1@test.com"); member.setMemname("박지훈");
-    member.setMemcode("nomal"); member.setMemcdate(new Date()); member.setMemudate(new Date());
+    Long generateMemno = memberDAO.generateMemno();
+    member.setMemno(generateMemno);
+    member.setMemid("proteen1");
+    member.setMempw("naim1111");
+    member.setMemtel("010-1234-5618");
+    member.setMemnickname("테스터1");
+    member.setMememail("test1@test.com");
+    member.setMemname("박지훈");
+    member.setMemcode("normal");
+    member.setMemcdate(new Date());
+    member.setMemudate(new Date());
 
     int joinedMember = memberDAO.join(member);
     log.info("joinedMember={}",joinedMember);
@@ -41,7 +49,7 @@ public class MemberDAOImplTest {
     Assertions.assertThat(findedMember.getMemid()).isEqualTo(member.getMemid());
     Assertions.assertThat(findedMember.getMempw()).isEqualTo(member.getMempw());
     Assertions.assertThat(findedMember.getMemtel()).isEqualTo(member.getMemtel());
-    Assertions.assertThat(findedMember.getMemninkname()).isEqualTo(member.getMemninkname());
+    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo(member.getMemnickname());
     Assertions.assertThat(findedMember.getMememail()).isEqualTo(member.getMememail());
     Assertions.assertThat(findedMember.getMemname()).isEqualTo(member.getMemname());
     Assertions.assertThat(findedMember.getMemcode()).isEqualTo(member.getMemcode());
@@ -55,12 +63,12 @@ public class MemberDAOImplTest {
     Member member = new Member();
     String memmpw = member.getMempw();
     member.setMempw(memmpw);
-    member.setMemninkname("로니콜먼");
+    member.setMemnickname("로니콜먼");
 
     memberDAO.update(memmpw,member);
 
     Member findedMember = memberDAO.findByPw(memmpw);
-    Assertions.assertThat(findedMember.getMemninkname()).isEqualTo(member.getMemninkname());
+    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo(member.getMemnickname());
   }
 
   @Test
