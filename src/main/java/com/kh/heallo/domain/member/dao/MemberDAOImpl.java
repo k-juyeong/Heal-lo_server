@@ -24,24 +24,14 @@ public class MemberDAOImpl implements  MemberDAO{
   public int join(Member member) {
     int result = 0;
     StringBuffer sql = new StringBuffer();
-    sql.append("insert into member" );
-    sql.append(" values (? ,? ,? ,? ,? ,? ,? ,? ,? ,? ) ");
+    sql.append("insert into member " );
+    sql.append(" values (member_memno.nextval ,? ,? ,? ,? ,? ,? ,? ,sysdate ,sysdate ) ");
 
     result = jdbcTemplate.update(
-      sql.toString(), member.getMemno(), member.getMemid(), member.getMempw(), member.getMemtel(),
-      member.getMemnickname(), member.getMememail(), member.getMemname(), member.getMemcode(), member.getMemcdate(), member.getMemudate());
+      sql.toString(),member.getMemid(), member.getMempw(), member.getMemtel(),
+      member.getMemnickname(), member.getMememail(), member.getMemname(), member.getMemcode());
 
     return result;
-  }
-
-  /**
-   * 신규 회원아이디(내부관리용) 생성
-   * @return 회원아이디
-   */
-  public Long generateMemno(){
-    String sql = "select member_memno_seq.nextval from dual ";
-    Long Memno = jdbcTemplate.queryForObject(sql, Long.class);
-    return Memno;
   }
 
   /**
@@ -78,13 +68,13 @@ public class MemberDAOImpl implements  MemberDAO{
     StringBuffer sql = new StringBuffer();
 
     sql.append("update MEMBER ");
-    sql.append("   set MEMPW= ?, ");
-    sql.append("       MEMTEL= ?, ");
-    sql.append("       MEMNICKNAME= ?, ");
-    sql.append("       MEMEMAIL= ?, ");
-    sql.append("       MEMNAME= ?, ");
+    sql.append("   set MEMPW = ?, ");
+    sql.append("       MEMTEL = ?, ");
+    sql.append("       MEMNICKNAME = ?, ");
+    sql.append("       MEMEMAIL = ?, ");
+    sql.append("       MEMNAME = ?, ");
     sql.append("       MEMUDATE = sysdate ");
-    sql.append(" where MEMPW= ? ");
+    sql.append(" where MEMPW = ? ");
 
     result = jdbcTemplate.update(sql.toString(),member.getMempw(), member.getMemtel(),
             member.getMemnickname(), member.getMememail(), member.getMemname(),member.getMemudate(),member.getMempw());

@@ -22,6 +22,8 @@ public class MemberDAOImplTest {
   @Order(1)
   void join(){
     Member member = new Member();
+    Long generateMemno = memberDAO.generateMemno();
+    member.setMemno(generateMemno);
     member.setMemid("proteen1");
     member.setMempw("naim1111");
     member.setMemtel("010-1234-5618");
