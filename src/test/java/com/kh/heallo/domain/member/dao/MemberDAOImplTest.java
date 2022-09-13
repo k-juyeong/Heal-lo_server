@@ -7,8 +7,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Date;
-
 @Slf4j
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -22,8 +20,6 @@ public class MemberDAOImplTest {
   @Order(1)
   void join(){
     Member member = new Member();
-    Long generateMemno = memberDAO.generateMemno();
-    member.setMemno(generateMemno);
     member.setMemid("proteen1");
     member.setMempw("naim1111");
     member.setMemtel("010-1234-5618");
@@ -31,10 +27,8 @@ public class MemberDAOImplTest {
     member.setMememail("test1@test.com");
     member.setMemname("박지훈");
     member.setMemcode("normal");
-    member.setMemcdate(new Date());
-    member.setMemudate(new Date());
 
-    int joinedMember = memberDAO.join(member);
+    Member joinedMember = memberDAO.join(member);
     log.info("joinedMember={}",joinedMember);
   }
 

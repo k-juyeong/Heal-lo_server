@@ -6,10 +6,11 @@ public interface MemberDAO {
 
   /**
    * 가입
+   *
    * @param member 가입정보
-   * @return  가입건수
+   * @return 가입건수
    */
-  int join(Member member);
+  Member join(Member member);
 
   /**
    * 조회 BY 회원 비밀번호

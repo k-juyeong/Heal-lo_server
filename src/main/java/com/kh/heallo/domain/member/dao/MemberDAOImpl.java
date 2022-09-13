@@ -6,7 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
 
 @Slf4j
 @Repository
@@ -17,21 +21,35 @@ public class MemberDAOImpl implements  MemberDAO{
 
   /**
    * 가입
+   *
    * @param member 가입정보
-   * @return  가입건수
+   * @return 가입건수
    */
   @Override
-  public int join(Member member) {
-    int result = 0;
+  public Member join(Member member) {
     StringBuffer sql = new StringBuffer();
-    sql.append("insert into member " );
-    sql.append(" values (member_memno.nextval ,? ,? ,? ,? ,? ,? ,? ,sysdate ,sysdate ) ");
+    sql.append(" insert into member ");
+    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,? ,sysdate ,sysdate ) ");
 
-    result = jdbcTemplate.update(
-      sql.toString(),member.getMemid(), member.getMempw(), member.getMemtel(),
-      member.getMemnickname(), member.getMememail(), member.getMemname(), member.getMemcode());
+    KeyHolder keyHolder = new GeneratedKeyHolder();
 
-    return result;
+    jdbcTemplate.update(con -> {
+      PreparedStatement preparedStatement = con.prepareStatement(sql.toString(), new String[]{"memno"});
+      preparedStatement.setString(1, member.getMemid());
+      preparedStatement.setString(2, member.getMempw());
+      preparedStatement.setString(3, member.getMemtel());
+      preparedStatement.setString(4, member.getMemnickname());
+      preparedStatement.setString(5, member.getMememail());
+      preparedStatement.setString(6, member.getMemname());
+      preparedStatement.setString(7, member.getMemcode());
+
+      return preparedStatement;
+    }, keyHolder);
+
+    Long memno = Long.valueOf(keyHolder.getKeys().get("memno").toString());
+
+    member.setMemno(memno);
+    return member;
   }
 
   /**
