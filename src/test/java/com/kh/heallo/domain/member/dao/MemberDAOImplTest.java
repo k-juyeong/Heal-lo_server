@@ -22,9 +22,15 @@ public class MemberDAOImplTest {
   @Order(1)
   void join(){
     Member member = new Member();
-    member.setMemid("proteen1"); member.setMempw("naim1111"); member.setMemtel("010-1234-5618");
-    member.setMemninkname("테스터1"); member.setMememail("test1@test.com"); member.setMemname("박지훈");
-    member.setMemcode("nomal"); member.setMemcdate(new Date()); member.setMemudate(new Date());
+    member.setMemid("proteen1");
+    member.setMempw("naim1111");
+    member.setMemtel("010-1234-5618");
+    member.setMemninkname("테스터1");
+    member.setMememail("test1@test.com");
+    member.setMemname("박지훈");
+    member.setMemcode("normal");
+    member.setMemcdate(new Date());
+    member.setMemudate(new Date());
 
     int joinedMember = memberDAO.join(member);
     log.info("joinedMember={}",joinedMember);

@@ -29,7 +29,7 @@ public class MemberDAOImpl implements  MemberDAO{
 
     result = jdbcTemplate.update(
       sql.toString(), member.getMemno(), member.getMemid(), member.getMempw(), member.getMemtel(),
-      member.getMemninkname(), member.getMememail(), member.getMemname(), member.getMemcode(), member.getMemcdate(), member.getMemudate());
+      member.getMemnickname(), member.getMememail(), member.getMemname(), member.getMemcode(), member.getMemcdate(), member.getMemudate());
 
     return result;
   }
@@ -77,10 +77,10 @@ public class MemberDAOImpl implements  MemberDAO{
     int result = 0;
     StringBuffer sql = new StringBuffer();
 
-    sql.append("update MEMBER (MEMPW,MEMTEL,MEMNINKNAME,MEMEMAIL,MEMNAME,MEMUDATE) ");
+    sql.append("update MEMBER ");
     sql.append("   set MEMPW= ?, ");
     sql.append("       MEMTEL= ?, ");
-    sql.append("       MEMNINKNAME= ?, ");
+    sql.append("       MEMNICKNAME= ?, ");
     sql.append("       MEMEMAIL= ?, ");
     sql.append("       MEMNAME= ?, ");
     sql.append("       MEMUDATE = sysdate ");

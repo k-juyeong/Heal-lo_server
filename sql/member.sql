@@ -4,7 +4,7 @@ create table member (
     memid          varchar2(40),
     mempw          varchar2(20),
     memtel         varchar2(13),
-    memninkname    varchar2(30),
+    memnickname    varchar2(30),
     mememail       varchar2(30),
     memname        varchar2(12),
     memcode        varchar2(15),

@@ -12,7 +12,7 @@ public class Member {
   private String memid;        //varchar2(40)
   private String  mempw;       //varchar2(20)
   private String memtel;       //varchar2(13)
-  private String memninkname;  //varchar2(30)
+  private String memnickname;  //varchar2(30)
   private String mememail;     //varchar2(30)
   private String memname;      //varchar2(12)
   private String memcode;      //varchar2(15)
