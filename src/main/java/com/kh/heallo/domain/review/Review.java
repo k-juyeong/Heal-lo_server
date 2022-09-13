@@ -18,9 +18,9 @@ public class Review {
     private double rvscore;                 //리뷰별점
     private LocalDateTime rvcdate;          //등록날짜
     private LocalDateTime rvudate;          //수정날짜
-    private double fcno;                    //운동시설번호
-    private double memno;                   //회원번호
+    private Long fcno;                    //운동시설번호
+    private Long memno;                   //회원번호
     private String memninkname;             //회원닉네임
-    private List<FileData> attachedImage;   //등록이미지들
+    private List<FileData> imageFiles;   //등록이미지들
 
 }

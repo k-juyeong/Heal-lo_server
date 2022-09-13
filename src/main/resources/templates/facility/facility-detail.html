@@ -146,10 +146,10 @@
           <!-- 리뷰 헤더-메인 -->
           <div class="review-header__main">
             <div class="rating-score">
-              <p class="text-score" th:text="${facility.fcscore}">0.0</p>
+              <p class="text-score" >0.0</p>
               <div class="outer-star">
                   ★★★★★
-                  <span class="inner-star" th:style="|width:${#numbers.formatInteger(facility.fcscore*20,1)}%|">
+                  <span class="inner-star">
                       ★★★★★
                   </span>
                   <input class="change-score" type="range" value="1" step="1" min="0" max="10">
@@ -238,6 +238,7 @@
     </footer>
   </div>
 
+  <script th:inline="javascript">const fcscore = [[${facility.fcscore}]]</script>
   <script src="../../static/js/template/layout-sub.js" th:src="@{/js/template/layout-sub.js}"></script>
   <script type="module" src="../../static/js/search-facility/facility-page.js" th:src="@{/js/search-facility/facility-page.js}"></script>
 </body>

@@ -4,11 +4,10 @@ import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
+import com.kh.heallo.web.facility.dto.FacilityCriteriaDto;
 import com.kh.heallo.web.facility.dto.FacilityDto;
-import com.kh.heallo.web.review.dto.AddReviewForm;
-import com.kh.heallo.web.review.dto.ReviewDto;
-import com.kh.heallo.web.review.dto.ReviewFileData;
-import com.kh.heallo.web.review.dto.SearchCriteria;
+import com.kh.heallo.web.review.dto.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,68 +17,73 @@ import java.util.stream.Collectors;
 public class DtoModifier {
 
     //SearchCriteria => FacilityCriteria
-    public FacilityCriteria getFacilityCriteria(com.kh.heallo.web.facility.dto.SearchCriteria searchCriteria) {
+    public FacilityCriteria getFacilityCriteria(FacilityCriteriaDto facilityCriteriaDto) {
         FacilityCriteria criteria = new FacilityCriteria();
-        criteria.setFctype(searchCriteria.getFctype());
-        criteria.setFcaddr(searchCriteria.getFcaddr());
-        criteria.setFcname(searchCriteria.getFcname());
-        criteria.setPageNo(searchCriteria.getPageNo());
-        criteria.setNumOfRow(searchCriteria.getNumOfRow());
+        BeanUtils.copyProperties(facilityCriteriaDto,criteria);
+
         return criteria;
     }
 
-    //List<Review> => List<ReviewDto>
-    public List<ReviewDto> getReviewDtos(List<Review> FoundReviewList, Long memno) {
-        List<ReviewDto> reviewList = FoundReviewList.stream().map(review -> {
-            ReviewDto reviewDto = new ReviewDto();
-            reviewDto.setRvno(review.getRvno());
-            reviewDto.setMemno(review.getMemno());
-            reviewDto.setRvscore(review.getRvscore());
-            reviewDto.setRvcontents(review.getRvcontents());
-            reviewDto.setRvcdate(review.getRvcdate());
-            reviewDto.setMemninkname(review.getMemninkname());
-            if (review.getMemno() == memno) reviewDto.setLogin(true);
+    //Review => ReviewDto
+    public ReviewDto getReviewDto(Review review, Long memno) {
+        ReviewDto reviewDto = new ReviewDto();
+        BeanUtils.copyProperties(review,reviewDto);
+        reviewDto.setMemno(review.getMemno());
 
-            if(review.getAttachedImage() != null) {
-                List<ReviewFileData> reviewFileDataList = review.getAttachedImage().stream().map(fileData -> {
-                    ReviewFileData reviewFileData = new ReviewFileData();
-                    reviewFileData.setOriginFileName(fileData.getUffname());
-                    reviewFileData.setLocalFileName(fileData.getUfsname());
-                    return reviewFileData;
-                }).collect(Collectors.toList());
-                reviewDto.setImageFiles(reviewFileDataList);
-            }
+        if (review.getMemno() == memno) reviewDto.setLogin(true);
 
-            return reviewDto;
-        }).collect(Collectors.toList());
+        if(review.getImageFiles() != null) {
+            List<ReviewFileData> reviewFileDataList = review.getImageFiles().stream().map(fileData -> {
+                ReviewFileData reviewFileData = new ReviewFileData();
+                BeanUtils.copyProperties(fileData, reviewFileData);
 
-        return reviewList;
+                return reviewFileData;
+            }).collect(Collectors.toList());
+            reviewDto.setImageFiles(reviewFileDataList);
+        }
+
+        return reviewDto;
     }
 
     //SearchCriteria => ReviewCriteria
-    public ReviewCriteria getReviewCriteria(SearchCriteria searchCriteria) {
+    public ReviewCriteria getReviewCriteria(ReviewCriteriaDto reviewCriteriaDto) {
         ReviewCriteria reviewCriteria = new ReviewCriteria();
-        reviewCriteria.setPageNo(searchCriteria.getPageNo());
-        reviewCriteria.setNumOfRow(searchCriteria.getNumOfRow());
+        BeanUtils.copyProperties(reviewCriteriaDto,reviewCriteria);
+
         return reviewCriteria;
     }
 
     //Facility => facilityDto
-    public FacilityDto getFacilityDto(Facility foundFacility) {
+    public FacilityDto getFacilityDto(Facility facility) {
         FacilityDto facilityDto = new FacilityDto();
-        facilityDto.setFcname(foundFacility.getFcname());
-        facilityDto.setFcaddr(foundFacility.getFcaddr());
-        facilityDto.setFcimg(foundFacility.getFcimg());
-        facilityDto.setFcno(foundFacility.getFcno());
-        facilityDto.setFctel(foundFacility.getFctel());
+        BeanUtils.copyProperties(facility,facilityDto);
+
         return facilityDto;
     }
 
-    //AddReviewForm => Review
-    public Review getReview(AddReviewForm addReviewForm) {
+    //EditReviewForm => Review
+    public Review getReviewByEditReviewForm(EditReviewForm editReviewForm) {
         Review review = new Review();
-        review.setRvcontents(addReviewForm.getRvcontents());
-        review.setRvscore(addReviewForm.getRvscore());
+        BeanUtils.copyProperties(editReviewForm, review);
+
+        return review;
+    }
+
+    //EditReviewForm => Review
+    public EditReviewForm getEditReviewFormByReview(Review review) {
+        EditReviewForm editReviewForm = new EditReviewForm();
+        BeanUtils.copyProperties(review, editReviewForm);
+
+
+
+        return editReviewForm;
+    }
+
+    //AddReviewForm => Review
+    public Review getReviewByAddReviewForm(AddReviewForm addReviewForm) {
+        Review review = new Review();
+        BeanUtils.copyProperties(addReviewForm, review);
+
         return review;
     }
 }

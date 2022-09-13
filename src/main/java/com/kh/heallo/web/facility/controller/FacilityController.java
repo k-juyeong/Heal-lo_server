@@ -5,7 +5,7 @@ import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
 import com.kh.heallo.web.DtoModifier;
 import com.kh.heallo.web.ResponseMsg;
-import com.kh.heallo.web.facility.dto.SearchCriteria;
+import com.kh.heallo.web.facility.dto.FacilityCriteriaDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -51,7 +51,7 @@ public class FacilityController {
     //검색 전체 갯수
     @ResponseBody
     @GetMapping("/total")
-    public ResponseEntity<ResponseMsg> totalCount(@ModelAttribute SearchCriteria searchCriteria) {
+    public ResponseEntity<ResponseMsg> totalCount(@ModelAttribute FacilityCriteriaDto searchCriteria) {
         //SearchCriteria => FacilityCriteria
         FacilityCriteria facilityCriteria = dtoModifier.getFacilityCriteria(searchCriteria);
 
@@ -71,7 +71,7 @@ public class FacilityController {
     //검색 결과(페이징)
     @ResponseBody
     @GetMapping("/list")
-    public ResponseEntity<ResponseMsg> search(@ModelAttribute SearchCriteria searchCriteria) {
+    public ResponseEntity<ResponseMsg> search(@ModelAttribute FacilityCriteriaDto searchCriteria) {
         //SearchCriteria => FacilityCriteria
         FacilityCriteria criteria = dtoModifier.getFacilityCriteria(searchCriteria);
 

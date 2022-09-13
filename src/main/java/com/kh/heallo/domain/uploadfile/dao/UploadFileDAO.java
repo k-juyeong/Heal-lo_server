@@ -20,4 +20,11 @@ public interface UploadFileDAO {
      * @return 이미지 리스트
      */
     List<FileData> findImagesByRvno(Long rvno);
+
+    /**
+     * 파일 삭제
+     * @param ufno 파일번호
+     * @return
+     */
+    Integer delete(Long ufno);
 }

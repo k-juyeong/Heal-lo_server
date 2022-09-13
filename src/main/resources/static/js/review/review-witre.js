@@ -56,13 +56,12 @@ $inputImg.addEventListener('change',({target}) => {
 //등록 버튼 이벤트
 $RegBtn.addEventListener('click', () => {
     const contents = document.querySelector('.textarea').value;
-    console.log(document.querySelector('.textarea'));
     const fcno = document.querySelector('.facility-card').dataset.fcno;
     const formData = new FormData();
     formData.append('rvscore', ratingScore);
     formData.append('rvcontents', contents);
     uploadImgs?.forEach(ele => {
-        formData.append('attachedImage', ele);
+        formData.append('multipartFiles', ele);
     })
 
     const xhr = new XMLHttpRequest();

@@ -45,7 +45,7 @@ public class ReviewSVCImpl implements ReviewSVC{
 
         reviewList = reviewList.stream().map(review -> {
             List<FileData> imageList = uploadFileSVC.findImagesByRvno(review.getRvno());
-            review.setAttachedImage(imageList);
+            review.setImageFiles(imageList);
             return review;
         }).collect(Collectors.toList());
 
@@ -61,9 +61,9 @@ public class ReviewSVCImpl implements ReviewSVC{
     @Override
     public Review findByRvno(Long rvno) {
         Review review = reviewDAO.findByRvno(rvno);
+        List<FileData> fileDataList = uploadFileSVC.findImagesByRvno(review.getRvno());
+        review.setImageFiles(fileDataList);
 
-        //파일 요청
-//        review.setAttachedImage();
         return review;
     }
 
@@ -79,7 +79,7 @@ public class ReviewSVCImpl implements ReviewSVC{
         Integer[] resultCount = {0};
         Long rvno = reviewDAO.add(memno, fcno, review);
 
-        List<FileData> fileDataList = review.getAttachedImage();
+        List<FileData> fileDataList = review.getImageFiles();
         if(fileDataList != null) {
             fileDataList.stream().forEach(fileData -> {
                 resultCount[0] += uploadFileSVC.ReviewFileUpload(rvno, fileData);
@@ -101,7 +101,19 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Integer update(Long rvno, Review review) {
-        return reviewDAO.update(rvno, review);
+        Integer[] resultCount = {0};
+        Integer updateResultCount = reviewDAO.update(rvno, review);
+
+        List<FileData> fileDataList = review.getImageFiles();
+        if(fileDataList != null) {
+            fileDataList.stream().forEach(fileData -> {
+                resultCount[0] += uploadFileSVC.ReviewFileUpload(rvno, fileData);
+            });
+            if (resultCount[0] == fileDataList.size()) {
+                log.info("파일업로드 중 오류발생 {}",fileDataList);
+            }
+        }
+        return updateResultCount;
     }
 
     /**

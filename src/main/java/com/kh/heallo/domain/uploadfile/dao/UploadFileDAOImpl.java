@@ -57,4 +57,16 @@ public class UploadFileDAOImpl implements UploadFileDAO {
         return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(FileData.class), rvno);
     }
 
+    /**
+     * 파일 삭제
+     *
+     * @param ufno 파일번호
+     * @return
+     */
+    @Override
+    public Integer delete(Long ufno) {
+        String sql = "delete uploadFile where ufno = ? ";
+        int resultCount = jdbcTemplate.update(sql, ufno);
+        return resultCount;
+    }
 }

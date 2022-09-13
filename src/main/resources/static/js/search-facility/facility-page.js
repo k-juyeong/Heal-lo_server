@@ -39,24 +39,29 @@ function reviewListRequest() {
             if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
                 const jsonData = JSON.parse(xhr.responseText);
 
-                //검색결과 체크
-                if (jsonData.data.totalCount == 0) {
-                    return;
-                }
-
                 //기존노드 삭제
                 [...$reviewLists.children].forEach(ele => ele.remove());
-                console.log($reviewLists)
-                console.log($reviewLists.nextElementSibling)
+                $reviewLists.nextElementSibling?.remove();
 
                 //총 검색 결과 표시
                 const $resultCount = document.querySelector('.review-cnt')
                 $resultCount.textContent = jsonData.data.totalCount;
 
+                //리뷰 평균 수정
+                console.log(fcscore)
+                console.log( document.querySelector('.review-header__main .text-score'))
+                document.querySelector('.review-header__main .text-score').textContent = fcscore;
+                document.querySelector('.review-header__main .inner-star').style.width = fcscore*20 + '%'
+
                 //페이지네이션 생성
                 const totalPage = Math.ceil(jsonData.data.totalCount / onePageNum);
                 const paginationWrap = createPagination(totalPage);
                 $reviewLists.after(paginationWrap);
+
+                //검색결과 체크
+                if (jsonData.data.totalCount == 0) {
+                    return;
+                }
 
             }else {
                 console.log('에러');
@@ -104,7 +109,7 @@ function reviewListRender(data) {
     //이미지 미리보기 생성
     data.imageFiles?.forEach(ele => {
         const img =  document.createElement('img');
-        img.setAttribute('src',`/reviews/images/${ele.localFileName}`);
+        img.setAttribute('src',`/images/${ele.ufsname}`);
         img.setAttribute('data-bs-toggle','modal');
         img.setAttribute('data-bs-target','#modal');
         img.style.cursor = 'pointer';
@@ -114,6 +119,31 @@ function reviewListRender(data) {
             $modal.querySelector('img').src = e.target.src;
         })
     });
+
+    //리뷰 수정버튼 이벤트
+    reviewCard.querySelector('.review-update')?.addEventListener('click',ele => {
+        window.location = `/reviews/${data.rvno}/edit`;
+    })
+
+    //리뷰 삭제버튼 이벤트
+    reviewCard.querySelector('.review-delete')?.addEventListener('click',ele => {
+        const xhr = new XMLHttpRequest();
+        const url = `/reviews/${data.rvno}`;
+        xhr.open('DELETE',url);
+        xhr.send();
+
+        xhr.addEventListener('readystatechange', () => {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
+                    const jsonData = JSON.parse(xhr.responseText);
+                    reviewListRequest();
+
+                }else {
+                    console.log('에러');
+                }
+            }
+        });
+    })
 
     return reviewCard;
 }

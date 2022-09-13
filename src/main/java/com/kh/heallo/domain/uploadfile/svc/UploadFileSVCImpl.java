@@ -39,4 +39,16 @@ public class UploadFileSVCImpl implements UploadFileSVC{
         List<FileData> fileDataList = uploadFileDAO.findImagesByRvno(rvno);
         return fileDataList;
     }
+
+    /**
+     * 파일 삭제
+     *
+     * @param ufno 파일번호
+     * @return
+     */
+    @Override
+    public Integer delete(Long ufno) {
+
+        return uploadFileDAO.delete(ufno);
+    }
 }

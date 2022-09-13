@@ -42,37 +42,37 @@
 
     <!-- 메인 컨텐츠 -->
     <main id="container">
-        <section class="content">
+        <section class="content" th:object="${reviewForm}">
             <p class="page-title">리뷰수정</p>
             <article class="review-form-header">
-                <div class="facility-card">
+                <div class="facility-card" th:object="${facility}" th:attr="data-fcno=${facility.getFcno()}">
                     <div class="card-img">
-                        <img src="../../img/이미지준비중.jpg" alt="">
+                        <img src="../../static/img/이미지준비중.jpg" th:src="*{fcimg}" alt="운동시설 사진">
                     </div>
                     <div class="card-content">
                         <div class="card-content__top">
-                            <h3 class="card-title">울산공공헬스장</h3>
+                            <h3 class="card-title" th:text="*{fcname}">울산공공헬스장</h3>
                         </div>
                         <div class="card-content__body">
-                            <p class="card-tel">010-8888-7711</p>
-                            <p class="card-addr">울산 중구 옥교동 xxxx</p>
+                            <p class="card-tel" th:text="*{fctel}">010-8888-7711</p>
+                            <p class="card-addr" th:text="*{fcaddr}">울산 중구 옥교동 xxxx</p>
                         </div>
                     </div>
                 </div>
                 <div class="rating-score">
                     <p>별점을 매겨주세요</p>
-                    <p class="text-score">0.0</p>
+                    <p class="text-score" th:text="*{rvscore}">5</p>
                     <div class="outer-star">
                         ★★★★★
-                        <span class="inner-star">
+                        <span class="inner-star" th:style="|width:${#numbers.formatInteger(reviewForm.rvscore*20,1)}%|">
                             ★★★★★
                         </span>
                         <input class="change-score" type="range" value="1" step="1" min="0" max="10">
-                    </div>    
+                    </div>
                 </div>
-            </article>    
+            </article>
             <article class="review-write-form">
-                <div class="textarea" name="" id="editor" contenteditable='true'></div>
+                <textarea class="textarea" id="editor" th:text="*{rvcontents}"></textarea>
                 <div class="upload-img-wrap">
                     <label for="inputImg">이미지 업로드</label>
                     <div class="review-reg">
@@ -101,8 +101,8 @@
             </ul>
         </div>
     </footer>
-    </div>  
-    
+    </div>
+    <script th:inline="javascript">const $review = [[${reviewForm}]]</script>
     <script src="../../static/js/template/layout-sub.js" th:src="@{/js/template/layout-sub.js}"></script>
     <script type="module" src="../../static/js/review/review-update.js" th:src="@{/js/review/review-update.js}"></script>
 </body>
