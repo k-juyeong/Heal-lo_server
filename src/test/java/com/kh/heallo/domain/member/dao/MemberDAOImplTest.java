@@ -47,7 +47,7 @@ public class MemberDAOImplTest {
     Assertions.assertThat(findedMember.getMemid()).isEqualTo(member.getMemid());
     Assertions.assertThat(findedMember.getMempw()).isEqualTo(member.getMempw());
     Assertions.assertThat(findedMember.getMemtel()).isEqualTo(member.getMemtel());
-    Assertions.assertThat(findedMember.getMemninkname()).isEqualTo(member.getMemninkname());
+    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo(member.getMemnickname());
     Assertions.assertThat(findedMember.getMememail()).isEqualTo(member.getMememail());
     Assertions.assertThat(findedMember.getMemname()).isEqualTo(member.getMemname());
     Assertions.assertThat(findedMember.getMemcode()).isEqualTo(member.getMemcode());
@@ -61,12 +61,12 @@ public class MemberDAOImplTest {
     Member member = new Member();
     String memmpw = member.getMempw();
     member.setMempw(memmpw);
-    member.setMemninkname("로니콜먼");
+    member.setMemnickname("로니콜먼");
 
     memberDAO.update(memmpw,member);
 
     Member findedMember = memberDAO.findByPw(memmpw);
-    Assertions.assertThat(findedMember.getMemninkname()).isEqualTo(member.getMemninkname());
+    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo(member.getMemnickname());
   }
 
   @Test
