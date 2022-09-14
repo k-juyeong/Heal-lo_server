@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.member;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Member {
   private Long memno;          //number(8)
   private String memid;        //varchar2(40)
