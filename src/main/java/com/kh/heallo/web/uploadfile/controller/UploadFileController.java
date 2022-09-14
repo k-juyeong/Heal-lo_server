@@ -1,7 +1,7 @@
 package com.kh.heallo.web.uploadfile.controller;
 
 import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
-import com.kh.heallo.web.FileSetting;
+import com.kh.heallo.web.utility.FileSetting;
 import com.kh.heallo.web.ResponseMsg;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

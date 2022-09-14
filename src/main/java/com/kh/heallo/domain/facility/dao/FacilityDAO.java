@@ -54,6 +54,8 @@ public interface FacilityDAO {
      */
     Integer updateScore(Long fcno);
 
+
+
     /**
      * 운동시설 상세검색
      * @param fcno 운동시설번호

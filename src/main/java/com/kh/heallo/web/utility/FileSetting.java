@@ -1,6 +1,7 @@
-package com.kh.heallo.web;
+package com.kh.heallo.web.utility;
 
 import com.kh.heallo.domain.uploadfile.FileData;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

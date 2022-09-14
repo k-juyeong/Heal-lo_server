@@ -9,15 +9,13 @@ import com.kh.heallo.domain.review.svc.ReviewSVC;
 import com.kh.heallo.web.FieldErrorDetail;
 import com.kh.heallo.web.ResponseMsg;
 import com.kh.heallo.web.facility.dto.FacilityDto;
-import com.kh.heallo.web.FileSetting;
-import com.kh.heallo.web.DtoModifier;
+import com.kh.heallo.web.utility.FileSetting;
+import com.kh.heallo.web.utility.DtoModifier;
 import com.kh.heallo.web.review.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.MessageSource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,11 +24,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -51,19 +47,21 @@ public class ReviewController {
     private final DtoModifier dtoModifier;
     private final MessageSource messageSource;
 
-    //리뷰 전체 갯수 조회
+    //리뷰 total/age 조회
     @ResponseBody
     @GetMapping("/{fcno}/total")
     public ResponseEntity<ResponseMsg> getTotalCount(@PathVariable("fcno") Long fcno) {
         //Get totalCount
         Integer totalCount = reviewSVC.getTotalCount(fcno);
-        Map<String, Object> data = new HashMap<>();
-        data.put("totalCount", totalCount);
+        double fcscore = facilitySVC.findByFcno(fcno).getFcscore();
 
         //Create ResponseEntity
+        Map<String, Object> data = new HashMap<>();
+        data.put("totalCount", totalCount);
+        data.put("fcscore", fcscore);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        ResponseMsg responseMsg = new ResponseMsg("OK", "성공", data);
+        ResponseMsg responseMsg = ResponseMsg.create(ResponseMsg.STATUS_CODE_OK, "조회성공", data);
 
         return new ResponseEntity<>(responseMsg, headers, HttpStatus.OK);
     }
@@ -83,21 +81,19 @@ public class ReviewController {
 
         //Get List<Review>
         List<Review> foundReviewList = reviewSVC.findListByFcno(fcno, reviewCriteria);
-        log.info("reviewList {}", foundReviewList);
 
         //List<Review> => List<ReviewDto>
         List<ReviewDto> reviewDtos = foundReviewList.stream().map(review -> {
             ReviewDto reviewDto = dtoModifier.getReviewDto(review, memno);
             return reviewDto;
         }).collect(Collectors.toList());
-        log.info("reviewDtos {}", reviewDtos);
 
         //Create ResponseEntity
         Map<String, Object> data = new HashMap<>();
         data.put("reviews", reviewDtos);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        ResponseMsg responseMsg = new ResponseMsg("OK", "성공", data);
+        ResponseMsg responseMsg = ResponseMsg.create(ResponseMsg.STATUS_CODE_OK, "조회성공", data);
 
         return new ResponseEntity<>(responseMsg, headers, HttpStatus.OK);
     }
@@ -116,19 +112,35 @@ public class ReviewController {
 
         //model addAttribute
         model.addAttribute("facility", facilityDto);
-        model.addAttribute("reviewForm", new AddReviewForm());
 
         return "/review/review-write";
     }
 
     //리뷰 등록 처리
     @ResponseBody
-    @PostMapping("/{fcno}/add")
+    @PostMapping("/{fcno}")
     public ResponseEntity add(
-            @ModelAttribute("reviewForm") AddReviewForm addReviewForm,
             @PathVariable("fcno") Long fcno,
-            List<MultipartFile> multipartFiles
+            @Valid @ModelAttribute AddReviewForm addReviewForm,
+            BindingResult bindingResult,
+            Locale locale
     ) {
+        //실패
+        if (bindingResult.hasErrors()) {
+            List<FieldErrorDetail> errorDetails = bindingResult.getFieldErrors().stream().map(fieldError -> {
+                FieldErrorDetail fieldErrorDetail = FieldErrorDetail.create(fieldError, messageSource, locale);
+                return fieldErrorDetail;
+            }).collect(Collectors.toList());
+
+            //Create ResponseEntity
+            Map<String, Object> data = new HashMap<>();
+            data.put("errors", errorDetails);
+            ResponseMsg responseMsg = ResponseMsg.create(ResponseMsg.STATUS_CODE_VALIDATION_ERROR, "검증오류", data);
+
+            return new ResponseEntity<ResponseMsg>(responseMsg, HttpStatus.BAD_REQUEST);
+        }
+
+        //성공
         //Test 회원
         long memno = 1L;
 
@@ -138,9 +150,9 @@ public class ReviewController {
         review.setMemno(memno);
 
         //MultipartFile => FileData
-        if (multipartFiles != null) {
-            List<FileData> fileDataList = multipartFiles.stream().map(multipartFile -> {
-                log.info("multipart {}",multipartFile);
+        if (addReviewForm.getMultipartFiles() != null) {
+            List<FileData> fileDataList = addReviewForm.getMultipartFiles().stream().map(multipartFile -> {
+
                 FileData fileData = null;
                 try {
                     String localFileName = fileSetting.transForTo(multipartFile);
@@ -148,7 +160,6 @@ public class ReviewController {
                 } catch (IOException e) {
                     log.info("파일 저장중 exception 발생 {}", e.getMessage());
                 }
-                log.info("fileData {}",fileData);
 
                 return fileData;
             }).collect(Collectors.toList());
@@ -156,7 +167,7 @@ public class ReviewController {
         }
 
         //Add Review
-        reviewSVC.add(memno, fcno, review);
+        Long rvno = reviewSVC.add(memno, fcno, review);
 
         //Update Facility By Fcscore
         facilitySVC.updateToScore(fcno);
@@ -165,6 +176,7 @@ public class ReviewController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         headers.setLocation(URI.create("/facilities/" + fcno));
+        ResponseMsg.create(ResponseMsg.STATUS_CODE_OK, "등록성공", rvno);
 
         return new ResponseEntity(headers, HttpStatus.OK);
     }
@@ -177,8 +189,6 @@ public class ReviewController {
 
         //Review => EditReviewForm
         EditReviewForm editReviewForm = dtoModifier.getEditReviewFormByReview(foundReview);
-
-        log.info("foundReview.getImageFiles() {}",foundReview.getImageFiles());
 
         //FileData => ReviewFileData
         List<ReviewFileData> reviewFileDataList = foundReview.getImageFiles().stream().map(fileData -> {
@@ -203,29 +213,28 @@ public class ReviewController {
 
     //리뷰 수정 처리
     @ResponseBody
-    @PatchMapping("/{rvno}/edit")
+    @PatchMapping("/{rvno}")
     public ResponseEntity<ResponseMsg> update(
             @PathVariable("rvno") Long rvno,
-            @Valid @ModelAttribute("reviewForm") EditReviewForm editReviewForm,
-            List<MultipartFile> multipartFiles,
+            @Valid @ModelAttribute EditReviewForm editReviewForm,
             BindingResult bindingResult,
             Locale locale
     ) {
 
         //실패
         if (bindingResult.hasErrors()) {
-            List<FieldErrorDetail> fieldErrors = bindingResult.getFieldErrors().stream().map(fieldError -> {
-                FieldErrorDetail fieldErrorDetail = FieldErrorDetail.create(
-                        fieldError,
-                        messageSource,
-                        locale);
+            List<FieldErrorDetail> errorDetails = bindingResult.getFieldErrors().stream().map(fieldError -> {
+                FieldErrorDetail fieldErrorDetail = FieldErrorDetail.create(fieldError, messageSource, locale);
                 return fieldErrorDetail;
             }).collect(Collectors.toList());
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            //Create ResponseEntity
+            Map<String, Object> data = new HashMap<>();
+            data.put("errors", errorDetails);
 
-            return new ResponseEntity(fieldErrors, headers, HttpStatus.BAD_REQUEST);
+            ResponseMsg responseMsg = ResponseMsg.create(ResponseMsg.STATUS_CODE_VALIDATION_ERROR, "검증오류", data);
+
+            return new ResponseEntity<ResponseMsg>(responseMsg, HttpStatus.BAD_REQUEST);
         }
 
         //성공
@@ -236,9 +245,9 @@ public class ReviewController {
         Review review = dtoModifier.getReviewByEditReviewForm(editReviewForm);
 
         //MultipartFile => FileData
-        if (multipartFiles != null) {
-            List<FileData> fileDataList = multipartFiles.stream().map(multipartFile -> {
-                log.info("multipart {}",multipartFile);
+        if (editReviewForm.getMultipartFiles() != null) {
+            List<FileData> fileDataList = editReviewForm.getMultipartFiles().stream().map(multipartFile -> {
+
                 FileData fileData = null;
                 try {
                     String localFileName = fileSetting.transForTo(multipartFile);
@@ -246,7 +255,6 @@ public class ReviewController {
                 } catch (IOException e) {
                     log.info("파일 저장중 exception 발생 {}", e.getMessage());
                 }
-                log.info("fileData {}",fileData);
 
                 return fileData;
             }).collect(Collectors.toList());
@@ -263,8 +271,9 @@ public class ReviewController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         headers.setLocation(URI.create("/facilities/" + fcno));
+        ResponseMsg responseMsg = ResponseMsg.create(ResponseMsg.STATUS_CODE_OK, "수정성공", resultCount);
 
-        return new ResponseEntity(headers, HttpStatus.OK);
+        return new ResponseEntity(responseMsg,headers, HttpStatus.OK);
     }
 
     //리뷰 삭제 처리
@@ -283,7 +292,7 @@ public class ReviewController {
         //Create ResponseEntity
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        ResponseMsg responseMsg = new ResponseMsg("OK", "성공", resultCount);
+        ResponseMsg responseMsg = ResponseMsg.create(ResponseMsg.STATUS_CODE_OK, "삭제성공", resultCount);
         return new ResponseEntity<>(responseMsg, headers, HttpStatus.OK);
     }
 }

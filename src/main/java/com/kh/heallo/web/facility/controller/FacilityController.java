@@ -3,7 +3,7 @@ package com.kh.heallo.web.facility.controller;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
-import com.kh.heallo.web.DtoModifier;
+import com.kh.heallo.web.utility.DtoModifier;
 import com.kh.heallo.web.ResponseMsg;
 import com.kh.heallo.web.facility.dto.FacilityCriteriaDto;
 import lombok.RequiredArgsConstructor;
@@ -48,10 +48,10 @@ public class FacilityController {
         return "facility/search-facility";
     }
 
-    //검색 전체 갯수
+    //검색 결과 수
     @ResponseBody
     @GetMapping("/total")
-    public ResponseEntity<ResponseMsg> totalCount(@ModelAttribute FacilityCriteriaDto searchCriteria) {
+    public ResponseEntity<ResponseMsg> totalCount(@RequestBody FacilityCriteriaDto searchCriteria) {
         //SearchCriteria => FacilityCriteria
         FacilityCriteria facilityCriteria = dtoModifier.getFacilityCriteria(searchCriteria);
 
@@ -63,15 +63,15 @@ public class FacilityController {
         data.put("totalCount", totalCount);
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        ResponseMsg responseMsg = new ResponseMsg("OK","성공", data);
+        ResponseMsg responseMsg = ResponseMsg.create(ResponseMsg.STATUS_CODE_OK, "조회성공", data);
 
         return new ResponseEntity<>(responseMsg,headers,HttpStatus.OK);
     }
 
-    //검색 결과(페이징)
+    //검색 결과(페이징) **
     @ResponseBody
     @GetMapping("/list")
-    public ResponseEntity<ResponseMsg> search(@ModelAttribute FacilityCriteriaDto searchCriteria) {
+    public ResponseEntity<ResponseMsg> search(@RequestBody FacilityCriteriaDto searchCriteria) {
         //SearchCriteria => FacilityCriteria
         FacilityCriteria criteria = dtoModifier.getFacilityCriteria(searchCriteria);
 
@@ -83,7 +83,7 @@ public class FacilityController {
         data.put("facilities", facilityList);
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        ResponseMsg responseMsg = new ResponseMsg("OK","성공", data);
+        ResponseMsg responseMsg = ResponseMsg.create(ResponseMsg.STATUS_CODE_OK, "검색 성공", data);
 
         return new ResponseEntity<>(responseMsg,headers,HttpStatus.OK);
     }

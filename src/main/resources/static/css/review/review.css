@@ -31,6 +31,7 @@
     flex: 1.5;
     padding: 12px;
     border: 1px solid #D6D6D6;
+    cursor: pointer;
 }
 .card-img {
     flex: 1;
@@ -113,6 +114,12 @@
 .textarea:focus {
     outline: 1px solid var(--color-main-header);
 }
+.error-class {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+}
+
 /* 이미지 미리보기 */
 .upload-img-wrap {
     display: flex;

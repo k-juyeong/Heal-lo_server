@@ -26,7 +26,7 @@ $writeBtn.addEventListener('click',e => {
 //비동기 통신 함수
 function reviewListRequest() {
 
-    // 검색 결과 수 조회
+    // 검색 결과 수/ 평균 평점 조회
     const xhr = new XMLHttpRequest();
     const url = `/reviews/${fcno}/total`;
     xhr.open('GET',url);
@@ -47,11 +47,13 @@ function reviewListRequest() {
                 const $resultCount = document.querySelector('.review-cnt')
                 $resultCount.textContent = jsonData.data.totalCount;
 
+                console.log(jsonData.data)
+
                 //리뷰 평균 수정
-                console.log(fcscore)
-                console.log( document.querySelector('.review-header__main .text-score'))
-                document.querySelector('.review-header__main .text-score').textContent = fcscore;
-                document.querySelector('.review-header__main .inner-star').style.width = fcscore*20 + '%'
+                document.querySelector('.review-header__main .text-score')
+                    .textContent = jsonData.data.fcscore;
+                document.querySelector('.review-header__main .inner-star')
+                    .style.width = jsonData.data.fcscore*20 + '%'
 
                 //페이지네이션 생성
                 const totalPage = Math.ceil(jsonData.data.totalCount / onePageNum);
@@ -84,6 +86,7 @@ function reviewListRender(data) {
             makeElements('button',{class : 'review-delete btn-review'},'삭제')) : '',
         makeElements('div',{class : 'review-card__info'},
             makeElements('div',{class : 'rating-score review-card__star'},
+                makeElements('div',{class : 'review-text-score'},`${data.rvscore}점`),
                 makeElements('div',{class : 'outer-star'},'★★★★★',
                     makeElements('span',{class : 'inner-star'},'★★★★★'))),
             makeElements('span',{class : 'user-name'},data.memninkname),

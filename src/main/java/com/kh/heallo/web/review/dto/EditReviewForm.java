@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -22,8 +24,11 @@ public class EditReviewForm {
     private String rvcontents;                  //리뷰컨텐츠
 
     @NotNull
-    @Range(min = 0,max = 5)
+    @DecimalMax("5")
+    @DecimalMin("0.5")
     private double rvscore;                     //리뷰별점
 
     private List<ReviewFileData> imageFiles;    //업로드 이미지들
+
+    private List<MultipartFile> multipartFiles;  //multipartFiles
 }

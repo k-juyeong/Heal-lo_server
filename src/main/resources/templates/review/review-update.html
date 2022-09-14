@@ -45,7 +45,10 @@
         <section class="content" th:object="${reviewForm}">
             <p class="page-title">리뷰수정</p>
             <article class="review-form-header">
-                <div class="facility-card" th:object="${facility}" th:attr="data-fcno=${facility.getFcno()}">
+                <div class="facility-card"
+                     th:onclick="|location.href='@{/facilities/{fcno}(fcno=${facility.getFcno()})}'|"
+                     th:object="${facility}"
+                     th:attr="data-fcno=${facility.getFcno()}">
                     <div class="card-img">
                         <img src="../../static/img/이미지준비중.jpg" th:src="*{fcimg}" alt="운동시설 사진">
                     </div>
@@ -76,7 +79,7 @@
                 <div class="upload-img-wrap">
                     <label for="inputImg">이미지 업로드</label>
                     <div class="review-reg">
-                        <button class="btn-cancle review-btn">취소</button>
+                        <button class="btn-cancel review-btn">취소</button>
                         <button class="btn-update review-btn">수정완료</button>
                     </div>
                     <input class="input-img" id="inputImg" type="file" multiple accept=".png , .jpg">                    

@@ -28,12 +28,9 @@ a:hover {color: inherit;}
 .review {display: flex;flex-direction: column;justify-content: center;align-items: center;width: 80%;margin-bottom: 24px;box-sizing: content-box;}
 .review-header {display: flex;justify-content: space-between;width: 60%;min-width: 700px;max-width: 1000px;}
 .review-header .total-info {display: flex;justify-content: center;align-items: flex-end;width: 130px; font-size: 18px;}
-.review-header__main {display: flex;flex-direction: column;border-radius: 36px;}
 .review-header__main > div[class^=review-header] {margin-top: 22px;}
-.review-header__top {display: flex;justify-content: center;align-items: center;}
+.review-header__main {display: flex;flex-direction: column;border-radius: 36px;}
 .review-header__title {width: 700px;font-size: 1.5rem;opacity: 0.8;}
-.review-header__star {font-size: 2.5rem;}
-.review-header__score {margin: 8px;font-size: 1.5rem;}
 .write-btn-wrap {display: flex;justify-content: flex-end; align-items: flex-end;width: 130px;}
 .write-btn-wrap .btn-review {display: inline-block;height: 40px;}
 .empty-message {display: flex;justify-content: center;align-items: center;width: 100%;height: 300px;}
@@ -60,10 +57,11 @@ a:hover {color: inherit;}
 .rating-score {flex: 1;display: flex; flex-direction: column;align-items: center;font-size: 48px;}
 .rating-score p {font-size: 18px;}
 .rating-score .text-score {margin: 12px;font-size: 32px;}
+.rating-score .review-text-score {font-size: 20px}
 .rating-score .text-score::after{content: '점';}
 .rating-score .outer-star {position: relative;color: #D6D6D6;pointer-events: none;}
 .rating-score .inner-star {position: absolute; left: 0;width: 0;color: gold;overflow: hidden;}
-.rating-score .change-score {position: absolute;left: 0; width: 100%;height: 100%;opacity: 0;cursor: pointer;pointer-events: auto;}
+.rating-score .change-score {position: absolute;left: 0; width: 100%;height: 100%;opacity: 0;pointer-events: auto;}
 
 /* 기타 */
 .fixed-menu-wrap {display: flex;justify-content: flex-end;position: sticky;top: 30%;width: 100%;height: 0;}

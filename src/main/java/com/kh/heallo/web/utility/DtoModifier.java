@@ -1,4 +1,4 @@
-package com.kh.heallo.web;
+package com.kh.heallo.web.utility;
 
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.FacilityCriteria;
@@ -61,7 +61,7 @@ public class DtoModifier {
         return facilityDto;
     }
 
-    //EditReviewForm => Review
+    //Review => EditReviewForm
     public Review getReviewByEditReviewForm(EditReviewForm editReviewForm) {
         Review review = new Review();
         BeanUtils.copyProperties(editReviewForm, review);
