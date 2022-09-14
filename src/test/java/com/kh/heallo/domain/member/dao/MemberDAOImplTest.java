@@ -28,18 +28,19 @@ public class MemberDAOImplTest {
     member.setMemname("박지훈");
     member.setMemcode("normal");
 
-    Member joinedMember = memberDAO.join(member);
-    log.info("joinedMember={}",joinedMember);
+    Long joinedMember = memberDAO.join(member);
+    Member findedMember = memberDAO.findById(joinedMember);
+    log.info("findedMember={}",findedMember);
   }
 
   @Test
   @DisplayName("회원조회")
   @Order(2)
-  void findByPw(){
-    String memmpw = "naim1111";
-    Member findedMember = memberDAO.findByPw(memmpw);
+  void findById(){
+    Long memno = 24L;
+    Member findedMember = memberDAO.findById(memno);
 
-    Assertions.assertThat(findedMember.getMemno()).isEqualTo(11);
+    Assertions.assertThat(findedMember.getMemno()).isEqualTo(24);
     Assertions.assertThat(findedMember.getMemid()).isEqualTo("proteen1");
     Assertions.assertThat(findedMember.getMempw()).isEqualTo("naim1111");
     Assertions.assertThat(findedMember.getMemtel()).isEqualTo("010-1234-5618");
@@ -55,29 +56,33 @@ public class MemberDAOImplTest {
   @Order(3)
   void update(){
     Member member = new Member();
-    String memmpw = "naim1111";
+    String memid = "proteen1";
     member.setMempw("naim2222");
     member.setMemtel("010-2222-2222");
     member.setMemnickname("로니콜먼");
     member.setMememail("test2@test.com");
     member.setMemname("박지훈2");
-    member.setMempw(memmpw);
+    member.setMemid(memid);
 
-    memberDAO.update(memmpw,member);
-
-    Member findedMember = memberDAO.findByPw(memmpw);
-    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo(member.getMemnickname());
+    memberDAO.update(memid,member);
+    Long memno = 24L;
+    Member findedMember = memberDAO.findById(memno);
+    Assertions.assertThat(findedMember.getMempw()).isEqualTo("naim2222");
+    Assertions.assertThat(findedMember.getMemtel()).isEqualTo("010-2222-2222");
+    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo("로니콜먼");
+    Assertions.assertThat(findedMember.getMememail()).isEqualTo("test2@test.com");
+    Assertions.assertThat(findedMember.getMemname()).isEqualTo("박지훈2");
   }
 
   @Test
   @DisplayName("삭제")
   @Order(4)
   void del(){
-    String memmpw = "naim1111";
+    String memId = "proteen1";
 
-    memberDAO.del(memmpw);
-
-    Member findedMember = memberDAO.findByPw(memmpw);
+    memberDAO.del(memId);
+    Long memno = 24L;
+    Member findedMember = memberDAO.findById(memno);
     Assertions.assertThat(findedMember).isNull();
   }
 }

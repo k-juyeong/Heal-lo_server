@@ -26,7 +26,7 @@ public class MemberDAOImpl implements  MemberDAO{
    * @return 가입건수
    */
   @Override
-  public Member join(Member member) {
+  public Long join(Member member) {
     StringBuffer sql = new StringBuffer();
     sql.append(" insert into member ");
     sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,? ,sysdate ,sysdate ) ");
@@ -49,63 +49,63 @@ public class MemberDAOImpl implements  MemberDAO{
     Long memno = Long.valueOf(keyHolder.getKeys().get("memno").toString());
 
     member.setMemno(memno);
-    return member;
+    return memno;
   }
 
   /**
    * 조회 BY 회원 비밀번호
-   * @param mempw 회원 비밀번호
+   * @param memno 회원 비밀번호
    * @return  회원정보
    */
   @Override
-  public Member findByPw(String mempw) {
+  public Member findById(Long memno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("select memno,memid,mempw,memtel,memnickname,mememail,memname,memcode ");
+    sql.append("select * ");
     sql.append("  from member ");
-    sql.append(" where mempw= ? ");
+    sql.append(" where memno= ? ");
 
     Member findedMember = null;
     try{
-      findedMember = jdbcTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Member.class), mempw);
+      findedMember = jdbcTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Member.class), memno);
     }catch (DataAccessException e) {
-      log.info("찾고자하는 회원이 없습니다={}", mempw);
+      log.info("찾고자하는 회원이 없습니다={}", memno);
     }
     return findedMember;
   }
 
   /**
    * 수정
-   * @param mempw  아이디
+   * @param memid  아이디
    * @param member 수정할 정보
    * @return  수정건수
    */
   @Override
-  public void update(String mempw, Member member) {
+  public void update(String memid, Member member) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("update MEMBER ");
-    sql.append("   set MEMPW = ?, ");
-    sql.append("       MEMTEL = ?, ");
-    sql.append("       MEMNICKNAME = ?, ");
-    sql.append("       MEMEMAIL = ?, ");
-    sql.append("       MEMNAME = ?, ");
-    sql.append("       MEMUDATE = sysdate ");
-    sql.append(" where MEMPW = ? ");
+    sql.append("update member ");
+    sql.append("   set mempw = ?, ");
+    sql.append("       memtel = ?, ");
+    sql.append("       memnickname = ?, ");
+    sql.append("       mememail = ?, ");
+    sql.append("       memname = ?, ");
+    sql.append("       memudate = sysdate ");
+    sql.append(" where memid = ? ");
 
     jdbcTemplate.update(sql.toString(),member.getMempw(), member.getMemtel(),
-            member.getMemnickname(), member.getMememail(), member.getMemname(),member.getMemudate(),member.getMempw());
+            member.getMemnickname(), member.getMememail(), member.getMemname(),memid);
   }
 
   /**
    * 탈퇴
-   * @param mempw 비밀번호
+   * @param memid 비밀번호
    * @return
    */
   @Override
-  public void del(String mempw) {
-    String sql = "delete MEMBER where MEMPW= ? ";
+  public void del(String memid) {
+    String sql = "delete MEMBER where memid= ? ";
 
-    jdbcTemplate.update(sql, mempw);
+    jdbcTemplate.update(sql, memid);
   }
 }
