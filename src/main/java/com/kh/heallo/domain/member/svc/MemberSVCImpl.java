@@ -1,8 +1,17 @@
 package com.kh.heallo.domain.member.svc;
 
 import com.kh.heallo.domain.member.Member;
+import com.kh.heallo.domain.member.dao.MemberDAO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+@Service
+@Slf4j
+@RequiredArgsConstructor
 public class MemberSVCImpl implements MemberSVC{
+
+  private final MemberDAO memberDAO;
 
   /**
    * 가입
@@ -12,7 +21,7 @@ public class MemberSVCImpl implements MemberSVC{
    */
   @Override
   public Long join(Member member) {
-    return null;
+    return memberDAO.join(member);
   }
 
   /**
@@ -23,7 +32,7 @@ public class MemberSVCImpl implements MemberSVC{
    */
   @Override
   public Member findById(Long memno) {
-    return null;
+    return memberDAO.findById(memno);
   }
 
   /**
@@ -35,6 +44,7 @@ public class MemberSVCImpl implements MemberSVC{
    */
   @Override
   public void update(String memid, Member member) {
+    memberDAO.update(memid,member);
   }
 
   /**
@@ -45,6 +55,6 @@ public class MemberSVCImpl implements MemberSVC{
    */
   @Override
   public void del(String memid) {
-
+    memberDAO.del(memid);
   }
 }
