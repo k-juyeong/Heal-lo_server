@@ -63,7 +63,7 @@ public class MemberDAOImpl implements  MemberDAO{
 
     sql.append("select memno,memid,mempw,memtel,memnickname,mememail,memname,memcode ");
     sql.append("  from member ");
-    sql.append(" where pw= ? ");
+    sql.append(" where mempw= ? ");
 
     Member findedMember = null;
     try{
