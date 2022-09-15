@@ -2,6 +2,7 @@ package com.kh.heallo.web;
 
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -10,23 +11,14 @@ import java.util.Map;
 @NoArgsConstructor
 public class ResponseMsg {
 
-    public static final String STATUS_CODE_OK = "002";
-    public static final String STATUS_CODE_VALIDATION_ERROR = "004";
-
     private String statusCode;
+    private String statusMessage;
     private String message;
-    private Object data;
+    private Map<String,Object> data = new HashMap<>();
 
-    public static ResponseMsg create(String statusCode, String message, Object data) {
-
-        return new ResponseMsg()
-                .setStatusCode(statusCode)
-                .setMessage(message)
-                .setData(data);
-    }
-
-    public ResponseMsg setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
+    public ResponseMsg setStatusCode(StatusCode statusCode) {
+        this.statusCode = statusCode.getStatusCode();
+        this.statusMessage = statusCode.getMessage();
         return this;
     }
 
@@ -35,8 +27,8 @@ public class ResponseMsg {
         return this;
     }
 
-    public ResponseMsg setData(Object data) {
-        this.data = data;
+    public ResponseMsg setData(String key, Object value) {
+        this.data.put(key, value);
         return this;
     }
 }

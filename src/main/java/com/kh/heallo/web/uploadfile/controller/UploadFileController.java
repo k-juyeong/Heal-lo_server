@@ -1,6 +1,7 @@
 package com.kh.heallo.web.uploadfile.controller;
 
 import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
+import com.kh.heallo.web.StatusCode;
 import com.kh.heallo.web.utility.FileSetting;
 import com.kh.heallo.web.ResponseMsg;
 import lombok.RequiredArgsConstructor;
@@ -40,11 +41,12 @@ public class UploadFileController {
     @DeleteMapping("/images/{ufno}")
     public ResponseEntity<ResponseMsg> delete(@PathVariable("ufno") Long ufno) {
         Integer resultCount = uploadFileSVC.delete(ufno);
-        ResponseMsg responseMsg = new ResponseMsg();
-        responseMsg.setData(resultCount);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        return new ResponseEntity<>(responseMsg,headers,HttpStatus.OK);
+        //Create ResponseEntity
+        ResponseMsg responseMsg = new ResponseMsg()
+                .setStatusCode(StatusCode.SUCCESS)
+                .setMessage("삭제성공");
+
+        return new ResponseEntity<>(responseMsg,HttpStatus.OK);
     }
 }

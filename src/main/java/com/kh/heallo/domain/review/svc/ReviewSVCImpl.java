@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,9 +42,7 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public List<Review> findListByFcno(Long fcno, ReviewCriteria criteria) {
-        List<Review> reviewList = reviewDAO.findListByFcno(fcno, criteria);
-
-        reviewList = reviewList.stream().map(review -> {
+        List<Review> reviewList = reviewDAO.findListByFcno(fcno, criteria).stream().map(review -> {
             List<FileData> imageList = uploadFileSVC.findImagesByRvno(review.getRvno());
             review.setImageFiles(imageList);
             return review;

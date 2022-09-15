@@ -87,7 +87,6 @@ $updateBtn.addEventListener('click', () => {
     uploadImgs?.forEach(ele => {
         formData.append('multipartFiles', ele);
     })
-    console.log(formData);
 
     const xhr = new XMLHttpRequest();
     const url = `/reviews/${$review.rvno}`;
@@ -106,7 +105,7 @@ $updateBtn.addEventListener('click', () => {
             location.href = xhr.getResponseHeader("location");
 
         } else if (xhr.status >= 400) {
-            if(jsonData.statusCode == '004') {
+            if(jsonData.statusCode == '002') {
                 jsonData.data.errors.forEach(error => {
                     const errMessage = makeElements('div', {class: 'error-class'}, error.message);
                     if (error.field == 'rvcontents') {

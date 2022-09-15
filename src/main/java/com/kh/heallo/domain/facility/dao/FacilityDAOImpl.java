@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -206,12 +207,7 @@ public class FacilityDAOImpl implements FacilityDAO{
     public Facility findByFcno(Long fcno) {
         String sql = "select * from facility where fcno = ? ";
 
-        Facility foundFacility = null;
-        try {
-            foundFacility = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Facility.class), fcno);
-        } catch (DataAccessException e) {
-            log.info("DataAccessException {}", e.getMessage());
-        }
+        Facility foundFacility = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Facility.class), fcno);
 
         return foundFacility;
     }

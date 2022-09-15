@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -44,14 +45,10 @@ public class ReviewDAOImpl implements ReviewDAO{
     public Review findByRvno(Long rvno) {
         String sql = "select * from review where rvno = ? ";
 
-        Review foundReview = null;
-        try {
-            foundReview = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Review.class), rvno);
-        } catch (DataAccessException e) {
-            log.info("DataAccessException {}", e.getMessage());
-        }
+        Review review = null;
+        review = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Review.class), rvno);
 
-        return foundReview;
+        return review;
     }
 
     /**
@@ -75,11 +72,8 @@ public class ReviewDAOImpl implements ReviewDAO{
         sql.append("  where rowno > ? and rowno <= ? ");
 
         List<Review> reviewList = null;
-        try {
-            reviewList = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class), fcno, startPage, endPage);
-        } catch (DataAccessException e) {
-            log.info("DataAccessException {}", e.getMessage());
-        }
+
+        reviewList = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class), fcno, startPage, endPage);
 
         return reviewList;
     }

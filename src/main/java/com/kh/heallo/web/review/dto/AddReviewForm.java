@@ -26,4 +26,6 @@ public class AddReviewForm {
     private double rvscore;                     //리뷰별점
 
     private List<MultipartFile> multipartFiles;    //업로드 이미지들
+
+    private List<ReviewFileData> imageFiles;    //DTO 파일객체
 }

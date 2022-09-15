@@ -4,6 +4,7 @@ import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.Review;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReviewDAO {
 

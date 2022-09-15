@@ -9,6 +9,7 @@ import com.kh.heallo.web.facility.dto.FacilityDto;
 import com.kh.heallo.web.review.dto.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,22 +62,12 @@ public class DtoModifier {
         return facilityDto;
     }
 
-    //Review => EditReviewForm
+    //EditReviewForm => Review
     public Review getReviewByEditReviewForm(EditReviewForm editReviewForm) {
         Review review = new Review();
         BeanUtils.copyProperties(editReviewForm, review);
 
         return review;
-    }
-
-    //EditReviewForm => Review
-    public EditReviewForm getEditReviewFormByReview(Review review) {
-        EditReviewForm editReviewForm = new EditReviewForm();
-        BeanUtils.copyProperties(review, editReviewForm);
-
-
-
-        return editReviewForm;
     }
 
     //AddReviewForm => Review
@@ -85,5 +76,24 @@ public class DtoModifier {
         BeanUtils.copyProperties(addReviewForm, review);
 
         return review;
+    }
+
+    //Review => EditReviewForm
+    public EditReviewForm getEditReviewFormByReview(Review review) {
+        EditReviewForm editReviewForm = new EditReviewForm();
+        BeanUtils.copyProperties(review, editReviewForm);
+
+        return editReviewForm;
+    }
+
+    //List<MultipartFile> => List<ReviewFileData>
+    public List<ReviewFileData> getReviewFileData(List<MultipartFile> multipartFiles) {
+        List<ReviewFileData> reviewFileDataList = multipartFiles.stream().map(multipartFile -> {
+            ReviewFileData reviewFileData = new ReviewFileData();
+            reviewFileData.setUffname(multipartFile.getName());
+            reviewFileData.setUftype(multipartFile.getContentType());
+            return reviewFileData;
+        }).collect(Collectors.toList());
+        return reviewFileDataList;
     }
 }

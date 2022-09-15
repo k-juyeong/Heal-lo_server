@@ -3,6 +3,7 @@ package com.kh.heallo.domain.facility.dao;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import java.util.List;
+import java.util.Optional;
 
 public interface FacilityDAO {
 
@@ -53,8 +54,6 @@ public interface FacilityDAO {
      * @return  결과 수
      */
     Integer updateScore(Long fcno);
-
-
 
     /**
      * 운동시설 상세검색

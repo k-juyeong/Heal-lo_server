@@ -4,6 +4,7 @@ import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FacilitySVC {
 

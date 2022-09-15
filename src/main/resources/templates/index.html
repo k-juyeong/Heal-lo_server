@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=p, initial-scale=1.0" />
+    <title>Heal-lo 메인페이지</title>
+    <link rel="stylesheet" href="css/template/common.css" th:href="@{/css/template/common.css}"/>
+    <link rel="stylesheet" href="css/template/layout.css" th:href="@{/css/template/layout.css}"/>
+    <link rel="stylesheet" href="css/main/heal-lo.css" th:href="@{/css/main/heal-lo.css}"/>
+    <script
+      src="https://kit.fontawesome.com/412d41036e.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- 헤더 -->
+      <header id="header">
+        <!-- 탑메뉴 -->
+        <div class="header__menu-top">
+          <span><a href="#">로그인</a></span>
+          <span><a href="#">회원가입</a></span>
+          <span><a href="#">ID/PW 찾기</a></span>
+        </div>
+
+        <!-- 베너-->
+        <div class="header__banner">
+          <video
+            src="https://cdn.videvo.net/videvo_files/video/free/2022-02/large_watermarked/211216_01_Fitness_4k_029_preview.mp4"
+            muted
+            autoplay
+            loop
+          ></video>
+          <!-- 메인 로고 -->
+          <p class="header__main-logo">
+            나만의 건강한 장소, <strong>헬-로!</strong>
+          </p>
+          <p class="header__main-title"><a href="#">Heal-lo</a></p>
+          <p class="header__sub-title">: Healthy-location</p>
+        </div>
+
+        <!-- gnb메뉴 -->
+        <div class="header__menu">
+          <div class="header__menu-gnb">
+            <ul>
+              <li>
+                운동시설 검색
+                <ul>
+                  <li><a href="" th:href="@{/facilities}">검색</a></li>
+                </ul>
+              </li>
+              <li>
+                커뮤니티
+                <ul>
+                  <li><a href="#">자유게시판</a></li>
+                  <li><a href="#">정보공유판</a></li>
+                  <li><a href="#">추천글</a></li>
+                  <li><a href="#">공지사항</a></li>
+                  <li><a href="#">문의하기</a></li>
+                </ul>
+              </li>
+              <li>
+                즐겨찾기
+                <ul>
+                  <li><a href="#">즐겨찾기 목록</a></li>
+                </ul>
+              </li>
+              <li>
+                캘린더
+                <ul>
+                  <li><a href="#">캘린더</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <!-- 메인 -->
+      <main id="container">
+        <!-- 검색 바 -->
+        <section class="section1__search-bar">
+          <div class="section1__search-bar__group">
+            <input
+              type="text"
+              class="search-bar__content"
+              placeholder="운동시설명을 입력하세요"
+            />
+            <button>검색</button>
+          </div>
+        </section>
+
+        <!-- 주요 기능-->
+        <section class="section1">
+          <artticle class="section1__search">
+            <div>
+              <a href="#" th:href="@{/facilities}"><div class="section1__search-content">
+                <img src="../img/sear4.jpg" alt="" />
+                <p class="onImage">Find your <br> healthy place</p>
+              </div></a>
+              <p class="underImage"><a href="#" th:href="@{/facilities}">우리집 근처 운동시설 찾기</a></p>
+            </div>
+          </artticle>
+          <artticle class="section1__calendar">
+            <div>
+              <a href="#"><div class="section1__calendar-content">
+                <img src="../img/cal1.jpg" alt="" />
+                <p class="onImage">Record your <br> healthy days</p>
+              </div></a>
+              <p class="underImage"><a href="#">내 운동기록 보기</a></p>
+            </div>
+          </artticle>
+          <artticle class="section1__community">
+            <div>
+              <a href="#"><div class="section1__community-content">
+                <img src="../img/commu2.jpg" alt="" />
+                <p class="onImage">Share your <br> healthy experiences</p>
+              </div></a>
+              <p class="underImage"><a href="#">커뮤니티</a></p>
+            </div>
+          </artticle>
+        </section>
+
+        <!-- 웹사이트 소개 -->
+        <section class="section2">
+          <div class="bg bg__box-main">
+            <article class="section2__main">
+              <div class="section2__main-title">
+                <h1>건강한 삶, Heal-lo와 함께</h1>
+                <h3>당신의 삶에 새로운 목표를 제시합니다.</h3>
+              </div>
+              <div class="section2__main-content">
+                <p>운동인들의 모든 것, 이곳에서 확인할 수 있습니다</p>
+                <p>더 이상 미루지 않는 운동 생활, 함께 시작합니다</p>
+              </div>
+            </article>
+          </div>
+          <div class="bg bg__box-search">
+            <article class="section2__search">
+              <div class="section2__search-title">
+                <h1>더 빠르게</h1>
+                <h3>
+                  Heal-lo는 주변에 있는 <br />
+                  운동시설업의 다양한 정보를 제공합니다
+                </h3>
+              </div>
+              <div class="section2__search-content">
+                <p>내가 원하는 운동시설, 직접 검색해보세요</p>
+                <p>운동시설의 다양한 정보를 한 눈에 확인할 수 있습니다</p>
+                <p>다른 이용객의 후기도 참고할 수 있습니다</p>
+              </div>
+            </article>
+          </div>
+          <div class="bg bg__box-community">
+            <img src="../img/community.jpg" alt="" />
+            <article class="section2__community">
+              <div class="section2__community-title">
+                <h1>더 스마트하게</h1>
+                <h3>
+                  Heal-lo는 모든 운동인의 공감, 지식, 경험을 <br />
+                  나눌 수 있는 커뮤니티 공간을 제공합니다
+                </h3>
+              </div>
+              <div class="section2__community-content">
+                <p>나 혼자 하는 외로운 운동, 더이상 혼자하지 마세요</p>
+                <p>나의 운동 경험을 공유하고 다른 운동인과 소통하는 커뮤니티</p>
+                <p>다른 운동인들의 경험과 조언을 들어보세요</p>
+              </div>
+            </article>
+          </div>
+          <div class="bg bg__box-calendar">
+            <article class="section2__calendar">
+              <div class="section2__calendar-title">
+                <h1>계획적으로</h1>
+                <h3>
+                  Heal-lo는 당신의 계획적인 운동과 목표 달성을 돕기 위해
+                  <br />
+                  캘린더를 제공합니다
+                </h3>
+              </div>
+              <div class="section2__calendar-content">
+                <p>운동 기록을 기록하여 한눈에 볼 수 있는 캘린더!</p>
+                <p>늘어가는 운동 기록들을 기대하세요</p>
+                <p>당신의 건강한 습관을 매일 확인하세요!</p>
+              </div>
+            </article>
+            <img src="../img/calendar.jpg" alt="" />
+          </div>
+        </section>
+      </main>
+
+      <!-- footer -->
+      <footer id="footer">
+        <div class="inner">
+          <h2>Heal-lo</h2>
+          <ul>
+            <li>상호명: heal-lo</li>
+            <li>대표: 1팀</li>
+            <li>주소: 울산광역시 남구 신정동</li>
+            <li>이메일: ulsanheallo@naver.com</li>
+            <br />
+            <li>Copyright 2022 헬로. All Rights Reserved.</li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const bgBoxTriggerMargin = 300;
+      const bgBoxElementList = document.querySelectorAll('.bg');
+
+      const bgBoxFunc = () => {
+        for (const ele of bgBoxElementList) {
+          if (!ele.classList.contains('show')) {
+            if (
+              window.innerHeight >
+              ele.getBoundingClientRect().top + bgBoxTriggerMargin
+            ) {
+              ele.classList.add('show');
+            }
+          }
+        }
+      };
+
+      window.addEventListener('load', bgBoxFunc);
+      window.addEventListener('scroll', bgBoxFunc);
+    </script>
+  </body>
+</html>
