@@ -13,8 +13,8 @@ public interface MemberDAO {
   Long join(Member member);
 
   /**
-   * 조회 BY 회원 비밀번호
-   * @param memno 회원 비밀번호
+   * 조회 BY 회원번호
+   * @param memno 회원번호
    * @return  회원정보
    */
   Member findById(Long memno);
