@@ -25,8 +25,7 @@ public class EditReviewForm {
     @DecimalMin("0.5")
     private double rvscore;                     //리뷰별점
 
-    private List<MultipartFile> multipartFiles;  //
-
-    private List<ReviewFileData> imageFiles;    //DTO 파일객체
+    private List<ReviewFileData> imageFiles;    //이미지파일
+    private Long[] deleteImages;            //삭제할 파일 수
 
 }

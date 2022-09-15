@@ -6,11 +6,13 @@ import com.kh.heallo.domain.review.Review;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -87,9 +89,10 @@ class ReviewDAOImplTest {
     @DisplayName("리뷰삭제")
     void delete() {
         Integer resultCount = reviewDAO.delete(review.getRvno());
-        Review foundReview = reviewDAO.findByRvno(review.getRvno());
 
         assertThat(resultCount).isEqualTo(1);
-        assertThat(foundReview).isNull();
+        assertThrows(DataAccessException.class, () -> {
+            Review foundReview = reviewDAO.findByRvno(review.getRvno());
+        });
     }
 }

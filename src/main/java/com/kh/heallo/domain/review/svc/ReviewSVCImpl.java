@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -99,7 +100,7 @@ public class ReviewSVCImpl implements ReviewSVC{
      * @return 결과 수
      */
     @Override
-    public Integer update(Long rvno, Review review) {
+    public Integer update(Long rvno, Review review, Long[] ufnoArr) {
         Integer[] resultCount = {0};
         Integer updateResultCount = reviewDAO.update(rvno, review);
 
@@ -112,6 +113,10 @@ public class ReviewSVCImpl implements ReviewSVC{
                 log.info("파일업로드 중 오류발생 {}",fileDataList);
             }
         }
+        if (ufnoArr.length > 0) {
+            Arrays.stream(ufnoArr).forEach(ufno -> uploadFileSVC.delete(ufno));
+        }
+
         return updateResultCount;
     }
 

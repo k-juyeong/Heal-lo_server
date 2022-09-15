@@ -25,7 +25,5 @@ public class AddReviewForm {
     @DecimalMin("0.5")
     private double rvscore;                     //리뷰별점
 
-    private List<MultipartFile> multipartFiles;    //업로드 이미지들
-
-    private List<ReviewFileData> imageFiles;    //DTO 파일객체
+    private List<ReviewFileData> imageFiles;    //이미지파일
 }

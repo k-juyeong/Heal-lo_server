@@ -45,7 +45,7 @@ public interface ReviewSVC {
      * @param review
      * @return 결과 수
      */
-    Integer update(Long rvno,Review review);
+    Integer update(Long rvno,Review review,Long[] ufnoArr);
 
     /**
      * 리뷰삭제

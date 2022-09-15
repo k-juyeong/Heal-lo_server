@@ -90,8 +90,9 @@ public class DtoModifier {
     public List<ReviewFileData> getReviewFileData(List<MultipartFile> multipartFiles) {
         List<ReviewFileData> reviewFileDataList = multipartFiles.stream().map(multipartFile -> {
             ReviewFileData reviewFileData = new ReviewFileData();
-            reviewFileData.setUffname(multipartFile.getName());
+            reviewFileData.setUffname(multipartFile.getOriginalFilename());
             reviewFileData.setUftype(multipartFile.getContentType());
+            reviewFileData.setUfsize(multipartFile.getSize());
             return reviewFileData;
         }).collect(Collectors.toList());
         return reviewFileDataList;

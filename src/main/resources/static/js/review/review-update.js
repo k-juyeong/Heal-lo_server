@@ -24,7 +24,6 @@ const uploadImgs = [];
         previewDiv.querySelector('button').addEventListener('click', e => {
             deleteImages.push(file.ufno);
             previewDiv.remove();
-            console.log(deleteImages)
         });
     })
 })();
@@ -51,10 +50,10 @@ $inputImg.addEventListener('change',({target}) => {
         alert('지원하지 않는 파일')
         return;
     }
-    if(deleteImages.length+uploadImgs.length+target.files.length > 5) {
-        alert('최대 업로드 수 초과');
-        return;
-    }
+    // if(deleteImages.length+uploadImgs.length+target.files.length > 5) {
+    //     alert('최대 업로드 수 초과');
+    //     return;
+    // }
 
     [...files].forEach(ele => {
         const reader = new FileReader();
@@ -84,6 +83,7 @@ $updateBtn.addEventListener('click', () => {
     const formData = new FormData();
     formData.append('rvscore', ratingScore);
     formData.append('rvcontents', contents);
+    formData.append('deleteImages',deleteImages)
     uploadImgs?.forEach(ele => {
         formData.append('multipartFiles', ele);
     })
@@ -96,12 +96,6 @@ $updateBtn.addEventListener('click', () => {
     xhr.addEventListener('load', () => {
         const jsonData = JSON.parse(xhr.responseText);
         if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
-            deleteImages?.forEach(ele => {
-                const xhr = new XMLHttpRequest();
-                const url = `/images/${ele}`;
-                xhr.open('DELETE', url);
-                xhr.send();
-            });
             location.href = xhr.getResponseHeader("location");
 
         } else if (xhr.status >= 400) {

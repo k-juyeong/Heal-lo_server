@@ -22,8 +22,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -41,7 +44,6 @@ public class ReviewController {
     private final FacilitySVC facilitySVC;
     private final FileSetting fileSetting;
     private final DtoModifier dtoModifier;
-    private final MessageSource messageSource;
 
     //리뷰 total/age 조회
     @ResponseBody
@@ -71,12 +73,14 @@ public class ReviewController {
         //Test 회원
         long memno = 1L;
 
-        ReviewCriteria reviewCriteria = dtoModifier.getReviewCriteria(searchCriteria);
-        List<Review> reviewList = reviewSVC.findListByFcno(fcno, reviewCriteria);
-        List<ReviewDto> reviewDtos = reviewList.stream().map(review -> {
-            ReviewDto reviewDto = dtoModifier.getReviewDto(review, memno);
-            return reviewDto;
-        }).collect(Collectors.toList());
+        List<ReviewDto> reviewDtos = reviewSVC
+                .findListByFcno(fcno, dtoModifier.getReviewCriteria(searchCriteria))
+                .stream()
+                .map(review -> {
+                    ReviewDto reviewDto = dtoModifier.getReviewDto(review, memno);
+                    return reviewDto;
+                })
+                .collect(Collectors.toList());
 
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
@@ -93,8 +97,7 @@ public class ReviewController {
             @PathVariable("fcno") Long fcno,
             Model model
     ) {
-        Facility foundFacility = facilitySVC.findByFcno(fcno);
-        FacilityDto facilityDto = dtoModifier.getFacilityDto(foundFacility);
+        FacilityDto facilityDto = dtoModifier.getFacilityDto(facilitySVC.findByFcno(fcno));
         model.addAttribute("facility", facilityDto);
 
         return "/review/review-write";
@@ -106,68 +109,40 @@ public class ReviewController {
     public ResponseEntity add(
             @PathVariable("fcno") Long fcno,
             @Valid @ModelAttribute AddReviewForm addReviewForm,
-            BindingResult bindingResult,
-            Locale locale
-    ) {
+            @RequestParam(required = false) List<MultipartFile> multipartFiles
+    ) throws BindException {
+
         //Test 회원
         long memno = 1L;
 
-        //업로드 파일 검증
-        if (addReviewForm.getMultipartFiles() != null) {
-            List<ReviewFileData> reviewFileDataList = dtoModifier.getReviewFileData(addReviewForm.getMultipartFiles());
+        List<FileData> fileDataList = null;
+        if (multipartFiles != null) {
+            //파일 검증
+            BindException bindException = new BindException(addReviewForm, "addReviewForm");
+            List<ReviewFileData> reviewFileDataList = dtoModifier.getReviewFileData(multipartFiles);
             addReviewForm.setImageFiles(reviewFileDataList);
+            fileValidate(bindException, reviewFileDataList, reviewFileDataList.size());
 
-            if(reviewFileDataList.size() > 5) {
-                bindingResult.rejectValue("imageFiles","imageFiles.size",new Object[]{"5"},"파일 업로드 오류");
-            }
-
-            int NotSupportTypeLength = reviewFileDataList
+            //파일저장
+            fileDataList = multipartFiles
                     .stream()
-                    .filter(multipartFile -> !multipartFile.getUftype().equals("image/jpeg") && !multipartFile.getUftype().equals("image/png"))
-                    .collect(Collectors.toList()).size();
-
-            if (NotSupportTypeLength > 0) {
-                bindingResult.rejectValue("imageFiles","imageFiles.type","파일 업로드 오류");
-            }
+                    .map(multipartFile -> {
+                        FileData fileData = null;
+                        try {
+                            String localFileName = fileSetting.transForTo(multipartFile);
+                            fileData = fileSetting.getFileData(multipartFile, localFileName);
+                        } catch (IOException e) {
+                            log.info("파일 저장중 exception 발생 {}", e.getMessage());
+                        }
+                        return fileData;
+                    })
+                    .collect(Collectors.toList());
         }
 
-        //검증오류
-        if (bindingResult.hasErrors()) {
-            List<FieldErrorDetail> errorDetails = bindingResult.getFieldErrors().stream().map(fieldError -> {
-                FieldErrorDetail fieldErrorDetail = FieldErrorDetail.create(fieldError, messageSource, locale);
-                return fieldErrorDetail;
-            }).collect(Collectors.toList());
-
-            //Create ResponseEntity
-            ResponseMsg responseMsg = new ResponseMsg()
-                    .setStatusCode(StatusCode.VALIDATION_ERROR)
-                    .setMessage("리뷰 등록에 실패했습니다. 값을 확인해주세요")
-                    .setData("errors", errorDetails);
-
-            return new ResponseEntity<>(responseMsg, HttpStatus.BAD_REQUEST);
-        }
-
-        //성공
         Review review = dtoModifier.getReviewByAddReviewForm(addReviewForm);
         review.setFcno(fcno);
         review.setMemno(memno);
-
-        if (addReviewForm.getMultipartFiles() != null) {
-            List<FileData> fileDataList = addReviewForm.getMultipartFiles().stream().map(multipartFile -> {
-
-                FileData fileData = null;
-                try {
-                    String localFileName = fileSetting.transForTo(multipartFile);
-                    fileData = fileSetting.getFileData(multipartFile, localFileName);
-                } catch (IOException e) {
-                    log.info("파일 저장중 exception 발생 {}", e.getMessage());
-                }
-
-                return fileData;
-            }).collect(Collectors.toList());
-            review.setImageFiles(fileDataList);
-        }
-
+        review.setImageFiles(fileDataList);
         Long rvno = reviewSVC.add(memno, fcno, review);
         facilitySVC.updateToScore(fcno);
 
@@ -182,22 +157,27 @@ public class ReviewController {
         return new ResponseEntity<>(responseMsg, headers, HttpStatus.OK);
     }
 
+
     //리뷰 수정 폼 이동
     @GetMapping("/{rvno}/edit")
     public String updateForm(@PathVariable Long rvno, Model model) {
         Review foundReview = reviewSVC.findByRvno(rvno);
         EditReviewForm editReviewForm = dtoModifier.getEditReviewFormByReview(foundReview);
 
-        List<ReviewFileData> reviewFileDataList = foundReview.getImageFiles().stream().map(fileData -> {
-            ReviewFileData reviewFileData = new ReviewFileData();
-            BeanUtils.copyProperties(fileData, reviewFileData);
-            return reviewFileData;
-        }).collect(Collectors.toList());
+        List<ReviewFileData> reviewFileDataList = foundReview
+                .getImageFiles()
+                .stream()
+                .map(fileData -> {
+                    ReviewFileData reviewFileData = new ReviewFileData();
+                    BeanUtils.copyProperties(fileData, reviewFileData);
+                    return reviewFileData;
+                })
+                .collect(Collectors.toList());
+
         editReviewForm.setImageFiles(reviewFileDataList);
         model.addAttribute("reviewForm", editReviewForm);
 
-        Facility foundFacility = facilitySVC.findByFcno(foundReview.getFcno());
-        FacilityDto facilityDto = dtoModifier.getFacilityDto(foundFacility);
+        FacilityDto facilityDto = dtoModifier.getFacilityDto(facilitySVC.findByFcno(foundReview.getFcno()));
         model.addAttribute("facility", facilityDto);
 
         return "/review/review-update";
@@ -209,73 +189,48 @@ public class ReviewController {
     public ResponseEntity<ResponseMsg> update(
             @PathVariable("rvno") Long rvno,
             @Valid @ModelAttribute EditReviewForm editReviewForm,
-            BindingResult bindingResult,
-            Locale locale
-    ) {
+            @RequestParam(required = false) List<MultipartFile> multipartFiles
+    ) throws BindException {
+
         //Test 회원
         long memno = 1L;
 
-        //업로드 파일 검증
-        if (editReviewForm.getMultipartFiles() != null) {
-            List<ReviewFileData> reviewFileDataList = dtoModifier.getReviewFileData(editReviewForm.getMultipartFiles());
+        List<FileData> fileDataList = null;
+        if (multipartFiles != null) {
+            //파일검증
+            BindException bindException = new BindException(editReviewForm, "addReviewForm");
+            List<ReviewFileData> reviewFileDataList = dtoModifier.getReviewFileData(multipartFiles);
+            Review review = reviewSVC.findByRvno(rvno);
+            int totalSize = review.getImageFiles().size()
+                    - editReviewForm.getDeleteImages().length
+                    + reviewFileDataList.size();
             editReviewForm.setImageFiles(reviewFileDataList);
+            fileValidate(bindException, reviewFileDataList , totalSize);
 
-            if (reviewFileDataList != null && reviewFileDataList.size() > 5) {
-                bindingResult.rejectValue("imageFiles", "imageFiles.size", new Object[]{"5"}, "파일 업로드 오류");
-            }
-
-            int NotSupportTypeLength = reviewFileDataList
+            //파일저장
+            fileDataList = multipartFiles
                     .stream()
-                    .filter(multipartFile -> !multipartFile.getUftype().equals("image/jpeg") && !multipartFile.getUftype().equals("image/png"))
-                    .collect(Collectors.toList()).size();
-
-            if (NotSupportTypeLength > 0) {
-                bindingResult.rejectValue("imageFiles", "imageFiles.type", "파일 업로드 오류");
-            }
+                    .map(multipartFile -> {
+                    FileData fileData = null;
+                        try {
+                            String localFileName = fileSetting.transForTo(multipartFile);
+                            fileData = fileSetting.getFileData(multipartFile, localFileName);
+                        } catch (IOException e) {
+                            log.info("파일 저장중 exception 발생 {}", e.getMessage());
+                        }
+                        return fileData;
+                    })
+                    .collect(Collectors.toList());
         }
 
-        //검증오류
-        if (bindingResult.hasErrors()) {
-            List<FieldErrorDetail> errorDetails = bindingResult.getFieldErrors().stream().map(fieldError -> {
-                FieldErrorDetail fieldErrorDetail = FieldErrorDetail.create(fieldError, messageSource, locale);
-                return fieldErrorDetail;
-            }).collect(Collectors.toList());
-
-            //Create ResponseEntity
-            ResponseMsg responseMsg = new ResponseMsg()
-                    .setStatusCode(StatusCode.VALIDATION_ERROR)
-                    .setMessage("리뷰 수정에 실패했습니다. 값을 확인해주세요")
-                    .setData("errors", errorDetails);
-
-            return new ResponseEntity<>(responseMsg, HttpStatus.BAD_REQUEST);
-        }
-
-        //성공
-        Long fcno = reviewSVC.findByRvno(rvno).getFcno();
         Review review = dtoModifier.getReviewByEditReviewForm(editReviewForm);
-
-        if (editReviewForm.getMultipartFiles() != null) {
-            List<FileData> fileDataList = editReviewForm.getMultipartFiles().stream().map(multipartFile -> {
-
-                FileData fileData = null;
-                try {
-                    String localFileName = fileSetting.transForTo(multipartFile);
-                    fileData = fileSetting.getFileData(multipartFile, localFileName);
-                } catch (IOException e) {
-                    log.info("파일 저장중 exception 발생 {}", e.getMessage());
-                }
-
-                return fileData;
-            }).collect(Collectors.toList());
-            review.setImageFiles(fileDataList);
-        }
-
-        Integer resultCount = reviewSVC.update(rvno, review);
-        facilitySVC.updateToScore(fcno);
+        review.setImageFiles(fileDataList);
+        Integer resultCount = reviewSVC.update(rvno, review, editReviewForm.getDeleteImages());
+        facilitySVC.updateToScore(reviewSVC.findByRvno(rvno).getFcno());
 
         //Create ResponseEntity
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/facilities/" + fcno));
+        headers.setLocation(URI.create("/facilities/" + reviewSVC.findByRvno(rvno).getFcno()));
         ResponseMsg responseMsg = new ResponseMsg()
                 .setStatusCode(StatusCode.SUCCESS)
                 .setMessage("리뷰를 성공적으로 수정했습니다.")
@@ -288,14 +243,28 @@ public class ReviewController {
     @ResponseBody
     @DeleteMapping("/{rvno}")
     public ResponseEntity<ResponseMsg> delete(@PathVariable Long rvno) {
-        Long fcno = reviewSVC.findByRvno(rvno).getFcno();
         Integer resultCount = reviewSVC.delete(rvno);
-        facilitySVC.updateToScore(fcno);
+        facilitySVC.updateToScore(reviewSVC.findByRvno(rvno).getFcno());
 
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
                 .setStatusCode(StatusCode.SUCCESS)
-                .setMessage("리뷰를 성공적으로 삭제했습니다.");
+                .setMessage("리뷰를 성공적으로 삭제했습니다.")
+                .setData("resultCount",resultCount);
         return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+    }
+
+    private void fileValidate(BindException bindException, List<ReviewFileData> reviewFileDataList, int totalSize) throws BindException {
+        if(totalSize > 5) {
+            bindException.rejectValue("imageFiles","imageFiles.size",new Object[]{"5"},"파일 업로드 오류");
+        }
+        int NotSupportTypeLength = reviewFileDataList
+                .stream()
+                .filter(multipartFile -> !multipartFile.getUftype().equals("image/jpeg") && !multipartFile.getUftype().equals("image/png"))
+                .collect(Collectors.toList()).size();
+        if (NotSupportTypeLength > 0) {
+            bindException.rejectValue("imageFiles","imageFiles.type","파일 업로드 오류");
+        }
+        if (bindException.hasErrors()) throw bindException;
     }
 }

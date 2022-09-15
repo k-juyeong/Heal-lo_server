@@ -5,10 +5,12 @@ import com.kh.heallo.domain.facility.Facility;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -16,16 +18,16 @@ class FacilityDAOImplTest {
 
     @Autowired
     private FacilityDAO facilityDAO;
-    private static Facility defaultBean;
+    private static Facility facility;
 
     @Order(1)
     @Test
     @DisplayName("false 운동시설 등록")
     void add() {
-        defaultBean = new Facility("TEST", "당구장업", ".", "010-1111",
+        facility = new Facility("TEST", "당구장업", ".", "010-1111",
                                     35.121, 121.121, "울산광역시 X", "15151", "정상운영", "#");
-        Long connectedFcno = facilityDAO.add(defaultBean);
-        defaultBean.setFcno(connectedFcno);
+        Long connectedFcno = facilityDAO.add(facility);
+        facility.setFcno(connectedFcno);
 
         assertThat(connectedFcno).isNotNull();
     }
@@ -34,18 +36,18 @@ class FacilityDAOImplTest {
     @Test
     @DisplayName("운동시설 상세조회")
     void findByFcno() {
-        Facility foundFacility = facilityDAO.findByFcno(defaultBean.getFcno());
+        Facility foundFacility = facilityDAO.findByFcno(facility.getFcno());
 
-        assertThat(foundFacility.getFcno()).isEqualTo(defaultBean.getFcno());
-        assertThat(foundFacility.getFcname()).isEqualTo(defaultBean.getFcname());
-        assertThat(foundFacility.getFcaddr()).isEqualTo(defaultBean.getFcaddr());
+        assertThat(foundFacility.getFcno()).isEqualTo(facility.getFcno());
+        assertThat(foundFacility.getFcname()).isEqualTo(facility.getFcname());
+        assertThat(foundFacility.getFcaddr()).isEqualTo(facility.getFcaddr());
     }
 
     @Order(3)
     @Test
     @DisplayName("운동시설 중복체크")
     void contains() {
-        boolean connected = facilityDAO.contains(defaultBean);
+        boolean connected = facilityDAO.contains(facility);
 
         assertThat(connected).isTrue();
     }
@@ -54,9 +56,9 @@ class FacilityDAOImplTest {
     @Test
     @DisplayName("true 운동시설 업데이트")
     void update() {
-        defaultBean.setFcstatus("폐업");
-        Integer resultCount = facilityDAO.update(defaultBean);
-        Facility foundFacility = facilityDAO.findByFcno(defaultBean.getFcno());
+        facility.setFcstatus("폐업");
+        Integer resultCount = facilityDAO.update(facility);
+        Facility foundFacility = facilityDAO.findByFcno(facility.getFcno());
 
         assertThat(foundFacility.getFcstatus()).isEqualTo("폐업");
     }
@@ -65,7 +67,7 @@ class FacilityDAOImplTest {
     @Test
     @DisplayName("운동시설 평균평점 업데이트")
     void updateScore() {
-        Integer resultCount = facilityDAO.updateScore(defaultBean.getFcno());
+        Integer resultCount = facilityDAO.updateScore(facility.getFcno());
 
         assertThat(resultCount).isEqualTo(1);
     }
@@ -77,7 +79,7 @@ class FacilityDAOImplTest {
         FacilityCriteria criteria = new FacilityCriteria("울산광역시%","%당구장업%","%TEST%",1,10);
         List<Facility> searchedList = facilityDAO.search(criteria);
 
-        assertThat(searchedList).contains(defaultBean);
+        assertThat(searchedList).contains(facility);
     }
 
     @Order(7)
@@ -94,10 +96,11 @@ class FacilityDAOImplTest {
     @Test
     @DisplayName("운동시설 삭제")
     void delete() {
-        Integer resultCount = facilityDAO.delete(defaultBean.getFcno());
-        Facility foundFacility = facilityDAO.findByFcno(defaultBean.getFcno());
+        Integer resultCount = facilityDAO.delete(facility.getFcno());
 
-        assertThat(foundFacility).isNull();
+        assertThrows(DataAccessException.class, () -> {
+            Facility foundFacility = facilityDAO.findByFcno(facility.getFcno());
+        });
     }
 
 }

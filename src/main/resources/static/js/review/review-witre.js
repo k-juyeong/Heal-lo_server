@@ -33,10 +33,10 @@ $inputImg.addEventListener('change',({target}) => {
         alert('지원하지 않는 파일')
         return;
     }
-    if(uploadImgs.length+target.files.length > 5) {
-        alert('최대 업로드 수 초과');
-        return;
-    }
+    // if(uploadImgs.length+target.files.length > 5) {
+    //     alert('최대 업로드 수 초과');
+    //     return;
+    // }
 
     [...files].forEach(ele => {
         const reader = new FileReader();
@@ -78,12 +78,12 @@ $RegBtn.addEventListener('click', () => {
 
     xhr.addEventListener('load', () => {
         const jsonData = JSON.parse(xhr.responseText);
+        console.log(jsonData)
         if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
             location.href = xhr.getResponseHeader("location");
 
         } else if (xhr.status >= 400) {
             if(jsonData.statusCode == '002') {
-                console.log(jsonData.data)
                 jsonData.data.errors.forEach(error => {
                     const errMessage = makeElements('div', {class: 'error-class'}, error.message);
                     if (error.field == 'rvcontents') {
