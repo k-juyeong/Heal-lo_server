@@ -2,7 +2,9 @@ package com.kh.heallo.web.member.controller;
 
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
+import com.kh.heallo.web.member.dto.EditForm;
 import com.kh.heallo.web.member.dto.JoinForm;
+import com.kh.heallo.web.member.dto.MemberForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -52,16 +54,39 @@ public class MemberController {
 
     Member findedMember = memberSVC.findById(memno);
 
+    MemberForm memberForm = new MemberForm();
+    memberForm.setMempw(findedMember.getMempw());
+    memberForm.setMemtel(findedMember.getMemtel());
+    memberForm.setMemnickname(findedMember.getMemnickname());
+    memberForm.setMememail(findedMember.getMememail());
+    memberForm.setMemname(findedMember.getMemname());
+
+    model.addAttribute("memberForm",memberForm);
+
     return "member/my_page";
   }
 
   //수정처리
   @PostMapping("/{id}/edit")
-  public String update(){
+  public String update(@PathVariable("id") String memid, EditForm editForm){
 
+    Member member = new Member();
+    member.setMempw(editForm.getMempw());
+    member.setMemtel(editForm.getMemtel());
+    member.setMemnickname(editForm.getMemnickname());
+    member.setMememail(editForm.getMememail());
+    member.setMemname(editForm.getMemname());
+
+    memberSVC.update(memid,member);
 
     return "member/my_page";
   }
 
   //삭제(탈퇴)
+  @GetMapping("/{id}/del")
+  public String delete(@PathVariable("id") String memid) {
+
+    memberSVC.del(memid);
+    return "index";
+  }
 }
