@@ -15,6 +15,7 @@ public class ResponseMsg {
     private String statusMessage;
     private String message;
     private Map<String,Object> data = new HashMap<>();
+    private Object errors;
 
     public ResponseMsg setStatusCode(StatusCode statusCode) {
         this.statusCode = statusCode.getStatusCode();
@@ -29,6 +30,11 @@ public class ResponseMsg {
 
     public ResponseMsg setData(String key, Object value) {
         this.data.put(key, value);
+        return this;
+    }
+
+    public ResponseMsg setErrors(Object errors) {
+        this.errors = errors;
         return this;
     }
 }

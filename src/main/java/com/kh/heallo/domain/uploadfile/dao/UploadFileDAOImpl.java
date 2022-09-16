@@ -58,6 +58,18 @@ public class UploadFileDAOImpl implements UploadFileDAO {
     }
 
     /**
+     * 파일조회
+     *
+     * @param ufno
+     * @return
+     */
+    @Override
+    public FileData findByUfno(Long ufno) {
+        String sql = "select * from uploadfile where ufno = ? ";
+        return jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(FileData.class), ufno);
+    }
+
+    /**
      * 파일 삭제
      *
      * @param ufno 파일번호

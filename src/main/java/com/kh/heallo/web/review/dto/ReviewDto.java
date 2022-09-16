@@ -27,7 +27,7 @@ public class ReviewDto {
 
     //포멧변경
     public void setRvcdate(LocalDateTime rvcdate) {
-        String format = rvcdate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        String format = rvcdate.format(DateTimeFormatter.ofPattern("yy.MM.dd a HH:mm"));
         this.rvcdate = format;
     }
 }

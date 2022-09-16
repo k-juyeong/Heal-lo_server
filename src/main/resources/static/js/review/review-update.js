@@ -7,6 +7,7 @@ const $previewWrap = document.querySelector('.preview-wrap');
 const $updateBtn = document.querySelector('.btn-update');
 const $btnCancel = document.querySelector('.btn-cancel');
 const $textarea = document.querySelector('.textarea');
+const $errorClass = document.querySelector('.error-class');
 
 let ratingScore = $review.rvscore;
 const deleteImages = [];
@@ -50,10 +51,10 @@ $inputImg.addEventListener('change',({target}) => {
         alert('지원하지 않는 파일')
         return;
     }
-    // if(deleteImages.length+uploadImgs.length+target.files.length > 5) {
-    //     alert('최대 업로드 수 초과');
-    //     return;
-    // }
+    if(deleteImages.length+uploadImgs.length+target.files.length > 5) {
+        alert('최대 업로드 수 초과');
+        return;
+    }
 
     [...files].forEach(ele => {
         const reader = new FileReader();
@@ -79,42 +80,39 @@ $inputImg.addEventListener('change',({target}) => {
 
 //수정 버튼 이벤트
 $updateBtn.addEventListener('click', () => {
-    const contents = $textarea.value;
     const formData = new FormData();
     formData.append('rvscore', ratingScore);
-    formData.append('rvcontents', contents);
+    formData.append('rvcontents', $textarea.value);
     formData.append('deleteImages',deleteImages)
     uploadImgs?.forEach(ele => {
         formData.append('multipartFiles', ele);
     })
 
-    const xhr = new XMLHttpRequest();
-    const url = `/reviews/${$review.rvno}`;
-    xhr.open('PATCH', url);
-    xhr.send(formData);
-
-    xhr.addEventListener('load', () => {
-        const jsonData = JSON.parse(xhr.responseText);
-        if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
-            location.href = xhr.getResponseHeader("location");
-
-        } else if (xhr.status >= 400) {
-            if(jsonData.statusCode == '002') {
-                jsonData.data.errors.forEach(error => {
-                    const errMessage = makeElements('div', {class: 'error-class'}, error.message);
-                    if (error.field == 'rvcontents') {
-                        $textarea.style.border = '1px solid red';
-                        $textarea.after(errMessage);
-                        $textarea.addEventListener('click', () =>{
-                            errMessage.remove()
-                            $textarea.style.border = '1px solid #D6D6D6';
-                        });
-                    }
-                });
+    fetch(`/reviews/${$review.rvno}`, {
+        method: 'PATCH',
+        body: formData
+    })
+        .then((response) => response.json())
+        .then((jsonData) => {
+            if (jsonData.statusCode == '001') location.href = jsonData.data.redirect;
+            else {
+                if(jsonData.statusCode == '002') {
+                    jsonData.errors.forEach((error) => {
+                        if (error.field == 'rvcontents') {
+                            $errorClass.textContent = error.message;
+                            $textarea.style.border = '1px solid red';
+                            $textarea.addEventListener('click', () => {
+                                $errorClass.textContent = '';
+                                $textarea.style.border = '1px solid #D6D6D6';
+                            });
+                        }
+                    });
+                }
             }
-        }
-    });
-
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 });
 
 //취소버튼 이벤트

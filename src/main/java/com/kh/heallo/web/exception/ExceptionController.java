@@ -46,7 +46,7 @@ public class ExceptionController {
         ResponseMsg responseMsg = new ResponseMsg()
                     .setStatusCode(StatusCode.VALIDATION_ERROR)
                     .setMessage("입력값을 확인해주세요")
-                    .setData("errors", errorDetails);
+                    .setErrors(errorDetails);
 
         return new ResponseEntity<>(responseMsg, HttpStatus.BAD_REQUEST);
     }

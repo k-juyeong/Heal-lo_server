@@ -4,7 +4,6 @@ import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -59,21 +57,25 @@ public class ReviewDAOImpl implements ReviewDAO{
      */
     @Override
     public List<Review> findListByFcno(Long fcno, ReviewCriteria criteria) {
-        Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
-        Integer startPage = endPage - criteria.getNumOfRow();
-
         StringBuffer sql = new StringBuffer();
         sql.append("  select * ");
         sql.append("          from (select rownum rowno, review.* ,member.memninkname ");
         sql.append("                  from (select * from review ");
-        sql.append("                          order by rvcdate desc) review, member ");
+        sql.append("                          order by " + criteria.getOrderBy() + ") review, member ");
         sql.append("                  where review.memno = member.memno ");
         sql.append("                  and review.fcno = ?) ");
         sql.append("  where rowno > ? and rowno <= ? ");
 
+        Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
+        Integer startPage = endPage - criteria.getNumOfRow();
         List<Review> reviewList = null;
-
-        reviewList = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class), fcno, startPage, endPage);
+        reviewList = jdbcTemplate.query(
+                sql.toString(),
+                new BeanPropertyRowMapper<>(Review.class),
+                fcno,
+                startPage,
+                endPage);
+        log.info("criteria {}",criteria);
 
         return reviewList;
     }

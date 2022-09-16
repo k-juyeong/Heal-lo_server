@@ -21,6 +21,8 @@ public interface UploadFileSVC {
      */
     List<FileData> findImagesByRvno(Long rvno);
 
+
+
     /**
      * 파일 삭제
      * @param ufno 파일번호

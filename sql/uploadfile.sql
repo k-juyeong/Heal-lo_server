@@ -23,7 +23,7 @@ alter table uploadfile add constraint uploadfile_bdno_fk foreign key (bdno)
 alter table uploadfile add constraint uploadfile_cdno_fk foreign key (cdno)
     references Calendar(cdno);
 alter table uploadfile add constraint uploadfile_rvno_fk foreign key (rvno)
-    references review(rvno);
+    references review(rvno) ON DELETE CASCADE;
 alter table uploadfile add constraint uploadfile_ufsname_uk unique (ufsname);
 alter table uploadfile modify ufsname constraint uploadfile_ufsname_nn not null;
 alter table uploadfile modify ufudate constraint uploadfile_ufudate_nn not null;

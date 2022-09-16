@@ -25,7 +25,7 @@ a:hover {color: inherit;}
 .facility-detail__info {padding: 8px;}
 
 /* 리뷰 정보 */
-.review {display: flex;flex-direction: column;justify-content: center;align-items: center;width: 80%;margin-bottom: 24px;box-sizing: content-box;}
+.review {position:relative; display: flex;flex-direction: column;justify-content: center;align-items: center;width: 80%;margin-bottom: 24px;box-sizing: content-box;}
 .review-header {display: flex;justify-content: space-between;width: 60%;min-width: 700px;max-width: 1000px;}
 .review-header .total-info {display: flex;justify-content: center;align-items: flex-end;width: 130px; font-size: 18px;}
 .review-header__main > div[class^=review-header] {margin-top: 22px;}
@@ -35,13 +35,13 @@ a:hover {color: inherit;}
 .write-btn-wrap .btn-review {display: inline-block;height: 40px;}
 .empty-message {display: flex;justify-content: center;align-items: center;width: 100%;height: 300px;}
 .review-lists {width: 700px;margin-top: 48px;}
-.review-lists .review-card {position: relative;min-width: 600px;margin: 36px 0;border-bottom: 1px solid rgba(134, 132, 132, 0.368);}
+.review-lists .review-card {position: relative;min-width: 600px;margin: 82px 0;border-bottom: 1px solid rgba(134, 132, 132, 0.368);}
 .review-lists .review-card__info {display: flex;flex-direction: column;width: 100%;margin: 12px 0;font-size: 1rem;}
 .review-lists .review-card__info .user-name {font-size: 16px;font-weight: 600;}
 .review-lists .review-card__info .date {margin-bottom: 18px;font-size: 16px;}
 .review-lists .review-card__star {position: absolute;top: 0;right: 0;font-size: 1.5em;}
 .review-lists .preview-contents {padding:8px 0; padding-right:62px;border-style: none; overflow: hidden;height: auto;word-break: break-all}
-.review-lists .review-btn-wrap {display: flex;position: absolute;left: 100px;top: 0;}
+.review-lists .review-btn-wrap {display: flex;position: absolute;left: 60px;top: -20px;}
 .review-lists .review-btn-wrap .btn-review {margin: 0 2px;padding: 8px;}
 
 /* 이미지 미리보기 */
@@ -69,6 +69,7 @@ a:hover {color: inherit;}
 .fixed-menu a {display: block;padding: 4px;transition: all 0.3s;}
 .fixed-menu a:hover {color: var(--color-main-header);transform: scale(1.12);}
 .btn-review {color: white;border-style: none;border-radius: 4px;background-color: var(--color-others-header);}
+.order-by-selector {position: absolute; left: 100px;bottom: 0;padding: 4px; font-size: 12px; border: 1px solid #dee2e6;}
 
 /* 이미지 확대 */
 #modal .modal-body {padding: 0;}

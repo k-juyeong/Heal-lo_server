@@ -241,20 +241,14 @@ function search() {
   const loca = selectedCgLocaSave.level2 == '전체' ? selectedCgLocaSave.level1 : `${selectedCgLocaSave.level1} ${selectedCgLocaSave.level2}`;
 
   // 검색 결과 수 조회
-  const xhr = new XMLHttpRequest();
-  const url = '/facilities/total';
   const queryPram = `?fcaddr=${loca}&fctype=${type}&fcname=${text}`;
-  console.log(queryPram);
-  xhr.open('GET',url + queryPram);
-  xhr.send();
-
-  xhr.addEventListener('readystatechange', () => {
-    requstStatus = true;
-    currentPage = 1;
-
-    if (xhr.readyState == XMLHttpRequest.DONE) {
-      if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
-        const jsonData = JSON.parse(xhr.responseText);
+  fetch('/facilities/total' + queryPram, {
+    method: 'GET'
+  })
+      .then(response => response.json())
+      .then(jsonData => {
+        requstStatus = true;
+        currentPage = 1;
 
         //검색결과 체크
         if (jsonData.data.totalCount == 0) {
@@ -265,7 +259,7 @@ function search() {
 
         //기존 목록 삭제
         [...$searchedLists.children].filter(ele => ele.tagName == 'LI')
-        .forEach(ele => ele.remove());
+            .forEach(ele => ele.remove());
 
         //총 검색 결과 표시
         $resultCount.textContent = jsonData.data.totalCount;
@@ -279,11 +273,8 @@ function search() {
         if (!$searchedLists.classList.contains('open-lists')) {
           actionOpenMenu();
         }
-      } else {
-        console.log("오류");
-      }
-    }
-  });
+      })
+      .catch(error => console.log(error))
 }
 
 //페이지네이션 생성 함수
@@ -325,22 +316,17 @@ function createPagination(totalPage) {
       const numOfRow = onePageNum;
 
       //검색 결과 조회
-      const xhr = new XMLHttpRequest();
-      const url = '/facilities/list';
       const queryPram = `?fcaddr=${loca}&fctype=${type}&fcname=${text}&pageNo=${pageNO}&numOfRow=${numOfRow}`;
-      console.log(queryPram);
-      xhr.open('GET',url + queryPram);
-      xhr.send();
-
-      xhr.addEventListener('readystatechange', () => {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-          if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
+      fetch('/facilities/list' + queryPram, {
+        method : 'GET'
+      })
+          .then(response => response.json())
+          .then(jsonData => {
             requstStatus = true;
-            const jsonData = JSON.parse(xhr.responseText);
 
             //이전 목록들 초기화
             [...$searchedLists.children].filter(ele => ele.classList.contains('searched-lists__item'))
-            .forEach(ele => ele.remove());
+                .forEach(ele => ele.remove());
 
             //새 목록 생성
             jsonData.data.facilities.forEach(ele => $searchedLists.prepend(createList(ele)));
@@ -353,13 +339,10 @@ function createPagination(totalPage) {
             [...$searchedLists.querySelectorAll('a')].forEach(ele => ele.classList.remove('on'));
             target.classList.add('on');
 
-          } else {
-            console.log("오류");
-          }
-        }
-      });
-
+          })
+          .catch(error => console.log(error))
     });
+
     page.appendChild(a);
     paginationLis.push(page);
     a.textContent == currentPage && a.click();

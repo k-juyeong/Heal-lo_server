@@ -4,6 +4,7 @@ import makeElements from "../module/create-elememt.js";
 const $reviewLists = document.querySelector('.review-lists');
 const $modal = document.getElementById('modal');
 const $writeBtn = document.querySelector('.review-write');
+const $orderBySelect = document.querySelector('.order-by-selector');
 
 //다용도 전역변수
 let isFirst = true;
@@ -23,60 +24,47 @@ $writeBtn.addEventListener('click',e => {
     location.href = `/reviews/${fcno}/add`;
 })
 
+$orderBySelect.addEventListener('change',() => reviewListRequest());
+
 //비동기 통신 함수
 function reviewListRequest() {
 
     // 검색 결과 수/ 평균 평점 조회
-    const xhr = new XMLHttpRequest();
-    const url = `/reviews/${fcno}/total`;
-    xhr.open('GET',url);
-    xhr.send();
+    fetch(`/reviews/${fcno}/total`, {
+        method: 'GET'
+    })
+        .then(response => response.json())
+        .then(jsonData => {
+            currentPage = 1;
 
-    xhr.addEventListener('readystatechange', () => {
-        currentPage = 1;
+            //검색결과 체크
+            if (jsonData.data.totalCount == 0) return;
 
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-            if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
-                const jsonData = JSON.parse(xhr.responseText);
+            //기존노드 삭제
+            [...$reviewLists.children].forEach(ele => ele.remove());
+            $reviewLists.nextElementSibling?.remove();
 
-                //기존노드 삭제
-                [...$reviewLists.children].forEach(ele => ele.remove());
-                $reviewLists.nextElementSibling?.remove();
+            //총 검색 결과 표시
+            const $resultCount = document.querySelector('.review-cnt')
+            $resultCount.textContent = jsonData.data.totalCount;
 
-                //총 검색 결과 표시
-                const $resultCount = document.querySelector('.review-cnt')
-                $resultCount.textContent = jsonData.data.totalCount;
+            //리뷰 평균 수정
+            document.querySelector('.review-header__main .text-score')
+                .textContent = jsonData.data.fcscore;
+            document.querySelector('.review-header__main .inner-star')
+                .style.width = jsonData.data.fcscore * 20 + '%'
 
-                console.log(jsonData.data)
-
-                //리뷰 평균 수정
-                document.querySelector('.review-header__main .text-score')
-                    .textContent = jsonData.data.fcscore;
-                document.querySelector('.review-header__main .inner-star')
-                    .style.width = jsonData.data.fcscore*20 + '%'
-
-                //페이지네이션 생성
-                const totalPage = Math.ceil(jsonData.data.totalCount / onePageNum);
-                const paginationWrap = createPagination(totalPage);
-                $reviewLists.after(paginationWrap);
-
-                //검색결과 체크
-                if (jsonData.data.totalCount == 0) {
-                    return;
-                }
-
-            }else {
-                console.log('에러');
-            }
-        }
-    });
+            //페이지네이션 생성
+            const totalPage = Math.ceil(jsonData.data.totalCount / onePageNum);
+            const paginationWrap = createPagination(totalPage);
+            $reviewLists.after(paginationWrap);
+        })
+        .catch(error => console.log(error));
 }
 
 //리뷰 랜더링 함수
 function reviewListRender(data) {
-
     const previewContents = data.rvcontents.substr(0,200) + '...';
-
     const isMoreview = data.rvcontents.length > 200;
 
     const reviewCard =
@@ -130,24 +118,13 @@ function reviewListRender(data) {
 
     //리뷰 삭제버튼 이벤트
     reviewCard.querySelector('.review-delete')?.addEventListener('click',ele => {
-        const xhr = new XMLHttpRequest();
-        const url = `/reviews/${data.rvno}`;
-        xhr.open('DELETE',url);
-        xhr.send();
-
-        xhr.addEventListener('readystatechange', () => {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
-                    const jsonData = JSON.parse(xhr.responseText);
-                    reviewListRequest();
-
-                }else {
-                    console.log('에러');
-                }
-            }
-        });
+        fetch(`/reviews/${data.rvno}`, {
+            method: `DELETE`
+        })
+            .then(response => response.json())
+            .then(jsonData => reviewListRequest())
+            .catch(error => console.log(error));
     })
-
     return reviewCard;
 }
 
@@ -181,6 +158,7 @@ function createPagination(totalPage) {
         // 페이지 클릭 이벤트
         a.addEventListener('click', (e) => {
             e.preventDefault();
+            const orderByValue = $orderBySelect.value;
             const target = e.target;
             target.textContent == 1 && isFirst ? location.href = '#' : location.href = '#review';
             console.log(target.textContent)
@@ -188,34 +166,25 @@ function createPagination(totalPage) {
             currentPage = parseInt(target.textContent);  //현재 페이지 저장
 
             //리뷰 조회
-            const xhr = new XMLHttpRequest();
-            const url = `/reviews/${fcno}/list`;
-            const queryPram = `?pageNo=${currentPage}&numOfRow=${onePageNum}`;
-            xhr.open('GET',url + queryPram);
-            xhr.send();
+            const queryPram = `?pageNo=${currentPage}&numOfRow=${onePageNum}&orderBy=${orderByValue}`;
+            fetch(`/reviews/${fcno}/list` + queryPram,{
+                method : 'GET'
+            })
+                .then(response => response.json())
+                .then(jsonData => {
+                    // 이전 목록들 초기화
+                    [...$reviewLists.children].filter(ele => ele.classList.contains('review-card'))
+                        .forEach(ele => ele.remove());
 
-            xhr.addEventListener('readystatechange', () => {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 400)) {
-                        const jsonData = JSON.parse(xhr.responseText);
-                        console.log(jsonData);
+                    //새 목록 생성
+                    jsonData.data.reviews.forEach(ele => $reviewLists.appendChild(reviewListRender(ele)));
 
-                        // 이전 목록들 초기화
-                        [...$reviewLists.children].filter(ele => ele.classList.contains('review-card'))
-                            .forEach(ele => ele.remove());
+                    //클릭 표시
+                    [...$reviewLists.nextElementSibling.querySelectorAll('a')].forEach(ele => ele.classList.remove('on'));
+                    target.classList.add('on');
 
-                        //새 목록 생성
-                        jsonData.data.reviews.forEach(ele => $reviewLists.appendChild(reviewListRender(ele)));
-
-                        //클릭 표시
-                        [...$reviewLists.nextElementSibling.querySelectorAll('a')].forEach(ele => ele.classList.remove('on'));
-                        target.classList.add('on');
-
-                    } else {
-                        console.log("에러");
-                    }
-                }
-            });
+                })
+                .catch(error => console.log(error))
         });
         page.appendChild(a);
         paginationLis.push(page);

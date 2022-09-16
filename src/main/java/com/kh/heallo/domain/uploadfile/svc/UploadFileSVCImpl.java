@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletContext;
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -48,7 +50,12 @@ public class UploadFileSVCImpl implements UploadFileSVC{
      */
     @Override
     public Integer delete(Long ufno) {
-
+        FileData fileData = uploadFileDAO.findByUfno(ufno);
+        String filePath = fileData.getUfpath() + fileData.getUfsname();
+        File file = new File(filePath);
+        if(file.exists()) {
+            file.delete();
+        }
         return uploadFileDAO.delete(ufno);
     }
 }

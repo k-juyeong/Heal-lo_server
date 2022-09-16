@@ -128,6 +128,12 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Integer delete(Long rvno) {
+        List<FileData> fileDataList = uploadFileSVC.findImagesByRvno(rvno);
+        if (fileDataList != null) {
+            fileDataList.stream().forEach(fileData -> {
+                uploadFileSVC.delete(fileData.getUfno());
+            });
+        }
         return reviewDAO.delete(rvno);
     }
 }

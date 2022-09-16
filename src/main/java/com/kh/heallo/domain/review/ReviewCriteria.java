@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ReviewCriteria {
     private Integer pageNo;         //페이지번호
     private Integer numOfRow;       //한 페이지 수
+    private String OrderBy;   //정렬기준
 }

@@ -1,36 +1,29 @@
 package com.kh.heallo.web.review.controller;
 
-import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
 import com.kh.heallo.domain.uploadfile.FileData;
 import com.kh.heallo.domain.review.Review;
-import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.svc.ReviewSVC;
-import com.kh.heallo.web.FieldErrorDetail;
 import com.kh.heallo.web.ResponseMsg;
 import com.kh.heallo.web.StatusCode;
 import com.kh.heallo.web.facility.dto.FacilityDto;
+import com.kh.heallo.web.review.ReviewFileValidator;
 import com.kh.heallo.web.utility.FileSetting;
 import com.kh.heallo.web.utility.DtoModifier;
 import com.kh.heallo.web.review.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,6 +37,7 @@ public class ReviewController {
     private final FacilitySVC facilitySVC;
     private final FileSetting fileSetting;
     private final DtoModifier dtoModifier;
+    private final ReviewFileValidator fileValidator;
 
     //리뷰 total/age 조회
     @ResponseBody
@@ -72,6 +66,16 @@ public class ReviewController {
     ) {
         //Test 회원
         long memno = 1L;
+
+        switch(searchCriteria.getOrderBy()) {
+            case "dateAsc": searchCriteria.setOrderBy("rvcdate asc");
+            break;
+            case "dateDesc": searchCriteria.setOrderBy("rvcdate desc");
+            break;
+            case "scoreDsc": searchCriteria.setOrderBy("rvscore desc");
+            break;
+            default: searchCriteria.setOrderBy("rvcdate asc");
+        }
 
         List<ReviewDto> reviewDtos = reviewSVC
                 .findListByFcno(fcno, dtoModifier.getReviewCriteria(searchCriteria))
@@ -118,10 +122,13 @@ public class ReviewController {
         List<FileData> fileDataList = null;
         if (multipartFiles != null) {
             //파일 검증
-            BindException bindException = new BindException(addReviewForm, "addReviewForm");
             List<ReviewFileData> reviewFileDataList = dtoModifier.getReviewFileData(multipartFiles);
             addReviewForm.setImageFiles(reviewFileDataList);
-            fileValidate(bindException, reviewFileDataList, reviewFileDataList.size());
+            fileValidator.validate(
+                    reviewFileDataList,
+                    new BindException(addReviewForm, "addReviewForm"),
+                    reviewFileDataList.size()
+            );
 
             //파일저장
             fileDataList = multipartFiles
@@ -147,14 +154,13 @@ public class ReviewController {
         facilitySVC.updateToScore(fcno);
 
         //Create ResponseEntity
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/facilities/" + fcno));
         ResponseMsg responseMsg = new ResponseMsg()
                 .setStatusCode(StatusCode.SUCCESS)
                 .setMessage("리뷰 등록에 성공했습니다")
-                .setData("rvno", rvno);
+                .setData("rvno", rvno)
+                .setData("redirect", "/facilities/" + fcno);
 
-        return new ResponseEntity<>(responseMsg, headers, HttpStatus.OK);
+        return new ResponseEntity<>(responseMsg, HttpStatus.OK);
     }
 
 
@@ -198,14 +204,16 @@ public class ReviewController {
         List<FileData> fileDataList = null;
         if (multipartFiles != null) {
             //파일검증
-            BindException bindException = new BindException(editReviewForm, "addReviewForm");
             List<ReviewFileData> reviewFileDataList = dtoModifier.getReviewFileData(multipartFiles);
+            editReviewForm.setImageFiles(reviewFileDataList);
             Review review = reviewSVC.findByRvno(rvno);
             int totalSize = review.getImageFiles().size()
                     - editReviewForm.getDeleteImages().length
                     + reviewFileDataList.size();
-            editReviewForm.setImageFiles(reviewFileDataList);
-            fileValidate(bindException, reviewFileDataList , totalSize);
+            fileValidator.validate(
+                    reviewFileDataList,
+                    new BindException(editReviewForm, "addReviewForm"),
+                    totalSize);
 
             //파일저장
             fileDataList = multipartFiles
@@ -229,22 +237,22 @@ public class ReviewController {
         facilitySVC.updateToScore(reviewSVC.findByRvno(rvno).getFcno());
 
         //Create ResponseEntity
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/facilities/" + reviewSVC.findByRvno(rvno).getFcno()));
         ResponseMsg responseMsg = new ResponseMsg()
                 .setStatusCode(StatusCode.SUCCESS)
                 .setMessage("리뷰를 성공적으로 수정했습니다.")
-                .setData("resultCount", resultCount);
+                .setData("resultCount", resultCount)
+                .setData("redirect", "/facilities/" + reviewSVC.findByRvno(rvno).getFcno());
 
-        return new ResponseEntity(responseMsg, headers, HttpStatus.OK);
+        return new ResponseEntity(responseMsg, HttpStatus.OK);
     }
 
     //리뷰 삭제 처리
     @ResponseBody
     @DeleteMapping("/{rvno}")
     public ResponseEntity<ResponseMsg> delete(@PathVariable Long rvno) {
+        Long fcno = reviewSVC.findByRvno(rvno).getFcno();
         Integer resultCount = reviewSVC.delete(rvno);
-        facilitySVC.updateToScore(reviewSVC.findByRvno(rvno).getFcno());
+        facilitySVC.updateToScore(fcno);
 
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
@@ -252,19 +260,5 @@ public class ReviewController {
                 .setMessage("리뷰를 성공적으로 삭제했습니다.")
                 .setData("resultCount",resultCount);
         return new ResponseEntity<>(responseMsg, HttpStatus.OK);
-    }
-
-    private void fileValidate(BindException bindException, List<ReviewFileData> reviewFileDataList, int totalSize) throws BindException {
-        if(totalSize > 5) {
-            bindException.rejectValue("imageFiles","imageFiles.size",new Object[]{"5"},"파일 업로드 오류");
-        }
-        int NotSupportTypeLength = reviewFileDataList
-                .stream()
-                .filter(multipartFile -> !multipartFile.getUftype().equals("image/jpeg") && !multipartFile.getUftype().equals("image/png"))
-                .collect(Collectors.toList()).size();
-        if (NotSupportTypeLength > 0) {
-            bindException.rejectValue("imageFiles","imageFiles.type","파일 업로드 오류");
-        }
-        if (bindException.hasErrors()) throw bindException;
     }
 }
