@@ -4,7 +4,6 @@ import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
 import com.kh.heallo.web.member.dto.EditForm;
 import com.kh.heallo.web.member.dto.JoinForm;
-import com.kh.heallo.web.member.dto.MemberForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -48,20 +47,21 @@ public class MemberController {
     return "login/login";
   }
 
-  //조회
+  //조회와 동시에 수정
   @GetMapping("/{id}")
   public String findById(@PathVariable("id") Long memno, Model model){
 
     Member findedMember = memberSVC.findById(memno);
 
-    MemberForm memberForm = new MemberForm();
-    memberForm.setMempw(findedMember.getMempw());
-    memberForm.setMemtel(findedMember.getMemtel());
-    memberForm.setMemnickname(findedMember.getMemnickname());
-    memberForm.setMememail(findedMember.getMememail());
-    memberForm.setMemname(findedMember.getMemname());
+    EditForm editForm = new EditForm();
+    editForm.setMemid(findedMember.getMemid());
+    editForm.setMempw(findedMember.getMempw());
+    editForm.setMemtel(findedMember.getMemtel());
+    editForm.setMemnickname(findedMember.getMemnickname());
+    editForm.setMememail(findedMember.getMememail());
+    editForm.setMemname(findedMember.getMemname());
 
-    model.addAttribute("memberForm",memberForm);
+    model.addAttribute("editForm",editForm);
 
     return "member/my_page";
   }
