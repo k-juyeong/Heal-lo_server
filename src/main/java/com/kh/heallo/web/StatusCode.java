@@ -8,10 +8,11 @@ import lombok.ToString;
 @ToString
 @Getter
 public enum StatusCode {
-    SUCCESS("001","성공"),
-    VALIDATION_ERROR("002","검증오류"),
-    NOT_FOUND_ERROR("003","데이터베이스오류");
+    SUCCESS("00","응답이 정상적으로 이루어졌습니다."),
+    VALIDATION_ERROR("01","검증에 문제가 생겼습니다."),
+    DATA_NOT_FOUND_ERROR("02","값을 찾을수 없습니다."),
+    SERVER_ERROR("99","서버에 문제가 생겼습니다.");
 
-    private String statusCode;
+    private String code;
     private String message;
 }

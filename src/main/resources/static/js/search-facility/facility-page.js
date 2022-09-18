@@ -11,7 +11,7 @@ let isFirst = true;
 const fcno = document.querySelector('.facility').dataset.fcno;
 
 // 페이지네이션 설정
-const limitPage = 10;     //  페이지 최대 생성 수
+const limitPage = 3;     //  페이지 최대 생성 수
 const onePageNum = 10;    //  1페이지에 최대 목록 수
 let currentPage = 1;      //  현재 페이지
 
@@ -29,7 +29,22 @@ $orderBySelect.addEventListener('change',() => reviewListRequest());
 //비동기 통신 함수
 function reviewListRequest() {
 
-    // 검색 결과 수/ 평균 평점 조회
+    //운동시설 평균
+    fetch(`/facilities/${fcno}/score`,{
+        method : 'GET'
+    })
+        .then(response => response.json())
+        .then(jsonData => {
+            if(jsonData.header.code != '00') throw new Error(jsonData.message);
+            //리뷰 평균 수정
+            document.querySelector('.review-header__main .text-score')
+                .textContent = jsonData.data.fcScore;
+            document.querySelector('.review-header__main .inner-star')
+                .style.width = jsonData.data.fcScore * 20 + '%'
+        })
+        .catch(error => console.log(error))
+
+    //검색 결과 수
     fetch(`/reviews/${fcno}/total`, {
         method: 'GET'
     })
@@ -47,12 +62,6 @@ function reviewListRequest() {
             //총 검색 결과 표시
             const $resultCount = document.querySelector('.review-cnt')
             $resultCount.textContent = jsonData.data.totalCount;
-
-            //리뷰 평균 수정
-            document.querySelector('.review-header__main .text-score')
-                .textContent = jsonData.data.fcscore;
-            document.querySelector('.review-header__main .inner-star')
-                .style.width = jsonData.data.fcscore * 20 + '%'
 
             //페이지네이션 생성
             const totalPage = Math.ceil(jsonData.data.totalCount / onePageNum);

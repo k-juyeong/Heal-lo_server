@@ -1,40 +1,31 @@
 package com.kh.heallo.web;
-
 import lombok.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class ResponseMsg {
+    private Header header;
+    private Map<String, Object> data = new HashMap<>();
 
-    private String statusCode;
-    private String statusMessage;
-    private String message;
-    private Map<String,Object> data = new HashMap<>();
-    private Object errors;
-
-    public ResponseMsg setStatusCode(StatusCode statusCode) {
-        this.statusCode = statusCode.getStatusCode();
-        this.statusMessage = statusCode.getMessage();
-        return this;
+    @Data
+    @AllArgsConstructor
+    static class Header {
+        private String code;
+        private String message;
     }
 
-    public ResponseMsg setMessage(String message) {
-        this.message = message;
+    public ResponseMsg createHeader(StatusCode statusCode) {
+        this.header = new Header(statusCode.getCode(), statusCode.getMessage());
         return this;
     }
 
     public ResponseMsg setData(String key, Object value) {
-        this.data.put(key, value);
-        return this;
-    }
-
-    public ResponseMsg setErrors(Object errors) {
-        this.errors = errors;
+        data.put(key, value);
         return this;
     }
 }
+
+
+

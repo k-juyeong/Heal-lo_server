@@ -94,25 +94,24 @@ $updateBtn.addEventListener('click', () => {
     })
         .then((response) => response.json())
         .then((jsonData) => {
-            if (jsonData.statusCode == '001') location.href = jsonData.data.redirect;
-            else {
-                if(jsonData.statusCode == '002') {
-                    jsonData.errors.forEach((error) => {
-                        if (error.field == 'rvcontents') {
-                            $errorClass.textContent = error.message;
-                            $textarea.style.border = '1px solid red';
-                            $textarea.addEventListener('click', () => {
-                                $errorClass.textContent = '';
-                                $textarea.style.border = '1px solid #D6D6D6';
-                            });
-                        }
-                    });
-                }
+            if (jsonData.header.code == '00') location.href = jsonData.data.redirect;
+            else if (jsonData.header.code == '01') {
+                jsonData.data.errors.forEach((error) => {
+                    if (error.field == 'rvcontents') {
+                        $errorClass.textContent = error.message;
+                        $textarea.style.border = '1px solid red';
+                        $textarea.addEventListener('click', () => {
+                            $errorClass.textContent = '';
+                            $textarea.style.border = '1px solid #D6D6D6';
+                        });
+                    }
+                });
+            } else {
+                throw new Error(jsonData.message);
             }
         })
-        .catch((error) => {
-            console.log(error)
-        });
+        .catch((error) => console.log(error)
+        );
 });
 
 //취소버튼 이벤트

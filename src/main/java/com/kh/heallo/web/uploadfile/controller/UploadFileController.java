@@ -44,8 +44,7 @@ public class UploadFileController {
 
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
-                .setStatusCode(StatusCode.SUCCESS)
-                .setMessage("삭제성공");
+                .createHeader(StatusCode.SUCCESS);
 
         return new ResponseEntity<>(responseMsg,HttpStatus.OK);
     }

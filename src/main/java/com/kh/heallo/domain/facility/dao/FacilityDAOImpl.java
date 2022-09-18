@@ -126,12 +126,15 @@ public class FacilityDAOImpl implements FacilityDAO{
     @Override
     public List<Facility> search(FacilityCriteria criteria) {
         StringBuffer sql = new StringBuffer();
-        sql.append("    select * ");
-        sql.append("        from (select rownum rowno, facility.* from facility ");
-        sql.append("                where fcname like ? ");
+        sql.append(" select fc3.* ");
+        sql.append(" from (select rownum rowno, fc2.* ");
+        sql.append("         from (select fc.*,(select count(*) from review where fcno = fc.fcno) rvtotal ");
+        sql.append("               from facility fc ");
+        sql.append("               where fcname like ? ");
         sql.append("                    and fcaddr like ? ");
-        sql.append("                    and fctype like ?) fc ");
-        sql.append("        where fc.rowno > ? and fc.rowno <= ? ");
+        sql.append("                    and fctype like ? ");
+        sql.append("               order by rvtotal desc) fc2) fc3 ");
+        sql.append(" where fc3.rowno > ? and fc3.rowno <= ? ");
 
         Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
         Integer startPage = endPage - criteria.getNumOfRow();

@@ -72,7 +72,6 @@
           <!-- 시설 메인 이미지 -->
           <div class="img-wrap ">
             <img class="facility-img "
-              src="https://images.unsplash.com/photo-1630703178161-1e2f9beddbf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
               th:src="*{fcimg}"
               alt="운동시설 대표이미지">
           </div>
@@ -99,7 +98,9 @@
             <div class="facility-detail__info">
               <h3 class="facility-detail__title">홈페이지</h3>
               <div class="facility-detail__sub">
-                <p><a href="https://www.naver.com" th:text="*{fchomepage}">https://www.naver.com</a></p>
+                <p><a href="#"
+                        th:href="*{fchomepage} == '-' ? '#' : 'http://' + *{fchomepage}"
+                        th:text="*{fchomepage}">https://www.naver.com</a></p>
               </div>
             </div>
             <div class="hr"></div>
@@ -137,16 +138,15 @@
       <section class="review" id="review">
         <p class="review-header__title">리뷰</p>
 
-        <select class="order-by-selector">
-          <option value="dateDesc">최근등록순</option>
-          <option value="dateAsc">오래된순</option>
-          <option value="scoreDsc">별점높은순</option>
-        </select>
-
         <!-- 리뷰 헤더 -->
         <article class="review-header">
           <div class="total-info">
             <p class="total">전체 리뷰 : <span class="review-cnt">0개</span></p>
+            <select class="order-by-selector">
+              <option value="dateDesc">최근등록순</option>
+              <option value="dateAsc">오래된순</option>
+              <option value="scoreDsc">별점높은순</option>
+            </select>
           </div>
 
           <!-- 리뷰 헤더-메인 -->

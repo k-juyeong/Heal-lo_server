@@ -16,8 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ReviewDto {
     private Long rvno;                          //리뷰번호
-    private double memno;                       //회원번호
-    private double fcno;                        //운동시설번호
+    private Long memno;                       //회원번호
+    private Long fcno;                        //운동시설번호
     private String rvcontents;                  //리뷰컨텐츠
     private double rvscore;                     //리뷰별점
     private String rvcdate;                     //리뷰등록날짜

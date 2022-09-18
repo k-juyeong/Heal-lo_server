@@ -5,7 +5,7 @@ import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.web.facility.dto.FacilityCriteriaDto;
-import com.kh.heallo.web.facility.dto.FacilityDto;
+import com.kh.heallo.web.facility.dto.FacilitySearchDto;
 import com.kh.heallo.web.review.dto.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -55,8 +55,8 @@ public class DtoModifier {
     }
 
     //Facility => facilityDto
-    public FacilityDto getFacilityDto(Facility facility) {
-        FacilityDto facilityDto = new FacilityDto();
+    public FacilitySearchDto getFacilityDto(Facility facility) {
+        FacilitySearchDto facilityDto = new FacilitySearchDto();
         BeanUtils.copyProperties(facility,facilityDto);
 
         return facilityDto;

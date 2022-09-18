@@ -20,6 +20,7 @@ public class Facility {
     private String fcstatus;    //운영상태
     private String fcimg;       //대표이미지
     private double fcscore;     //평균평점
+    private Integer rvtotal;     //리뷰 전체 갯수
 
     public Facility(String fcname, String fctype, String fchomepage, String fctel, double fclat, double fclng, String fcaddr, String fcpostCode, String fcstatus, String fcimg) {
         this.fcname = fcname;

@@ -60,7 +60,10 @@
           <div class="search__select-input">
 
             <!-- 지역 카테고리 -->
-            <div class="search__cg-wrap">  
+            <div class="search__cg-wrap">
+<!--              <div class="location-tooltip">-->
+<!--                <i></i>-->
+<!--              </div>-->
               <div class="category-title">
                 <p class="label-input">지역</p>
               </div>
@@ -88,6 +91,7 @@
         
           <!-- 검색 결과-->
           <div class="searched-wrap">
+            <button class="btn-search">검색하기</button>
 
             <!-- 검색 결과 목록 wrap-->
             <div class="searched-list-wrap">
@@ -103,26 +107,27 @@
                 <!-- 시설명 검색 창 메인 -->
                 <form class="text-input__body input-group mb-3">
                   <input type="text" class="form-control shadow-none" id="textSearchInput" placeholder="시설명을 입력해주세요" aria-label="Username" aria-describedby="basic-addon1">
-                  <button type="submit"><i class="fa-solid fa-magnifying-glass-location" id="facilityBtn"></i></button>   
+                  <button type="submit"><i class="fa-solid fa-magnifying-glass-location"></i></button>
                 </form>      
               </div>
 
               <!-- 검색 결과 목록-->
               <ul class="searched-lists" id="searchedLists">
+                  <div class="default">검색을 진행해주세요</div>
               </ul>
-            </div>
 
-            <!-- 지도 추가기능 -->
-            <div class="map-util">
+              <!-- 지도 추가기능 -->
+              <div class="map-util">
 
-              <!-- 리스트 목록 on/off -->
-              <div class="open-list util">
-                <i class="fa-solid fa-arrow-down-short-wide"></i>
-              </div>
+                <!-- 리스트 목록 on/off -->
+                <div class="open-list util">
+                  <i class="fa-solid fa-arrow-down-short-wide"></i>
+                </div>
 
-              <!-- 내위치 -->
-              <div class="my-location util">
-                <span>내 위치</span>
+                <!-- 내위치 -->
+                <div class="my-location util">
+                  <span>내 위치</span>
+                </div>
               </div>
             </div>
 

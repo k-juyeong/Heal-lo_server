@@ -2,9 +2,11 @@ package com.kh.heallo.web.facility.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class FacilityDetail {
     private Long fcno;          //운동시설번호    NUMBER
     private String fcname;	    //운동시설명		VARCHAR2

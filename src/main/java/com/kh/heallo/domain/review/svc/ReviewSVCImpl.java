@@ -76,17 +76,14 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Long add(Long memno, Long fcno, Review review) {
-        Integer[] resultCount = {0};
         Long rvno = reviewDAO.add(memno, fcno, review);
 
         List<FileData> fileDataList = review.getImageFiles();
         if(fileDataList != null) {
             fileDataList.stream().forEach(fileData -> {
-                resultCount[0] += uploadFileSVC.ReviewFileUpload(rvno, fileData);
+                Integer resultCount = uploadFileSVC.ReviewFileUpload(rvno, fileData);
+                if(resultCount != 1) log.info("파일 업로드중 오류발생 {}", fileData);
             });
-            if (resultCount[0] == fileDataList.size()) {
-                log.info("파일업로드 중 오류발생 {}",fileDataList);
-            }
         }
 
         return rvno;
@@ -101,18 +98,16 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Integer update(Long rvno, Review review, Long[] ufnoArr) {
-        Integer[] resultCount = {0};
         Integer updateResultCount = reviewDAO.update(rvno, review);
 
         List<FileData> fileDataList = review.getImageFiles();
         if(fileDataList != null) {
             fileDataList.stream().forEach(fileData -> {
-                resultCount[0] += uploadFileSVC.ReviewFileUpload(rvno, fileData);
+                Integer resultCount = uploadFileSVC.ReviewFileUpload(rvno, fileData);
+                if(resultCount != 1) log.info("파일 업로드중 오류발생 {}", resultCount);
             });
-            if (resultCount[0] == fileDataList.size()) {
-                log.info("파일업로드 중 오류발생 {}",fileDataList);
-            }
         }
+
         if (ufnoArr.length > 0) {
             Arrays.stream(ufnoArr).forEach(ufno -> uploadFileSVC.delete(ufno));
         }

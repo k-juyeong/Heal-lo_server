@@ -1,5 +1,5 @@
 /* 공통 */
-#container {height: auto;}
+#container {height: auto; border-top: none}
 a:hover {color: inherit;}
 .contents {display: flex; flex-direction: column; align-items: center;}
 
@@ -11,19 +11,24 @@ a:hover {color: inherit;}
 
 /* 카테고리 */
 .search__select-input {display: flex;flex-direction: column;align-items: flex-end;width: 100%;margin: 0 auto;padding: 0 12px;border-radius: 36px;border-bottom-left-radius: 0px;border-bottom-right-radius: 0px;background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);}
-.search__select-input .search__cg-wrap {display: flex;justify-content: flex-end;align-items: center;width: 100%;padding: 12px 0;}
+.search__select-input .search__cg-wrap {position: relative; display: flex;justify-content: flex-end;align-items: center;width: 100%;padding: 12px 0;}
+.location-tooltip {position: absolute; left: 35px; width: 56px; top: -20px; font-size: 12px; opacity: 0; transition: all 0.4s; z-index: 1}
+.location-tooltip i {display: block; padding: 2px; background-color:black; color: white; text-align: center; font-weight: lighter}
+.location-tooltip::after {content: ""; display: inline-block; margin-left: 4px; width: 0; border-width: 6px;border-style: solid;border-color: black transparent transparent transparent;}
 .category {display: flex;justify-content: center;flex-wrap: wrap;width: 100%;margin: 0 auto;padding: 0 18px;font-size: 12px;}
 .category.search__cg-loca2 {position: absolute;right: 0;left: 0;padding: 18px;font-weight: 600;background-color: #ffffff;z-index: 100;visibility: hidden;}
 .category p {display: inline-block;text-align: center;margin: 6px;padding: 12px;color: rgb(46, 63, 77);background-color: #ffffff99;transition: all 0.4s;cursor: pointer;}
-.category .loca-close-li {display: flex;justify-content: center;align-items: center;margin: 0 10px;font-size: 28px;cursor: pointer;}
+.category li {position: relative}
 .category li:hover p {transform: translate(0px,-6px) scale(1.06);}
+.category li:hover .location-tooltip {transform: translate(0px,-6px) scale(1.06);}
 .category-title {display: inline-block; text-align: center; align-self: start;width: 120px;margin: 0 auto;padding: 4px 0;}
 .category-title p {padding: 8px;}
 .category-title .label-sub {font-size: 10px;color: red;}
+.btn-search {position: absolute;top: 0;right: 50%; left: 50%;padding: 6px; width: 150px; font-size: 18px;border: 1px solid black; transform: translate(-50%, 0);z-index: 1}
 
 /* 검색 결과 목록 */
 .searched-wrap {display: flex;position: relative;width: 100%;height: 100%;background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);}
-.searched-wrap .searched-list-wrap {position: absolute;width: 350px;height: 100%;max-height: 100%;padding: 18px;padding-bottom: 32px;z-index: 5;opacity: 0.9;pointer-events: none;}
+.searched-wrap .searched-list-wrap {position: absolute;width: 350px;height: 100%;max-height: 100%;padding: 0 18px;padding-bottom: 32px;z-index: 5;opacity: 0.9;pointer-events: none}
 .searched-wrap .searched-list-wrap .text-input {width: 100%;height: 10%;pointer-events: auto;}
 .searched-wrap .searched-list-wrap .text-input__header {display: flex;justify-content: space-between;align-items: center;width: 100%;padding: 6px;font-size: 16px;background-color: var(--color-others-header);pointer-events: auto;}
 .searched-wrap .searched-list-wrap .text-input__header::after {content: attr(-data-after);}
@@ -31,19 +36,21 @@ a:hover {color: inherit;}
 .searched-wrap .searched-list-wrap .text-input__body button {padding: 4px;font-size: 20px;color: rgba(112, 108, 108, 0.322);border: 1px solid black;background-color: white;cursor: pointer;}
 .searched-wrap .searched-list-wrap .text-input__body button i {font-size: 24px;color: var(--color-main-header);}
 .searched-wrap .searched-list-wrap .text-input__body input[type=text] {font-size: 12px;font-weight: 700;border-radius: 0;border: 1px solid black;border-right: none;}
-.searched-wrap .searched-list-wrap .searched-lists {display: flex;align-items: center;flex-direction: column;height: 0;margin-top: 12px;background-color:rgba(255, 255, 255, 0.959);transition: ease-in-out 0.5s;pointer-events: auto;overflow: auto;}
+.searched-wrap .searched-list-wrap .searched-lists {display: flex;align-items: center;flex-direction: column;height: 0;margin-top: 4px;background-color:rgba(255, 255, 255, 0.959);transition: ease-in-out 0.5s;pointer-events: auto;overflow: auto;}
+.searched-wrap .searched-list-wrap .searched-lists .default {display: flex; align-items: center; height: 100%;}
 .searched-wrap .searched-list-wrap .open-lists {height: 85%;}
 .searched-wrap .searched-list-wrap .searched-lists__item {display: flex;min-height: 100px;margin: 8px;background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);}
 .searched-wrap .searched-list-wrap .item-img {flex: 1;}
 .searched-wrap .searched-list-wrap .item-img img {width: 100%;height: 100%;}
 .searched-wrap .searched-list-wrap .item-content {display: flex;flex-direction: column;justify-content: space-between;flex: 2;padding: 4px;}
 .searched-wrap .searched-list-wrap .item-content__top {display: flex;justify-content: space-between; font-size: 1em; font-weight: 600;}
-.searched-wrap .searched-list-wrap .searched-lists__item .icon-wrap {min-width: 65px;font-size: 10px;cursor: pointer;}
+.searched-wrap .searched-list-wrap .searched-lists__item .icon-wrap {min-width: 65px;text-align: center; font-size: 10px;cursor: pointer;}
 .searched-wrap .searched-list-wrap .searched-lists__item .contents-icon {color: white;transition: all 0.3s;}
 .searched-wrap .searched-list-wrap .searched-lists__item .contents-icon:hover {color: var(--color-main-header)}
 .searched-wrap .searched-list-wrap .item-content__body {font-size: 0.7em;}
 .searched-wrap .searched-list-wrap .item-content__body .item-tel::before {content: '[전화번호]';}
 .searched-wrap .searched-list-wrap .item-content__body .item-addr::before {content: '[주소]';}
+.review-total {font-size: 0.4em;text-align: center}
 
 /* 페이징 */
 .pagination-wrap .pagination {cursor: pointer;}
@@ -57,13 +64,17 @@ a:hover {color: inherit;}
 .my-location-marker {color: var(--color-others-header);}
 .infoWindow {padding: 2px;font-size: 14px;}
 
+/* 별점 */
+.rating-score {width:65px;margin: 0 auto;text-align: center; font-size: 12px; pointer-events: none}
+.rating-score .outer-star {position: relative; text-align: start; color: black;}
+.rating-score .inner-star {position: absolute; text-align: start; left: 0;width: 0; color: gold;overflow: hidden;}
+
 /* 지도 유틸기능 */
-.map-util {display: flex;align-items: center;justify-content: space-between;position: absolute;left: 0;bottom: 535px;width: 350px;height: 40px;padding: 0 10px; font-size: 14px;z-index: 5;transition: ease-in-out 0.5s;}
-.map-util .util {margin: 0 8px;padding: 2px 18px;cursor: pointer;}
+.map-util {display: flex;align-items: center;justify-content: space-between;margin-top: 8px; width: 100%;font-size: 14px;z-index: 5;transition: ease-in-out 0.5s;pointer-events: auto}
+.map-util .util {padding: 2px 18px;cursor: pointer;}
 .map-util .open-list {background-color: var(--color-main-header);}
 .map-util .my-location {display: flex;align-items: center;background-color: var(--color-main-header);}
 .map-util .fa-location-arrow {color: white;}
-.open {bottom: 10px;}
 
 /* 풋터 */
 #footer {padding: 20px;}

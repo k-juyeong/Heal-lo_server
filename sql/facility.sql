@@ -44,12 +44,15 @@ where fcname = '운동시설bb1'
 delete facility where fcno = 1;
 
 -- 운동시설 조건검색
-select fc.fcno,fc.fcname,fc.fctel,fc.fclat,fc.fclng,fc.fcaddr,fc.fcimg
-from (select rownum rowno, facility.* from facility
-      where fcname like '%%'
-        and fcaddr like '울산광역시%'
-        and fctype like '%당구장업%') fc
-where fc.rowno > 0 and fc.rowno <= 10;
+select fc3.*
+from (select rownum rowno, fc2.*
+      from (select fc.*,(select count(*) from review where fcno = fc.fcno) rvtotal
+            from facility fc
+            where fcname like '%%'
+              and fcaddr like '경기도%'
+              and fctype like '%당구장업%'
+            order by rvtotal desc) fc2) fc3
+where fc3.rowno > 0 and fc3.rowno <= 10;
 
 -- 운동시설 total count
 select count(*) fctotal from facility
