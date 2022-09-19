@@ -1,19 +1,11 @@
 import makeElements from '../module/create-elememt.js'
 
-//dom접근
-const $changeScore = document.querySelector('.change-score');
-const $inputImg = document.querySelector('.input-img');
-const $previewWrap = document.querySelector('.preview-wrap');
-const $RegBtn = document.querySelector('.btn-reg');
-const $btnCancel = document.querySelector('.btn-cancel');
-const $textarea = document.querySelector('.textarea');
-const $errorClass = document.querySelector('.error-class');
-
+//전역변수
 let ratingScore = 5;
 let uploadImgs = [];
 
 //별점 변경 이벤트
-$changeScore.addEventListener('input',({target}) => {
+document.querySelector('.change-score').addEventListener('input',({target}) => {
     if(target.value < 0.5) {
         target.value = 0.5;
         return;
@@ -26,7 +18,7 @@ $changeScore.addEventListener('input',({target}) => {
 })
 
 //이미지 업로드 이벤트
-$inputImg.addEventListener('change',({target}) => {
+document.querySelector('.input-img').addEventListener('change',({target}) => {
     const files = target.files;
     if(!target.files && !target.files[0]) return;
     const notSupportFile = [...files].find(ele => ele.type != 'image/png' && ele.type != 'image/jpeg');
@@ -48,7 +40,7 @@ $inputImg.addEventListener('change',({target}) => {
             makeElements('div',{class : 'preview-img', [`data-img-name`] : ele.name},
                 makeElements('img',{src : `${e.target.result}`}),
                 makeElements('button',{class : 'fa-solid fa-xmark'}));
-                $previewWrap.appendChild(previewDiv);
+            document.querySelector('.preview-wrap').appendChild(previewDiv);
 
             previewDiv.querySelector('button').addEventListener('click',(e)=> {
                 const idx = uploadImgs.findIndex(ele => ele.name == previewDiv.dataset.imgName);
@@ -62,8 +54,11 @@ $inputImg.addEventListener('change',({target}) => {
 })
 
 //등록 버튼 이벤트
-$RegBtn.addEventListener('click', () => {
+document.querySelector('.btn-reg').addEventListener('click', () => {
     const fcno = document.querySelector('.facility-card').dataset.fcno;
+    const $textarea = document.querySelector('.textarea');
+    const $errorClass = document.querySelector('.error-class');
+
     const formData = new FormData();
     formData.append('rvscore', ratingScore);
     formData.append('rvcontents', $textarea.value);
@@ -97,7 +92,7 @@ $RegBtn.addEventListener('click', () => {
 });
 
 //취소버튼 이벤트
-$btnCancel.addEventListener('click',() => {
+document.querySelector('.btn-cancel').addEventListener('click',() => {
     const fcno = document.querySelector('.facility-card').dataset.fcno;
     location.href = `/facilities/${fcno}`;
 })

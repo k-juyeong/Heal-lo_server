@@ -1,4 +1,4 @@
-package com.kh.heallo;
+package com.kh.heallo.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

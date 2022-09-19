@@ -2,7 +2,7 @@ import {categoryLoca_lv1, categoryLoca_lv2, category_fctype} from "../module/cat
 import makeElements from "../module/create-elememt.js";
 import MapUtile from "../module/naver-map-api.js";
 
-// dom접근
+//DOM
 const $cgListsByLoca1 = document.querySelector('.search__cg-wrap .search__cg-loca1');
 const $cgListsByLoca2 = document.querySelector('.search__cg-wrap .search__cg-loca2');
 const $cgListsByFacility = document.querySelector('.search__cg-wrap .search__cg-fa');
@@ -23,12 +23,7 @@ let selectedTypeCgSave = '';
 let searchedTextSave = ''; 
 
 // 네이버 지도 생성
-const mapOptions = {
-  center: new naver.maps.LatLng(35.5352, 129.3109),
-  zoom: 8
-};
-const map = new naver.maps.Map('map', mapOptions);
-const mapUtil = new MapUtile(map);
+const mapUtil = createMap();
 
 // 지역 카테고리 대분류 랜더링 
 RenderingUlTagLv1($cgListsByLoca1,categoryLoca_lv1);
@@ -40,13 +35,15 @@ RenderingUlTagLv1($cgListsByFacility,category_fctype);
 $cgListsByLoca1.addEventListener('click', ({target,currentTarget}) => {
   if(target.tagName != 'P') return;
 
-  //카테고리 생성 로직
-  $cgListsByLoca2.innerHTML = '';
-  RenderingUlTagLv2($cgListsByLoca2,categoryLoca_lv2[`${target.id}`], target.id);
-  $cgListsByLoca2.style.top = $cgListsByLoca1.children[0].offsetTop + $cgListsByLoca1.offsetHeight + 'px';
-  $cgListsByLoca2.style.visibility = 'visible';
+  //중분류 삭제
+  deleteLv2()
 
-  //그전 중분류 삭제
+  //카테고리 생성 로직
+
+  //중분류 생성
+  RenderingUlTagLv2($cgListsByLoca2,categoryLoca_lv2[`${target.id}`], target.id);
+
+  //중분류 외 클릭 이벤트
   document.body.addEventListener('click', ({target}) => {
     if (target.closest('.search__cg-wrap .search__cg-loca2')) return;
     else deleteLv2();
@@ -61,44 +58,37 @@ $cgListsByLoca2.addEventListener('click',({target,currentTarget}) => {
   selectedCgLocaSave.level1 = target.classList[0];
   selectedCgLocaSave.level2 = target.textContent;
 
-  const selectedLv1 = $cgListsByLoca1.querySelector(`#${selectedCgLocaSave.level1}`)
+  //선택되어있는 대분류 카테고리
+  const selectedLv1 = $cgListsByLoca1.querySelector(`#${selectedCgLocaSave.level1}`);
 
-  //기존 lv2태그 스타일 제거
-  const lv2Location = currentTarget.querySelectorAll('li p');
-  [...lv2Location].forEach(ele => {
-    ele.style.backgroundColor = '#ffffff99';
-  });
+  //기존 lv2 카테고리 스타일 제거
+  [...$cgListsByLoca2.querySelectorAll('li p')].forEach(ele => ele.style.backgroundColor = '#ffffff99');
 
-  //기존 lv1 지역카테고리 스타일 제거
-  [...$cgListsByLoca1.querySelectorAll('p')].forEach(ele => {
-    ele.style.backgroundColor = '#ffffff99';
-  })
+  //기존 lv1 카테고리 스타일 제거
+  [...$cgListsByLoca1.querySelectorAll('p')].forEach(ele => ele.style.backgroundColor = '#ffffff99');
 
   //lv1,lv2 지역카테고리 스타일 적용
-  selectedLv1.style.backgroundColor = 'var(--color-others-header)';
-  target.style.backgroundColor = 'var(--color-others-header)';
+  selectedLv1
+      .style.backgroundColor = 'var(--color-others-header)';
+  target
+      .style.backgroundColor = 'var(--color-others-header)';
 
   //중분류 삭제
   deleteLv2();
 
   //툴팁생성
-  [...document.querySelectorAll('.location-tooltip')].forEach(ele => ele.style.opacity = '0');
-  const tooltip = selectedLv1.previousElementSibling;
-  tooltip.style.opacity = '1';
-  tooltip.querySelector('i').textContent = selectedCgLocaSave.level2;
-  tooltip.style.width = `${selectedCgLocaSave.level2.length * 14}px`;
+  createTooltip(selectedLv1);
 });
 
-//운동 카테고리 클릭 이벤트
-$cgListsByFacility.addEventListener('click',({target,currentTarget}) => {
+// 운동 카테고리 클릭 이벤트
+$cgListsByFacility.addEventListener('click',({target}) => {
   if(target.tagName != 'P') return;
 
   //값 저장
   selectedTypeCgSave = target.id;
 
   //그전 카테고리 스타일 제거
-  const category = currentTarget.querySelectorAll('li p');
-  [...category].forEach(ele =>ele.style.backgroundColor = '#ffffff99');
+  [...$cgListsByFacility.querySelectorAll('li p')].forEach(ele => ele.style.backgroundColor = '#ffffff99');
 
   //카테고리 스타일 적용
   target.style.backgroundColor = 'var(--color-others-header)';
@@ -109,8 +99,26 @@ $openList.addEventListener('click',() => {
   actionOpenMenu();
 })
 
-//검색버튼 클릭이벤트
-document.querySelector('.btn-search').addEventListener('click', () => search());
+// 검색버튼 클릭이벤트
+document.querySelector('.btn-search').addEventListener('click', () => {
+
+  //상호명 검색어 저장
+  const $inputByText = document.getElementById('textSearchInput');
+  searchedTextSave = $inputByText.value.trim('');
+  $inputByText.value = '';
+
+  //검색 가능상태 체크
+  if(!checkIsPossible()) return;
+
+  //임계상태 변경
+  requstStatus = false;
+
+  //요청 파라미터 생성
+  const requestPram = createRequestPram();
+
+  //검색
+  search(requestPram)
+});
 
 //내 위치 클릭 이벤트 (내 위치 이벤트)
 document.querySelector('.my-location').addEventListener('click', () => {
@@ -126,7 +134,7 @@ document.querySelector('.my-location').addEventListener('click', () => {
   );
 });
 
-// 검색 이벤트 (데이터 통신이 이루어지는 이벤트)
+//input 검색버튼 클릭 이벤트
 document.querySelector('.text-input__body').addEventListener('submit',(e) => {
   e.preventDefault();
 
@@ -135,11 +143,32 @@ document.querySelector('.text-input__body').addEventListener('submit',(e) => {
   searchedTextSave = $inputByText.value.trim('');
   $inputByText.value = '';
 
+  //검색 가능상태 체크
+  if(!checkIsPossible()) return;
+
+  //임계상태 변경
+  requstStatus = false;
+
+  //요청 파라미터 생성
+  const requestPram = createRequestPram();
+
   //검색시작
-  search();
+  search(requestPram);
 })
 
-//대분류 카테고리 ul태그 랜더링 함수 (ul > li > p)
+/** 함수 **/
+
+//지도 생성
+function createMap() {
+  const mapOptions = {
+    center: new naver.maps.LatLng(35.5352, 129.3109),
+    zoom: 8
+  };
+  const map = new naver.maps.Map('map', mapOptions);
+  return new MapUtile(map);
+}
+
+//대분류 카테고리 랜더링
 function RenderingUlTagLv1(ulTag,arr) {
   arr.forEach(ele => {
     ulTag.appendChild(
@@ -152,9 +181,9 @@ function RenderingUlTagLv1(ulTag,arr) {
   })
 }
 
-//중분류 카테고리 ul태그 랜더링 함수 (ul > li > p)
+//중분류 카테고리 랜더링
 function RenderingUlTagLv2(ulTag,arr,parentLv) {
-  arr.forEach((ele,idx) => {
+  arr.forEach((ele) => {
     const pTag = document.createElement('p');
     pTag.textContent = ele;
     pTag.setAttribute('class',parentLv);
@@ -167,16 +196,33 @@ function RenderingUlTagLv2(ulTag,arr,parentLv) {
       pTag.style.backgroundColor = 'var(--color-others-header)';
     }
   })
+
+  createLv2();
 }
 
-//중분류 카테고리 삭제 함수
+//중분류 카테고리 삭제
 function deleteLv2() {
   $cgListsByLoca2.style.top = 0;
   $cgListsByLoca2.style.visibility ='hidden';
   $cgListsByLoca2.innerHTML = '';
 }
 
-// 메뉴 오픈 함수
+//중분류 카테고리 생성
+function createLv2() {
+  $cgListsByLoca2.style.top = $cgListsByLoca1.children[0].offsetTop + $cgListsByLoca1.offsetHeight + 'px';
+  $cgListsByLoca2.style.visibility = 'visible';
+}
+
+//툴팁생성
+function createTooltip(selectedLv1) {
+  [...document.querySelectorAll('.location-tooltip')].forEach(ele => ele.style.opacity = '0');
+  const tooltip = selectedLv1.previousElementSibling;
+  tooltip.style.opacity = '1';
+  tooltip.querySelector('i').textContent = selectedCgLocaSave.level2;
+  tooltip.style.width = `${selectedCgLocaSave.level2.length * 14}px`;
+}
+
+//메뉴 오픈
 function actionOpenMenu() {
   const $mapUtil = document.querySelector('.map-util');
   $mapUtil.classList.toggle('open');
@@ -195,8 +241,9 @@ function actionOpenMenu() {
   },300)
 }
 
-//운동시설 항목 생성 함수
+//운동시설 항목 생성
 function createList(itemData) {
+
   const listWrap =
       makeElements('div', {class: 'searched-lists__item'},
           makeElements('div', {class: 'item-img'},
@@ -220,7 +267,7 @@ function createList(itemData) {
                   makeElements('p', {class: 'item-sub item-tel'}, itemData.fctel),
                   makeElements('p', {class: 'item-sub item-addr'},itemData.fcaddr))));
 
-  console.log(listWrap.querySelector('.inner-star'))
+  //별점 설정
   listWrap.querySelector('.inner-star').style.width = itemData.fcscore*20 + '%';
 
   //맵 유틸기능(지도이동)
@@ -236,25 +283,37 @@ function createList(itemData) {
   return listWrap;
 }
 
-//검색 함수
-function search() {
-  const ispossible = selectedCgLocaSave.level1 != '' && selectedTypeCgSave != '';
+//검색 가능상태 체크
+function checkIsPossible() {
+  const isPossible = selectedCgLocaSave.level1 != '' && selectedTypeCgSave != '';
   if(!requstStatus) {
     alert("검색어를 조회하고 있습니다");
     return;
-  } else if (!ispossible) {
+  } else if (!isPossible) {
     alert("카테고리를 선택해주세요");
     return;
   }
+  return true;
+}
 
-  requstStatus = false;
+//검색 요청 파라미터 생성
+function createRequestPram() {
+  const pram = {
+    text : searchedTextSave,
+    type : selectedTypeCgSave,
+    loca : selectedCgLocaSave.level2 == '전체' ?
+        selectedCgLocaSave.level1 : `${selectedCgLocaSave.level1} ${selectedCgLocaSave.level2}`,
+    pageNo : currentPage,
+    numOfRow : onePageNum
+  }
 
-  const text = searchedTextSave;
-  const type = selectedTypeCgSave;
-  const loca = selectedCgLocaSave.level2 == '전체' ? selectedCgLocaSave.level1 : `${selectedCgLocaSave.level1} ${selectedCgLocaSave.level2}`;
+  return pram;
+}
 
-  // 검색 결과 수 조회
-  const queryPram = `?fcaddr=${loca}&fctype=${type}&fcname=${text}`;
+//결과 수 검색
+function search(requestPram) {
+  const queryPram = `?fcaddr=${requestPram.loca}&fctype=${requestPram.type}&fcname=${requestPram.text}`;
+
   fetch('/facilities/total' + queryPram, {
     method: 'GET'
   })
@@ -276,12 +335,16 @@ function search() {
         //총 검색 결과 표시
         document.querySelector('.result-count').textContent = jsonData.data.totalCount;
 
-        //페이지네이션 생성
+        //전체 결과 수 조회
         const totalPage = Math.ceil(jsonData.data.totalCount / onePageNum);
+
+        //페이지네이션 생성
         const paginationWrap = createPagination(totalPage);
+
+        //페이지네이션 추가
         $searchedLists.appendChild(paginationWrap);
 
-        //목록 on
+        //목록 활성화
         if (!$searchedLists.classList.contains('open-lists')) {
           actionOpenMenu();
         }
@@ -289,13 +352,53 @@ function search() {
       .catch(error => console.log(error))
 }
 
-//페이지네이션 생성 함수
+//페이징 검색
+function searchByPage(requestPram) {
+  const queryPram = `?fcaddr=${requestPram.loca}&fctype=${requestPram.type}&fcname=${requestPram.text}&pageNo=${requestPram.pageNo}&numOfRow=${requestPram.numOfRow}`;
+
+  fetch('/facilities/list' + queryPram, {
+    method : 'GET'
+  })
+      .then(response => response.json())
+      .then(jsonData => {
+        requstStatus = true;
+
+        //이전 목록들 초기화
+        [...$searchedLists.children].filter(ele => ele.classList.contains('searched-lists__item'))
+            .forEach(ele => ele.remove());
+
+        //새 목록 생성
+        jsonData.data.facilities
+            .reverse()
+            .forEach(ele => $searchedLists.prepend(createList(ele)));
+        $searchedLists.scrollTop = 0;
+
+        //운동시설 마커 생성
+        mapUtil.makeMarkers(jsonData.data.facilities);
+
+      })
+      .catch(error => console.log(error));
+}
+
+//페이지 태그 생성
+function createPagTag(text) {
+  const page = document.createElement('li');
+  page.setAttribute('class', 'page-item');
+  const a = document.createElement('a');
+  a.setAttribute('class', 'page-link shadow-none');
+  a.textContent = text;
+  page.appendChild(a);
+
+  return {page : page, link : a};
+}
+
+//페이지네이션 생성
 function createPagination(totalPage) {
 
   //이전 페이지네이션 삭제
   $searchedLists.querySelector('.pagination-wrap')?.remove();
 
-  //페이지네이션 wrap생성
+  //페이지네이션 객체
   const paginationLis = [];
   const paginationWrap = document.createElement('li');
   const pagination = document.createElement('ul');
@@ -304,98 +407,67 @@ function createPagination(totalPage) {
   pagination.setAttribute('class', 'pagination pagination-sm');
   paginationWrap.appendChild(pagination);
 
-  //페이지 생성
+  //페이지 설정
   let pageLv = Math.ceil(currentPage/limitPage);
   let startIdx = currentPage;
   let lastIdx = currentPage + limitPage;
 
+  //페이지 생성
   for (startIdx; startIdx < lastIdx && startIdx <= totalPage; startIdx++) {
-    const page = document.createElement('li');
-    page.setAttribute('class', 'page-item');
-    const a = document.createElement('a');
-    a.setAttribute('class', 'page-link shadow-none');
-    a.textContent = startIdx;
+
+    //페이지 태그 생성
+    const {page,link} = createPagTag(startIdx);
+    paginationLis.push(page);
 
     // 페이지 클릭 이벤트
-    a.addEventListener('click', ({target}) => {
+    link.addEventListener('click', ({target}) => {
+
+      //임계 설정
       requstStatus = false;
-      currentPage = parseInt(target.textContent);  //현재 페이지 저장
 
-      const loca = selectedCgLocaSave.level2 == '전체' ? selectedCgLocaSave.level1 : `${selectedCgLocaSave.level1} ${selectedCgLocaSave.level2}`;
-      const type = selectedTypeCgSave;
-      const text = searchedTextSave;
-      const pageNO = currentPage;
-      const numOfRow = onePageNum;
+      //현재 페이지 저장
+      currentPage = parseInt(target.textContent);
 
-      //검색 결과 조회
-      const queryPram = `?fcaddr=${loca}&fctype=${type}&fcname=${text}&pageNo=${pageNO}&numOfRow=${numOfRow}`;
-      fetch('/facilities/list' + queryPram, {
-        method : 'GET'
-      })
-          .then(response => response.json())
-          .then(jsonData => {
-            requstStatus = true;
+      //요청 파라미터 생성
+      const requestPram = createRequestPram();
 
-            //이전 목록들 초기화
-            [...$searchedLists.children].filter(ele => ele.classList.contains('searched-lists__item'))
-                .forEach(ele => ele.remove());
+      //페이징 검색
+      searchByPage(requestPram);
 
-            //새 목록 생성
-            jsonData.data.facilities
-                .reverse()
-                .forEach(ele => $searchedLists.prepend(createList(ele)));
-            $searchedLists.scrollTop = 0;
-
-            //운동시설 마커 생성
-            mapUtil.makeMarkers(jsonData.data.facilities);
-
-            //클릭 표시
-            [...$searchedLists.querySelectorAll('a')].forEach(ele => ele.classList.remove('on'));
-            target.classList.add('on');
-
-          })
-          .catch(error => console.log(error))
+      //클릭 표시
+      [...paginationWrap.querySelectorAll('a')]
+          .forEach(ele => ele.classList.remove('on'));
+      target.classList.add('on');
     });
 
-    page.appendChild(a);
-    paginationLis.push(page);
-    a.textContent == currentPage && a.click();
+    //페이징 첫페이지 클릭
+    link.textContent == currentPage && link.click();
   }
 
-  //이전 페이지 생성
+  //이전버튼 생성
   if(currentPage - limitPage > 0) {
-    const page = document.createElement('li');
-    page.setAttribute('class', 'page-item');
-    const a = document.createElement('a');
-    a.setAttribute('class', 'page-link shadow-none');
-    a.textContent = '이전';
 
-    page.appendChild(a);
+    //페이지 태그 생성
+    const {page,link} = createPagTag('이전');
     paginationLis.unshift(page);
 
-    a.addEventListener('click', e => {
-      console.log(currentPage)
-
+    //이전버튼 클릭 이벤트
+    link.addEventListener('click', e => {
       currentPage = limitPage*pageLv - (limitPage*2-1);
       const paginationWrap = createPagination(totalPage);
       $searchedLists.appendChild(paginationWrap);
     })
   }
 
-  //다음 페이지 생성
+  //다음버튼 생성
   if(pageLv*limitPage < totalPage) {
-    const page = document.createElement('li');
-    page.setAttribute('class', 'page-item');
-    const a = document.createElement('a');
-    a.setAttribute('class', 'page-link shadow-none');
-    a.textContent = '다음';
 
-    page.appendChild(a);
+    //페이지 태그 생성
+    const {page,link} = createPagTag('다음');
     paginationLis.push(page);
 
-    a.addEventListener('click', e => {
-      console.log(limitPage)
-
+    //다음버튼 클릭 이벤트
+    link.addEventListener('click', e => {
       currentPage = limitPage*pageLv + 1;
       const paginationWrap = createPagination(totalPage);
       $searchedLists.appendChild(paginationWrap);

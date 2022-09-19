@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 on</title>
+</head>
+<body>
+    <!-- 탑 메뉴 로그아웃 상태-->
+    <div class="header__menu-top" th:fragment="loginOffTopMenu">
+        <span class="header__my-menu"><a href="#">로그인</a></span>
+        <span class="header__my-menu"><a href="#">회원가입</a></span>
+        <span class="header__my-menu"><a href="#">ID/PW 찾기</a></span>
+    </div>
+
+    <!-- 탑 메뉴 로그인 상태-->
+    <div class="header__menu-top" th:fragment="loginOnTopMenu">
+        <span class="header__my-menu"><a href="#">로그아웃</a></span>
+        <span class="header__my-menu"><a href="#">마이페이지</a></span>
+        <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
+    </div>
+</body>
+</html>

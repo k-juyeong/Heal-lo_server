@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
-<script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="../../static/css/template/common.css" th:href="@{/css/template/common.css}">
-<link rel="stylesheet" href="../../static/css/template/layout-sub.css" th:href="@{/css/template/layout-sub.css}">
+<title>리뷰수정</title>
 <link rel="stylesheet" href="../../static/css/review/review.css" th:href="@{/css/review/review.css}">
 </head>
 <body>
@@ -106,8 +103,8 @@
         </div>
     </footer>
     </div>
+
     <script th:inline="javascript">const $review = [[${reviewForm}]]</script>
-    <script src="../../static/js/template/layout-sub.js" th:src="@{/js/template/layout-sub.js}"></script>
     <script type="module" src="../../static/js/review/review-update.js" th:src="@{/js/review/review-update.js}"></script>
 </body>
 </html>

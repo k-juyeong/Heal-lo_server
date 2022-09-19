@@ -1,23 +1,17 @@
 package com.kh.heallo.web.facility.controller;
 
 import com.kh.heallo.domain.facility.Facility;
-import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
-import com.kh.heallo.web.ResponseMsg;
-import com.kh.heallo.web.StatusCode;
-import com.kh.heallo.web.facility.dto.FacilityCriteriaDto;
 import com.kh.heallo.web.facility.dto.FacilityDetail;
-import com.kh.heallo.web.utility.DtoModifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/facilities")
@@ -38,7 +32,7 @@ public class FacilityController {
 
     //운동시설 검색페이지
     @GetMapping
-    public String searchView() {
+    public String searchView(HttpServletRequest request) {
 
         return "facility/search-facility";
     }

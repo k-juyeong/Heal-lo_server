@@ -1,4 +1,4 @@
-package com.kh.heallo.web;
+package com.kh.heallo.web.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

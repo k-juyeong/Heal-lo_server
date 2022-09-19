@@ -1,4 +1,4 @@
-const menuCategory = ['검색', '게시판', '캘린더']
+const menu = ['검색', '게시판', '캘린더']
 const menus = document.querySelectorAll('.header__sitemenu .header__site-icon');
 let sitemenuInfo = document.getElementById('sitemenuInfo');
 const sitemenuContain = document.getElementById("siteMenuContain");
@@ -15,7 +15,7 @@ sitemenuContain.addEventListener('mouseout',(e) => iconMouseoutEvent(e))
 
 function menuCategoryInit() {
   for(let i = 0; i<menus.length; i++) {
-    menus[i].category = menuCategory[i];  
+    menus[i].category = menu[i];
   } 
 }
 

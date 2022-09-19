@@ -1,20 +1,14 @@
 import makeElements from '../module/create-elememt.js'
 
-//dom접근
-const $changeScore = document.querySelector('.change-score');
-const $inputImg = document.querySelector('.input-img');
-const $previewWrap = document.querySelector('.preview-wrap');
-const $updateBtn = document.querySelector('.btn-update');
-const $btnCancel = document.querySelector('.btn-cancel');
-const $textarea = document.querySelector('.textarea');
-const $errorClass = document.querySelector('.error-class');
-
+//전역변수
 let ratingScore = $review.rvscore;
 const deleteImages = [];
 const uploadImgs = [];
 
 //수정 전 파일 프리뷰 생성
 (function previewDivRender() {
+    const $previewWrap = document.querySelector('.preview-wrap');
+
     $review.imageFiles.forEach(file => {
         const previewDiv =
             makeElements('div', {class: 'preview-img', [`data-img-name`]: file.uffname},
@@ -30,7 +24,7 @@ const uploadImgs = [];
 })();
 
 //별점 변경 이벤트
-$changeScore.addEventListener('input',({target}) => {
+document.querySelector('.change-score').addEventListener('input',({target}) => {
     if(target.value < 0.5) {
         target.value = 0.5;
         return;
@@ -43,7 +37,9 @@ $changeScore.addEventListener('input',({target}) => {
 })
 
 //이미지 업로드 이벤트
-$inputImg.addEventListener('change',({target}) => {
+document.querySelector('.input-img').addEventListener('change',({target}) => {
+    const $previewWrap = document.querySelector('.preview-wrap');
+
     const files = target.files;
     if(!target.files && !target.files[0]) return;
     const notSupportFile = [...files].find(ele => ele.type != 'image/png' && ele.type != 'image/jpeg');
@@ -79,7 +75,10 @@ $inputImg.addEventListener('change',({target}) => {
 })
 
 //수정 버튼 이벤트
-$updateBtn.addEventListener('click', () => {
+document.querySelector('.btn-update').addEventListener('click', () => {
+    const $textarea = document.querySelector('.textarea');
+    const $errorClass = document.querySelector('.error-class');
+
     const formData = new FormData();
     formData.append('rvscore', ratingScore);
     formData.append('rvcontents', $textarea.value);
@@ -115,7 +114,7 @@ $updateBtn.addEventListener('click', () => {
 });
 
 //취소버튼 이벤트
-$btnCancel.addEventListener('click',() => {
+document.querySelector('.btn-cancel').addEventListener('click',() => {
     const fcno = document.querySelector('.facility-card').dataset.fcno;
     location.href = `/facilities/${fcno}`;
 })

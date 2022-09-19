@@ -1,13 +1,15 @@
 import makeElements from "../module/create-elememt.js";
 
-//dom 접근
+//DOM
 const $reviewLists = document.querySelector('.review-lists');
 const $modal = document.getElementById('modal');
 const $writeBtn = document.querySelector('.review-write');
 const $orderBySelect = document.querySelector('.order-by-selector');
 
-//다용도 전역변수
+//페이지 첫 로딩 상태 값
 let isFirst = true;
+
+//운동시설 번호 전역변수
 const fcno = document.querySelector('.facility').dataset.fcno;
 
 // 페이지네이션 설정
@@ -15,21 +17,19 @@ const limitPage = 3;     //  페이지 최대 생성 수
 const onePageNum = 10;    //  1페이지에 최대 목록 수
 let currentPage = 1;      //  현재 페이지
 
-//초기 페이지 셋팅
+//초기 페이지 세팅
 reviewListRequest();
-document.querySelector('.pagination-wrap').remove();
 
-//리뷰작성 페이지 이동
-$writeBtn.addEventListener('click',e => {
-    location.href = `/reviews/${fcno}/add`;
-})
+//작성버튼 클릭이벤트
+$writeBtn.addEventListener('click',e => location.href = `/reviews/${fcno}/add`)
 
+//리뷰 정렬기준 선택 이벤트
 $orderBySelect.addEventListener('change',() => reviewListRequest());
 
-//비동기 통신 함수
-function reviewListRequest() {
+/** 함수 **/
 
-    //운동시설 평균
+//운동시설 별점세팅
+function getFacilityScore() {
     fetch(`/facilities/${fcno}/score`,{
         method : 'GET'
     })
@@ -43,36 +43,95 @@ function reviewListRequest() {
                 .style.width = jsonData.data.fcScore * 20 + '%'
         })
         .catch(error => console.log(error))
+}
 
-    //검색 결과 수
+//리뷰리스트 기본 메세지
+function createDefault() {
+    return (
+        `
+        <div class="empty-message">
+            <p>리뷰가 없습니다. 리뷰를 달아주세요!</p>
+        </div>
+        `
+    )
+}
+
+//리뷰 검색
+function reviewListRequest() {
+
+    //검색 결과 수 조회
     fetch(`/reviews/${fcno}/total`, {
         method: 'GET'
     })
         .then(response => response.json())
         .then(jsonData => {
             currentPage = 1;
-
-            //검색결과 체크
-            if (jsonData.data.totalCount == 0) return;
+            //운동시설 별점 세팅
+            getFacilityScore();
 
             //기존노드 삭제
             [...$reviewLists.children].forEach(ele => ele.remove());
-            $reviewLists.nextElementSibling?.remove();
+            document.querySelector('.pagination-wrap')?.remove();
 
             //총 검색 결과 표시
             const $resultCount = document.querySelector('.review-cnt')
             $resultCount.textContent = jsonData.data.totalCount;
 
+            //검색결과 0이면 기본 메세지
+            if (jsonData.data.totalCount == 0) {
+                $reviewLists.innerHTML = createDefault();
+                return;
+            }
+
             //페이지네이션 생성
             const totalPage = Math.ceil(jsonData.data.totalCount / onePageNum);
             const paginationWrap = createPagination(totalPage);
             $reviewLists.after(paginationWrap);
+
         })
         .catch(error => console.log(error));
 }
 
-//리뷰 랜더링 함수
+//페이징 검색
+function searchByPage(queryPram) {
+    fetch(`/reviews/${fcno}/list` + queryPram,{
+        method : 'GET'
+    })
+        .then(response => response.json())
+        .then(jsonData => {
+
+            // 이전 목록들 초기화
+            [...$reviewLists.children].filter(ele => ele.classList.contains('review-card'))
+                .forEach(ele => ele.remove());
+
+            //새 목록 생성
+            jsonData.data.reviews.forEach(ele => $reviewLists.appendChild(reviewListRender(ele)));
+
+        })
+        .catch(error => console.log(error))
+}
+
+//리뷰 삭제
+function deleteReview(rvno) {
+    fetch(`/reviews/${rvno}`, {
+        method: `DELETE`
+    })
+        .then(response => response.json())
+        .then(jsonData => {
+            console.log('재랜더링')
+            reviewListRequest()})
+        .catch(error => console.log(error));
+}
+
+//리뷰 수정페이지
+function toUpdatePage(rvno) {
+    window.location = `/reviews/${rvno}/edit`
+}
+
+//리뷰 생성
 function reviewListRender(data) {
+
+    //리뷰 본문 미리보기 생성
     const previewContents = data.rvcontents.substr(0,200) + '...';
     const isMoreview = data.rvcontents.length > 200;
 
@@ -107,37 +166,44 @@ function reviewListRender(data) {
     });
 
     //이미지 미리보기 생성
-    data.imageFiles?.forEach(ele => {
-        const img =  document.createElement('img');
-        img.setAttribute('src',`/images/${ele.ufsname}`);
-        img.setAttribute('data-bs-toggle','modal');
-        img.setAttribute('data-bs-target','#modal');
-        img.style.cursor = 'pointer';
-        reviewCard.querySelector('.preview-wrap').appendChild(img);
+    data.imageFiles
+        ?.forEach(ele => {
+            const img =  document.createElement('img');
+            img.setAttribute('src',`/images/${ele.ufsname}`);
+            img.setAttribute('data-bs-toggle','modal');
+            img.setAttribute('data-bs-target','#modal');
+            img.style.cursor = 'pointer';
+            reviewCard.querySelector('.preview-wrap').appendChild(img);
 
-        img.addEventListener('click',e => {
-            $modal.querySelector('img').src = e.target.src;
-        })
-    });
+            img.addEventListener('click',e => {
+                $modal.querySelector('img').src = e.target.src;
+            });
+        });
 
     //리뷰 수정버튼 이벤트
-    reviewCard.querySelector('.review-update')?.addEventListener('click',ele => {
-        window.location = `/reviews/${data.rvno}/edit`;
-    })
+    reviewCard.querySelector('.review-update')
+        ?.addEventListener('click',() => toUpdatePage(data.rvno));
 
     //리뷰 삭제버튼 이벤트
-    reviewCard.querySelector('.review-delete')?.addEventListener('click',ele => {
-        fetch(`/reviews/${data.rvno}`, {
-            method: `DELETE`
-        })
-            .then(response => response.json())
-            .then(jsonData => reviewListRequest())
-            .catch(error => console.log(error));
-    })
+    reviewCard.querySelector('.review-delete')
+        ?.addEventListener('click', () => deleteReview(data.rvno));
+
     return reviewCard;
 }
 
-//페이지네이션 생성 함수
+//페이지 태그 생성
+function createPagTag(text) {
+    const page = document.createElement('li');
+    page.setAttribute('class', 'page-item');
+    const a = document.createElement('a');
+    a.setAttribute('class', 'page-link shadow-none');
+    a.textContent = text;
+    page.appendChild(a);
+
+    return {page : page, link : a};
+}
+
+//페이지네이션 생성
 function createPagination(totalPage) {
 
     //이전 페이지네이션 삭제
@@ -152,67 +218,54 @@ function createPagination(totalPage) {
     pagination.setAttribute('class', 'pagination pagination-sm');
     paginationWrap.appendChild(pagination);
 
-    //페이지 생성
+    //페이지 설정
     let pageLv = Math.ceil(currentPage/limitPage);
     let startIdx = currentPage;
     let lastIdx = currentPage + limitPage;
 
+    //페이지 생성
     for (startIdx; startIdx < lastIdx && startIdx <= totalPage; startIdx++) {
-        const page = document.createElement('li');
-        page.setAttribute('class', 'page-item');
-        const a = document.createElement('a');
-        a.setAttribute('class', `page-link shadow-none`);
-        a.textContent = startIdx;
+
+        //페이지 태그 생성
+        const {page,link} = createPagTag(startIdx);
+        paginationLis.push(page);
 
         // 페이지 클릭 이벤트
-        a.addEventListener('click', (e) => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
-            const orderByValue = $orderBySelect.value;
-            const target = e.target;
-            target.textContent == 1 && isFirst ? location.href = '#' : location.href = '#review';
-            console.log(target.textContent)
+
+            //링크 설정
+            e.target.textContent == 1 && isFirst ? location.href = '#' : location.href = '#review';
+
+            //페이지 첫 로딩 상태 값
             isFirst = false;
-            currentPage = parseInt(target.textContent);  //현재 페이지 저장
 
-            //리뷰 조회
-            const queryPram = `?pageNo=${currentPage}&numOfRow=${onePageNum}&orderBy=${orderByValue}`;
-            fetch(`/reviews/${fcno}/list` + queryPram,{
-                method : 'GET'
-            })
-                .then(response => response.json())
-                .then(jsonData => {
-                    // 이전 목록들 초기화
-                    [...$reviewLists.children].filter(ele => ele.classList.contains('review-card'))
-                        .forEach(ele => ele.remove());
+            //현재 페이지 저장
+            currentPage = parseInt(e.target.textContent);
 
-                    //새 목록 생성
-                    jsonData.data.reviews.forEach(ele => $reviewLists.appendChild(reviewListRender(ele)));
+            //페이징 검색
+            const queryPram = `?pageNo=${currentPage}&numOfRow=${onePageNum}&orderBy=${$orderBySelect.value}`;
+            searchByPage(queryPram);
 
-                    //클릭 표시
-                    [...$reviewLists.nextElementSibling.querySelectorAll('a')].forEach(ele => ele.classList.remove('on'));
-                    target.classList.add('on');
-
-                })
-                .catch(error => console.log(error))
+            //클릭 표시
+            [...paginationWrap.querySelectorAll('a')]
+                .forEach(ele => ele.classList.remove('on'));
+            e.target.classList.add('on');
         });
-        page.appendChild(a);
-        paginationLis.push(page);
-        a.textContent == currentPage && a.click();
+
+        //페이징 첫페이지 클릭
+        link.textContent == currentPage && link.click();
     }
 
     //이전 페이지 생성
     if(currentPage - limitPage > 0) {
-        const page = document.createElement('li');
-        page.setAttribute('class', 'page-item');
-        const a = document.createElement('a');
-        a.setAttribute('class', 'page-link shadow-none');
-        a.textContent = '이전';
 
-        page.appendChild(a);
+        //페이지 태그 생성
+        const {page,link} = createPagTag('이전');
         paginationLis.unshift(page);
 
-        a.addEventListener('click', e => {
-            $reviewLists.nextElementSibling.remove();
+        //이전페이지 클릭 이벤트
+        link.addEventListener('click', e => {
             currentPage = limitPage*pageLv - (limitPage*2-1);
             const paginationWrap = createPagination(totalPage);
             $reviewLists.after(paginationWrap);
@@ -221,17 +274,13 @@ function createPagination(totalPage) {
 
     //다음 페이지 생성
     if(pageLv*limitPage < totalPage) {
-        const page = document.createElement('li');
-        page.setAttribute('class', 'page-item');
-        const a = document.createElement('a');
-        a.setAttribute('class', 'page-link shadow-none');
-        a.textContent = '다음';
 
-        page.appendChild(a);
+        //페이지 태그 생성
+        const {page,link} = createPagTag('다음');
         paginationLis.push(page);
 
-        a.addEventListener('click', e => {
-            $reviewLists.nextElementSibling.remove();
+        //다음페이지 클릭 이벤트
+        link.addEventListener('click', e => {
             currentPage = limitPage*pageLv + 1;
             const paginationWrap = createPagination(totalPage);
             $reviewLists.after(paginationWrap);

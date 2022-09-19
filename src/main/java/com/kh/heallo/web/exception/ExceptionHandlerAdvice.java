@@ -1,8 +1,8 @@
 package com.kh.heallo.web.exception;
 
-import com.kh.heallo.web.FieldErrorDetail;
-import com.kh.heallo.web.ResponseMsg;
-import com.kh.heallo.web.StatusCode;
+import com.kh.heallo.web.response.FieldErrorDetail;
+import com.kh.heallo.web.response.ResponseMsg;
+import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.facility.controller.FacilityRestController;
 import com.kh.heallo.web.review.controller.ReviewRestController;
 import lombok.RequiredArgsConstructor;

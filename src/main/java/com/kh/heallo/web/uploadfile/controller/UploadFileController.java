@@ -1,16 +1,14 @@
 package com.kh.heallo.web.uploadfile.controller;
 
 import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
-import com.kh.heallo.web.StatusCode;
+import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.utility.FileSetting;
-import com.kh.heallo.web.ResponseMsg;
+import com.kh.heallo.web.response.ResponseMsg;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.MalformedURLException;
-import java.nio.charset.Charset;
 
 @RequiredArgsConstructor
 @Controller
