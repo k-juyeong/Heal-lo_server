@@ -9,9 +9,9 @@
       src="https://kit.fontawesome.com/7ee6b8223a.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="../../static/css/template/common.css" />
-    <link rel="stylesheet" href="../../static/css/template/layout-sub.css" />
-    <link rel="stylesheet" href="../../static/css/login/login.css" />
+    <link rel="stylesheet" href="../../static/css/template/common.css" th:href="@{/css/template/common.css}" />
+    <link rel="stylesheet" href="../../static/css/template/layout-sub.css" th:href="@{/css/template/layout-sub.css}" />
+    <link rel="stylesheet" href="../../static/css/login/login.css" th:href="@{/css/login/login.css}" />
   </head>
 
   <body>
@@ -64,18 +64,18 @@
                   ><input type="password" th:field="*{mempw}" />
                 </p>
                 <p id="msg"></p>
-                <p><button class="btn" id="loginBtn">로그인</button></p>
+                <p><button type="submit" class="btn" id="loginBtn">로그인</button></p>
 
                 <div class="snsBox">
                   <p>SNS로그인</p>
                   <button class="sns_btn" id="google">
-                    <img src="../../static/img/google_icon.png" alt="" />
+                    <img src="../../static/img/google_icon.png" th:src="@{/img/google_icon.png}" alt="" />
                   </button>
                   <button class="sns_btn" id="kakao">
-                    <img src="../../static/img/kakao_icon.png" alt="" />
+                    <img src="../../static/img/kakao_icon.png" th:src="@{/img/kakao_icon.png}" alt="" />
                   </button>
                   <button class="sns_btn" id="naver">
-                    <img src="../../static/img/naver_icon.png" alt="" />
+                    <img src="../../static/img/naver_icon.png" th:src="@{/img/naver_icon.png}" alt="" />
                   </button>
                 </div>
 
@@ -107,7 +107,7 @@
       </footer>
     </div>
 
-    <script src="../../static/js/template/layout-sub.js"></script>
-    <script src="../../static/js/login/login.js"></script>
+    <script src="../../static/js/template/layout-sub.js" th:src="@{/js/template/layout-sub.js}"></script>
+    <script src="../../static/js/login/login.js" th:src="@{/js/login/login.js}"></script>
   </body>
 </html>
