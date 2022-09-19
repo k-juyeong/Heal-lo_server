@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/facilities")
@@ -27,14 +26,14 @@ public class FacilityController {
         Integer resultCount = facilitySVC.connect();
         model.addAttribute("resultCount", resultCount);
 
-        return "facility/publicApiStatus";
+        return "search-facility/publicApiStatus";
     }
 
     //운동시설 검색페이지
     @GetMapping
-    public String searchView(HttpServletRequest request) {
+    public String searchView() {
 
-        return "facility/search-facility";
+        return "search-facility/search-page";
     }
 
     //운동시설 상세페이지
@@ -45,6 +44,6 @@ public class FacilityController {
         BeanUtils.copyProperties(foundFacility, facilityDetail);
         model.addAttribute("facility",facilityDetail);
 
-        return "/facility/facility-detail";
+        return "search-facility/facility-page";
     }
 }

@@ -45,7 +45,7 @@ public class FacilityRestController {
         return new ResponseEntity<>(responseMsg, HttpStatus.OK);
     }
 
-    //검색 결과(페이징) **
+    //검색 결과(페이징)
     @ResponseBody
     @GetMapping("/list")
     public ResponseEntity<ResponseMsg> search(@ModelAttribute FacilityCriteriaDto searchCriteria) {

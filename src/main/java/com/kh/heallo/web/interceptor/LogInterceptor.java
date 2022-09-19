@@ -12,6 +12,8 @@ import java.util.UUID;
 @Component
 @Slf4j
 public class LogInterceptor implements HandlerInterceptor {
+
+    //요청 로그를 남기는 로직
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
@@ -22,6 +24,8 @@ public class LogInterceptor implements HandlerInterceptor {
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
+
+    //응답 로그를 남기는 로직
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         String uuid = request.getAttribute("UUID").toString();

@@ -73,6 +73,7 @@ public class MemberController {
 
     //회원유무
     Optional<Member> member = memberSVC.login(loginForm.getMemid(), loginForm.getMempw());
+
     if(member.isEmpty()){
       bindingResult.reject("LoginForm.login","회원정보가 없습니다");
       return "login/login";
@@ -86,9 +87,9 @@ public class MemberController {
 
     //request.getSession(false) : 세션정보가 있으면 가져오고 없으면 세션을 만듦
     HttpSession session = request.getSession(true);
-    session.setAttribute("LoginMember",loginMember);
+    session.setAttribute("loginMember",loginMember);
 
-    return "index";
+    return "redirect:/";
   }
 
   //로그아웃

@@ -399,7 +399,6 @@ function createPagination(totalPage) {
   $searchedLists.querySelector('.pagination-wrap')?.remove();
 
   //페이지네이션 객체
-  const paginationLis = [];
   const paginationWrap = document.createElement('li');
   const pagination = document.createElement('ul');
   paginationWrap.setAttribute('class', 'pagination-wrap');
@@ -412,12 +411,27 @@ function createPagination(totalPage) {
   let startIdx = currentPage;
   let lastIdx = currentPage + limitPage;
 
+  //이전버튼 생성
+  if(pageLv != 1) {
+
+    //페이지 태그 생성
+    const {page,link} = createPagTag('이전');
+    pagination.appendChild(page);
+
+    //이전버튼 클릭 이벤트
+    link.addEventListener('click', e => {
+      currentPage = limitPage*pageLv - (limitPage*2-1);
+      const paginationWrap = createPagination(totalPage);
+      $searchedLists.appendChild(paginationWrap);
+    })
+  }
+
   //페이지 생성
   for (startIdx; startIdx < lastIdx && startIdx <= totalPage; startIdx++) {
 
     //페이지 태그 생성
     const {page,link} = createPagTag(startIdx);
-    paginationLis.push(page);
+    pagination.appendChild(page);
 
     // 페이지 클릭 이벤트
     link.addEventListener('click', ({target}) => {
@@ -428,10 +442,8 @@ function createPagination(totalPage) {
       //현재 페이지 저장
       currentPage = parseInt(target.textContent);
 
-      //요청 파라미터 생성
-      const requestPram = createRequestPram();
-
       //페이징 검색
+      const requestPram = createRequestPram();
       searchByPage(requestPram);
 
       //클릭 표시
@@ -444,27 +456,12 @@ function createPagination(totalPage) {
     link.textContent == currentPage && link.click();
   }
 
-  //이전버튼 생성
-  if(currentPage - limitPage > 0) {
-
-    //페이지 태그 생성
-    const {page,link} = createPagTag('이전');
-    paginationLis.unshift(page);
-
-    //이전버튼 클릭 이벤트
-    link.addEventListener('click', e => {
-      currentPage = limitPage*pageLv - (limitPage*2-1);
-      const paginationWrap = createPagination(totalPage);
-      $searchedLists.appendChild(paginationWrap);
-    })
-  }
-
   //다음버튼 생성
-  if(pageLv*limitPage < totalPage) {
+  if(pageLv != Math.ceil(totalPage/limitPage)) {
 
     //페이지 태그 생성
     const {page,link} = createPagTag('다음');
-    paginationLis.push(page);
+    pagination.appendChild(page);
 
     //다음버튼 클릭 이벤트
     link.addEventListener('click', e => {
@@ -474,6 +471,5 @@ function createPagination(totalPage) {
     })
   }
 
-  paginationLis.forEach(ele => pagination.appendChild(ele))
   return paginationWrap;
 }
