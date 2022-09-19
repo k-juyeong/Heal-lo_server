@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>달력화면</title>
+  <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../../static/css/template/common.css" th:href="@{/css/template/common.css}">
+  <link rel="stylesheet" href="../../static/css/template/layout-sub.css" th:href="@{/css/template/layout-sub.css}">
+  <link rel="stylesheet" href="../../static/css/calendar/calendar.css"  th:href="@{/css/calendar/calendar.css}">
+</head>
+<body>
+<div id="wrapper">
+  <!-- 헤더 -->
+  <header id="header">
+    <!-- 탑 메뉴 -->
+    <div class="header__menu-top">
+      <span class="header__my-menu"><a href="#">로그아웃</a></span>
+      <span class="header__my-menu"><a href="#">마이페이지</a></span>
+      <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
+    </div>
+
+    <!-- 베너 -->
+    <div class="header__banner">
+      <!-- 메인 로고 -->
+      <div class="header__main-logo">
+        <a href="#">
+          <h1 class="header__main-title">Heal-lo</h1>
+          <p class="header__sub-title">:Healthy location</p>
+        </a>
+      </div>
+      <div class="header__sitemenu" id="siteMenuContain">
+        <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
+        <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
+        <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
+        <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
+        <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
+      </div>
+    </div>
+  </header>
+  <!--메인 컨텐츠-->
+  <main id="container">
+    <div class="calendar">
+      <div class="calendar__top">내 캘린더</div>
+      <div class="calendar__nav">
+        <div id="pd" class="calendar__selected-month"></div>
+        <div class="calendar__move-month">
+          <div class="calendar__go-prev"></div>
+          <div class="calendar__go-today">today</div>
+          <div class="calendar__go-next"></div>
+        </div>
+      </div>
+      <div class="calendar__main">
+        <div class="calendar__days">
+          <div class="calendar__day">일</div>
+          <div class="calendar__day">월</div>
+          <div class="calendar__day">화</div>
+          <div class="calendar__day">수</div>
+          <div class="calendar__day">목</div>
+          <div class="calendar__day">금</div>
+          <div class="calendar__day">토</div>
+        </div>
+        <div class="calendar__dates"></div>
+      </div>
+    </div>
+  </main>
+  <!-- footer -->
+  <footer id="footer">
+    <div class="inner">
+      <h2>Heal-lo</h2>
+      <ul>
+        <li>상호명: heal-lo</li>
+        <li>대표: 1팀</li>
+        <li>주소: 울산광역시 남구 신정동</li>
+        <li>이메일: ulsanheallo@naver.com</li><br>
+        <li>Copyright 2022 헬로. All Rights Reserved.</li>
+      </ul>
+    </div>
+  </footer>
+  <script src="../../static/js/template/layout-sub.js" th:src="@{/js/template/layout-sub.js}"></script>
+  <script src="../../static/js/calendar/calendar.js"  th:src="@{/js/calendar/calendar.js}"></script>
+  <script>
+<!--달력 날짜 클릭 시-->
+function dateClick(date) {
+    const rdate = date.classList[1];
+    location.href= `/calendar/${rdate}/add`;
+}
+
+  </script>
+</body>
+</html>
