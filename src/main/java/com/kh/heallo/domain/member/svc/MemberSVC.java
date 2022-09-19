@@ -2,6 +2,8 @@ package com.kh.heallo.domain.member.svc;
 
 import com.kh.heallo.domain.member.Member;
 
+import java.util.Optional;
+
 public interface MemberSVC {
 
   /**
@@ -33,4 +35,12 @@ public interface MemberSVC {
    * @return
    */
   void del(String memid);
+
+  /**
+   * 로그인
+   * @param memid 아이디
+   * @param mempw 비밀번호
+   * @return  회원
+   */
+  Optional<Member> login(String memid, String mempw);
 }
