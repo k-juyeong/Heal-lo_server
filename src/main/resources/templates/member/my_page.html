@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="https://kit.fontawesome.com/01f3fc22c0.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="../../static/css/common.css">
-  <link rel="stylesheet" href="../../static/css/layout-sub.css">
-  <link rel="stylesheet" href="../../static/css/my_page.css">
+  <link rel="stylesheet" href="../../static/css/common.css" th:href="@{/css/template/common.css}">
+  <link rel="stylesheet" href="../../static/css/layout-sub.css" th:href="@{/css/template/layout-sub.css}">
+  <link rel="stylesheet" href="../../static/css/my_page.css" th:href="@{/css/my-page/my_page.css}">
 </head>
 <body>
   <div id="wrapper">
@@ -24,7 +24,7 @@
       </div>
 
       <!-- 베너 -->
-      <div class="header__banner" class="layout">
+      <div class="header__banner">
         <!-- 메인 로고 -->
         <div class="header__main-logo">
           <a href="#">
@@ -103,6 +103,6 @@
         </div>
     </footer>
     
-  <script src="../../static/js/layout-sub.js"></script>
+  <script src="../../static/js/layout-sub.js" th:src="@{/js/template/layout-sub.js}"></script>
 </body>
 </html>

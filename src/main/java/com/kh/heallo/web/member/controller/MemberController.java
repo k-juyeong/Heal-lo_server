@@ -4,14 +4,19 @@ import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
 import com.kh.heallo.web.member.dto.EditForm;
 import com.kh.heallo.web.member.dto.JoinForm;
+import com.kh.heallo.web.member.dto.LoginForm;
+import com.kh.heallo.web.member.session.LoginMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -45,6 +50,56 @@ public class MemberController {
     memberSVC.join(member);
 
     return "login/login";
+  }
+
+  //로그인 화면
+  @GetMapping("/login")
+  public String loginForm(@ModelAttribute("form") LoginForm loginForm){
+
+    return "login/login";
+  }
+
+  @PostMapping("/login")
+  public String login(@Valid @ModelAttribute("form")LoginForm loginForm,
+                      BindingResult bindingResult,
+                      HttpServletRequest request
+  ){
+
+    //기본 검증
+    if (bindingResult.hasErrors()){
+      log.info("bindingResult={}",bindingResult);
+      return "login/login";
+    }
+
+    //회원유무
+    Optional<Member> member = memberSVC.login(loginForm.getMemid(), loginForm.getMempw());
+    if(member.isEmpty()){
+      bindingResult.reject("LoginForm.login","회원정보가 없습니다");
+      return "login/login";
+    }
+
+    //회원인경우
+    Member findedMember = member.get();
+
+    //세션에 회원정보 저장
+    LoginMember loginMember = new LoginMember(findedMember.getMemid(), findedMember.getMemnickname());
+
+    //request.getSession(false) : 세션정보가 있으면 가져오고 없으면 세션을 만듦
+    HttpSession session = request.getSession(true);
+    session.setAttribute("LoginMember",loginMember);
+
+    return "index";
+  }
+
+  //로그아웃
+  @GetMapping("logout")
+  public String logout(HttpServletRequest request){
+    //request.getSession(false) : 세션정보가 있으면 가져오고 없으면 세션을 만들지 않음
+    HttpSession session = request.getSession(false);
+    if(session != null){
+      session.invalidate();
+    }
+    return "index";  //초기화면으로 이동
   }
 
   //조회와 동시에 수정

@@ -37,16 +37,16 @@ public class MemberDAOImplTest {
   @DisplayName("회원조회")
   @Order(2)
   void findById(){
-    Long memno = 24L;
+    Long memno = 41L;
     Member findedMember = memberDAO.findById(memno);
 
-    Assertions.assertThat(findedMember.getMemno()).isEqualTo(24);
-    Assertions.assertThat(findedMember.getMemid()).isEqualTo("proteen1");
-    Assertions.assertThat(findedMember.getMempw()).isEqualTo("naim1111");
-    Assertions.assertThat(findedMember.getMemtel()).isEqualTo("010-1234-5618");
-    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo("테스터1");
-    Assertions.assertThat(findedMember.getMememail()).isEqualTo("test1@test.com");
-    Assertions.assertThat(findedMember.getMemname()).isEqualTo("박지훈");
+    Assertions.assertThat(findedMember.getMemno()).isEqualTo(41);
+    Assertions.assertThat(findedMember.getMemid()).isEqualTo("naim");
+    Assertions.assertThat(findedMember.getMempw()).isEqualTo("1234");
+    Assertions.assertThat(findedMember.getMemtel()).isEqualTo("010-1111-1111");
+    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo("테스터");
+    Assertions.assertThat(findedMember.getMememail()).isEqualTo("test@test.com");
+    Assertions.assertThat(findedMember.getMemname()).isEqualTo("테스터1");
     Assertions.assertThat(findedMember.getMemcode()).isEqualTo("normal");
 
   }

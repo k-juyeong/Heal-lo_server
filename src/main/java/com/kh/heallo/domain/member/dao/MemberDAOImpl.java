@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -107,5 +108,32 @@ public class MemberDAOImpl implements  MemberDAO{
     String sql = "delete MEMBER where memid= ? ";
 
     jdbcTemplate.update(sql, memid);
+  }
+
+  /**
+   * 로그인
+   * @param memid 아이디
+   * @param mempw 비밀번호
+   * @return  회원
+   */
+  @Override
+  public Optional<Member> login(String memid, String mempw) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select * ");
+    sql.append("  from member ");
+    sql.append( "where memid = ? ");
+    sql.append("   and mempw = ? ");
+
+
+    try {
+      Member member = jdbcTemplate.queryForObject(
+              sql.toString(),
+              new BeanPropertyRowMapper<>(Member.class),
+              memid,mempw
+      );
+      return Optional.of(member);
+    } catch (DataAccessException e) {
+      return Optional.empty();
+    }
   }
 }

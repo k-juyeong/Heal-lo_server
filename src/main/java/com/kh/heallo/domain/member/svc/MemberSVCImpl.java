@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -56,5 +58,17 @@ public class MemberSVCImpl implements MemberSVC{
   @Override
   public void del(String memid) {
     memberDAO.del(memid);
+  }
+
+  /**
+   * 로그인
+   * @param memid 아이디
+   * @param mempw 비밀번호
+   * @return  회원
+   */
+  @Override
+  public Optional<Member> login(String memid, String mempw) {
+
+    return memberDAO.login(memid,mempw);
   }
 }
