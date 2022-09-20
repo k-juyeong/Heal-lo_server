@@ -59,10 +59,12 @@ public class MemberController {
     return "login/login";
   }
 
+  //로그인 처리
   @PostMapping("/login")
   public String login(@Valid @ModelAttribute("form")LoginForm loginForm,
                       BindingResult bindingResult,
-                      HttpServletRequest request
+                      HttpServletRequest request,
+                      @RequestParam(value = "requestURI",required = false,defaultValue = "/") String requestURI
   ){
 
     //기본 검증
@@ -89,7 +91,10 @@ public class MemberController {
     HttpSession session = request.getSession(true);
     session.setAttribute("loginMember",loginMember);
 
-    return "redirect:/";
+    if (requestURI.equals("/")) {
+      return "index";
+    }
+    return "redirect:"+requestURI;
   }
 
   //로그아웃

@@ -1,14 +1,12 @@
 
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src="https://kit.fontawesome.com/01f3fc22c0.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="../../static/css/common.css" th:href="@{/css/template/common.css}">
-  <link rel="stylesheet" href="../../static/css/layout-sub.css" th:href="@{/css/template/layout-sub.css}">
   <link rel="stylesheet" href="../../static/css/my_page.css" th:href="@{/css/my-page/my_page.css}">
 </head>
 <body>
@@ -102,7 +100,6 @@
             </ul>
         </div>
     </footer>
-    
-  <script src="../../static/js/layout-sub.js" th:src="@{/js/template/layout-sub.js}"></script>
+
 </body>
 </html>

@@ -30,7 +30,7 @@ public class MemberDAOImpl implements  MemberDAO{
   public Long join(Member member) {
     StringBuffer sql = new StringBuffer();
     sql.append(" insert into member ");
-    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,? ,sysdate ,sysdate ) ");
+    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,'normal' ,sysdate ,sysdate ) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -42,7 +42,6 @@ public class MemberDAOImpl implements  MemberDAO{
       preparedStatement.setString(4, member.getMemnickname());
       preparedStatement.setString(5, member.getMememail());
       preparedStatement.setString(6, member.getMemname());
-      preparedStatement.setString(7, member.getMemcode());
 
       return preparedStatement;
     }, keyHolder);
