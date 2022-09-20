@@ -2,6 +2,7 @@ package com.kh.heallo.domain.facility.svc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.heallo.domain.facility.AutoComplete;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.FacilityJson;
@@ -17,7 +18,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -141,13 +141,25 @@ public class FacilitySVCImpl implements FacilitySVC{
      */
     @Override
     public List<Facility> search(FacilityCriteria criteria) {
-        criteria.setFcaddr(criteria.getFcaddr()+"%");
-        criteria.setFcname("%"+criteria.getFcname()+"%");
-        criteria.setFctype("%"+criteria.getFctype()+"%");
-        List<Facility> searchedList = facilityDAO.search(criteria);
+        criteriaFormating(criteria);
 
-        return searchedList;
+        return facilityDAO.search(criteria);
     }
+
+    /**
+     * 상호명 검색 자동완성
+     *
+     * @param criteria 검색조건
+     * @param row      자동완성 레코드 수
+     * @return 상호명 리스트
+     */
+    @Override
+    public List<AutoComplete> autoComplete(FacilityCriteria criteria, Integer row) {
+        criteriaFormating(criteria);
+
+        return facilityDAO.autoComplete(criteria, row);
+    }
+
 
     /**
      * 운동시설 조건검색 결과 수
@@ -156,12 +168,9 @@ public class FacilitySVCImpl implements FacilitySVC{
      */
     @Override
     public Integer getTotalCount(FacilityCriteria criteria) {
-        criteria.setFcaddr(criteria.getFcaddr()+"%");
-        criteria.setFcname("%"+criteria.getFcname()+"%");
-        criteria.setFctype("%"+criteria.getFctype()+"%");
-        Integer totalCount = facilityDAO.getTotalCount(criteria);
+        criteriaFormating(criteria);
 
-        return totalCount;
+        return facilityDAO.getTotalCount(criteria);
     }
 
     /**
@@ -185,5 +194,11 @@ public class FacilitySVCImpl implements FacilitySVC{
     public Facility findByFcno(Long fcno) {
 
         return facilityDAO.findByFcno(fcno);
+    }
+
+    private void criteriaFormating(FacilityCriteria criteria) {
+        criteria.setFcaddr(criteria.getFcaddr()+"%");
+        criteria.setFcname(criteria.getFcname()+"%");
+        criteria.setFctype("%"+ criteria.getFctype()+"%");
     }
 }

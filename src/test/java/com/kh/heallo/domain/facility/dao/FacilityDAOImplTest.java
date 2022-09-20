@@ -1,7 +1,9 @@
 package com.kh.heallo.domain.facility.dao;
 
+import com.kh.heallo.domain.facility.AutoComplete;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Slf4j
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FacilityDAOImplTest {
@@ -101,6 +104,21 @@ class FacilityDAOImplTest {
         assertThrows(DataAccessException.class, () -> {
             Facility foundFacility = facilityDAO.findByFcno(facility.getFcno());
         });
+    }
+
+    @Order(9)
+    @Test
+    @DisplayName("자동완성 테스트")
+    void autoComplete() {
+        FacilityCriteria facilityCriteria = new FacilityCriteria();
+        facilityCriteria.setFcaddr("경기도%");
+        facilityCriteria.setFctype("%당구장업%");
+        facilityCriteria.setFcname("나이스%");
+        int row = 5;
+        List<AutoComplete> autoCompleteData = facilityDAO.autoComplete(facilityCriteria, row);
+
+        autoCompleteData.stream().forEach(s -> assertThat(s.getFcname().contains("나이스")).isTrue());
+
     }
 
 }

@@ -27,6 +27,7 @@ public class HomeController {
 
         return "test";
     }
+
     @PostMapping("/login")
     public String login(@RequestParam(value = "requestURI", required = false) String uri, HttpServletRequest request) {
 

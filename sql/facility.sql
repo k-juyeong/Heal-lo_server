@@ -48,11 +48,21 @@ select fc3.*
 from (select rownum rowno, fc2.*
       from (select fc.*,(select count(*) from review where fcno = fc.fcno) rvtotal
             from facility fc
-            where fcname like '%%'
+            where REPLACE(TRIM(fcname),' ','') like '나이스%'
               and fcaddr like '경기도%'
               and fctype like '%당구장업%'
             order by rvtotal desc) fc2) fc3
 where fc3.rowno > 0 and fc3.rowno <= 10;
+
+-- 상호명 자동완성
+select fc2.fcname
+from (select distinct REPLACE(TRIM(fc.fcname),' ','') fcname,(select count(*) from review where fcno = fc.fcno) rvtotal
+      from facility fc
+      where fcname like '나이스큐%'
+        and fcaddr like '경기도%'
+        and fctype like '%당구장업%'
+      order by rvtotal desc) fc2
+where rownum <= 5;
 
 -- 운동시설 total count
 select count(*) fctotal from facility

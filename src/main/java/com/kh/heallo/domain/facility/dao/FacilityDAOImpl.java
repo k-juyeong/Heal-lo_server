@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.facility.dao;
 
+import com.kh.heallo.domain.facility.AutoComplete;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -130,30 +130,67 @@ public class FacilityDAOImpl implements FacilityDAO{
         sql.append(" from (select rownum rowno, fc2.* ");
         sql.append("         from (select fc.*,(select count(*) from review where fcno = fc.fcno) rvtotal ");
         sql.append("               from facility fc ");
-        sql.append("               where fcname like ? ");
+        sql.append("               where REPLACE(TRIM(fcname),' ','') like ? ");
         sql.append("                    and fcaddr like ? ");
         sql.append("                    and fctype like ? ");
         sql.append("               order by rvtotal desc) fc2) fc3 ");
         sql.append(" where fc3.rowno > ? and fc3.rowno <= ? ");
 
+        log.info("criteria {}",criteria);
+
         Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
         Integer startPage = endPage - criteria.getNumOfRow();
-        List<Facility> foundFacilityList = null;
-        try {
-            foundFacilityList = jdbcTemplate.query(
-                    sql.toString(),
-                    new BeanPropertyRowMapper<>(Facility.class),
-                    criteria.getFcname(),
-                    criteria.getFcaddr(),
-                    criteria.getFctype(),
-                    startPage,
-                    endPage
-            );
-        } catch (DataAccessException e) {
-            log.info("DataAccessException {}", e.getMessage());
+        List<Facility> foundFacilityList = jdbcTemplate.query(
+                sql.toString(),
+                new BeanPropertyRowMapper<>(Facility.class),
+                criteria.getFcname(),
+                criteria.getFcaddr(),
+                criteria.getFctype(),
+                startPage,
+                endPage
+        );
+
+        if (foundFacilityList.size() == 0) {
+            throw new DataAccessException("데이터를 찾을수 없습니다") {
+                @Override
+                public String getMessage() {
+                    return super.getMessage();
+                }
+            };
         }
 
         return foundFacilityList;
+    }
+
+    /**
+     * 상호명 검색 자동완성
+     *
+     * @param criteria 검색조건
+     * @param row      자동완성 레코드 수
+     * @return 상호명 리스트
+     */
+    @Override
+    public List<AutoComplete> autoComplete(FacilityCriteria criteria, Integer row) {
+        StringBuffer sql = new StringBuffer();
+
+        sql.append(" select fc2.fcname, rvtotal ");
+        sql.append("    from (select distinct REPLACE(TRIM(fc.fcname),' ','') fcname,(select count(*) from review where fcno = fc.fcno) rvtotal ");
+        sql.append("            from facility fc ");
+        sql.append("                where fcname like ? ");
+        sql.append("                    and fcaddr like ? ");
+        sql.append("                    and fctype like ? ");
+        sql.append("                order by rvtotal desc) fc2 ");
+        sql.append("    where rownum <= ? ");
+
+        List<AutoComplete> autoCompleteData = jdbcTemplate.query(
+                sql.toString(),
+                new BeanPropertyRowMapper<>(AutoComplete.class),
+                criteria.getFcname(),
+                criteria.getFcaddr(),
+                criteria.getFctype(),
+                row);
+
+        return autoCompleteData;
     }
 
     /**
@@ -166,7 +203,7 @@ public class FacilityDAOImpl implements FacilityDAO{
     public Integer getTotalCount(FacilityCriteria criteria) {
         StringBuffer sql = new StringBuffer();
         sql.append("   select count(*) fctotal from facility ");
-        sql.append("      where fcname like ? ");
+        sql.append("      where REPLACE(TRIM(fcname),' ','') like ? ");
         sql.append("        and fcaddr like ? ");
         sql.append("        and fctype like ? ");
 

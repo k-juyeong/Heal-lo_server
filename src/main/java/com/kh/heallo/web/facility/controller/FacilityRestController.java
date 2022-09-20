@@ -1,9 +1,11 @@
 package com.kh.heallo.web.facility.controller;
 
+import com.kh.heallo.domain.facility.AutoComplete;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
 import com.kh.heallo.domain.review.svc.ReviewSVC;
+import com.kh.heallo.web.facility.dto.AutoCompleteDto;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.facility.dto.FacilitySearchDto;
 import com.kh.heallo.web.utility.DtoModifier;
@@ -67,10 +69,31 @@ public class FacilityRestController {
         return new ResponseEntity<>(responseMsg, HttpStatus.OK);
     }
 
+    //상호명 자동완성
+    @ResponseBody
+    @GetMapping("/auto-complete")
+    public ResponseEntity<ResponseMsg> autoComplete(
+            FacilityCriteriaDto criteriaDto
+    ) {
+        FacilityCriteria facilityCriteria = dtoModifier.getFacilityCriteria(criteriaDto);
+        List<AutoComplete> autoCompleteData = facilitySVC.autoComplete(facilityCriteria, facilityCriteria.getNumOfRow());
+        List<AutoCompleteDto> autoCompleteDtos = dtoModifier.getAutoCompleteDto(autoCompleteData);
+
+        //Create ResponseEntity
+        ResponseMsg responseMsg = new ResponseMsg()
+                .createHeader(StatusCode.SUCCESS)
+                .setData("autoComplete", autoCompleteDtos);
+
+        return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+    }
+
+
+
     //운동시설 평균 조회
     @ResponseBody
     @GetMapping("/{fcno}/score")
     public ResponseEntity<ResponseMsg> getScore(@PathVariable("fcno") Long fcno) {
+
         double fcScore = facilitySVC.findByFcno(fcno).getFcscore();
 
         //Create ResponseEntity

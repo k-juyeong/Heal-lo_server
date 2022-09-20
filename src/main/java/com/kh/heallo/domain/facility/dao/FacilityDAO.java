@@ -1,9 +1,9 @@
 package com.kh.heallo.domain.facility.dao;
 
+import com.kh.heallo.domain.facility.AutoComplete;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import java.util.List;
-import java.util.Optional;
 
 public interface FacilityDAO {
 
@@ -40,6 +40,14 @@ public interface FacilityDAO {
      * @return 운동시설리스트
      */
     List<Facility> search(FacilityCriteria criteria);
+
+    /**
+     * 상호명 검색 자동완성
+     * @param criteria 검색조건
+     * @param row 자동완성 레코드 수
+     * @return 상호명 리스트
+     */
+    List<AutoComplete> autoComplete(FacilityCriteria criteria, Integer row);
 
     /**
      * 운동시설 조건검색 totalCount

@@ -4,6 +4,7 @@ import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -75,7 +76,15 @@ public class ReviewDAOImpl implements ReviewDAO{
                 fcno,
                 startPage,
                 endPage);
-        log.info("criteria {}",criteria);
+
+        if (reviewList.size() == 0) {
+            throw new DataAccessException("데이터를 찾을수 없습니다") {
+                @Override
+                public String getMessage() {
+                    return super.getMessage();
+                }
+            };
+        }
 
         return reviewList;
     }
