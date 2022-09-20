@@ -40,7 +40,7 @@ a:hover {color: inherit;}
 .searched-wrap .searched-list-wrap .searched-lists .default {display: flex; align-items: center; height: 100%;}
 .searched-wrap .searched-list-wrap .open-lists {height: 85%;}
 .searched-wrap .searched-list-wrap .searched-lists__item {display: flex;min-height: 100px;margin: 8px;background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);}
-.searched-wrap .searched-list-wrap .item-img {flex: 1;}
+.searched-wrap .searched-list-wrap .item-img {width: 100px;height: 100px;}
 .searched-wrap .searched-list-wrap .item-img img {width: 100%;height: 100%;}
 .searched-wrap .searched-list-wrap .item-content {display: flex;flex-direction: column;justify-content: space-between;flex: 2;padding: 4px;}
 .searched-wrap .searched-list-wrap .item-content__top {display: flex;justify-content: space-between; font-size: 1em; font-weight: 600;}
@@ -51,6 +51,12 @@ a:hover {color: inherit;}
 .searched-wrap .searched-list-wrap .item-content__body .item-tel::before {content: '[전화번호]';}
 .searched-wrap .searched-list-wrap .item-content__body .item-addr::before {content: '[주소]';}
 .review-total {font-size: 0.4em;text-align: center}
+.auto-complete-wrap {position: absolute; top: 70px; display: flex; flex-direction: column; width: 200px; font-size: 12px; background-color: white; pointer-events: auto; cursor: pointer; z-index: 5}
+.auto-complete-wrap .list {display: flex; padding: 2px; margin: 4px 12px;}
+.auto-complete-wrap .list .name{flex: 0.7; font-size: 0.7em}
+.auto-complete-wrap .list .count{flex: 0.3; text-align: end; font-size: 0.3em; color: var(--color-main-header)}
+.auto-complete-wrap .list:hover {background-color: rgba(180, 179, 179, 0.5)
+}
 
 /* 페이징 */
 .pagination-wrap .pagination {cursor: pointer;}

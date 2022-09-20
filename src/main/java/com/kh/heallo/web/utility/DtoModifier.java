@@ -1,9 +1,11 @@
 package com.kh.heallo.web.utility;
 
+import com.kh.heallo.domain.facility.AutoComplete;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
+import com.kh.heallo.web.facility.dto.AutoCompleteDto;
 import com.kh.heallo.web.facility.dto.FacilityCriteriaDto;
 import com.kh.heallo.web.facility.dto.FacilitySearchDto;
 import com.kh.heallo.web.review.dto.*;
@@ -23,6 +25,17 @@ public class DtoModifier {
         BeanUtils.copyProperties(facilityCriteriaDto,criteria);
 
         return criteria;
+    }
+
+    //
+    public List<AutoCompleteDto> getAutoCompleteDto(List<AutoComplete> autoCompleteList) {
+        List<AutoCompleteDto> completeDtos = autoCompleteList.stream().map(autoComplete -> {
+            AutoCompleteDto autoCompleteDto = new AutoCompleteDto();
+            BeanUtils.copyProperties(autoComplete, autoCompleteDto);
+
+            return autoCompleteDto;
+        }).collect(Collectors.toList());
+        return completeDtos;
     }
 
     //Review => ReviewDto

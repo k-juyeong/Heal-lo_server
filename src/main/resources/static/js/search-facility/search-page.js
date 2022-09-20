@@ -8,6 +8,8 @@ const $cgListsByLoca2 = document.querySelector('.search__cg-wrap .search__cg-loc
 const $cgListsByFacility = document.querySelector('.search__cg-wrap .search__cg-fa');
 const $searchedLists = document.querySelector('.searched-list-wrap .searched-lists');
 const $openList = document.querySelector('.open-list');
+const $acWrap = document.querySelector('.auto-complete-wrap')
+const $textInput = document.getElementById('textSearchInput');
 
 //검색 임계상태
 let requstStatus = 'false';
@@ -16,6 +18,9 @@ let requstStatus = 'false';
 const limitPage = 5;      //  페이지 최대 생성 수
 const onePageNum = 10;    //  1페이지에 최대 목록 수
 let currentPage = 1;          //  현재 페이지
+
+//자동완성 행 개수
+const autoCompleteRowNo = 10;
 
 //검색 조건 저장
 let selectedCgLocaSave = {level1 : '', level2 : ''};
@@ -31,6 +36,29 @@ RenderingUlTagLv1($cgListsByLoca1,categoryLoca_lv1);
 // 운동 카테고리 랜더링
 RenderingUlTagLv1($cgListsByFacility,category_fctype);
 
+//중분류 외 클릭 이벤트
+document.body.addEventListener('click', ({target}) => {
+  if (target.closest('.search__cg-wrap .search__cg-loca2')) return;
+  else deleteLv2();
+},true)
+
+//검색어 입력 이벤트
+$textInput.addEventListener('input', () => {
+  searchedTextSave = $textInput.value.trim('');
+  autoComplete(createRequestPram())
+});
+
+$textInput.addEventListener('focusin', () => {
+  searchedTextSave = $textInput.value.trim('');
+  autoComplete(createRequestPram())
+});
+
+//검색 자동완성창 외 클릭 이벤트
+document.body.addEventListener('click', ({target}) => {
+  if(target.closest('.auto-complete-wrap') || target.closest('.text-input__body')) return;
+  else $acWrap.innerHTML = '';
+},true);
+
 // 지역 카테고리 대분류 클릭 이벤트
 $cgListsByLoca1.addEventListener('click', ({target,currentTarget}) => {
   if(target.tagName != 'P') return;
@@ -38,16 +66,8 @@ $cgListsByLoca1.addEventListener('click', ({target,currentTarget}) => {
   //중분류 삭제
   deleteLv2()
 
-  //카테고리 생성 로직
-
   //중분류 생성
   RenderingUlTagLv2($cgListsByLoca2,categoryLoca_lv2[`${target.id}`], target.id);
-
-  //중분류 외 클릭 이벤트
-  document.body.addEventListener('click', ({target}) => {
-    if (target.closest('.search__cg-wrap .search__cg-loca2')) return;
-    else deleteLv2();
-  },true)
 });
 
 // 지역 카테고리 중분류 클릭 이벤트
@@ -102,11 +122,6 @@ $openList.addEventListener('click',() => {
 // 검색버튼 클릭이벤트
 document.querySelector('.btn-search').addEventListener('click', () => {
 
-  //상호명 검색어 저장
-  const $inputByText = document.getElementById('textSearchInput');
-  searchedTextSave = $inputByText.value.trim('');
-  $inputByText.value = '';
-
   //검색 가능상태 체크
   if(!checkIsPossible()) return;
 
@@ -138,11 +153,6 @@ document.querySelector('.my-location').addEventListener('click', () => {
 document.querySelector('.text-input__body').addEventListener('submit',(e) => {
   e.preventDefault();
 
-  //상호명 검색어 저장
-  const $inputByText = document.getElementById('textSearchInput');
-  searchedTextSave = $inputByText.value.trim('');
-  $inputByText.value = '';
-
   //검색 가능상태 체크
   if(!checkIsPossible()) return;
 
@@ -156,7 +166,23 @@ document.querySelector('.text-input__body').addEventListener('submit',(e) => {
   search(requestPram);
 })
 
+//카테고리 선택
+initDefaultCategory();
+
 /** 함수 **/
+
+//카테고리 기본 선택
+function initDefaultCategory() {
+  const defaultSelectedLoca = $cgListsByLoca1.querySelectorAll('p')[0];
+  defaultSelectedLoca.style.backgroundColor = 'var(--color-others-header)';
+  selectedCgLocaSave.level1 = defaultSelectedLoca.id;
+  selectedCgLocaSave.level2 = '전체'
+  createTooltip(defaultSelectedLoca);
+
+  const defaultSelectedFa = $cgListsByFacility.querySelectorAll('p')[0];
+  defaultSelectedFa.style.backgroundColor = 'var(--color-others-header)';
+  selectedTypeCgSave = defaultSelectedFa.id;
+}
 
 //지도 생성
 function createMap() {
@@ -241,6 +267,40 @@ function actionOpenMenu() {
   },300)
 }
 
+//상호명 자동완성
+function autoComplete(requestPram) {
+
+  let queryPram = `?fcaddr=${requestPram.loca}`;
+  queryPram += `&fctype=${requestPram.type}`;
+  queryPram += `&fcname=${requestPram.text}`;
+  queryPram += `&numOfRow=${autoCompleteRowNo}`;
+
+  fetch('/facilities/auto-complete' + queryPram, {
+    method: 'GET'
+  })
+      .then(response => response.json())
+      .then(jsonData => {
+        $acWrap.innerHTML = '';
+        if (jsonData.header.code == '00') {
+          jsonData.data.autoComplete.map(ele => {
+            const resultTag = makeElements('li', {class: 'list'},
+                makeElements('div',{class : 'name'},`${ele.fcname}`),
+                makeElements('div',{class : 'count'},`reviews ${ele.rvtotal}`));
+
+            resultTag.addEventListener('click', () => {
+              $textInput.value = ele.fcname
+              searchedTextSave = ele.fcname;
+              $acWrap.innerHTML = '';
+            });
+
+            return resultTag;
+          }).forEach(ele => $acWrap.appendChild(ele));
+
+        } else new Error(jsonData.data)
+      })
+      .catch(err => console.log(err));
+}
+
 //운동시설 항목 생성
 function createList(itemData) {
 
@@ -298,14 +358,18 @@ function checkIsPossible() {
 
 //검색 요청 파라미터 생성
 function createRequestPram() {
+  let locationValue = '';
+  const lv1 = selectedCgLocaSave.level1;
+  const lv2 = selectedCgLocaSave.level2;
+  locationValue = lv2 == '전체' ? lv1 : `${lv1} ${lv2}`;
+
   const pram = {
     text : searchedTextSave,
     type : selectedTypeCgSave,
-    loca : selectedCgLocaSave.level2 == '전체' ?
-        selectedCgLocaSave.level1 : `${selectedCgLocaSave.level1} ${selectedCgLocaSave.level2}`,
+    loca : locationValue,
     pageNo : currentPage,
     numOfRow : onePageNum
-  }
+  };
 
   return pram;
 }

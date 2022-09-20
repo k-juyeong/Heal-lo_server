@@ -13,6 +13,19 @@ create table uploadfile (
     ufudate     timestamp
 );
 
+create table uploadfile (
+    ufno        number(8),
+    foreign_no  number(8),
+    code        varchar2(40),
+    ufsname     varchar2(200),
+    uffname     varchar2(200),
+    ufsize      number,
+    uftype      varchar2(50),
+    ufpath      varchar(100),
+    ufcdate     timestamp,
+    ufudate     timestamp
+);
+
 -- 시퀀스
 create sequence uploadfile_ufno_seq;
 
