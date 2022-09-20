@@ -30,9 +30,9 @@ public class CalendarDAOImpl implements CalendarDAO{
 
   // 달력 번호 생성
   @Override
-  public Integer createCdno() {
+  public Long createCdno() {
     String sql = "select calendar_cdno_seq.nextval from dual ";
-    int cdno = jt.update(sql, Integer.class);
+    Long cdno = Long.valueOf(jt.update(sql, Long.class));
     return cdno;
   }
 
