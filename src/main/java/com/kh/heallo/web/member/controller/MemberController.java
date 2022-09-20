@@ -45,11 +45,10 @@ public class MemberController {
     member.setMemnickname(joinForm.getMemnickname());
     member.setMememail(joinForm.getMememail());
     member.setMemname(joinForm.getMemname());
-    member.setMemcode(joinForm.getMemcode());
 
     memberSVC.join(member);
 
-    return "login/login";
+    return "redirect:/login";
   }
 
   //로그인 화면
