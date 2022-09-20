@@ -1,6 +1,5 @@
 package com.kh.heallo.web.interceptor;
 
-import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
@@ -42,7 +41,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
             //현재 페이지주소를 쿼리파라미터로 넘기고 로그인 페이지로 redirect
             } else {
-                response.sendRedirect("/login" + "?requestURI=" + request.getRequestURI().toString());
+                response.sendRedirect("/members/login" + "?requestURI=" + request.getRequestURI().toString());
                 return false;
             }
 
