@@ -18,7 +18,7 @@ public interface CalendarDAO {
    * 운동기록 번호 생성
    * @return 생성 번호
    */
-  Integer createCdno();
+  Long createCdno();
 
   /**
    * 운동기록 조회(1회)
