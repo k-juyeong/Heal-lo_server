@@ -104,7 +104,7 @@ public class MemberController {
     if(session != null){
       session.invalidate();
     }
-    return "index";  //초기화면으로 이동
+    return "redirect:index";  //초기화면으로 이동
   }
 
   //조회와 동시에 수정
