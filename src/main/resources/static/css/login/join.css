@@ -103,3 +103,5 @@ p {
   color: rgba(0, 0, 0, 0.459);
 }
 
+#memidErr {text-align: start; font-size:0.8em; font-weight:bold; color:red;}
+

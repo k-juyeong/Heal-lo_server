@@ -28,15 +28,28 @@ public class MemberController {
 
   //회원가입
   @GetMapping("/join")
-  public String joinForm(){
-
+  public String joinForm(Model model){
+    model.addAttribute("form", new JoinForm());
     return "member/join";
   }
 
   //회원가입 처리
   @PostMapping("/join")
-  public String join(JoinForm joinForm){
+  public String join(@Valid @ModelAttribute("form")
+                     JoinForm joinForm,
+                     BindingResult bindingResult){
     log.info("joinForm={}",joinForm);
+
+    if(bindingResult.hasErrors()){
+      log.info("errors={}",bindingResult);
+      return "member/join";
+    }
+
+    if(joinForm.getMemid().toLowerCase().trim().length() >= 5 &&
+            joinForm.getMemid().toUpperCase().trim().length() <= 15){
+      bindingResult.rejectValue("memid","chk.memid.length", "아이디 규칙을 지켜주세요");
+      return "member/join";
+    }
 
     Member member = new Member();
     member.setMemid(joinForm.getMemid());
