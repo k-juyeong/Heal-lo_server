@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>달력화면</title>
-  <link rel="stylesheet" href="../../static/css/calendar/addForm.css"  th:href="@{/css/calendar/addForm.css}">
+  <link rel="stylesheet" href="../../static/css/calendar/calendar.css"  th:href="@{/css/calendar/dayForm.css}">
 </head>
 <body>
 <div id="wrapper">
@@ -40,28 +40,22 @@
   </header>
   <!--메인 컨텐츠-->
   <main id="container">
-    <form id="addForm" th:method="post" th:object="${form}">
+    <form id="dayForm">
       <div class="selected__date">
-        <input type="date" value="${rdate}" name="cdRDate">
-      </div>
-      <div class="editor">
-        <div class="font__size">글자크기</div>
-        <div class="font__family">글씨체</div>
-        <div class="font__weight">글자굵기</div>
-        <div class="add__img"><input type="file"></div>
+        2022.09.23
       </div>
       <div class="content">
-        <textarea rows="30" name="cdContent"></textarea>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id libero quos unde quas fugiat placeat corrupti temporibus eos velit, vel voluptatum aut doloremque ut architecto, eligendi debitis perferendis veritatis et?
+        Ducimus architecto, laborum voluptates obcaecati ea at et. Numquam, ipsam. Est, impedit excepturi repudiandae molestiae amet in suscipit sit odio, nemo fugit hic fuga alias. Quisquam aspernatur animi saepe fugit.
+        Maxime ad incidunt provident deleniti excepturi aspernatur quisquam sapiente ullam odit laudantium dolores quidem est aliquam porro, et possimus alias magni doloribus maiores voluptas accusantium reprehenderit aut! Quidem, beatae accusantium.
+        Porro aliquid consequatur aspernatur quidem incidunt amet autem, quo iusto odio nobis quam nisi modi. Deserunt aut expedita quam consequuntur officia officiis in deleniti nam, natus temporibus laboriosam, culpa tempore?
+        Nemo quae necessitatibus, nostrum nisi pariatur aspernatur natus, vitae voluptates rem libero tempore expedita accusamus enim nam explicabo quod iure in beatae! Iusto aliquid alias est, voluptate temporibus molestiae corporis.
       </div>
     </form>
-    <div class="btngrp addBtns">
-      <button type="submit" id="addBtn">저장</button>
-      <button type="button" id="cancelBtn">취소</button>
+    <div class="btngrp">
+      <button type="button" id="editBtn">수정</button>
+      <button type="button" id="delBtn">삭제</button>
     </div>
-<!--    <div class="btngrp editBtns">-->
-<!--      <button type="button" id="editBtn">수정</button>-->
-<!--      <button type="button" id="cancelBtn2">취소</button>-->
-<!--    </div>-->
   </main>
   <!-- footer -->
   <footer id="footer">
@@ -78,15 +72,8 @@
   </footer>
 </div>
 <script>
-  // 저장하는 화면일 경우 저장, 취소 버튼 노출
-  // 수정하는 화면일 경우 추정, 취소 버튼 노출
-  // 화면 모드
-
-  // 선택한 날을 기본 날짜로 설정
-
-  cancelBtn.addEventListener('click', e=>{
+  delBtn.addEventListener('click', e=>{
     if(!confirm) return;
-    location.href = '/calendar';
   });
 
 </script>

@@ -1,6 +1,7 @@
 package com.kh.heallo.domain.calendar.svc;
 
 import com.kh.heallo.domain.calendar.Calendar;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -11,8 +12,10 @@ public interface CalendarSVC {
    * @param calendar 등록 내용
    * @return 등록 건수
    */
-  int save(String date, Calendar calendar);
+  Long save(String date, Calendar calendar);
 
+  Long save(String date, Calendar calendar, MultipartFile img);
+  Long save(String date, Calendar calendar, List<MultipartFile> imgs);
 
   /**
    * 운동기록 조회(1회)
