@@ -6,6 +6,7 @@ import com.kh.heallo.web.member.dto.EditForm;
 import com.kh.heallo.web.member.dto.JoinForm;
 import com.kh.heallo.web.member.dto.LoginForm;
 import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -86,11 +87,11 @@ public class MemberController {
     Member findedMember = member.get();
 
     //세션에 회원정보 저장
-    LoginMember loginMember = new LoginMember(findedMember.getMemid(), findedMember.getMemnickname());
+    LoginMember loginMember = new LoginMember(findedMember.getMemno(), findedMember.getMemnickname());
 
     //request.getSession(false) : 세션정보가 있으면 가져오고 없으면 세션을 만듦
     HttpSession session = request.getSession(true);
-    session.setAttribute("loginMember",loginMember);
+    session.setAttribute(Session.LOGIN_MEMBER.name(), loginMember);
 
     if (requestURI.equals("/")) {
       return "index";

@@ -2,7 +2,9 @@ package com.kh.heallo.domain.bookmark.dao;
 
 import com.kh.heallo.domain.bookmark.Bookmark;
 
+import java.awt.print.Book;
 import java.util.List;
+import java.util.Optional;
 
 public interface BookmarkDAO {
 
@@ -14,12 +16,20 @@ public interface BookmarkDAO {
     List<Bookmark> findBookmarkListByMemno(Long memno);
 
     /**
+     * 즐겨찾기 추가여부 확인
+     * @param memno
+     * @param fcno
+     * @return
+     */
+    Optional<Bookmark> CheckingBookmark(Long memno, Long fcno);
+
+    /**
      * 즐겨찾기추가
      * @param fcno 운동시설번호
      * @param memno 회원번호
      * @return 결과 수
      */
-    Long addBookmark( Long memno, Long fcno);
+    Long addBookmark(Long memno, Long fcno);
 
     /**
      * 즐겨찾기 삭제

@@ -25,7 +25,7 @@ const autoCompleteRowNo = 10;
 //검색 조건 저장
 let selectedCgLocaSave = {level1 : '', level2 : ''};
 let selectedTypeCgSave = ''; 
-let searchedTextSave = ''; 
+let searchedTextSave = '';
 
 // 네이버 지도 생성
 const mapUtil = createMap();
@@ -302,7 +302,7 @@ function autoComplete(requestPram) {
 }
 
 //운동시설 항목 생성
-function createList(itemData) {
+function createList(itemData,bookmarkData) {
 
   const listWrap =
       makeElements('div', {class: 'searched-lists__item'},
@@ -339,6 +339,8 @@ function createList(itemData) {
   listWrap.querySelector('.item-title').addEventListener('click',() => {
     location.href = `/facilities/${itemData.fcno}`;
   })
+
+  listWrap.querySelector('.favorite-icon').addEventListener('click',(e) => replaceBookmark(e))
 
   return listWrap;
 }
@@ -431,16 +433,37 @@ function searchByPage(requestPram) {
         [...$searchedLists.children].filter(ele => ele.classList.contains('searched-lists__item'))
             .forEach(ele => ele.remove());
 
+        //즐겨찾기 리스트
+        const bookmarkList = findBookmarks();
+        console.log(bookmarkList)
+
         //새 목록 생성
+        const facilityCardList =
         jsonData.data.facilities
             .reverse()
-            .forEach(ele => $searchedLists.prepend(createList(ele)));
+            .map(ele => createList(ele));
+
+        facilityCardList
+            .forEach(ele => $searchedLists.prepend(ele));
         $searchedLists.scrollTop = 0;
+
+        fetch(`/bookmarks`, {
+          method: 'GET'
+        })
+            .then(response => response.json())
+            .then(jsonData => {
+              if (jsonData.header.code != '00') throw new Error(jsonData.data.message)
+
+              // facilityCardList.filter(ele => ele.fcno == )
+
+            })
+            .catch(err => console.log(err));
 
         //운동시설 마커 생성
         mapUtil.makeMarkers(jsonData.data.facilities);
 
       })
+
       .catch(error => console.log(error));
 }
 
@@ -536,4 +559,27 @@ function createPagination(totalPage) {
   }
 
   return paginationWrap;
+}
+
+//운동시설 즐겨찾기 replace
+function replaceBookmark(fcno) {
+
+  fetch(`/bookmarks/${fcno}`, {
+    method:'PATCH',        //http method
+    headers:{             //http header
+      'Accept':'application/json'
+    }
+  })
+      .then(response => response.json())
+      .then(jsonData => {
+        if (jsonData.header.code == '00') {
+          e.target.style.color =
+              jsonData.data.status ? 'orange' : `white`;
+        } else if (jsonData.header.code == '03') {
+          location.href = `/members/login?requestURI=${window.location.pathname}`;
+        } else {
+          throw new Error(jsonData.data);
+        }
+      })
+      .catch(err => console.log(err));
 }

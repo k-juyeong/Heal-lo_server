@@ -21,7 +21,7 @@ import java.net.MalformedURLException;
 @RequiredArgsConstructor
 @Controller
 @Slf4j
-public class ImageUploadFileController {
+public class ImageController {
 
     private final FileSetting fileSetting;
     private final UploadFileSVC uploadFileSVC;

@@ -2,8 +2,6 @@ import makeElements from "../module/create-elememt.js";
 
 //DOM
 const $reviewLists = document.querySelector('.review-lists');
-const $modal = document.getElementById('modal');
-const $writeBtn = document.querySelector('.review-write');
 const $orderBySelect = document.querySelector('.order-by-selector');
 
 //페이지 첫 로딩 상태 값
@@ -19,12 +17,37 @@ let currentPage = 1;      //  현재 페이지
 
 //초기 페이지 세팅
 reviewListRequest();
+bookmarkCheck();
 
 //작성버튼 클릭이벤트
-$writeBtn.addEventListener('click',e => location.href = `/reviews/${fcno}/add`)
+document.querySelector('.review-write').addEventListener('click',e => location.href = `/reviews/${fcno}/add`)
 
 //리뷰 정렬기준 선택 이벤트
 $orderBySelect.addEventListener('change',() => reviewListRequest());
+
+//즐겨찾기 클릭 이벤트
+document.querySelector('.favorite-icon').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    fetch(`/bookmarks/${fcno}`, {
+        method:'PATCH',        //http method
+        headers:{             //http header
+            'Accept':'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(jsonData => {
+            if (jsonData.header.code == '00') {
+                e.target.style.color =
+                    jsonData.data.status ? 'rgba(255, 155, 172, 0.462)' : `black`;
+            } else if (jsonData.header.code == '03') {
+                location.href = `/members/login?requestURI=${window.location.pathname}`;
+            } else {
+                throw new Error(jsonData.data);
+            }
+        })
+        .catch(err => console.log(err));
+});
 
 /** 함수 **/
 
@@ -35,7 +58,7 @@ function getFacilityScore() {
     })
         .then(response => response.json())
         .then(jsonData => {
-            if(jsonData.header.code != '00') throw new Error(jsonData.message);
+            if(jsonData.header.code != '00') throw new Error(jsonData.data.message);
             //리뷰 평균 수정
             document.querySelector('.review-header__main .text-score')
                 .textContent = jsonData.data.fcScore;
@@ -54,6 +77,25 @@ function createDefault() {
         </div>
         `
     )
+}
+
+//즐겨찾기 체크
+function bookmarkCheck() {
+    fetch(`/bookmarks`,{
+        method : 'GET'
+    })
+        .then(response => response.json())
+        .then(jsonData => {
+            console.log(jsonData)
+            if(jsonData.header.code != '00') throw new Error(jsonData.data.message);
+
+            const found = jsonData.data.bookmarks.find(ele => ele.fcno == fcno);
+            if(found != undefined) {
+                document.querySelector('.favorite-icon').style.color = 'rgba(255, 155, 172, 0.462)';
+            }
+
+        })
+        .catch(error => console.log(error))
 }
 
 //리뷰 검색
@@ -175,7 +217,8 @@ function reviewListRender(data) {
             reviewCard.querySelector('.preview-wrap').appendChild(img);
 
             img.addEventListener('click',e => {
-                $modal.querySelector('img').src = e.target.src;
+                document.getElementById('modal')
+                    .querySelector('img').src = e.target.src;
             });
         });
 
@@ -185,7 +228,10 @@ function reviewListRender(data) {
 
     //리뷰 삭제버튼 이벤트
     reviewCard.querySelector('.review-delete')
-        ?.addEventListener('click', () => deleteReview(data.rvno));
+        ?.addEventListener('click', () => {
+            if(!confirm("댓글을 삭제하시겠습니까?")) return;
+            deleteReview(data.rvno)
+        });
 
 
     return reviewCard;

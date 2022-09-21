@@ -3,14 +3,17 @@ package com.kh.heallo.domain.bookmark.dao;
 import com.kh.heallo.domain.bookmark.Bookmark;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Book;
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -31,6 +34,30 @@ public class BookmarkDAOImpl implements BookmarkDAO{
         List<Bookmark> bookmarkList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Bookmark.class), memno);
 
         return bookmarkList;
+    }
+
+    /**
+     * 즐겨찾기 추가여부 확인
+     *
+     * @param memno
+     * @param fcno
+     * @return
+     */
+    @Override
+    public Optional<Bookmark> CheckingBookmark(Long memno, Long fcno) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select * from bookmark ");
+        sql.append(" where memno = ? and fcno = ? ");
+
+        Optional<Bookmark> optionalBookmark = null;
+        try {
+            Bookmark bookmark = jdbcTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Bookmark.class), memno, fcno);
+            optionalBookmark = Optional.of(bookmark);
+        } catch (DataAccessException e) {
+            optionalBookmark = Optional.empty();
+        }
+
+        return optionalBookmark;
     }
 
     /**

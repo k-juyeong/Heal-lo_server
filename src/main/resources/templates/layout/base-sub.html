@@ -17,7 +17,7 @@
     <!-- 헤더 -->
     <header id="header">
         <!-- 탑 메뉴 -->
-        <div class="header__menu-top" th:replace="~{layout/top-menu:: ${session.loginMember} ? loginOnTopMenu : loginOffTopMenu}">
+        <div class="header__menu-top" th:replace="~{layout/top-menu:: ${session.LOGIN_MEMBER} ? loginOnTopMenu : loginOffTopMenu}">
         </div>
 
         <!-- 베너 -->

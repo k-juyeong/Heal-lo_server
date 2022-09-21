@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,27 +28,26 @@ public class BookmarkSVCImpl implements BookmarkSVC{
     }
 
     /**
-     * 즐겨찾기추가
-     *
-     * @param fcno  운동시설번호
      * @param memno 회원번호
-     * @return 즐겨찾기 번호
+     * @param fcno  운동시설번호
+     * @return 상태값
      */
     @Override
-    public Long addBookmark(Long memno, Long fcno) {
-        Long bmno = bookmarkDAO.addBookmark(memno, fcno);
+    public Boolean replace(Long memno, Long fcno) {
+        boolean status = false;
 
-        return bmno;
+        // 1) 즐겨찾기가 체크되어있는지 확인
+        Optional<Bookmark> optionalBookmark = bookmarkDAO.CheckingBookmark(memno, fcno);
+
+        // 2) 즐겨찾기 추가 or 삭제
+        if (optionalBookmark.isEmpty()) {
+            bookmarkDAO.addBookmark(memno, fcno);
+            status = true;
+        } else {
+            bookmarkDAO.deleteBookmark(optionalBookmark.get().getBmno());
+        }
+
+        return status;
     }
 
-    /**
-     * 즐겨찾기 삭제
-     * @param bmno 즐겨찾기번호
-     */
-    @Override
-    public Integer deleteBookmark(Long bmno) {
-        Integer resultCount = bookmarkDAO.deleteBookmark(bmno);
-
-        return resultCount;
-    }
 }

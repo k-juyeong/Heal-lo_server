@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class LoginMember {
-  private String memid;
+  private Long memno;
   private String memnickname;
 }
