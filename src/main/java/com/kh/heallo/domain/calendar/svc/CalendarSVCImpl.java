@@ -5,6 +5,7 @@ import com.kh.heallo.domain.calendar.dao.CalendarDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,8 +23,20 @@ public class CalendarSVCImpl implements CalendarSVC{
    * @return 등록 건수
    */
   @Override
-  public int save(String date, Calendar calendar) {
+  public Long save(String date, Calendar calendar) {
     return calendarDAO.save(date, calendar);
+  }
+
+  @Override
+  public Long save(String date, Calendar calendar, MultipartFile img) {
+    Long id = calendarDAO.save(date, calendar);
+    return null;
+  }
+
+  @Override
+  public Long save(String date, Calendar calendar, List<MultipartFile> imgs) {
+    Long id = calendarDAO.save(date, calendar);
+    return null;
   }
 
   /**

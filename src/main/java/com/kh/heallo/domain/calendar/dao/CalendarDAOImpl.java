@@ -6,8 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 @Slf4j
@@ -18,23 +24,35 @@ public class CalendarDAOImpl implements CalendarDAO{
 
   // 등록
   @Override
-  public int save(String date, Calendar calendar) {
-    int result = 0;
+  public Long save(String date, Calendar calendar) {
     StringBuffer sql = new StringBuffer();
     sql.append("insert into calendar (cdno, memno, cdContent, cdrdate, cdcdate, cdudate) ");
     sql.append("values (calendar_cdno_seq.nextval, 2, ?, ?, sysdate, sysdate) ");
 
-    result = jt.update(sql.toString(), calendar.getCdContent(), calendar.getCdRDate());
-    return result;
+    KeyHolder keyHolder = new GeneratedKeyHolder();
+
+
+    jt.update(new PreparedStatementCreator() {
+      @Override
+      public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+        PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"cdno"});
+        pstmt.setClob(1, calendar.getCdContent());
+        pstmt.setString(2, calendar.getCdRDate());
+        return pstmt;
+      }
+    }, keyHolder);
+
+
+    return Long.valueOf(keyHolder.getKeys().get("cdno").toString());
   }
 
-  // 달력 번호 생성
-  @Override
-  public Long createCdno() {
-    String sql = "select calendar_cdno_seq.nextval from dual ";
-    Long cdno = Long.valueOf(jt.update(sql, Long.class));
-    return cdno;
-  }
+//  // 달력 번호 생성
+//  @Override
+//  public Long createCdno() {
+//    String sql = "select calendar_cdno_seq.nextval from dual ";
+//    Long cdno = Long.valueOf(jt.update(sql, Long.class));
+//    return cdno;
+//  }
 
   // 조회 (날짜 클릭 => 1일 조회)
   @Override
