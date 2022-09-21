@@ -48,7 +48,7 @@ public class MemberController {
 
     memberSVC.join(member);
 
-    return "redirect:/login";
+    return "redirect:/members/login";
   }
 
   //로그인 화면
@@ -71,6 +71,8 @@ public class MemberController {
       log.info("bindingResult={}",bindingResult);
       return "login/login";
     }
+
+    log.info("member, {} " , loginForm);
 
     //회원유무
     Optional<Member> member = memberSVC.login(loginForm.getMemid(), loginForm.getMempw());
@@ -104,7 +106,7 @@ public class MemberController {
     if(session != null){
       session.invalidate();
     }
-    return "redirect:index";  //초기화면으로 이동
+    return "redirect:/";  //초기화면으로 이동
   }
 
   //조회와 동시에 수정

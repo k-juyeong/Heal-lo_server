@@ -2,7 +2,7 @@ package com.kh.heallo.web.uploadfile.controller;
 
 import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
 import com.kh.heallo.web.response.StatusCode;
-import com.kh.heallo.web.utility.FileSetting;
+import com.kh.heallo.domain.uploadfile.FileSetting;
 import com.kh.heallo.web.response.ResponseMsg;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,16 +21,19 @@ import java.net.MalformedURLException;
 @RequiredArgsConstructor
 @Controller
 @Slf4j
-public class UploadFileController {
+public class ImageUploadFileController {
 
     private final FileSetting fileSetting;
     private final UploadFileSVC uploadFileSVC;
 
     //이미지 연결
     @ResponseBody
-    @GetMapping("/images/{filename}")
-    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
-        return new UrlResource("file:" + fileSetting.getFullPath(filename));
+    @GetMapping("/images/{code}/{filename}")
+    public Resource downloadImage(
+            @PathVariable String code,
+            @PathVariable String filename
+    ) throws MalformedURLException {
+        return new UrlResource("file:" + fileSetting.getFullPath(filename, code));
     }
 
     //이미지 삭제

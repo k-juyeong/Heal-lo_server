@@ -118,11 +118,10 @@ public class MemberDAOImpl implements  MemberDAO{
   @Override
   public Optional<Member> login(String memid, String mempw) {
     StringBuffer sql = new StringBuffer();
-    sql.append("select * ");
+    sql.append(" select * ");
     sql.append("  from member ");
-    sql.append( "where memid = ? ");
+    sql.append(" where memid = ? ");
     sql.append("   and mempw = ? ");
-
 
     try {
       Member member = jdbcTemplate.queryForObject(
@@ -130,8 +129,10 @@ public class MemberDAOImpl implements  MemberDAO{
               new BeanPropertyRowMapper<>(Member.class),
               memid,mempw
       );
+
       return Optional.of(member);
     } catch (DataAccessException e) {
+      e.printStackTrace();
       return Optional.empty();
     }
   }

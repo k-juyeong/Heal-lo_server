@@ -118,7 +118,6 @@ function deleteReview(rvno) {
     })
         .then(response => response.json())
         .then(jsonData => {
-            console.log('재랜더링')
             reviewListRequest()})
         .catch(error => console.log(error));
 }
@@ -145,7 +144,7 @@ function reviewListRender(data) {
                 makeElements('div',{class : 'review-text-score'},`${data.rvscore}점`),
                 makeElements('div',{class : 'outer-star'},'★★★★★',
                     makeElements('span',{class : 'inner-star'},'★★★★★'))),
-            makeElements('span',{class : 'user-name'},data.memninkname),
+            makeElements('span',{class : 'user-name'},data.memnickname),
             makeElements('span',{class : 'date'},data.rvcdate),
             makeElements('p',{class : 'preview-contents'},isMoreview ? previewContents : data.rvcontents,
             isMoreview ? makeElements('div',{class : 'btn-moreview'},'더보기') : ''),
@@ -169,7 +168,7 @@ function reviewListRender(data) {
     data.imageFiles
         ?.forEach(ele => {
             const img =  document.createElement('img');
-            img.setAttribute('src',`/images/${ele.ufsname}`);
+            img.setAttribute('src',`/images/${ele.code}/${ele.ufsname}`);
             img.setAttribute('data-bs-toggle','modal');
             img.setAttribute('data-bs-target','#modal');
             img.style.cursor = 'pointer';
@@ -187,6 +186,7 @@ function reviewListRender(data) {
     //리뷰 삭제버튼 이벤트
     reviewCard.querySelector('.review-delete')
         ?.addEventListener('click', () => deleteReview(data.rvno));
+
 
     return reviewCard;
 }

@@ -32,20 +32,17 @@ public interface ReviewDAO {
 
     /**
      * 리뷰등록
-     * @param fcno 운동시설번호
-     * @param memno 회원번호
      * @param review 리뷰
      * @return 리뷰번호
      */
-    Long add(Long memno,Long fcno, Review review);
+    Long add(Review review);
 
     /**
      * 리뷰수정
-     * @param rvno 리뷰번호
      * @param review 리뷰
      * @return 결과 수
      */
-    Integer update(Long rvno, Review review);
+    Integer update(Review review);
 
     /**
      * 리뷰삭제

@@ -12,7 +12,7 @@ const uploadImgs = [];
     $review.imageFiles.forEach(file => {
         const previewDiv =
             makeElements('div', {class: 'preview-img', [`data-img-name`]: file.uffname},
-                makeElements('img', {src: `/images/${file.ufsname}`}),
+                makeElements('img', {src: `/images/${file.code}/${file.ufsname}`}),
                 makeElements('button', {class: 'fa-solid fa-xmark'}));
         $previewWrap.appendChild(previewDiv);
 

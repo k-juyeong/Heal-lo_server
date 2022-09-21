@@ -1,7 +1,8 @@
 
       const $joinBtn = document.getElementById('joinBtn');
-      $joinBtn.addEventListener('click', function () {
-        document.location.href = 'http://www.naver.com';
+      $joinBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.location.href = '/members/join';
       });
 
       const $loginBtn = document.getElementById('loginBtn');

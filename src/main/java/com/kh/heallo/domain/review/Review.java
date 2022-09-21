@@ -20,7 +20,7 @@ public class Review {
     private LocalDateTime rvudate;          //수정날짜
     private Long fcno;                    //운동시설번호
     private Long memno;                   //회원번호
-    private String memninkname;             //회원닉네임
+    private String memnickname;             //회원닉네임
     private List<FileData> imageFiles;   //등록이미지들
 
 }

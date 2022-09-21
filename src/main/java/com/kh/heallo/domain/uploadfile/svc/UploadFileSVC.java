@@ -1,32 +1,50 @@
 package com.kh.heallo.domain.uploadfile.svc;
 
+import com.kh.heallo.domain.uploadfile.AttachCode;
 import com.kh.heallo.domain.uploadfile.FileData;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UploadFileSVC {
 
     /**
-     * 파일 업로드 (리뷰)
-     * @param rvno 리뷰번호
-     * @param fileData 파일정보
-     * @return 결과 수
+     * 파일 단일 등록
+     * @param code
+     * @param noid
+     * @param file
+     * @return
      */
-    Integer ReviewFileUpload(Long rvno, FileData fileData);
+    Integer fileUpload(AttachCode code, Long noid, MultipartFile file) throws IOException;
 
     /**
-     * 업로드 이미지 목록 조회 (리뷰)
-     * @param rvno 리뷰번호
-     * @return 이미지 리스트
+     * 파일 복수 등록
+     * @param code
+     * @param noid
+     * @param files
      */
-    List<FileData> findImagesByRvno(Long rvno);
-
-
+    void fileUpload(AttachCode code, Long noid, List<MultipartFile> files);
 
     /**
-     * 파일 삭제
+     * 파일 조회(복수)
+     * @param code
+     * @param noid
+     * @return
+     */
+    List<FileData> findImages(AttachCode code, Long noid);
+
+    /**
+     * 파일 단일 삭제
      * @param ufno 파일번호
      * @return
      */
     Integer delete(Long ufno);
+
+    /**
+     * 파일 복수 삭제
+     * @param ufnos 파일번호들
+     * @return 결과
+     */
+    void delete(Long[] ufnos);
 }

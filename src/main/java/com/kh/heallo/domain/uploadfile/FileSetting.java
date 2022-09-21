@@ -1,51 +1,52 @@
-package com.kh.heallo.web.utility;
+package com.kh.heallo.domain.uploadfile;
 
-import com.kh.heallo.domain.uploadfile.FileData;
-import org.springframework.beans.BeanUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class FileSetting {
 
     @Value("${file.path}")  //application.properties의 값 조회 (로컬주소는 임시)
-    private String filePath;
+    private String basicFilePath;
 
     //로컬저장소에 파일저장
-    public String transForTo(MultipartFile multipartFile) throws IOException {
-        String localFileName = createLocalFileName(multipartFile);
-        multipartFile.transferTo(new File(filePath + localFileName));
+    public String transForTo(MultipartFile multipartFile, AttachCode code, String localFileName) throws IOException {
+        File file = new File(getFullPath(localFileName,code.getCode()));
+        file.mkdirs();
+        multipartFile.transferTo(file);
 
         return localFileName;
     }
 
     //GetFullPath
-    public String getFullPath(String fileName) {
+    public String getFullPath(String fileName, String code) {
 
-        return filePath + fileName;
+        return basicFilePath + code + "/" +  fileName;
     }
 
     //MultipartFile => FileData
-    public FileData getFileData(MultipartFile multipartFile, String ufsname) {
+    public FileData getFileData(MultipartFile multipartFile,AttachCode code, Long noid, String localFilename) {
             FileData fileData = new FileData();
+            fileData.setCode(code.getCode());
+            fileData.setNoid(noid);
+            fileData.setUfsname(localFilename);
             fileData.setUffname(multipartFile.getOriginalFilename());
             fileData.setUftype(multipartFile.getContentType());
             fileData.setUfsize(multipartFile.getSize());
-            fileData.setUfsname(ufsname);
-            fileData.setUfpath(filePath);
+            fileData.setUfpath(basicFilePath);
 
         return fileData;
     }
 
     //로컬 저장소 파일이름 설정
-    private String createLocalFileName(MultipartFile file) {
+    public String createLocalFileName(MultipartFile file) {
         String originName = file.getOriginalFilename();
         int extensionIndex = originName.lastIndexOf(".");
         String extension = originName.substring(extensionIndex+1, originName.length());

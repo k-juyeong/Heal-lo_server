@@ -2,7 +2,9 @@ package com.kh.heallo.domain.review.svc;
 
 import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.Review;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,20 +34,22 @@ public interface ReviewSVC {
 
     /**
      * 리뷰등록
-     * @param fcno
-     * @param memno
      * @param review 리뷰내용
      * @return 결과 수
      */
-    Long add(Long memno,Long fcno, Review review);
+    Long add(Review review);
+    Long add(Review review, List<MultipartFile> files);
 
     /**
      * 리뷰수정
-     * @param rvno
      * @param review
      * @return 결과 수
      */
-    Integer update(Long rvno,Review review,Long[] ufnoArr);
+    Integer update(Review review);
+    Integer update(Review review, List<MultipartFile> files);
+    Integer update(Review review, Long[] ufnoArr);
+
+    Integer update(Review review, List<MultipartFile> files, Long[] ufnoArr);
 
     /**
      * 리뷰삭제

@@ -24,6 +24,4 @@ public class AddReviewForm {
     @DecimalMax("5")
     @DecimalMin("0.5")
     private double rvscore;                     //리뷰별점
-
-    private List<ReviewFileData> imageFiles;    //이미지파일
 }

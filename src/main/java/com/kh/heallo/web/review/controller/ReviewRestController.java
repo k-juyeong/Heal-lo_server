@@ -1,13 +1,11 @@
 package com.kh.heallo.web.review.controller;
 
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
-import com.kh.heallo.domain.uploadfile.FileData;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.svc.ReviewSVC;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.review.ReviewFileValidator;
-import com.kh.heallo.web.utility.FileSetting;
 import com.kh.heallo.web.utility.DtoModifier;
 import com.kh.heallo.web.review.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,7 +28,6 @@ public class ReviewRestController {
 
     private final ReviewSVC reviewSVC;
     private final FacilitySVC facilitySVC;
-    private final FileSetting fileSetting;
     private final DtoModifier dtoModifier;
     private final ReviewFileValidator fileValidator;
 
@@ -67,6 +63,8 @@ public class ReviewRestController {
             default: searchCriteria.setOrderBy("rvcdate asc");
         }
 
+        List<Review> listByFcno = reviewSVC.findListByFcno(fcno, dtoModifier.getReviewCriteria(searchCriteria));
+
         List<ReviewDto> reviewDtos = reviewSVC
                 .findListByFcno(fcno, dtoModifier.getReviewCriteria(searchCriteria))
                 .stream()
@@ -95,44 +93,31 @@ public class ReviewRestController {
         //Test 회원
         long memno = 1L;
 
-        List<FileData> fileDataList = null;
+        //파일 검증
         if (multipartFiles != null) {
-            //파일 검증
-            List<ReviewFileData> reviewFileDataList = dtoModifier.getReviewFileData(multipartFiles);
-            addReviewForm.setImageFiles(reviewFileDataList);
             fileValidator.validate(
-                    reviewFileDataList,
+                    multipartFiles,
                     new BindException(addReviewForm, "addReviewForm"),
-                    reviewFileDataList.size()
+                    multipartFiles.size()
             );
-
-            //파일저장
-            fileDataList = multipartFiles
-                    .stream()
-                    .map(multipartFile -> {
-                        FileData fileData = null;
-                        try {
-                            String localFileName = fileSetting.transForTo(multipartFile);
-                            fileData = fileSetting.getFileData(multipartFile, localFileName);
-                        } catch (IOException e) {
-                            log.info("파일 저장중 exception 발생 {}", e.getMessage());
-                        }
-                        return fileData;
-                    })
-                    .collect(Collectors.toList());
         }
 
+        //리뷰등록
         Review review = dtoModifier.getReviewByAddReviewForm(addReviewForm);
         review.setFcno(fcno);
         review.setMemno(memno);
-        review.setImageFiles(fileDataList);
-        Long rvno = reviewSVC.add(memno, fcno, review);
+        if (multipartFiles != null) {
+            reviewSVC.add(review, multipartFiles);
+        } else {
+            reviewSVC.add(review);
+        }
+
+        //운동시설 평점 수정
         facilitySVC.updateToScore(fcno);
 
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
                 .createHeader(StatusCode.SUCCESS)
-                .setData("rvno", rvno)
                 .setData("redirect", "/facilities/" + fcno);
 
         return new ResponseEntity<>(responseMsg, HttpStatus.OK);
@@ -149,45 +134,44 @@ public class ReviewRestController {
         //Test 회원
         long memno = 1L;
 
-        List<FileData> fileDataList = null;
-        if (multipartFiles != null) {
-            //파일검증
-            List<ReviewFileData> reviewFileDataList = dtoModifier.getReviewFileData(multipartFiles);
-            editReviewForm.setImageFiles(reviewFileDataList);
-            Review review = reviewSVC.findByRvno(rvno);
-            int totalSize = review.getImageFiles().size()
-                    - editReviewForm.getDeleteImages().length
-                    + reviewFileDataList.size();
-            fileValidator.validate(
-                    reviewFileDataList,
-                    new BindException(editReviewForm, "addReviewForm"),
-                    totalSize);
+        int imgSize = reviewSVC.findByRvno(rvno).getImageFiles().size();
 
-            //파일저장
-            fileDataList = multipartFiles
-                    .stream()
-                    .map(multipartFile -> {
-                    FileData fileData = null;
-                        try {
-                            String localFileName = fileSetting.transForTo(multipartFile);
-                            fileData = fileSetting.getFileData(multipartFile, localFileName);
-                        } catch (IOException e) {
-                            log.info("파일 저장중 exception 발생 {}", e.getMessage());
-                        }
-                        return fileData;
-                    })
-                    .collect(Collectors.toList());
+        //파일검증
+        if (multipartFiles != null) {
+            int totalSize = imgSize
+                            - editReviewForm.getDeleteImages().length
+                            + multipartFiles.size();
+            fileValidator.validate(
+                    multipartFiles,
+                    new BindException(editReviewForm, "editReviewForm"),
+                    imgSize
+            );
         }
 
+        //리뷰등록
         Review review = dtoModifier.getReviewByEditReviewForm(editReviewForm);
-        review.setImageFiles(fileDataList);
-        Integer resultCount = reviewSVC.update(rvno, review, editReviewForm.getDeleteImages());
+        Long[] deleteImages = editReviewForm.getDeleteImages();
+
+        if (multipartFiles != null && deleteImages != null) {
+            reviewSVC.update(review, multipartFiles, deleteImages);
+
+        } else if (multipartFiles != null){
+            reviewSVC.update(review, multipartFiles);
+
+        } else if (deleteImages != null) {
+            reviewSVC.update(review,deleteImages);
+
+        } else {
+            reviewSVC.update(review);
+
+        }
+
+        //운동시설 평점 수정
         facilitySVC.updateToScore(reviewSVC.findByRvno(rvno).getFcno());
 
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
                 .createHeader(StatusCode.SUCCESS)
-                .setData("resultCount", resultCount)
                 .setData("redirect", "/facilities/" + reviewSVC.findByRvno(rvno).getFcno());
 
         return new ResponseEntity(responseMsg, HttpStatus.OK);

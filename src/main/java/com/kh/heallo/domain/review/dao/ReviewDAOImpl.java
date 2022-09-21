@@ -60,7 +60,7 @@ public class ReviewDAOImpl implements ReviewDAO{
     public List<Review> findListByFcno(Long fcno, ReviewCriteria criteria) {
         StringBuffer sql = new StringBuffer();
         sql.append("  select * ");
-        sql.append("          from (select rownum rowno, review.* ,member.memninkname ");
+        sql.append("          from (select rownum rowno, review.* ,member.memnickname ");
         sql.append("                  from (select * from review ");
         sql.append("                          order by " + criteria.getOrderBy() + ") review, member ");
         sql.append("                  where review.memno = member.memno ");
@@ -91,31 +91,27 @@ public class ReviewDAOImpl implements ReviewDAO{
 
     /**
      * 리뷰등록
-     * @param memno 회원번호
-     * @param fcno 운동시설번호
      * @param review 리뷰
      * @return 리뷰번호
      */
     @Override
-    public Long add(Long memno, Long fcno, Review review) {
+    public Long add(Review review) {
         StringBuffer sql = new StringBuffer();
         sql.append(" insert into review ");
         sql.append(" values(review_rvno_seq.nextval, ?, ?, sysdate, sysdate, ?, ?) ");
 
-        log.info("review {}",review);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement preparedStatement = con.prepareStatement(sql.toString(), new String[]{"rvno"});
             preparedStatement.setString(1, review.getRvcontents());
             preparedStatement.setDouble(2, review.getRvscore());
-            preparedStatement.setLong(3, memno);
-            preparedStatement.setLong(4, fcno);
+            preparedStatement.setLong(3, review.getMemno());
+            preparedStatement.setLong(4, review.getFcno());
 
             return preparedStatement;
         }, keyHolder);
 
-        log.info("key {}",keyHolder.getKeys());
 
         return Long.valueOf(keyHolder.getKeys().get("rvno").toString());
     }
@@ -126,7 +122,7 @@ public class ReviewDAOImpl implements ReviewDAO{
      * @return 결과 수
      */
     @Override
-    public Integer update(Long rvno, Review review) {
+    public Integer update(Review review) {
         StringBuffer sql = new StringBuffer();
         sql.append(" update review set ");
         sql.append("         rvcontents = ?, ");
@@ -134,7 +130,7 @@ public class ReviewDAOImpl implements ReviewDAO{
         sql.append("         rvudate = sysdate ");
         sql.append(" where review.rvno = ? ");
 
-        return jdbcTemplate.update(sql.toString(), review.getRvcontents(), review.getRvscore(), rvno);
+        return jdbcTemplate.update(sql.toString(), review.getRvcontents(), review.getRvscore(), review.getRvno());
     }
 
     /**

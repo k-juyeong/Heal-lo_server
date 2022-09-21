@@ -21,7 +21,7 @@ public class ReviewDto {
     private String rvcontents;                  //리뷰컨텐츠
     private double rvscore;                     //리뷰별점
     private String rvcdate;                     //리뷰등록날짜
-    private String memninkname;                 //회원닉네임
+    private String memnickname;                 //회원닉네임
     private List<ReviewFileData> imageFiles;    //이미지파일들
     private boolean isLogin;                    //본인여부 확인
 

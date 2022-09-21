@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Member {
   private Long memno;          //number(8)
   private String memid;        //varchar2(40)
-  private String  mempw;       //varchar2(20)
+  private String mempw;       //varchar2(20)
   private String memtel;       //varchar2(13)
   private String memnickname;  //varchar2(30)
   private String mememail;     //varchar2(30)
