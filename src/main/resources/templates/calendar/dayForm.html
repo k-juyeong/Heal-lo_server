@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container})}">
+      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>달력화면</title>
-  <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="../../static/css/calendar/calendar.css"  th:href="@{/css/calendar/calendar.css}">
+  <link rel="stylesheet" href="../../static/css/calendar/calendar.css"  th:href="@{/css/calendar/dayForm.css}">
 </head>
 <body>
 <div id="wrapper">
@@ -72,5 +71,11 @@
     </div>
   </footer>
 </div>
+<script>
+  delBtn.addEventListener('click', e=>{
+    if(!confirm) return;
+  });
+
+</script>
 </body>
 </html>

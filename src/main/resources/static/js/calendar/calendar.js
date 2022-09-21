@@ -60,9 +60,9 @@ const createCalendar = () => {
         const thisDate = date.textContent;
         for(let i=1; i<=dates.length; i++){
             if(i<10) {
-                fullDate = `${selectedYear}${viewedMonth}0${i}`;
+                fullDate = `${selectedYear}-${viewedMonth}-0${i}`;
             } else {
-                fullDate = `${selectedYear}${viewedMonth}${i}`;
+                fullDate = `${selectedYear}-${viewedMonth}-${i}`;
             }
             if(thisDate == i){
                     date.classList.add(fullDate);

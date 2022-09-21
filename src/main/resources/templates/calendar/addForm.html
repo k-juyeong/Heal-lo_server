@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container})}">
+      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>달력화면</title>
-
-  <link rel="stylesheet" href="../../static/css/calendar/calendar.css"  th:href="@{/css/calendar/calendar.css}">
+  <link rel="stylesheet" href="../../static/css/calendar/addForm.css"  th:href="@{/css/calendar/addForm.css}">
 </head>
 <body>
 <div id="wrapper">
@@ -41,9 +40,9 @@
   </header>
   <!--메인 컨텐츠-->
   <main id="container">
-    <form method="post" id="addForm">
+    <form id="addForm" th:method="post" th:object="${form}">
       <div class="selected__date">
-        <input type="date" id="">
+        <input type="date" value="${rdate}" name="cdRDate">
       </div>
       <div class="editor">
         <div class="font__size">글자크기</div>
@@ -52,17 +51,17 @@
         <div class="add__img"><input type="file"></div>
       </div>
       <div class="content">
-        <textarea rows="30"></textarea>
+        <textarea rows="30" name="cdContent"></textarea>
       </div>
     </form>
     <div class="btngrp addBtns">
       <button type="submit" id="addBtn">저장</button>
       <button type="button" id="cancelBtn">취소</button>
     </div>
-    <div class="btngrp editBtns">
-      <button type="button" id="editBtn">수정</button>
-      <button type="button" id="cancelBtn2">취소</button>
-    </div>
+<!--    <div class="btngrp editBtns">-->
+<!--      <button type="button" id="editBtn">수정</button>-->
+<!--      <button type="button" id="cancelBtn2">취소</button>-->
+<!--    </div>-->
   </main>
   <!-- footer -->
   <footer id="footer">
@@ -78,5 +77,18 @@
     </div>
   </footer>
 </div>
+<script>
+  // 저장하는 화면일 경우 저장, 취소 버튼 노출
+  // 수정하는 화면일 경우 추정, 취소 버튼 노출
+  // 화면 모드
+
+  // 선택한 날을 기본 날짜로 설정
+
+  cancelBtn.addEventListener('click', e=>{
+    if(!confirm) return;
+    location.href = '/calendar';
+  });
+
+</script>
 </body>
 </html>
