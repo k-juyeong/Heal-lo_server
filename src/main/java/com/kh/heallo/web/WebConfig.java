@@ -5,20 +5,32 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-
     //인터셉터 추가
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        List<String> whiteList = new ArrayList<>();
+        whiteList.add("/resource/**");
+        whiteList.add("*.ico");
+        whiteList.add("/");
+        whiteList.add("/error");
+        whiteList.add("/members/join");
+        whiteList.add("/members/login");
+        whiteList.add("/facilities/**");
+        whiteList.add("/reviews/*/total");
+        whiteList.add("/reviews/*/list");
+        whiteList.add("/calendar/**");
+        whiteList.add("/images/*/*");
+
         //로그인체크 인터셉터
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns(
-                        "/css/**", "/img/**", "/js/**", "*.ico", "/error", "/",
-                        "/members/join", "/members/login", "/facilities/**",
-                        "/reviews/*/total", "/reviews/*/list", "/calendar/**"
-                );
+                .excludePathPatterns(whiteList);
     }
 }

@@ -19,4 +19,5 @@ public class FacilityDetail {
     private String fcstatus;    //운영상태		VARCHAR2
     private String fcimg;       //대표이미지		VARCHAR2
     private double fcscore;     //평균평점	    NUMBER
+    private boolean isBookmarking;
 }

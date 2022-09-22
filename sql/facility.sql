@@ -45,14 +45,14 @@ delete facility where fcno = 1;
 
 -- 운동시설 조건검색
 select fc3.*
-from (select rownum rowno, fc2.*
-      from (select fc.*,(select count(*) from review where fcno = fc.fcno) rvtotal
-            from facility fc
-            where REPLACE(TRIM(fcname),' ','') like '나이스%'
-              and fcaddr like '경기도%'
-              and fctype like '%당구장업%'
-            order by rvtotal desc) fc2) fc3
-where fc3.rowno > 0 and fc3.rowno <= 10;
+                                        from (select rownum rowno, fc2.*
+                                              from (select fc.*,(select count(*) from review where fcno = fc.fcno) rvtotal
+                                                    from facility fc
+                                                    where REPLACE(TRIM(fcname),' ','') like '나이스%'
+                                                      and fcaddr like '경기도%'
+                                                      and fctype like '%당구장업%'
+                                                    order by rvtotal desc) fc2) fc3
+                                        where fc3.rowno > 0 and fc3.rowno <= 10;
 
 -- 상호명 자동완성
 select fc2.fcname

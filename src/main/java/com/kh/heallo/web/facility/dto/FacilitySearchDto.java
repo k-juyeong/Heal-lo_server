@@ -17,4 +17,5 @@ public class FacilitySearchDto {
     private double fclng;               //경도			NUMBER
     private double fcscore;             //평균평점	    NUMBER
     private Integer rvtotal;            //리뷰 전체 갯수
+    private boolean isBookmarking;       //즐겨찾기 여부
 }

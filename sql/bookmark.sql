@@ -1,8 +1,8 @@
 -- 즐겨찾기
 CREATE TABLE Bookmark (
-    BMNO NUMBER(8),
-    MEMNO NUMBER(8),
-    FCNO NUMBER(8)
+                          BMNO NUMBER(8),
+                          MEMNO NUMBER(8),
+                          FCNO NUMBER(8),
 );
 
 -- 제약조건
