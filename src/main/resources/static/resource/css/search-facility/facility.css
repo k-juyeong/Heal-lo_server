@@ -38,16 +38,17 @@ a:hover {color: inherit;}
 .review-lists .review-card {position: relative;min-width: 600px;margin: 82px 0;border-bottom: 1px solid rgba(134, 132, 132, 0.368);}
 .review-lists .review-card__info {display: flex;flex-direction: column;width: 100%;margin: 12px 0;font-size: 1rem;}
 .review-lists .review-card__info .info-header {display: flex;}
-.review-lists .review-card__info .user-name {font-size: 16px;font-weight: 600; padding: 6px 0}
+.review-lists .review-card__info .user-name {font-size: 16px;font-weight: 600; padding: 0 6px;}
 .review-lists .review-btn-wrap {display: flex; margin-left: 8px}
 .review-lists .review-btn-wrap .btn-review {margin: 0 2px;padding: 4px; font-size: 14px}
-.review-lists .review-card__info .date {margin-bottom: 18px;font-size: 16px;}
-.review-lists .review-card__star {position: absolute;top: 0;right: 0;font-size: 1.5em;}
-.review-lists .preview-contents {padding: 0 4px; padding-bottom:32px; margin-top:32px; height: auto; color: #777777; background-color: rgba(230, 255, 215, 0.58); border-style: none; overflow: hidden;word-break: break-all}
+.review-lists .review-card__info .date {padding: 6px; padding-bottom: 48px;font-size: 12px;}
+.review-lists .review-card__star {position: absolute;top: 0;right: 0;font-size: 1.5em; border-radius: 10px;}
+.review-lists .preview-contents {padding: 0 4px; padding-bottom:32px; height: auto; color: #777777; border-style: none; overflow: hidden;word-break: break-all}
 
 /* 이미지 미리보기 */
+.preview-wrap {}
 .preview-wrap img {width: 100px;height: 100px;margin: 4px; margin-top: 52px}
-.btn-moreview {position: absolute;right: 0;top: 60px;padding: 6px; border-radius: 12px;border-style: none; color:black; background-color: #98bcff;cursor: pointer;}
+.btn-moreview {position: absolute;right: 0;top: 60px;padding: 6px; border-radius: 12px;border-style: none; color: black;cursor: pointer;}
 
 /* 페이지네이션 */
 .pagination-wrap {display: flex;justify-content: center;}

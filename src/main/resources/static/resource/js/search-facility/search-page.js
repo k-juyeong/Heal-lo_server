@@ -1,6 +1,7 @@
 import {categoryLoca_lv1, categoryLoca_lv2, category_fctype} from "../module/category.js";
 import makeElements from "../module/create-elememt.js";
 import MapUtile from "../module/naver-map-api.js";
+import sweetalert from "../module/swal.js";
 
 //DOM
 const $cgListsByLoca1 = document.querySelector('.search__cg-wrap .search__cg-loca1');
@@ -29,6 +30,9 @@ let searchedTextSave = '';
 
 // 네이버 지도 생성
 const mapUtil = createMap();
+
+//알림창 객체
+const swal = new sweetalert();
 
 // 지역 카테고리 대분류 랜더링 
 RenderingUlTagLv1($cgListsByLoca1,categoryLoca_lv1);
@@ -329,12 +333,14 @@ function createList(itemData) {
   listWrap.querySelector('.inner-star').style.width = itemData.fcscore*20 + '%';
 
   //맵 유틸기능(지도이동)
-  listWrap.querySelector('.move-map-icon').addEventListener('click',() => {
+  listWrap.querySelector('.move-map-icon')
+      .addEventListener('click',() => {
     mapUtil.moveMap(itemData.fclat,itemData.fclng)
   })
 
   //운동시설 제목 클릭 이벤트
-  listWrap.querySelector('.item-title').addEventListener('click',() => {
+  listWrap.querySelector('.item-title')
+      .addEventListener('click',() => {
     location.href = `/facilities/${itemData.fcno}`;
   })
 
@@ -342,7 +348,8 @@ function createList(itemData) {
   listWrap.querySelector('.contents-icon').style.color = itemData.bookmarking ? 'var(--color-main-header)' : 'white';
 
   //즐겨찾기 추가/삭제 이벤트
-  listWrap.querySelector('.favorite-icon').addEventListener('click', (e) => replaceBookmark(itemData.fcno, e.target));
+  listWrap.querySelector('.favorite-icon')
+      .addEventListener('click', (e) => replaceBookmark(itemData.fcno, e.target));
 
   return listWrap;
 }
@@ -557,10 +564,13 @@ function replaceBookmark(fcno, target) {
         if (jsonData.header.code == '00') {
           target.style.color =
               jsonData.data.status ? 'var(--color-main-header)' : `white`;
+
         } else if (jsonData.header.code == '03') {
-          location.href = `/members/login?requestURI=${window.location.pathname}`;
+          swal.checkLogin(() => location.href = `/members/login?requestURI=${window.location.pathname}`)
+
         } else {
           throw new Error(jsonData.data);
+
         }
       })
       .catch(err => console.log(err));

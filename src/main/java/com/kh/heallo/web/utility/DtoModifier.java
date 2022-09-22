@@ -42,7 +42,7 @@ public class DtoModifier {
     public ReviewDto getReviewDto(Review review, Long memno) {
         ReviewDto reviewDto = new ReviewDto();
         BeanUtils.copyProperties(review,reviewDto);
-        reviewDto.setMemno(review.getMemno());
+        reviewDto.setMemnickname(review.getMember().getMemnickname());
 
         if (review.getMemno() == memno) reviewDto.setLogin(true);
 

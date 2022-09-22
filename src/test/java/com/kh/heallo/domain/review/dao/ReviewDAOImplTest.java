@@ -1,6 +1,7 @@
 package com.kh.heallo.domain.review.dao;
 
 
+import com.kh.heallo.domain.review.OrderBy;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
 import org.junit.jupiter.api.*;
@@ -28,7 +29,7 @@ class ReviewDAOImplTest {
         review = new Review();
         review.setRvcontents("시설이 너무 좋습니다 적극 추천드립니다");
         review.setRvscore(4.5);
-        review.setRvno(1L);
+        review.setFcno(1L);
         review.setMemno(1L);
         Long rvno = reviewDAO.add(review);
         review.setRvno(rvno);
@@ -69,9 +70,10 @@ class ReviewDAOImplTest {
         ReviewCriteria criteria = new ReviewCriteria();
         criteria.setPageNo(1);
         criteria.setNumOfRow(5);
+        criteria.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
         List<Review> reviewList = reviewDAO.findListByFcno(1L, criteria);
         Review foundReview = reviewDAO.findByRvno(review.getRvno());
-        reviewList.stream().forEach(ele -> ele.setMemnickname(null));
+        reviewList.stream().forEach(ele -> ele.setMember(null));
 
         assertThat(reviewList).contains(foundReview);
     }

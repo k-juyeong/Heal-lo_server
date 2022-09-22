@@ -1,4 +1,5 @@
 import makeElements from "../module/create-elememt.js";
+import sweetalert from "../module/swal.js";
 
 //DOM
 const $reviewLists = document.querySelector('.review-lists');
@@ -18,6 +19,9 @@ let currentPage = 1;      //  현재 페이지
 //초기 페이지 세팅
 reviewListRequest();
 
+//알림창 객체
+const swal = new sweetalert();
+
 //작성버튼 클릭이벤트
 document.querySelector('.review-write').addEventListener('click',e => location.href = `/reviews/${fcno}/add`)
 
@@ -27,13 +31,13 @@ $orderBySelect.addEventListener('change',() => reviewListRequest());
 //즐겨찾기 클릭 이벤트
 document.querySelector('.favorite-icon').addEventListener('click', (e) => {
     e.preventDefault();
-    replaceBookmark(e.target);
+    replaceBookmark(fcno,e.target)
 });
 
 /** 함수 **/
 
 //즐겨찾기 업데이트
-function replaceBookmark(target) {
+function replaceBookmark(fcno,target) {
     fetch(`/bookmarks/${fcno}`, {
         method: 'PATCH',        //http method
         headers: {             //http header
@@ -45,10 +49,13 @@ function replaceBookmark(target) {
             if (jsonData.header.code == '00') {
                 target.style.color =
                     jsonData.data.status ? 'var(--color-main-header)' : `black`;
+
             } else if (jsonData.header.code == '03') {
-                location.href = `/members/login?requestURI=${window.location.pathname}`;
+                swal.checkLogin(() => location.href = `/members/login?requestURI=${window.location.pathname}`)
+
             } else {
                 throw new Error(jsonData.data);
+
             }
         })
         .catch(err => console.log(err));
@@ -150,7 +157,7 @@ function deleteReview(rvno) {
 
 //리뷰 수정페이지
 function toUpdatePage(rvno) {
-    window.location = `/reviews/${rvno}/edit`
+    window.location = `/reviews/${rvno}/edit`;
 }
 
 //리뷰 생성
@@ -213,11 +220,7 @@ function reviewListRender(data) {
 
     //리뷰 삭제버튼 이벤트
     reviewCard.querySelector('.review-delete')
-        ?.addEventListener('click', () => {
-            if(!confirm("댓글을 삭제하시겠습니까?")) return;
-            deleteReview(data.rvno)
-        });
-
+        ?.addEventListener('click', () => swal.checkDeleteAlert(() => deleteReview(data.rvno)));
 
     return reviewCard;
 }

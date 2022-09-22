@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.review.dao;
 
+import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
 import lombok.RequiredArgsConstructor;
@@ -7,11 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -69,13 +73,33 @@ public class ReviewDAOImpl implements ReviewDAO{
 
         Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
         Integer startPage = endPage - criteria.getNumOfRow();
-        List<Review> reviewList = null;
-        reviewList = jdbcTemplate.query(
-                sql.toString(),
-                new BeanPropertyRowMapper<>(Review.class),
-                fcno,
-                startPage,
-                endPage);
+//        List<Review> reviewList = null;
+//        reviewList = jdbcTemplate.query(
+//                sql.toString(),
+//                new BeanPropertyRowMapper<>(Review.class),
+//                fcno,
+//                startPage,
+//                endPage);
+
+        List<Review> reviewList = jdbcTemplate.query(sql.toString(), new RowMapper<Review>() {
+            @Override
+            public Review mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Review review = new Review();
+                review.setRvno(rs.getLong(2));
+                review.setRvcontents(rs.getString(3));
+                review.setRvscore(rs.getDouble(4));
+                review.setRvcdate(rs.getTimestamp(5).toLocalDateTime());
+                review.setRvudate(rs.getTimestamp(6).toLocalDateTime());
+                review.setMemno(rs.getLong(7));
+                review.setFcno(rs.getLong(8));
+
+                Member member = new Member();
+                member.setMemnickname(rs.getString(9));
+                review.setMember(member);
+
+                return review;
+            }
+        },fcno,startPage,endPage);
 
         if (reviewList.size() == 0) {
             throw new DataAccessException("데이터를 찾을수 없습니다") {

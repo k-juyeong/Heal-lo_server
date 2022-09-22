@@ -1,7 +1,9 @@
 package com.kh.heallo.web.review.controller;
 
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
+import com.kh.heallo.domain.review.OrderBy;
 import com.kh.heallo.domain.review.Review;
+import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.svc.ReviewSVC;
 import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
@@ -58,31 +60,28 @@ public class ReviewRestController {
 
         //정렬기준 셋팅
         switch(searchCriteria.getOrderBy()) {
-            case "dateAsc": searchCriteria.setOrderBy("rvcdate asc");
+            case "dateAsc": searchCriteria.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
             break;
-            case "dateDesc": searchCriteria.setOrderBy("rvcdate desc");
+            case "dateDesc": searchCriteria.setOrderBy(OrderBy.DATE_DESC.getOrderBy());
             break;
-            case "scoreDsc": searchCriteria.setOrderBy("rvscore desc");
+            case "scoreDsc": searchCriteria.setOrderBy(OrderBy.SCORE_DSC.getOrderBy());
             break;
-            default: searchCriteria.setOrderBy("rvcdate asc");
+            default: searchCriteria.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
         }
 
         //회원번호 조회
         HttpSession session = request.getSession(false);
-        log.info("session {}", session);
-
         Long memno = null;
         if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
             LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-            log.info("loginMember {}", loginMember);
             memno = loginMember.getMemno();
         }
 
         //리뷰 조회
-        List<Review> listByFcno = reviewSVC.findListByFcno(fcno, dtoModifier.getReviewCriteria(searchCriteria));
+        ReviewCriteria reviewCriteria = dtoModifier.getReviewCriteria(searchCriteria);
         Long finalMemno = memno;
         List<ReviewDto> reviewDtos = reviewSVC
-                .findListByFcno(fcno, dtoModifier.getReviewCriteria(searchCriteria))
+                .findListByFcno(fcno, reviewCriteria)
                 .stream()
                 .map(review -> {
                     ReviewDto reviewDto = dtoModifier.getReviewDto(review, finalMemno);

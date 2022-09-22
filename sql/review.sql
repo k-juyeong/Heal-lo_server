@@ -39,7 +39,7 @@ where review.rvno = 1;
 
 --  리뷰 조회(페이징)
 select *
-from (select rownum rvnum, review.* ,member.memninkname
+from (select rownum rvnum, review.* ,member.memnickname
       from (select * from review
             order by rvcdate desc) review, member
       where review.memno = member.memno

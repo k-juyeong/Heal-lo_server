@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.review;
 
+import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.uploadfile.FileData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class Review {
     private LocalDateTime rvudate;          //수정날짜
     private Long fcno;                    //운동시설번호
     private Long memno;                   //회원번호
-    private String memnickname;             //회원닉네임
     private List<FileData> imageFiles;   //등록이미지들
+    private Member member;
 
 }

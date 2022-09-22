@@ -15,13 +15,18 @@ class BookmarkDAOImplTest {
 
     @Autowired
     private BookmarkDAO bookmarkDAO;
-    private static Long bmno;
+    private static Bookmark saveBookmark;
 
     @Order(1)
     @Test
     @DisplayName("즐겨찾기 추가")
     void addBookmark() {
-        bmno = bookmarkDAO.addBookmark(1L, 1L);
+        Long bmno = bookmarkDAO.addBookmark(1L, 1L);
+        Bookmark bookmark =  new Bookmark();
+        bookmark.setBmno(bmno);
+        bookmark.setFcno(1L);
+        bookmark.setMemno(1L);
+        saveBookmark = bookmark;
 
         assertThat(bmno).isNotNull();
     }
@@ -30,9 +35,9 @@ class BookmarkDAOImplTest {
     @Test
     @DisplayName("회원의 즐겨찾기 전체 조회")
     void findBookmarkListByMemno() {
-        List<Bookmark> bookmarkListByMemno = bookmarkDAO.findBookmarkListByMemno(1L);
+        List<Bookmark> bookmarkList = bookmarkDAO.findBookmarkListByMemno(1L);
 
-        assertThat(bookmarkListByMemno.size()).isEqualTo(1);
+        assertThat(bookmarkList).contains(saveBookmark);
     }
 
 
