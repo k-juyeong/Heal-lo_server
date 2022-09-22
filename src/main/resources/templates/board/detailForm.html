@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="layoutSub (title,link,main,script)"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:replace="${title}">게시판</title>
+    <link rel="stylesheet" href="../../static/resource/css/template/common.css" th:href="@{/resource/css/template/common.css}">
+    <link rel="stylesheet" href="../../static/resource/css/template/layout-sub.css" th:href="@{/resource/css/template/layout-sub.css}">
+    <link rel="stylesheet" href="../../static/resource/css/board/board.css" th:href="@{/resource/css/board/board.css}">
+    <th:block th:replace="${link}"></th:block>
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <!-- 헤더 -->
+    <header id="header">
+        <!-- 탑 메뉴 -->
+        <div class="header__menu-top" th:replace="~{layout/top-menu:: ${session.LOGIN_MEMBER} ? loginOnTopMenu : loginOffTopMenu}">
+        </div>
+
+        <!-- 베너 -->
+        <div class="header__banner">
+
+          <!-- 메인 로고 -->
+          <div class="header__main-logo">
+            <a href="/">
+              <h1 class="header__main-title">Heal-lo</h1>
+              <p class="header__sub-title">:Healthy location</p>
+            </a>  
+          </div>
+          <div class="header__sitemenu" id="siteMenuContain">
+            <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
+            <a href="/facilities"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
+            <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
+            <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
+          </div>
+        </div>  
+    </header>
+      
+    <!-- 메인 컨텐츠 -->
+    <main id="container">
+      <aside class="title">
+        <div class="title__list">
+          <a href="#">자유게시판</a>
+          <a href="#">정보공유방</a>
+          <a href="#">추천글</a>
+          <a href="#">문의하기</a>
+        </div>
+      </aside>
+  
+      <section class="board">
+        <h2 class="board__title">자유게시판</h2>
+
+        <table class="board__table">
+          <thead>
+          <tr>
+            <th width="70">No.</th>
+            <th width="100">CGNO</th>
+            <th width="500">제목</th>
+           <th width="120">작성자</th>
+  <!--          <th width="100">추천수</th>-->
+  <!--          <th width="100">조회수</th>-->
+            <th width="150">작성일</th>
+          </tr>
+          </thead>
+
+          <tbody th:obejct="${form}">
+          <tr th:each="board:${list}" >
+            <td>[[${boardStat.count}]]</td>
+            <td th:text="${board.bdcg}"></td>
+            <td>
+              <a href="" th:href="@{/boards/{id}/detail(id=${board.bdno})}" th:text="${board.bdtitle}"></a>
+            </td>
+            <td th:text="${board.memno}"></td>
+           <!-- <td th:text="${board.bdcdate}"></td> -->
+            <td>[[${{board.bdcdate}}]]</td>
+          </tr>
+          </tbody>
+        </table>
+  
+
+
+  <!-- 하단 글쓰기, 검색버튼 -->
+        <div class="board__bottom">
+          <div class="board__btn">
+            <button type="button" class="btn btn__write" id="writeBtn">글쓰기</button>
+          </div>
+          <fieldset class="board__search">
+            <select name="" id="">
+              <option value="">전체</option>
+              <option value="">닉네임</option>
+              <option value="">제목+내용</option>
+            </select>
+            <input type="text" id="search_spot" >
+            <button class="btn btn__search">검색</button>
+          </fieldset>
+        </div>
+  
+  <!-- 페이지네이션` -->
+        <div class="board__page">
+          <a href="#"><i class="fa-solid fa-angle-left"></i></a>
+          <ol>
+            <li class="page__num"><a href="#">1</a></li>
+            <li class="page__num"><a href="#">2</a></li>
+          </ol>
+          <a href="#"><i class="fa-solid fa-angle-right"></i></a>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- footer -->
+    <footer id="footer">
+        <div class="inner">
+          <h2>Heal-lo</h2>
+          <ul>
+              <li>상호명: heal-lo</li>
+              <li>대표: 1팀</li>
+              <li>주소: 울산광역시 남구 신정동</li>
+              <li>이메일: ulsanheallo@naver.com</li><br>
+              <li>Copyright 2022 헬로. All Rights Reserved.</li>
+          </ul>
+        </div>
+    </footer>
+    </div>
+    <script>
+      const $writeBtn = document.getElementById('writeBtn');
+      $writeBtn?.addEventListener('click',evt=>{
+        location.href = '/boards/add';
+      });
+    </script>
+    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>
+    <script src="../../static/resource/js/template/layout-sub.js" th:src="@{/resource/js/template/layout-sub.js}"></script>
+    <th:block th:replace="${script}"></th:block>
+
+</body>
+</html>
