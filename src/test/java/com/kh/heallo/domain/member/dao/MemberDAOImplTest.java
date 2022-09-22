@@ -56,22 +56,22 @@ public class MemberDAOImplTest {
   @Order(3)
   void update(){
     Member member = new Member();
-    String memid = "proteen1";
-    member.setMempw("naim2222");
-    member.setMemtel("010-2222-2222");
-    member.setMemnickname("로니콜먼");
-    member.setMememail("test2@test.com");
-    member.setMemname("박지훈2");
+    String memid = "naim123";
+    member.setMemname("테스트1");
+    member.setMemnickname("테슷트1");
+    member.setMememail("test1@test.com");
+    member.setMempw("12341");
+    member.setMemtel("010-1111-2221");
     member.setMemid(memid);
 
     memberDAO.update(memid,member);
-    Long memno = 24L;
+    Long memno = 2L;
     Member findedMember = memberDAO.findById(memno);
-    Assertions.assertThat(findedMember.getMempw()).isEqualTo("naim2222");
-    Assertions.assertThat(findedMember.getMemtel()).isEqualTo("010-2222-2222");
-    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo("로니콜먼");
-    Assertions.assertThat(findedMember.getMememail()).isEqualTo("test2@test.com");
-    Assertions.assertThat(findedMember.getMemname()).isEqualTo("박지훈2");
+    Assertions.assertThat(findedMember.getMemname()).isEqualTo("테스트1");
+    Assertions.assertThat(findedMember.getMemnickname()).isEqualTo("테슷트1");
+    Assertions.assertThat(findedMember.getMememail()).isEqualTo("test1@test.com");
+    Assertions.assertThat(findedMember.getMempw()).isEqualTo("12341");
+    Assertions.assertThat(findedMember.getMemtel()).isEqualTo("010-1111-2221");
   }
 
   @Test

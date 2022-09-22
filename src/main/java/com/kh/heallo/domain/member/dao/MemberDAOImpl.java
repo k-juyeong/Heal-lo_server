@@ -85,21 +85,21 @@ public class MemberDAOImpl implements  MemberDAO{
     StringBuffer sql = new StringBuffer();
 
     sql.append("update member ");
-    sql.append("   set mempw = ?, ");
-    sql.append("       memtel = ?, ");
+    sql.append("   set memname = ?, ");
     sql.append("       memnickname = ?, ");
     sql.append("       mememail = ?, ");
-    sql.append("       memname = ?, ");
+    sql.append("       mempw = ?, ");
+    sql.append("       memtel = ?, ");
     sql.append("       memudate = sysdate ");
     sql.append(" where memid = ? ");
 
-    jdbcTemplate.update(sql.toString(),member.getMempw(), member.getMemtel(),
-            member.getMemnickname(), member.getMememail(), member.getMemname(),memid);
+    jdbcTemplate.update(sql.toString(), member.getMemname(), member.getMemnickname(),
+            member.getMememail(), member.getMempw(), member.getMemtel(), member.getMemid());
   }
 
   /**
    * 탈퇴
-   * @param memid 비밀번호
+   * @param memid
    * @return
    */
   @Override
