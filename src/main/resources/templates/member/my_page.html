@@ -70,14 +70,14 @@
               <label id="changePw" for="changePw">비밀번호 변경</label>
               <input id="changePw" type="text" name="mempw" th:value="${editForm.mempw}">
           
-              <label id="changePwCh" for="changePwCh">비밀번호 변경확인</label>
-              <input id="changePwCh" type="text">
+<!--              <label id="changePwCh" for="changePwCh">비밀번호 변경확인</label>-->
+<!--              <input id="changePwCh" type="text">-->
 
               <label id="phoneNb" for="phoneNb">휴대전화 번호</label>
               <input id="phoneNb" type="text" name="memtel" th:value="${editForm.memtel}">
               <div class="btn">
                 <button type="submit" id="btnChange">수정완료</button>
-                <button id="btnOut"><a href="#">탈퇴</a></button>
+                <button id="btnOut" type="button">탈퇴</button>
               </div>
           </div>
           <div id="none">
@@ -100,7 +100,22 @@
             </ul>
         </div>
     </footer>
+  </div>
 <script>
+  //수정버튼 클릭시
+  btnChange.addEventListener('click',e=>{
+    const memid = document.querySelector('input[name=memid]').value;
+    const url = `/members/${memid}/edit`
+    location.href = url;
+  });
+
+  //탈퇴버튼 클릭시
+  btnOut.addEventListener('click',e=>{
+    if(!confirm("삭제하시겠습니까?")) return;
+    const memid = document.querySelector('input[name=memid]').value;
+    const url = `/members/${memid}/del`;
+    location.href = url;
+  });
 </script>
 </body>
 </html>

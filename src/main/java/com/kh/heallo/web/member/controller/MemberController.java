@@ -143,19 +143,20 @@ public class MemberController {
   }
 
   //수정처리
-  @PostMapping("/{id}/edit")
+  @GetMapping("/{id}/edit")
   public String update(@PathVariable("id") String memid, EditForm editForm){
 
     Member member = new Member();
-    member.setMempw(editForm.getMempw());
-    member.setMemtel(editForm.getMemtel());
+    member.setMemid(memid);
+    member.setMemname(editForm.getMemname());
     member.setMemnickname(editForm.getMemnickname());
     member.setMememail(editForm.getMememail());
-    member.setMemname(editForm.getMemname());
+    member.setMempw(editForm.getMempw());
+    member.setMemtel(editForm.getMemtel());
 
     memberSVC.update(memid,member);
 
-    return "member/my_page";
+    return "redirect:/members/"+memid;
   }
 
   //삭제(탈퇴)
@@ -163,6 +164,6 @@ public class MemberController {
   public String delete(@PathVariable("id") String memid) {
 
     memberSVC.del(memid);
-    return "index";
+    return "redirect:index";
   }
 }
