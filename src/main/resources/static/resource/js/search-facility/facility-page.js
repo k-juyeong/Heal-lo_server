@@ -17,7 +17,6 @@ let currentPage = 1;      //  현재 페이지
 
 //초기 페이지 세팅
 reviewListRequest();
-bookmarkCheck();
 
 //작성버튼 클릭이벤트
 document.querySelector('.review-write').addEventListener('click',e => location.href = `/reviews/${fcno}/add`)
@@ -28,18 +27,24 @@ $orderBySelect.addEventListener('change',() => reviewListRequest());
 //즐겨찾기 클릭 이벤트
 document.querySelector('.favorite-icon').addEventListener('click', (e) => {
     e.preventDefault();
+    replaceBookmark(e.target);
+});
 
+/** 함수 **/
+
+//즐겨찾기 업데이트
+function replaceBookmark(target) {
     fetch(`/bookmarks/${fcno}`, {
-        method:'PATCH',        //http method
-        headers:{             //http header
-            'Accept':'application/json'
+        method: 'PATCH',        //http method
+        headers: {             //http header
+            'Accept': 'application/json'
         }
     })
         .then(response => response.json())
         .then(jsonData => {
             if (jsonData.header.code == '00') {
-                e.target.style.color =
-                    jsonData.data.status ? 'rgba(255, 155, 172, 0.462)' : `black`;
+                target.style.color =
+                    jsonData.data.status ? 'var(--color-main-header)' : `black`;
             } else if (jsonData.header.code == '03') {
                 location.href = `/members/login?requestURI=${window.location.pathname}`;
             } else {
@@ -47,9 +52,7 @@ document.querySelector('.favorite-icon').addEventListener('click', (e) => {
             }
         })
         .catch(err => console.log(err));
-});
-
-/** 함수 **/
+}
 
 //운동시설 별점세팅
 function getFacilityScore() {
@@ -77,25 +80,6 @@ function createDefault() {
         </div>
         `
     )
-}
-
-//즐겨찾기 체크
-function bookmarkCheck() {
-    fetch(`/bookmarks`,{
-        method : 'GET'
-    })
-        .then(response => response.json())
-        .then(jsonData => {
-            console.log(jsonData)
-            if(jsonData.header.code != '00') throw new Error(jsonData.data.message);
-
-            const found = jsonData.data.bookmarks.find(ele => ele.fcno == fcno);
-            if(found != undefined) {
-                document.querySelector('.favorite-icon').style.color = 'rgba(255, 155, 172, 0.462)';
-            }
-
-        })
-        .catch(error => console.log(error))
 }
 
 //리뷰 검색
@@ -178,15 +162,16 @@ function reviewListRender(data) {
 
     const reviewCard =
     makeElements('div',{class : 'review-card', id : `${data.rvno}`},
-        data.login ? makeElements('div',{class : 'review-btn-wrap'},
-            makeElements('button',{class : 'review-update btn-review'},'수정'),
-            makeElements('button',{class : 'review-delete btn-review'},'삭제')) : '',
         makeElements('div',{class : 'review-card__info'},
             makeElements('div',{class : 'rating-score review-card__star'},
                 makeElements('div',{class : 'review-text-score'},`${data.rvscore}점`),
                 makeElements('div',{class : 'outer-star'},'★★★★★',
                     makeElements('span',{class : 'inner-star'},'★★★★★'))),
-            makeElements('span',{class : 'user-name'},data.memnickname),
+            makeElements('span',{class : 'info-header'},
+                makeElements('p',{class : 'user-name'},data.memnickname),
+                data.login ? makeElements('div',{class : 'review-btn-wrap'},
+                    makeElements('button',{class : 'review-update btn-review'},'수정'),
+                    makeElements('button',{class : 'review-delete btn-review'},'삭제')) : ''),
             makeElements('span',{class : 'date'},data.rvcdate),
             makeElements('p',{class : 'preview-contents'},isMoreview ? previewContents : data.rvcontents,
             isMoreview ? makeElements('div',{class : 'btn-moreview'},'더보기') : ''),

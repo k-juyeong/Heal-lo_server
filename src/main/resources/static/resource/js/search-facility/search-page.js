@@ -88,10 +88,8 @@ $cgListsByLoca2.addEventListener('click',({target,currentTarget}) => {
   [...$cgListsByLoca1.querySelectorAll('p')].forEach(ele => ele.style.backgroundColor = '#ffffff99');
 
   //lv1,lv2 지역카테고리 스타일 적용
-  selectedLv1
-      .style.backgroundColor = 'var(--color-others-header)';
-  target
-      .style.backgroundColor = 'var(--color-others-header)';
+  selectedLv1.style.backgroundColor = 'var(--color-others-header)';
+  target.style.backgroundColor = 'var(--color-others-header)';
 
   //중분류 삭제
   deleteLv2();
@@ -114,7 +112,7 @@ $cgListsByFacility.addEventListener('click',({target}) => {
   target.style.backgroundColor = 'var(--color-others-header)';
 })
 
-//목록on/off 버튼 클릭 이벤트 (목록 on/off 이벤트)
+// 목록 on/off 버튼 클릭 이벤트 (목록 on/off 이벤트)
 $openList.addEventListener('click',() => {
   actionOpenMenu();
 })
@@ -226,7 +224,7 @@ function RenderingUlTagLv2(ulTag,arr,parentLv) {
   createLv2();
 }
 
-//중분류 카테고리 삭제
+//중분류 카테고리 숨기기
 function deleteLv2() {
   $cgListsByLoca2.style.top = 0;
   $cgListsByLoca2.style.visibility ='hidden';
@@ -302,7 +300,7 @@ function autoComplete(requestPram) {
 }
 
 //운동시설 항목 생성
-function createList(itemData,bookmarkData) {
+function createList(itemData) {
 
   const listWrap =
       makeElements('div', {class: 'searched-lists__item'},
@@ -340,7 +338,11 @@ function createList(itemData,bookmarkData) {
     location.href = `/facilities/${itemData.fcno}`;
   })
 
-  listWrap.querySelector('.favorite-icon').addEventListener('click',(e) => replaceBookmark(e))
+  //즐겨찾기 여부에따라 스타일 추가
+  listWrap.querySelector('.contents-icon').style.color = itemData.bookmarking ? 'var(--color-main-header)' : 'white';
+
+  //즐겨찾기 추가/삭제 이벤트
+  listWrap.querySelector('.favorite-icon').addEventListener('click', (e) => replaceBookmark(itemData.fcno, e.target));
 
   return listWrap;
 }
@@ -433,31 +435,12 @@ function searchByPage(requestPram) {
         [...$searchedLists.children].filter(ele => ele.classList.contains('searched-lists__item'))
             .forEach(ele => ele.remove());
 
-        //즐겨찾기 리스트
-        const bookmarkList = findBookmarks();
-        console.log(bookmarkList)
-
         //새 목록 생성
         const facilityCardList =
         jsonData.data.facilities
             .reverse()
-            .map(ele => createList(ele));
-
-        facilityCardList
-            .forEach(ele => $searchedLists.prepend(ele));
+            .forEach(ele => $searchedLists.prepend(createList(ele)));
         $searchedLists.scrollTop = 0;
-
-        fetch(`/bookmarks`, {
-          method: 'GET'
-        })
-            .then(response => response.json())
-            .then(jsonData => {
-              if (jsonData.header.code != '00') throw new Error(jsonData.data.message)
-
-              // facilityCardList.filter(ele => ele.fcno == )
-
-            })
-            .catch(err => console.log(err));
 
         //운동시설 마커 생성
         mapUtil.makeMarkers(jsonData.data.facilities);
@@ -561,9 +544,8 @@ function createPagination(totalPage) {
   return paginationWrap;
 }
 
-//운동시설 즐겨찾기 replace
-function replaceBookmark(fcno) {
-
+//즐겨찾기 업데이트
+function replaceBookmark(fcno, target) {
   fetch(`/bookmarks/${fcno}`, {
     method:'PATCH',        //http method
     headers:{             //http header
@@ -573,8 +555,8 @@ function replaceBookmark(fcno) {
       .then(response => response.json())
       .then(jsonData => {
         if (jsonData.header.code == '00') {
-          e.target.style.color =
-              jsonData.data.status ? 'orange' : `white`;
+          target.style.color =
+              jsonData.data.status ? 'var(--color-main-header)' : `white`;
         } else if (jsonData.header.code == '03') {
           location.href = `/members/login?requestURI=${window.location.pathname}`;
         } else {

@@ -8,6 +8,10 @@ export default class MapUtile {
 
     //마커들 생성 + 위치이동
     makeMarkers(data) {
+        if(this.myMarker) {
+            this.myMarker.setMap(null);
+            this.myMarker = null;
+        }
         
         //기존 마커들 초기화
         if(this.markers.length != 0) {
@@ -59,13 +63,20 @@ export default class MapUtile {
 
     //내 위치 마커생성 + 위치이동
     makeMyMarker(lat,lng) {
-        this.makeMarker(
-            lat,
-            lng,
-            `<div class="my-location-marker marker">
+        console.log(this.myMarker)
+
+        if(!this.myMarker) {
+
+            const myMarker =
+                this.makeMarker(
+                    lat,
+                    lng,
+                    `<div class="my-location-marker marker">
                             <i class="fa-solid fa-house"></i>
                         </div>`
-        )
+                )
+            this.myMarker = myMarker;
+        }
 
         if(this.beforeBound) {
             this.beforeBound.extend(new naver.maps.LatLng(lat, lng));

@@ -27,31 +27,6 @@ public class BookmarkController {
 
     private final BookmarkSVC bookmarkSVC;
 
-    @GetMapping
-    public ResponseEntity findBookmark(
-            HttpServletRequest request
-    ) {
-        //회원 조회
-        if (request.getAttribute(Session.NOT_LOGIN.name()) != null) {
-            ResponseEntity<ResponseMsg> notLoginResponseEntity = (ResponseEntity) request.getAttribute(Session.NOT_LOGIN.name());
-            return notLoginResponseEntity;
-        }
-
-        //회원 조회 성공
-        HttpSession session = request.getSession();
-        LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-
-        //즐겨찾기 상태확인
-        List<Bookmark> bookmarkList = bookmarkSVC.findBookmarkListByMemno(loginMember.getMemno());
-
-        //Create ResponseEntity
-        ResponseMsg responseMsg = new ResponseMsg()
-                .setData("bookmarks",bookmarkList)
-                .createHeader(StatusCode.SUCCESS);
-
-        return new ResponseEntity<>(responseMsg, HttpStatus.OK);
-    }
-
     //등록 or 삭제
     @PatchMapping("/{fcno}")
     public ResponseEntity<ResponseMsg> replace(

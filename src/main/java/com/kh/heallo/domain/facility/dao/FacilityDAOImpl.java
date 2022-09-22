@@ -136,8 +136,6 @@ public class FacilityDAOImpl implements FacilityDAO{
         sql.append("               order by rvtotal desc) fc2) fc3 ");
         sql.append(" where fc3.rowno > ? and fc3.rowno <= ? ");
 
-        log.info("criteria {}",criteria);
-
         Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
         Integer startPage = endPage - criteria.getNumOfRow();
         List<Facility> foundFacilityList = jdbcTemplate.query(

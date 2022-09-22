@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:replace="${title}">기본 타이틀</title>
-    <link rel="stylesheet" href="../../static/css/template/common.css" th:href="@{/css/template/common.css}">
-    <link rel="stylesheet" href="../../static/css/template/layout-sub.css" th:href="@{/css/template/layout-sub.css}">
+    <link rel="stylesheet" href="../../static/resource/css/template/common.css" th:href="@{/resource/css/template/common.css}">
+    <link rel="stylesheet" href="../../static/resource/css/template/layout-sub.css" th:href="@{/resource/css/template/layout-sub.css}">
     <th:block th:replace="${link}"></th:block>
 </head>
 
@@ -25,14 +25,14 @@
 
           <!-- 메인 로고 -->
           <div class="header__main-logo">
-            <a href="#">
+            <a href="/">
               <h1 class="header__main-title">Heal-lo</h1>
               <p class="header__sub-title">:Healthy location</p>
             </a>  
           </div>
           <div class="header__sitemenu" id="siteMenuContain">
             <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
-            <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
+            <a href="/facilities"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
             <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
             <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
           </div>
@@ -60,7 +60,7 @@
     </div>
 
     <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>
-    <script src="../../static/js/template/layout-sub.js" th:src="@{/js/template/layout-sub.js}"></script>
+    <script src="../../static/resource/js/template/layout-sub.js" th:src="@{/resource/js/template/layout-sub.js}"></script>
     <th:block th:replace="${script}"></th:block>
 
 </body>

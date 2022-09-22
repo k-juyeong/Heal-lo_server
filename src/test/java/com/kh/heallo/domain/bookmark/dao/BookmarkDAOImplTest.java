@@ -35,6 +35,7 @@ class BookmarkDAOImplTest {
         assertThat(bookmarkListByMemno.size()).isEqualTo(1);
     }
 
+
     @Order(3)
     @Test
     @DisplayName("즐겨찾기 삭제")
