@@ -5,22 +5,22 @@
 
 #container #id {display: flex; flex-direction: column; align-items: center; justify-content: center; height: 600px}
 #container .container__title1 {text-align: center;}
-#container .container__id {display:flex; flex-flow: column; justify-content: center; position: relative; width: 720px; height:300px; background-color:#ccc; margin: 20px 0;}
+#container .container__id {display:flex; flex-flow: column; justify-content: center; position: relative; width: 720px; height:300px; background-color:#ccc; margin: 20px 0; border-radius: 10px; border: 1px solid #888;}
 #container #idNameFont {margin-left: 10px; font-size: 25px;}
 #container #idEmailFont {margin-left: 10px; font-size: 25px;}
-#container #idName {margin-top: 10px; margin-bottom: 50px; margin-left: 10px; margin-right: 200px; padding: 10px 2px;}
-#container #idEmail {margin-top: 10px; margin-left: 10px; margin-right: 200px; padding: 10px 2px;}
+#container #idName {margin-top: 10px; margin-bottom: 50px; margin-left: 10px; margin-right: 200px; padding: 10px 2px; border-radius: 10px; border: 1px solid #444;}
+#container #idEmail {margin-top: 10px; margin-left: 10px; margin-right: 200px; padding: 10px 2px; border-radius: 10px; border: 1px solid #444;}
 #container #id .button {display: flex;justify-content:  flex-end; width: 720px;}
 #container #id .button button {display: block; width: 80px; font-size: 16px; background-color: #16a085; color: white;}
 
 #container #pw {display: flex; flex-direction: column; align-items: center; height: 600px;}
 #container .container__title2 {text-align: center;}
-#container .container__pw {display:flex; flex-flow: column; justify-content: center; width: 720px; height:450px; background-color:#ccc; margin-top: 20px; margin-bottom: 20px;}
+#container .container__pw {display:flex; flex-flow: column; justify-content: center; width: 720px; height:450px; background-color:#ccc; margin-top: 20px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #888;}
 #container #pwIdFont {margin-left: 10px; font-size: 25px;}
 #container #pwNameFont {margin-left: 10px; font-size: 25px;}
 #container #pwEmailFont {margin-left: 10px; font-size: 25px;}
-#container #pwId {margin-top: 10px; margin-bottom: 50px; margin-left: 10px; margin-right: 200px; padding: 10px 2px;}
-#container #pwName {margin-top: 10px; margin-bottom: 50px; margin-left: 10px; margin-right: 200px; padding: 10px 2px;}
-#container #pwEmail {margin-top: 10px; margin-left: 10px; margin-right: 200px; padding: 10px 2px;}
+#container #pwId {margin-top: 10px; margin-bottom: 50px; margin-left: 10px; margin-right: 200px; padding: 10px 2px; border-radius: 10px; border: 1px solid #444;}
+#container #pwName {margin-top: 10px; margin-bottom: 50px; margin-left: 10px; margin-right: 200px; padding: 10px 2px; border-radius: 10px; border: 1px solid #444;}
+#container #pwEmail {margin-top: 10px; margin-left: 10px; margin-right: 200px; padding: 10px 2px; border-radius: 10px; border: 1px solid #444;}
 #container #pw .button {display: flex;justify-content:  flex-end; width: 720px;}
 #container #pw .button button {width: 80px; font-size: 16px; background-color: #16a085; color: white;}
