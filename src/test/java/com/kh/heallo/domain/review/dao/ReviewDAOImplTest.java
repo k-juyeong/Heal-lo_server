@@ -1,15 +1,14 @@
 package com.kh.heallo.domain.review.dao;
 
 
-import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.Review;
+import com.kh.heallo.domain.review.ReviewCriteria;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -72,7 +71,7 @@ class ReviewDAOImplTest {
         criteria.setNumOfRow(5);
         List<Review> reviewList = reviewDAO.findListByFcno(1L, criteria);
         Review foundReview = reviewDAO.findByRvno(review.getRvno());
-        reviewList.stream().forEach(ele -> ele.setMemninkname(null));
+        reviewList.stream().forEach(ele -> ele.setMemnickname(null));
 
         assertThat(reviewList).contains(foundReview);
     }

@@ -14,5 +14,4 @@ public class EditForm {
   private String memnickname;  //varchar2(30)
   private String mememail;     //varchar2(30)
   private String memname;      //varchar2(12)
-  private String memcode;      //varchar2(15)
 }
