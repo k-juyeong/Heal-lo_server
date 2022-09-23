@@ -3,6 +3,7 @@ package com.kh.heallo.web.member.controller;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
 import com.kh.heallo.web.member.dto.EditForm;
+import com.kh.heallo.web.member.dto.FindIdPwForm;
 import com.kh.heallo.web.member.dto.JoinForm;
 import com.kh.heallo.web.member.dto.LoginForm;
 import com.kh.heallo.web.member.session.LoginMember;
@@ -169,5 +170,27 @@ public class MemberController {
 
     log.info("memid={}",memid);
     return "redirect:/";
+  }
+
+  //아이디 찾기 화면
+  @GetMapping("/find_id_pw")
+  public String findIdPWForm(){
+
+    return "find_id_pw/find_id_pw";
+  }
+
+  //아이디 찾기 처리
+  @PostMapping("/find_id_pw")
+  public String findIdPW(@ModelAttribute("form") FindIdPwForm findIdPwForm, Model model){
+
+    Member member = memberSVC.findId(findIdPwForm.getMemname(), findIdPwForm.getMememail());
+
+    FindIdPwForm findIdPwForm1 = new FindIdPwForm();
+    findIdPwForm1.setMemid(member.getMemid());
+
+
+    log.info("findIdPwForm1={}", findIdPwForm1);
+    model.addAttribute("form", findIdPwForm1);
+    return "find_id_pw/success_find_id";
   }
 }

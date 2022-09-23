@@ -71,4 +71,16 @@ public class MemberSVCImpl implements MemberSVC{
 
     return memberDAO.login(memid,mempw);
   }
+
+  /**
+   * 아이디 찾기
+   *
+   * @param memname  이름
+   * @param mememail 이메일
+   * @return 아이디
+   */
+  @Override
+  public Member findId(String memname, String mememail) {
+    return memberDAO.findId(memname,mememail);
+  }
 }

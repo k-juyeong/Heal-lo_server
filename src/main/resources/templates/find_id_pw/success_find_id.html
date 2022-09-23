@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../css/login/success_find_id.css" th:href="@{/resource/css/login/success_find_id.css}">
+</head>
+<body>
+  <div id="wrapper" class="layout">
+
+      <!-- 헤더 -->
+    <header id="header">
+      <!-- 탑 메뉴 -->
+      <div class="header__menu-top">
+        <span class="header__my-menu"><a href="#">로그아웃</a></span>
+        <span class="header__my-menu"><a href="#">마이페이지</a></span>
+        <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
+      </div>
+
+      <!-- 베너 -->
+      <div class="header__banner">
+        <!-- 메인 로고 -->
+        <div class="header__main-logo">
+          <a href="#">
+            <h1 class="header__main-title">Heal-lo</h1>
+            <p class="header__sub-title">:Healthy location</p>
+          </a>  
+        </div>
+        <div class="header__sitemenu" id="siteMenuContain">
+          <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
+          <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
+          <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
+          <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
+          <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
+        </div>
+      </div>  
+    </header>
+      
+      <!-- 메인 컨텐츠 -->
+      <main id="container">
+        <div th:object="${form}">
+          <div id="idText">
+              <p id='seccessId'>아이디 찾기완료!</p>
+              <p id='seccessIdSub'>고객님의 정보와 일치하는 아이디입니다.</p>
+              <p th:text="form.memid"></p>
+              <div class="btn">
+                <button class="btn__login"><a href="#">로그인하기</a></button>
+                <button class="btn__pw"><a href="#">비밀번호 찾기</a></button>
+             </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- footer -->
+      <footer id="footer">
+        <div class="inner">
+            <h2>Heal-lo</h2>
+            <ul>
+                <li>상호명: heal-lo</li>
+                <li>대표: 1팀</li>
+                <li>주소: 울산광역시 남구 신정동</li>
+                <li>이메일: ulsanheallo@naver.com</li><br>
+                <li>Copyright 2022 헬로. All Rights Reserved.</li>
+            </ul>
+        </div>
+    </footer>
+  </div>
+    <script></script>
+</body>
+</html>
+

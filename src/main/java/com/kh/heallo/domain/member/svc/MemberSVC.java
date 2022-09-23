@@ -43,4 +43,12 @@ public interface MemberSVC {
    * @return  회원
    */
   Optional<Member> login(String memid, String mempw);
+
+  /**
+   * 아이디 찾기
+   * @param memname   이름
+   * @param mememail  이메일
+   * @return          아이디
+   */
+  Member findId(String memname, String mememail);
 }

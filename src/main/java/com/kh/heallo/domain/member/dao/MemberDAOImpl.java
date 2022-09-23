@@ -139,4 +139,34 @@ public class MemberDAOImpl implements  MemberDAO{
       return Optional.empty();
     }
   }
+
+  /**
+   * 아이디 찾기
+   *
+   * @param memname  이름
+   * @param mememail 이메일
+   * @return 아이디
+   */
+  @Override
+  public Member findId(String memname, String mememail) {
+    StringBuffer sql = new StringBuffer();
+
+    log.info(memname);
+    log.info(mememail);
+
+    sql.append(" select memid ");
+    sql.append("  from member ");
+    sql.append(" where memname = ? ");
+    sql.append("   and mememail = ? ");
+
+    Member findId = null;
+    try{
+      findId = jdbcTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Member.class), memname, mememail);
+    }catch (DataAccessException e) {
+      log.info("찾고자하는 회원이 없습니다={}", memname,mememail);
+    }
+    return findId;
+
+  }
+
 }
