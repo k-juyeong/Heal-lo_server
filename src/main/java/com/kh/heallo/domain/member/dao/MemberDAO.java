@@ -23,11 +23,11 @@ public interface MemberDAO {
 
   /**
    * 수정
-   * @param memid  아이디
+   * @param memno  아이디
    * @param member 수정할 정보
    * @return  수정건수
    */
-  void update(String memid, Member member);
+  void update(Long memno, Member member);
 
   /**
    * 탈퇴

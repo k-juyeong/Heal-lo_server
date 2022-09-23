@@ -76,13 +76,16 @@ public class MemberDAOImpl implements  MemberDAO{
 
   /**
    * 수정
-   * @param memid  아이디
+   * @param memno  아이디
    * @param member 수정할 정보
    * @return  수정건수
    */
   @Override
-  public void update(String memid, Member member) {
+  public void update(Long memno, Member member) {
     StringBuffer sql = new StringBuffer();
+
+    log.info("memno={}",memno);
+    log.info("member={}",member);
 
     sql.append("update member ");
     sql.append("   set memname = ?, ");
@@ -91,10 +94,10 @@ public class MemberDAOImpl implements  MemberDAO{
     sql.append("       mempw = ?, ");
     sql.append("       memtel = ?, ");
     sql.append("       memudate = sysdate ");
-    sql.append(" where memid = ? ");
+    sql.append(" where memno = ? ");
 
     jdbcTemplate.update(sql.toString(), member.getMemname(), member.getMemnickname(),
-            member.getMememail(), member.getMempw(), member.getMemtel(), member.getMemid());
+            member.getMememail(), member.getMempw(), member.getMemtel(), memno);
   }
 
   /**

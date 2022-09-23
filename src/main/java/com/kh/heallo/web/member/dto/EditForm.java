@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EditForm {
+  private Long memno;
   private String memid;        //varchar2(40)
   private String  mempw;       //varchar2(20)
   private String memtel;       //varchar2(13)

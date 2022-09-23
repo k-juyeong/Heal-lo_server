@@ -144,21 +144,21 @@ public class MemberController {
 
   //수정처리
   @PostMapping("/{id}/edit")
-  public String update(@PathVariable("id") String memid, EditForm editForm){
+  public String update(@PathVariable("id") Long memno, EditForm editForm){
 
     Member member = new Member();
-    member.setMemid(memid);
+    member.setMemno(memno);
     member.setMemname(editForm.getMemname());
     member.setMemnickname(editForm.getMemnickname());
     member.setMememail(editForm.getMememail());
     member.setMempw(editForm.getMempw());
     member.setMemtel(editForm.getMemtel());
 
-    memberSVC.update(memid,member);
+    memberSVC.update(memno,member);
 
     log.info("editForm={}",editForm);
 
-    return "redirect:/members/"+memid+"/edit";
+    return "redirect:/members/"+memno+"/edit";
   }
 
   //삭제(탈퇴)

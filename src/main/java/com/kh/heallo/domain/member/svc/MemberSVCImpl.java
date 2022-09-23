@@ -40,13 +40,13 @@ public class MemberSVCImpl implements MemberSVC{
   /**
    * 수정
    *
-   * @param memid  아이디
+   * @param memno  아이디
    * @param member 수정할 정보
    * @return 수정건수
    */
   @Override
-  public void update(String memid, Member member) {
-    memberDAO.update(memid,member);
+  public void update(Long memno, Member member) {
+    memberDAO.update(memno,member);
   }
 
   /**
