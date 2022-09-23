@@ -124,7 +124,7 @@ public class MemberController {
   }
 
   //조회와 동시에 수정
-  @GetMapping("/{id}")
+  @GetMapping("/{id}/edit")
   public String findById(@PathVariable("id") Long memno, Model model){
 
     Member findedMember = memberSVC.findById(memno);
@@ -143,7 +143,7 @@ public class MemberController {
   }
 
   //수정처리
-  @GetMapping("/{id}/edit")
+  @PostMapping("/{id}/edit")
   public String update(@PathVariable("id") String memid, EditForm editForm){
 
     Member member = new Member();
@@ -156,7 +156,9 @@ public class MemberController {
 
     memberSVC.update(memid,member);
 
-    return "redirect:/members/"+memid;
+    log.info("editForm={}",editForm);
+
+    return "redirect:/members/"+memid+"/edit";
   }
 
   //삭제(탈퇴)
@@ -164,6 +166,8 @@ public class MemberController {
   public String delete(@PathVariable("id") String memid) {
 
     memberSVC.del(memid);
-    return "redirect:index";
+
+    log.info("memid={}",memid);
+    return "redirect:/";
   }
 }
