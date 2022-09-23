@@ -1,10 +1,21 @@
+@charset "utf-8";
+/* 공통 */
+.btn {
+  background-color: #16a085;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  border: none;
+  padding: 0;
+}
 #container {
   display: flex;
-  height: 1200px;
+  height: auto;
   border-top: 3px solid #777;
-  padding: 10px;
+  padding: 10px 10px 50px 10px;
 }
-/* 왼쪽 메뉴 */
+
+/* 사이드바 */
 #container .title {
   width: 15%;
   flex-shrink: 0;
@@ -27,25 +38,79 @@
   font-size: 26px;
 }
 
+
+
 /* 작성공간 */
 #container .board_write {
   width: 85%;
 }
 
-#container .board_write .write_area .board__title {
+#container .board_write .board_title .title__main {
   text-align: center;
   font-size: 28px;
   padding: 30px 0;
 }
-#container .board_write .write_area .textarea {
-  overflow: auto;
-  height: 300px;
-  font-size: 18px;
-  padding: 24px;
-  border: 1px solid #D6D6D6;
-  border-radius: 4px;
+
+/* 폼 */
+#container .board_write .board_content{
+  outline: 1px solid black;
 }
 
+#container .board_write .board_content #saveForm .line{
+  height: 45px;
+  display: flex;
+  align-items: center;
+  font-size:large;
+  
+}
+
+#container .board_write .board_content #saveForm .line label{
+  display:inline-block;
+  height: 45px;
+  line-height: 45px;
+  width: 100px;
+  margin-left: 10px;
+}
+
+#container .board_write .board_content #saveForm .line select{
+  height: 29px;
+  width: 150px;
+  font-size: medium;
+}
+
+#container .board_write .board_content #saveForm .line input{
+  font-size: medium;
+  padding: 2px;
+  background-color: #ddd;
+  border-radius: 3px;
+  border: none;
+  /* border-color: #D6D6D6; */
+  height: 25px;
+}
+#container .board_write .board_content #saveForm .line input:focus{
+  outline: none;
+}
+
+
+
+
+
+
+
+
+#container .board_write .board_content #saveForm .textarea {
+  /* overflow: auto; */
+  height: 400px;
+  font-size: 15px;
+  padding: 10px;
+  border: 1px solid #D6D6D6;
+  border-radius: 4px;
+  resize: none;
+  width: 90%;
+}
+#container .board_write .board_content #saveForm .textarea:focus{
+  outline: none;
+}
 
 #container .board_write .writeBtn_area{
   display: flex;

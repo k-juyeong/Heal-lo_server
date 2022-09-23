@@ -64,18 +64,24 @@
         </div>
       </aside>
 
+
+
       <section class="board_write">
-        <div class="write_area">
-          <h2 class="board__title">게시글작성</h2>
+
+        <div class="board_title">
+          <h2 class="title__main">게시글작성</h2>
         </div>
 
-        <div class="board-body">
+
+        <div class="board_content">
+
           <form id="saveForm" action="" th:action th:method="post" th:object="${form}" enctype="multipart/form-data">
+
             <div th:if="${#fields.hasGlobalErrors()}">
               <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
             </div>
 
-            <div>
+            <div class="line">
               <label th:for="bdcg">카테고리</label>
               <select name="" id="menu-list" th:field="*{bdcg}">
                 <option value="자유게시판">자유게시판</option>
@@ -84,24 +90,27 @@
               </select>
               <div class="fieldError" th:errors="*{bdcg}"></div>
             </div>
-            <div>
+            <div class="line">
               <label th:for="bdtitle">제목</label>
               <input type="text" th:field="*{bdtitle}">
               <div class="fieldError" th:errors="*{bdtitle}"></div>
             </div>
 
-            <div>
+            <div class="line">
               <label th:for="memno">작성자</label>
               <input type="text" th:field="*{memno}">
               <div class="fieldError" th:errors="*{memno}"></div>
             </div>
 
             <div>
-              <input class="textarea" name="" id="editor" th:field="*{bdcontent}">
+              <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
               <div class="fieldError" th:errors="*{bdcontent}"></div>
             </div>
           </form>
+
         </div>
+
+
 
         <div class="writeBtn_area">
           <!--        <div><label th:for="files">이미지첨부</label></div>-->
