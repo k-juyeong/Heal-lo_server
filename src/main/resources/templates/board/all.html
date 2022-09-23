@@ -1,24 +1,12 @@
 <!DOCTYPE html>
-<html
-  lang="ko"
-  xmlns:th="http://www.thymeleaf.org"
-  th:fragment="layoutSub (title,link,main,script)"
->
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:replace="${title}">게시판</title>
-    <link
-      rel="stylesheet"
-      href="../../static/resource/css/template/common.css"
-      th:href="@{/resource/css/template/common.css}"
-    />
-    <link
-      rel="stylesheet"
-      href="../../static/resource/css/template/layout-sub.css"
-      th:href="@{/resource/css/template/layout-sub.css}"
-    />
+    <title>게시판</title>
     <link
       rel="stylesheet"
       href="../../static/resource/css/board/board.css"
@@ -32,40 +20,38 @@
   <body>
     <div id="wrapper">
       <!-- 헤더 -->
+      <!-- 헤더 -->
       <header id="header">
+
         <!-- 탑 메뉴 -->
-        <div
-          class="header__menu-top"
-          th:replace="~{layout/top-menu:: ${session.LOGIN_MEMBER} ? loginOnTopMenu : loginOffTopMenu}"
-        ></div>
+        <div class="header__menu-top">
+          <span class="header__my-menu"><a href="#">로그아웃</a></span>
+          <span class="header__my-menu"><a href="#">마이페이지</a></span>
+          <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
+        </div>
 
         <!-- 베너 -->
         <div class="header__banner">
+
           <!-- 메인 로고 -->
           <div class="header__main-logo">
-            <a href="/">
+            <a href="#">
               <h1 class="header__main-title">Heal-lo</h1>
               <p class="header__sub-title">:Healthy location</p>
             </a>
           </div>
           <div class="header__sitemenu" id="siteMenuContain">
-            <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div>
-            <!-- 스크립트용 -->
-            <a href="/facilities"
-              ><i class="fa-solid fa-location-dot header__site-icon"></i
-            ></a>
-            <a href="#"
-              ><i class="fa-solid fa-book-open header__site-icon"></i
-            ></a>
-            <a href="#"
-              ><i class="fa-solid fa-calendar-days header__site-icon"></i
-            ></a>
+            <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
+            <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
+            <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
+            <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
           </div>
         </div>
       </header>
 
       <!-- 메인 컨텐츠 -->
       <main id="container">
+
         <aside class="title">
           <div class="title__list">
             <a href="#">자유게시판</a>
@@ -96,7 +82,7 @@
                     </tr>
                   </thead>
 
-                  <tbody th:obejct="${form}">
+                  <tbody th:obejct="${form}" >
                     <tr th:each="board:${list}">
                       <td>[[${boardStat.count}]]</td>
                       <td th:text="${board.bdcg}"></td>
@@ -107,11 +93,18 @@
                           th:text="${board.bdtitle}"
                         ></a>
                       </td>
-                      <td th:text="${board.memno}"></td>
-                      <!-- <td th:text="${board.bdcdate}"></td> -->
+                      <td th:text="${board.memnickname}"></td>
+<!--                       <td th:text="${board.bdcdate}"></td>-->
                       <td>[[${{board.bdcdate}}]]</td>
                     </tr>
                   </tbody>
+
+
+
+
+
+
+
                 </table>
             
 
@@ -145,6 +138,7 @@
         </section>
       </main>
 
+
       <!-- footer -->
       <footer id="footer">
         <div class="inner">
@@ -153,12 +147,12 @@
             <li>상호명: heal-lo</li>
             <li>대표: 1팀</li>
             <li>주소: 울산광역시 남구 신정동</li>
-            <li>이메일: ulsanheallo@naver.com</li>
-            <br />
+            <li>이메일: ulsanheallo@naver.com</li><br>
             <li>Copyright 2022 헬로. All Rights Reserved.</li>
           </ul>
         </div>
       </footer>
+
     </div>
     <script>
       const $writeBtn = document.getElementById('writeBtn');
@@ -166,14 +160,14 @@
         location.href = '/boards/add';
       });
     </script>
-    <script
-      src="https://kit.fontawesome.com/7ee6b8223a.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="../../static/resource/js/template/layout-sub.js"
-      th:src="@{/resource/js/template/layout-sub.js}"
-    ></script>
-    <th:block th:replace="${script}"></th:block>
+<!--    <script-->
+<!--      src="https://kit.fontawesome.com/7ee6b8223a.js"-->
+<!--      crossorigin="anonymous"-->
+<!--    ></script>-->
+<!--    <script-->
+<!--      src="../../static/resource/js/template/layout-sub.js"-->
+<!--      th:src="@{/resource/js/template/layout-sub.js}"-->
+<!--    ></script>-->
+<!--    <th:block th:replace="${script}"></th:block>-->
   </body>
 </html>

@@ -1,7 +1,7 @@
 package com.kh.heallo.domain.board.svc;
 
 import com.kh.heallo.domain.board.Board;
-import com.kh.heallo.domain.board.svc.dao.BoardDAO;
+import com.kh.heallo.domain.board.dao.BoardDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

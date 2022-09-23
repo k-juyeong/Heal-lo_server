@@ -3,6 +3,7 @@ package com.kh.heallo.domain.board;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 @Data
@@ -17,6 +18,13 @@ public class Board {
   private Long ufno;
   private Long bdview;
   private Long bdhit;
+
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime bdcdate;    //생성일
+
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime bdudate;    //수정일
+
+  private String memnickname; //닉네임
+
 }

@@ -1,4 +1,4 @@
-package com.kh.heallo.domain.board.svc.dao;
+package com.kh.heallo.domain.board.dao;
 
 import com.kh.heallo.domain.board.Board;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +23,16 @@ import java.util.Optional;
 public class BoardDAOImpl implements BoardDAO{
   private final JdbcTemplate jt;
 
+  /**
+   * 등록
+   * @param board
+   * @return
+   */
   @Override
   public Long save(Board board) {
     StringBuffer sql = new StringBuffer();
-    sql.append("insert into board(bdno,bdcg,bdtitle,bdcontent) ");
-    sql.append("     values(board_bdno_seq.nextval, ?, ?, ?) ");
+    sql.append("insert into board(bdno,bdcg,bdtitle,bdcontent,memno ) ");
+    sql.append("     values(board_bdno_seq.nextval, ?, ?, ?, ? ) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
     jt.update(new PreparedStatementCreator() {
@@ -37,6 +42,7 @@ public class BoardDAOImpl implements BoardDAO{
         pstmt.setString(1, board.getBdcg());
         pstmt.setString(2, board.getBdtitle());
         pstmt.setString(3, board.getBdcontent());
+        pstmt.setLong(4, board.getMemno());
         return pstmt;
       }
     },keyHolder);
@@ -46,10 +52,17 @@ public class BoardDAOImpl implements BoardDAO{
   //목록
   @Override
   public List<Board> findAll() {
+//    StringBuffer sql = new StringBuffer();
+//    sql.append("select bdno,bdcg,bdtitle,bdcdate,memno ");
+//    sql.append("  from board ");
+//    sql.append("order by bdno desc ");
+
     StringBuffer sql = new StringBuffer();
-    sql.append("select bdno,bdcg,bdtitle,bdcdate");
-    sql.append("  from board ");
+    sql.append("select B.bdno, B.bdcg, B.bdtitle, B.bdcdate, B.bdudate, B.memno, M.memnickname ");
+    sql.append("  from board B, member M ");
+    sql.append("  where M.memno=B.memno ");
     sql.append("order by bdno desc ");
+
 
     List<Board> boards = jt.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class));
 
@@ -59,10 +72,15 @@ public class BoardDAOImpl implements BoardDAO{
   //조회
   @Override
   public Optional<Board> findByBoardId(Long boardId) {
+//    StringBuffer sql = new StringBuffer();
+//    sql.append("select bdno, bdcg, bdtitle, bdcontent, bdcdate, bdudate,memno ");
+//    sql.append("  from board ");
+//    sql.append(" where bdno = ? ");
+
     StringBuffer sql = new StringBuffer();
-    sql.append("select bdno, bdcg, bdtitle, bdcontent, bdcdate, bdudate ");
-    sql.append("  from board ");
-    sql.append(" where bdno = ? ");
+    sql.append("select B.bdno, B.bdcg, B.bdtitle, B.bdcdate, B.bdudate, B.bdcontent,B.memno, M.memnickname ");
+    sql.append("  from board B, member M ");
+    sql.append(" where M.memno=B.memno and B.bdno= ? ");
 
     try {
       Board board = jt.queryForObject(
@@ -82,13 +100,14 @@ public class BoardDAOImpl implements BoardDAO{
     StringBuffer sql = new StringBuffer();
     sql.append("update board ");
     sql.append("   set bdcg = ?, ");
+    sql.append("       memno = ?, ");
     sql.append("       bdtitle = ?, ");
     sql.append("       bdcontent = ?, ");
     sql.append("       bdudate = systimestamp ");
     sql.append(" where bdno = ? ");
 
     int affectedRow = jt.update(sql.toString(),
-        board.getBdcg(), board.getBdtitle(), board.getBdcontent(),BoardId);
+        board.getBdcg(),board.getMemno(), board.getBdtitle(), board.getBdcontent(),BoardId);
     return affectedRow;
   }
 
