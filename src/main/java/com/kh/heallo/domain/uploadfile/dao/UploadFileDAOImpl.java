@@ -3,6 +3,7 @@ package com.kh.heallo.domain.uploadfile.dao;
 import com.kh.heallo.domain.uploadfile.FileData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -108,6 +109,37 @@ public class UploadFileDAOImpl implements UploadFileDAO {
     }
 
     /**
+     * 리뷰에 새로 등록된 이미지 조회
+     *
+     * @param fcno
+     * @return 이미지 파일리스트
+     */
+    @Override
+    public List<FileData> findNewReviewImage(Long fcno) {
+        StringBuffer sql = new StringBuffer();
+
+        sql.append(" select * from (select uf.* from review rv, uploadfile uf ");
+        sql.append("         where fcno = ? ");
+        sql.append("         and  rv.rvno = uf.noid ");
+        sql.append("         and  uf.code = 'RV000' ");
+        sql.append("         order by ufcdate desc) ");
+        sql.append(" where rownum <= 5 ");
+
+        List<FileData> fileDataList = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(FileData.class), fcno);
+
+        if (fileDataList.isEmpty()) {
+            throw new DataAccessException("데이터를 찾을수 없습니다") {
+                @Override
+                public String getMessage() {
+                    return super.getMessage();
+                }
+            };
+        }
+
+        return fileDataList;
+    }
+
+    /**
      * 파일 삭제
      * @param ufno 파일번호
      * @return
@@ -116,6 +148,7 @@ public class UploadFileDAOImpl implements UploadFileDAO {
     public Integer delete(Long ufno) {
         String sql = "delete uploadFile where ufno = ? ";
         int resultCount = jdbcTemplate.update(sql, ufno);
+
         return resultCount;
     }
 

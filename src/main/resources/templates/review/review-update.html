@@ -72,7 +72,7 @@
                 </div>
             </article>
             <article class="review-write-form">
-                <textarea class="textarea" id="editor" th:text="*{rvcontents}"></textarea>
+                <textarea class="textarea" id="editor" th:text="*{rvcontents}" maxlength="1000"></textarea>
                 <div th:class="error-class"></div>
                 <div class="upload-img-wrap">
                     <label for="inputImg">이미지 업로드</label>

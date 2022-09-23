@@ -9,6 +9,7 @@ import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ReviewSVCImpl implements ReviewSVC{
 
     private final ReviewDAO reviewDAO;
@@ -41,9 +43,13 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public List<Review> findListByFcno(Long fcno, ReviewCriteria criteria) {
+
+        //리뷰 조회
         List<Review> reviewList = reviewDAO.findListByFcno(fcno, criteria)
                 .stream()
                 .map(review -> {
+
+                    //이미지 조회
                     List<FileData> imageList = uploadFileSVC.findImages(AttachCode.RV_CODE,review.getRvno());
                     review.setImageFiles(imageList);
                     return review;
@@ -60,7 +66,11 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Review findByRvno(Long rvno) {
+
+        //리뷰 조회
         Review review = reviewDAO.findByRvno(rvno);
+
+        //이미지파일 조회
         List<FileData> fileDataList = uploadFileSVC.findImages(AttachCode.RV_CODE, review.getRvno());
         review.setImageFiles(fileDataList);
 
@@ -73,6 +83,8 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Long add(Review review) {
+
+        //리뷰 추가
         Long rvno = reviewDAO.add(review);
 
         return rvno;
@@ -80,7 +92,11 @@ public class ReviewSVCImpl implements ReviewSVC{
 
     @Override
     public Long add(Review review, List<MultipartFile> files) {
+
+        //리뷰 추가
         Long rvno = reviewDAO.add(review);
+
+        //파일 업로드
         uploadFileSVC.fileUpload(AttachCode.RV_CODE, rvno, files);
 
         return rvno;
@@ -93,6 +109,8 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Integer update(Review review) {
+
+        //리뷰 수정
         Integer resultCount = reviewDAO.update(review);
 
         return resultCount;
@@ -100,7 +118,11 @@ public class ReviewSVCImpl implements ReviewSVC{
 
     @Override
     public Integer update(Review review, List<MultipartFile> files) {
+
+        //리뷰 수정
         Integer resultCount = reviewDAO.update(review);
+
+        //파일 업로드
         uploadFileSVC.fileUpload(AttachCode.RV_CODE, review.getRvno() ,files);
 
         return resultCount;
@@ -108,7 +130,11 @@ public class ReviewSVCImpl implements ReviewSVC{
 
     @Override
     public Integer update(Review review, Long[] ufnoArr) {
+
+        //리뷰 수정
         Integer resultCount = reviewDAO.update(review);
+
+        //파일 삭제
         uploadFileSVC.delete(ufnoArr);
 
         return resultCount;
@@ -116,12 +142,19 @@ public class ReviewSVCImpl implements ReviewSVC{
 
     @Override
     public Integer update(Review review, List<MultipartFile> files, Long[] ufnoArr) {
+
+        //리뷰 수정
         Integer resultCount = reviewDAO.update(review);
+
+        //파일 업로드
         uploadFileSVC.fileUpload(AttachCode.RV_CODE, review.getRvno() ,files);
+
+        //파일 삭제
         uploadFileSVC.delete(ufnoArr);
 
         return resultCount;
     }
+
 
     /**
      * 리뷰삭제
@@ -130,15 +163,23 @@ public class ReviewSVCImpl implements ReviewSVC{
      */
     @Override
     public Integer delete(Long rvno) {
+
+        //리뷰의 이미지파일 조회
         List<FileData> fileDataList = uploadFileSVC.findImages(AttachCode.RV_CODE, rvno);
+
+        //리뷰 삭제
         Integer resultCount = reviewDAO.delete(rvno);
+
+        //로컬 파일 삭제
         if (fileDataList != null) {
             Long[] ufArray = fileDataList.stream()
                     .map(fileData -> fileData.getUfno())
                     .toArray(Long[]::new);
+
             uploadFileSVC.delete(ufArray);
         }
 
         return resultCount;
     }
+
 }

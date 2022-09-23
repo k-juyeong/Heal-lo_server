@@ -5,6 +5,8 @@ import com.kh.heallo.domain.review.OrderBy;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.svc.ReviewSVC;
+import com.kh.heallo.domain.uploadfile.FileData;
+import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
 import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
@@ -34,6 +36,7 @@ public class ReviewRestController {
 
     private final ReviewSVC reviewSVC;
     private final FacilitySVC facilitySVC;
+    private final UploadFileSVC uploadFileSVC;
     private final DtoModifier dtoModifier;
     private final ReviewFileValidator fileValidator;
 
@@ -97,9 +100,27 @@ public class ReviewRestController {
         return new ResponseEntity<>(responseMsg, HttpStatus.OK);
     }
 
+    //최근 등록된 이미지 상위 5개
+    @GetMapping("/{fcno}/new-images")
+    private ResponseEntity<ResponseMsg> findNewReviewImage(@PathVariable("fcno") Long fcno) {
+
+        //이미지 조회
+        List<FileData> newReviewImage = uploadFileSVC.findNewReviewImage(fcno);
+
+        //이미지가 있다면
+        List<ReviewFileData> reviewFileDataList = dtoModifier.getReviewFileDataList(newReviewImage);
+
+        //Create ResponseEntity
+        ResponseMsg responseMsg = new ResponseMsg()
+                .createHeader(StatusCode.SUCCESS)
+                .setData("images", reviewFileDataList);
+
+        return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+    }
+
     //리뷰 등록 처리
     @PostMapping("/{fcno}")
-    public ResponseEntity add(
+    public ResponseEntity<ResponseMsg> add(
             HttpServletRequest request,
             @PathVariable("fcno") Long fcno,
             @Valid @ModelAttribute AddReviewForm addReviewForm,

@@ -29,7 +29,6 @@ public class ExceptionHandlerAdvice {
     //JdbcTemplate query 결과값이 없으면 호출
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<ResponseMsg> ExceptionHandler(DataAccessException e) {
-        e.printStackTrace();
         ResponseMsg responseMsg = new ResponseMsg();
         responseMsg
                 .createHeader(StatusCode.DATA_NOT_FOUND_ERROR);

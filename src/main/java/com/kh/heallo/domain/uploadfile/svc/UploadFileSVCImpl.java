@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 public class UploadFileSVCImpl implements UploadFileSVC{
 
     private final UploadFileDAO uploadFileDAO;
@@ -36,9 +35,7 @@ public class UploadFileSVCImpl implements UploadFileSVC{
     public Integer fileUpload(AttachCode code, Long noid, MultipartFile file) throws IOException {
 
         // 1) 로컬 저장소 파일 등록
-        String localFileName = fileSetting.createLocalFileName(file);
-        FileData fileData = fileSetting.getFileData(file, code, noid, localFileName);
-        fileSetting.transForTo(file, code, localFileName);
+        FileData fileData = fileSetting.transForTo(file, code, noid);
 
         // 2) 데이터베이스 파일 등록
         Integer resultCount = uploadFileDAO.fileUpload(fileData);
@@ -53,17 +50,17 @@ public class UploadFileSVCImpl implements UploadFileSVC{
      * @param files
      */
     @Override
-    public void fileUpload(AttachCode code, Long noid, List<MultipartFile> files) {
+    public void fileUpload(AttachCode code, Long noid, List<MultipartFile> files){
 
         // 1) 로컬 저장소 파일 등록
         List<FileData> fileDataList = files.stream().map(file -> {
-            String localFileName = fileSetting.createLocalFileName(file);
-            FileData fileData = fileSetting.getFileData(file, code, noid, localFileName);
+            FileData fileData;
             try {
-                fileSetting.transForTo(file, code, localFileName);
+                fileData = fileSetting.transForTo(file, code, noid);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
             return fileData;
         }).collect(Collectors.toList());
 
@@ -87,6 +84,18 @@ public class UploadFileSVCImpl implements UploadFileSVC{
     }
 
     /**
+     * 리뷰에 새로 등록된 이미지 조회
+     *
+     * @param fcno
+     * @return
+     */
+    @Override
+    public List<FileData> findNewReviewImage(Long fcno) {
+
+        return uploadFileDAO.findNewReviewImage(fcno);
+    }
+
+    /**
      * 파일 단일 삭제
      * @param ufno 파일번호
      * @return
@@ -99,14 +108,12 @@ public class UploadFileSVCImpl implements UploadFileSVC{
         Integer resultCount = uploadFileDAO.delete(ufno);
 
         // 로컬 저장소 파일 삭제
-        String filePath = fileData.getUfpath() + fileData.getUfsname();
-        File file = new File(filePath);
-        if(file.exists()) {
-            file.delete();
-        }
+        fileSetting.deleteLocalFile(fileData);
 
         return resultCount;
     }
+
+
 
     /**
      * 파일 복수 삭제
@@ -126,11 +133,7 @@ public class UploadFileSVCImpl implements UploadFileSVC{
 
         // 로컬 저장소 파일 삭제
         fileDataList.stream().forEach(fileData -> {
-            String filePath = fileData.getUfpath() + fileData.getUfsname();
-            File file = new File(filePath);
-            if(file.exists()) {
-                file.delete();
-            }
+            fileSetting.deleteLocalFile(fileData);
         });
     }
 }

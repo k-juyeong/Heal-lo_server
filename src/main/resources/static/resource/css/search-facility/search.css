@@ -27,15 +27,21 @@ a:hover {color: inherit;}
 .btn-search {position: absolute;top: 0;right: 50%; left: 50%;padding: 6px; width: 150px; font-size: 18px;border: 1px solid black; transform: translate(-50%, 0);z-index: 1}
 
 /* 검색 결과 목록 */
+
+/* 검색 결과 헤더*/
 .searched-wrap {display: flex;position: relative;width: 100%;height: 100%;background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);}
 .searched-wrap .searched-list-wrap {position: absolute;width: 350px;height: 100%;max-height: 100%;padding: 0 18px;padding-bottom: 32px;z-index: 5;opacity: 0.9;pointer-events: none}
 .searched-wrap .searched-list-wrap .text-input {width: 100%;height: 10%;pointer-events: auto;}
 .searched-wrap .searched-list-wrap .text-input__header {display: flex;justify-content: space-between;align-items: center;width: 100%;padding: 6px;font-size: 16px;background-color: var(--color-others-header);pointer-events: auto;}
 .searched-wrap .searched-list-wrap .text-input__header::after {content: attr(-data-after);}
+
+/* 검색 결과 바디*/
 .searched-wrap .searched-list-wrap .text-input__body {margin-top: 4px;}
 .searched-wrap .searched-list-wrap .text-input__body button {padding: 4px;font-size: 20px;color: rgba(112, 108, 108, 0.322);border: 1px solid black;background-color: white;cursor: pointer;}
 .searched-wrap .searched-list-wrap .text-input__body button i {font-size: 24px;color: var(--color-main-header);}
 .searched-wrap .searched-list-wrap .text-input__body input[type=text] {font-size: 12px;font-weight: 700;border-radius: 0;border: 1px solid black;border-right: none;}
+
+/* 검색 결과 리스트*/
 .searched-wrap .searched-list-wrap .searched-lists {display: flex;align-items: center;flex-direction: column;height: 0;margin-top: 4px;background-color:rgba(255, 255, 255, 0.959);transition: ease-in-out 0.5s;pointer-events: auto;overflow: auto;}
 .searched-wrap .searched-list-wrap .searched-lists .default {display: flex; align-items: center; height: 100%;}
 .searched-wrap .searched-list-wrap .open-lists {height: 85%;}
@@ -51,6 +57,8 @@ a:hover {color: inherit;}
 .searched-wrap .searched-list-wrap .item-content__body .item-tel::before {content: '[전화번호]';}
 .searched-wrap .searched-list-wrap .item-content__body .item-addr::before {content: '[주소]';}
 .review-total {font-size: 0.4em;text-align: center}
+
+/* 검색 자동완성 */
 .auto-complete-wrap {position: absolute; top: 70px; display: flex; flex-direction: column; width: 200px; font-size: 12px; background-color: white; pointer-events: auto; cursor: pointer; z-index: 5}
 .auto-complete-wrap .list {display: flex; padding: 2px; margin: 4px 12px;}
 .auto-complete-wrap .list .name{flex: 0.7; font-size: 0.7em}

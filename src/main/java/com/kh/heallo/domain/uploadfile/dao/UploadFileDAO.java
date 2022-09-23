@@ -35,6 +35,13 @@ public interface UploadFileDAO {
     FileData findByUfno(Long ufno);
 
     /**
+     * 리뷰에 새로 등록된 이미지 조회
+     * @param fcno
+     * @return
+     */
+    List<FileData> findNewReviewImage(Long fcno);
+
+    /**
      * 파일 삭제
      * @param ufno 파일번호
      * @return 결과

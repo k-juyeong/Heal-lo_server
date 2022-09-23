@@ -17,12 +17,26 @@ public class FileSetting {
     private String basicFilePath;
 
     //로컬저장소에 파일저장
-    public String transForTo(MultipartFile multipartFile, AttachCode code, String localFileName) throws IOException {
+    public FileData transForTo(MultipartFile multipartFile, AttachCode code, Long noid) throws IOException {
+        String localFileName = createLocalFileName(multipartFile);
+
         File file = new File(getFullPath(localFileName,code.getCode()));
         file.mkdirs();
         multipartFile.transferTo(file);
 
-        return localFileName;
+        FileData fileData = getFileData(multipartFile, code, noid, localFileName);
+
+        return fileData;
+    }
+
+    public void deleteLocalFile(FileData fileData) {
+        String fullPath = getFullPath(fileData.getUfsname(), fileData.getCode());
+        File file = new File(fullPath);
+        if (file.exists()) {
+            file.delete();
+        } else {
+            throw new IllegalArgumentException("첨부파일 삭제 실패: " + fileData.getCode() + " : " + fileData.getUfsname());
+        }
     }
 
     //GetFullPath
@@ -32,7 +46,7 @@ public class FileSetting {
     }
 
     //MultipartFile => FileData
-    public FileData getFileData(MultipartFile multipartFile,AttachCode code, Long noid, String localFilename) {
+    private FileData getFileData(MultipartFile multipartFile,AttachCode code, Long noid, String localFilename) {
             FileData fileData = new FileData();
             fileData.setCode(code.getCode());
             fileData.setNoid(noid);
@@ -46,7 +60,7 @@ public class FileSetting {
     }
 
     //로컬 저장소 파일이름 설정
-    public String createLocalFileName(MultipartFile file) {
+    private String createLocalFileName(MultipartFile file) {
         String originName = file.getOriginalFilename();
         int extensionIndex = originName.lastIndexOf(".");
         String extension = originName.substring(extensionIndex+1, originName.length());

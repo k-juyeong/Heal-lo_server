@@ -73,13 +73,6 @@ public class ReviewDAOImpl implements ReviewDAO{
 
         Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
         Integer startPage = endPage - criteria.getNumOfRow();
-//        List<Review> reviewList = null;
-//        reviewList = jdbcTemplate.query(
-//                sql.toString(),
-//                new BeanPropertyRowMapper<>(Review.class),
-//                fcno,
-//                startPage,
-//                endPage);
 
         List<Review> reviewList = jdbcTemplate.query(sql.toString(), new RowMapper<Review>() {
             @Override
@@ -101,7 +94,7 @@ public class ReviewDAOImpl implements ReviewDAO{
             }
         },fcno,startPage,endPage);
 
-        if (reviewList.size() == 0) {
+        if (reviewList.isEmpty()) {
             throw new DataAccessException("데이터를 찾을수 없습니다") {
                 @Override
                 public String getMessage() {

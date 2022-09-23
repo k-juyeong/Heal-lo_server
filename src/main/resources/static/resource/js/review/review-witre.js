@@ -59,6 +59,8 @@ document.querySelector('.btn-reg').addEventListener('click', () => {
     const $textarea = document.querySelector('.textarea');
     const $errorClass = document.querySelector('.error-class');
 
+    console.log($textarea.value)
+
     const formData = new FormData();
     formData.append('rvscore', ratingScore);
     formData.append('rvcontents', $textarea.value);

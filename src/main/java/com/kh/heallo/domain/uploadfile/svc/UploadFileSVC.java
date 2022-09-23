@@ -20,6 +20,7 @@ public interface UploadFileSVC {
 
     /**
      * 파일 복수 등록
+     *
      * @param code
      * @param noid
      * @param files
@@ -33,6 +34,14 @@ public interface UploadFileSVC {
      * @return
      */
     List<FileData> findImages(AttachCode code, Long noid);
+
+    /**
+     * 리뷰에 새로 등록된 이미지 조회
+     *
+     * @param fcno
+     * @return
+     */
+    public List<FileData> findNewReviewImage(Long fcno);
 
     /**
      * 파일 단일 삭제

@@ -4,6 +4,7 @@ import sweetalert from "../module/swal.js";
 //DOM
 const $reviewLists = document.querySelector('.review-lists');
 const $orderBySelect = document.querySelector('.order-by-selector');
+const $newImageWrap = document.querySelector('.facility-footer .new-image-wrap');
 
 //페이지 첫 로딩 상태 값
 let isFirst = true;
@@ -23,7 +24,13 @@ reviewListRequest();
 const swal = new sweetalert();
 
 //작성버튼 클릭이벤트
-document.querySelector('.review-write').addEventListener('click',e => location.href = `/reviews/${fcno}/add`)
+document.querySelector('.review-write').addEventListener('click', e => {
+    if (!document.getElementById('loginOn')) {
+        swal.checkLogin(redirectLogin);
+    } else {
+        location.href = `/reviews/${fcno}/add`;
+    }
+});
 
 //리뷰 정렬기준 선택 이벤트
 $orderBySelect.addEventListener('change',() => reviewListRequest());
@@ -47,11 +54,15 @@ function replaceBookmark(fcno,target) {
         .then(response => response.json())
         .then(jsonData => {
             if (jsonData.header.code == '00') {
-                target.style.color =
-                    jsonData.data.status ? 'var(--color-main-header)' : `black`;
+                if (jsonData.data.status) {
+                    target.style.color = 'var(--color-main-header)';
+                    swal.redirectBookmarkList()
+                } else {
+                    target.style.color = `black`;
+                }
 
             } else if (jsonData.header.code == '03') {
-                swal.checkLogin(() => location.href = `/members/login?requestURI=${window.location.pathname}`)
+                swal.checkLogin(redirectLogin)
 
             } else {
                 throw new Error(jsonData.data);
@@ -59,6 +70,11 @@ function replaceBookmark(fcno,target) {
             }
         })
         .catch(err => console.log(err));
+}
+
+//로그인으로 이동
+function redirectLogin() {
+    location.href = `/members/login?requestURI=${window.location.pathname}`;
 }
 
 //운동시설 별점세팅
@@ -79,11 +95,11 @@ function getFacilityScore() {
 }
 
 //리뷰리스트 기본 메세지
-function createDefault() {
+function createDefault(msg) {
     return (
         `
         <div class="empty-message">
-            <p>리뷰가 없습니다. 리뷰를 달아주세요!</p>
+            <p>${msg}</p>
         </div>
         `
     )
@@ -110,9 +126,13 @@ function reviewListRequest() {
             const $resultCount = document.querySelector('.review-cnt')
             $resultCount.textContent = jsonData.data.totalCount;
 
+            //최근이미지 업데이트
+            $newImageWrap.innerHTML = '';
+            setNewReviewImage();
+
             //검색결과 0이면 기본 메세지
             if (jsonData.data.totalCount == 0) {
-                $reviewLists.innerHTML = createDefault();
+                $reviewLists.innerHTML = createDefault('리뷰가 없습니다. 리뷰를 달아주세요!');
                 return;
             }
 
@@ -144,20 +164,55 @@ function searchByPage(queryPram) {
         .catch(error => console.log(error))
 }
 
+//최근 등록된 이미지 조회
+function setNewReviewImage() {
+    fetch(`/reviews/${fcno}/new-images`, {
+        method : "GET"
+    })
+        .then(response => response.json())
+        .then(jsonData => {
+            if (jsonData.header.code == '00') {
+                jsonData.data.images
+                    .map(ele => createImageDiv(ele))
+                    .forEach(ele => $newImageWrap.appendChild(ele));
+
+            } else if (jsonData.header.code == '02') {
+                $newImageWrap.innerHTML = createDefault('최근에 올라온 운동시설 사진이 없습니다.')
+            }
+        })
+        .catch(err => console.log(err))
+}
+
 //리뷰 삭제
 function deleteReview(rvno) {
     fetch(`/reviews/${rvno}`, {
         method: `DELETE`
     })
         .then(response => response.json())
-        .then(jsonData => {
-            reviewListRequest()})
+        .then(jsonData => reviewListRequest())
         .catch(error => console.log(error));
 }
 
 //리뷰 수정페이지
 function toUpdatePage(rvno) {
     window.location = `/reviews/${rvno}/edit`;
+}
+
+//모달창 이미지 변경
+function createImageDiv(data) {
+    const image =
+    makeElements('div', {class: 'upload-img'},
+        makeElements('img', {src: `/images/${data.code}/${data.ufsname}`}));
+    image.setAttribute('data-bs-toggle', 'modal');
+    image.setAttribute('data-bs-target', '#modal');
+
+    image.addEventListener('click', e => {
+
+        document.getElementById('modal')
+            .querySelector('img').src = e.target.src;
+    });
+
+    return image;
 }
 
 //리뷰 생성
@@ -168,23 +223,24 @@ function reviewListRender(data) {
     const isMoreview = data.rvcontents.length > 200;
 
     const reviewCard =
-    makeElements('div',{class : 'review-card', id : `${data.rvno}`},
-        makeElements('div',{class : 'review-card__info'},
-            makeElements('div',{class : 'rating-score review-card__star'},
-                makeElements('div',{class : 'review-text-score'},`${data.rvscore}점`),
-                makeElements('div',{class : 'outer-star'},'★★★★★',
-                    makeElements('span',{class : 'inner-star'},'★★★★★'))),
-            makeElements('span',{class : 'info-header'},
-                makeElements('p',{class : 'user-name'},data.memnickname),
-                data.login ? makeElements('div',{class : 'review-btn-wrap'},
-                    makeElements('button',{class : 'review-update btn-review'},'수정'),
-                    makeElements('button',{class : 'review-delete btn-review'},'삭제')) : ''),
-            makeElements('span',{class : 'date'},data.rvcdate),
-            makeElements('p',{class : 'preview-contents'},isMoreview ? previewContents : data.rvcontents,
-            isMoreview ? makeElements('div',{class : 'btn-moreview'},'더보기') : ''),
-            makeElements('div',{class : 'preview-wrap'})));
+        makeElements('div',{class : 'review-card', id : `${data.rvno}`},
+            makeElements('div',{class : 'review-card__info'},
+                makeElements('div',{class : 'rating-score review-card__star'},
+                    makeElements('div',{class : 'review-text-score'},`${data.rvscore}점`),
+                    makeElements('div',{class : 'outer-star'},'★★★★★',
+                        makeElements('span',{class : 'inner-star'},'★★★★★'))),
+                makeElements('span',{class : 'info-header'},
+                    makeElements('p',{class : 'user-name'},data.memnickname),
+                    data.login ? makeElements('div',{class : 'review-btn-wrap'},
+                        makeElements('button',{class : 'review-update btn-review'},'수정'),
+                        makeElements('button',{class : 'review-delete btn-review'},'삭제')) : ''),
+                makeElements('span',{class : 'date'},data.rvcdate),
+                makeElements('p',{class : 'preview-contents'},isMoreview ? previewContents : data.rvcontents,
+                    isMoreview ? makeElements('div',{class : 'btn-moreview'},'더보기') : ''),
+                makeElements('div',{class : 'preview-wrap'})));
 
     reviewCard.querySelector('.inner-star').style.width = data.rvscore*20 + '%';
+
 
     //더보기 이벤트
     reviewCard.querySelector('.btn-moreview')?.addEventListener('click',(e) => {
@@ -193,26 +249,13 @@ function reviewListRender(data) {
 
         if(contents.classList.contains('moreview-on')) {
             contents.textContent = data.rvcontents;
-        } else {
-            contents.textContent = previewContents;
         }
     });
 
     //이미지 미리보기 생성
     data.imageFiles
-        ?.forEach(ele => {
-            const img =  document.createElement('img');
-            img.setAttribute('src',`/images/${ele.code}/${ele.ufsname}`);
-            img.setAttribute('data-bs-toggle','modal');
-            img.setAttribute('data-bs-target','#modal');
-            img.style.cursor = 'pointer';
-            reviewCard.querySelector('.preview-wrap').appendChild(img);
-
-            img.addEventListener('click',e => {
-                document.getElementById('modal')
-                    .querySelector('img').src = e.target.src;
-            });
-        });
+        ?.map(ele => createImageDiv(ele))
+        .forEach(ele => reviewCard.querySelector('.preview-wrap').appendChild(ele));
 
     //리뷰 수정버튼 이벤트
     reviewCard.querySelector('.review-update')

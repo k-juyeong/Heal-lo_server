@@ -5,6 +5,7 @@ import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.domain.review.ReviewCriteria;
+import com.kh.heallo.domain.uploadfile.FileData;
 import com.kh.heallo.web.facility.dto.AutoCompleteDto;
 import com.kh.heallo.web.facility.dto.FacilityCriteriaDto;
 import com.kh.heallo.web.facility.dto.FacilitySearchDto;
@@ -27,15 +28,31 @@ public class DtoModifier {
         return criteria;
     }
 
-    //
-    public List<AutoCompleteDto> getAutoCompleteDto(List<AutoComplete> autoCompleteList) {
-        List<AutoCompleteDto> completeDtos = autoCompleteList.stream().map(autoComplete -> {
-            AutoCompleteDto autoCompleteDto = new AutoCompleteDto();
-            BeanUtils.copyProperties(autoComplete, autoCompleteDto);
+    //Facility => facilityDto
+    public FacilitySearchDto getFacilityDto(Facility facility) {
+        FacilitySearchDto facilityDto = new FacilitySearchDto();
+        BeanUtils.copyProperties(facility,facilityDto);
 
-            return autoCompleteDto;
+        return facilityDto;
+    }
+
+    //SearchCriteria => ReviewCriteria
+    public ReviewCriteria getReviewCriteria(ReviewCriteriaDto reviewCriteriaDto) {
+        ReviewCriteria reviewCriteria = new ReviewCriteria();
+        BeanUtils.copyProperties(reviewCriteriaDto,reviewCriteria);
+
+        return reviewCriteria;
+    }
+
+    //List<FileData> => List<ReviewFileData>
+    public List<ReviewFileData> getReviewFileDataList(List<FileData> imageFiles) {
+        List<ReviewFileData> reviewFileDataList = imageFiles.stream().map(fileData -> {
+            ReviewFileData reviewFileData = new ReviewFileData();
+            BeanUtils.copyProperties(fileData, reviewFileData);
+
+            return reviewFileData;
         }).collect(Collectors.toList());
-        return completeDtos;
+        return reviewFileDataList;
     }
 
     //Review => ReviewDto
@@ -47,32 +64,23 @@ public class DtoModifier {
         if (review.getMemno() == memno) reviewDto.setLogin(true);
 
         if(review.getImageFiles() != null) {
-            List<ReviewFileData> reviewFileDataList = review.getImageFiles().stream().map(fileData -> {
-                ReviewFileData reviewFileData = new ReviewFileData();
-                BeanUtils.copyProperties(fileData, reviewFileData);
-
-                return reviewFileData;
-            }).collect(Collectors.toList());
+            List<FileData> imageFiles = review.getImageFiles();
+            List<ReviewFileData> reviewFileDataList = getReviewFileDataList(imageFiles);
             reviewDto.setImageFiles(reviewFileDataList);
         }
 
         return reviewDto;
     }
 
-    //SearchCriteria => ReviewCriteria
-    public ReviewCriteria getReviewCriteria(ReviewCriteriaDto reviewCriteriaDto) {
-        ReviewCriteria reviewCriteria = new ReviewCriteria();
-        BeanUtils.copyProperties(reviewCriteriaDto,reviewCriteria);
+    //List<AutoComplete> => List<AutoCompleteDto>
+    public List<AutoCompleteDto> getAutoCompleteDto(List<AutoComplete> autoCompleteList) {
+        List<AutoCompleteDto> completeDtos = autoCompleteList.stream().map(autoComplete -> {
+            AutoCompleteDto autoCompleteDto = new AutoCompleteDto();
+            BeanUtils.copyProperties(autoComplete, autoCompleteDto);
 
-        return reviewCriteria;
-    }
-
-    //Facility => facilityDto
-    public FacilitySearchDto getFacilityDto(Facility facility) {
-        FacilitySearchDto facilityDto = new FacilitySearchDto();
-        BeanUtils.copyProperties(facility,facilityDto);
-
-        return facilityDto;
+            return autoCompleteDto;
+        }).collect(Collectors.toList());
+        return completeDtos;
     }
 
     //EditReviewForm => Review

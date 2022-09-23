@@ -15,13 +15,13 @@ drop sequence bookmark_bmno_seq;
 
 -- code 테이블
 create table code (
-      code              varchar2(10) primary key,
-      code_name         varchar2(40),
-      discript          varchar2(40),
-      pcode             varchar2(10) references code(code),
-      use_status        char(1) check(use_status in('Y','N')),
-      cdate             timestamp,
-      udate             timestamp
+                      code              varchar2(10) primary key,
+                      code_name         varchar2(40),
+                      discript          varchar2(40),
+                      pcode             varchar2(10) references code(code),
+                      use_status        char(1) check(use_status in('Y','N')),
+                      cdate             timestamp,
+                      udate             timestamp
 );
 
 insert into code values('RV000','리뷰','',null,'Y',systimestamp,systimestamp);
@@ -30,16 +30,16 @@ insert into code values('CD000','캘린더','',null,'Y',systimestamp,systimestam
 
 -- 회원
 create table member (
-        memno          number(8),
-        memid          varchar2(40),
-        mempw          varchar2(20),
-        memtel         varchar2(13),
-        memnickname    varchar2(30),
-        mememail       varchar2(30),
-        memname        varchar2(12),
-        memcode        varchar2(15),
-        memcdate       date,
-        memudate       date
+                        memno          number(8),
+                        memid          varchar2(40),
+                        mempw          varchar2(20),
+                        memtel         varchar2(13),
+                        memnickname    varchar2(30),
+                        mememail       varchar2(30),
+                        memname        varchar2(12),
+                        memcode        varchar2(15),
+                        memcdate       date,
+                        memudate       date
 );
 
 -- 제약조건
@@ -64,7 +64,7 @@ create sequence member_memno_seq;
 CREATE TABLE Bookmark (
                           BMNO NUMBER(8),
                           MEMNO NUMBER(8),
-                          FCNO NUMBER(8),
+                          FCNO NUMBER(8)
 );
 -- 제약조건
 alter table bookmark add constraint bookmark_bmno_pk primary key (bmno);
@@ -109,17 +109,17 @@ create sequence review_rvno_seq;
 
 -- 게시판
 CREATE TABLE Board (
-   BDNO NUMBER(8) PRIMARY KEY,
-   BDCG NUMBER(10),
-   BDTITLE VARCHAR2(150),
-   MEMNO NUMBER(8) REFERENCES Member(memno),
-   BDCONTENT CLOB,
-   BDGROUP NUMBER(10) NOT NULL,
-   BDDEPTH NUMBER(10) NOT NULL,
-   BDVIEW NUMBER(10),
-   BDHIT NUMBER(10),
-   BDCDATE DATE,
-   BDUDATE DATE
+                       BDNO NUMBER(8) PRIMARY KEY,
+                       BDCG NUMBER(10),
+                       BDTITLE VARCHAR2(150),
+                       MEMNO NUMBER(8) REFERENCES Member(memno),
+                       BDCONTENT CLOB,
+                       BDGROUP NUMBER(10) NOT NULL,
+                       BDDEPTH NUMBER(10) NOT NULL,
+                       BDVIEW NUMBER(10),
+                       BDHIT NUMBER(10),
+                       BDCDATE DATE,
+                       BDUDATE DATE
 );
 
 -- 게시판 시퀀스
@@ -127,12 +127,12 @@ create sequence board_BDNO_seq;
 
 -- 캘린더
 CREATE TABLE Calendar (
-  CDNO NUMBER(8) PRIMARY KEY,
-  MEMNO NUMBER(8)  REFERENCES Member(memno),
-  CDCONTENT CLOB,
-  CDRDATE DATE,
-  CDCDATE DATE,
-  CDUDATE DATE
+                          CDNO NUMBER(8) PRIMARY KEY,
+                          MEMNO NUMBER(8)  REFERENCES Member(memno),
+                          CDCONTENT CLOB,
+                          CDRDATE DATE,
+                          CDCDATE DATE,
+                          CDUDATE DATE
 );
 
 -- 캘린더 시퀀스
@@ -146,16 +146,16 @@ CREATE SEQUENCE CALENDAR_CDNO_SEQ
 
 -- 업로드 파일 테이블
 create table uploadfile (
-    ufno        number(8),
-    code        varchar2(20),
-    noid        number(8),
-    ufsname     varchar2(200),
-    uffname     varchar2(200),
-    ufsize      number,
-    uftype      varchar2(50),
-    ufpath      varchar2(100),
-    ufcdate     timestamp,
-    ufudate     timestamp
+                            ufno        number(8),
+                            code        varchar2(20),
+                            noid        number(8),
+                            ufsname     varchar2(200),
+                            uffname     varchar2(200),
+                            ufsize      number,
+                            uftype      varchar2(50),
+                            ufpath      varchar2(100),
+                            ufcdate     timestamp,
+                            ufudate     timestamp
 );
 
 -- 파일 시퀀스

@@ -345,7 +345,9 @@ function createList(itemData) {
   })
 
   //즐겨찾기 여부에따라 스타일 추가
-  listWrap.querySelector('.contents-icon').style.color = itemData.bookmarking ? 'var(--color-main-header)' : 'white';
+  if (itemData.bookmarking) {
+    listWrap.querySelector('.contents-icon').style.color = 'var(--color-main-header)';
+  }
 
   //즐겨찾기 추가/삭제 이벤트
   listWrap.querySelector('.favorite-icon')
@@ -551,6 +553,11 @@ function createPagination(totalPage) {
   return paginationWrap;
 }
 
+//로그인 이동
+function redirectLogin() {
+  location.href = `/members/login?requestURI=${window.location.pathname}`;
+}
+
 //즐겨찾기 업데이트
 function replaceBookmark(fcno, target) {
   fetch(`/bookmarks/${fcno}`, {
@@ -566,7 +573,7 @@ function replaceBookmark(fcno, target) {
               jsonData.data.status ? 'var(--color-main-header)' : `white`;
 
         } else if (jsonData.header.code == '03') {
-          swal.checkLogin(() => location.href = `/members/login?requestURI=${window.location.pathname}`)
+          swal.checkLogin(redirectLogin);
 
         } else {
           throw new Error(jsonData.data);

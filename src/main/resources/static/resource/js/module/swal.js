@@ -4,7 +4,7 @@ export default class sweetalert {
     checkLogin(callBack) {
         Swal.fire({
             title: '로그인이 필요합니다',
-            text: "로그인을 하시겠습니까?",
+            text: "로그인 하시겠습니까?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -18,6 +18,25 @@ export default class sweetalert {
         })
     }
 
+    //즐겨찾기 목록 이동
+    redirectBookmarkList() {
+        Swal.fire({
+            title: '즐겨찾기 추가 완료!',
+            text: "즐겨찾기 목록에 추가되었습니다.",
+            icon: 'success',
+            position: 'top-end',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '목록이동',
+            cancelButtonText: '계속보기'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `#`;
+            }
+        })
+    }
+
     //삭제 확인 알림
     checkDeleteAlert(callBack) {
         Swal.fire({
@@ -27,12 +46,12 @@ export default class sweetalert {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: '네! 삭제하겠습니다.',
+            confirmButtonText: '네 삭제하겠습니다.',
             cancelButtonText: '아니요'
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire(
-                    '삭제했습니다.',
+                    '삭제를 완료했습니다.',
                 )
                 callBack();
             }

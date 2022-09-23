@@ -5,7 +5,7 @@ a:hover {color: inherit;}
 .review-score {color: rgb(172, 172, 31);}
 
 /* 시설 wrap*/
-.facility {display: flex; flex-direction: column; align-items: center; justify-content: center;margin-bottom: 240px;}
+.facility {display: flex; flex-direction: column; align-items: center; justify-content: center;}
 
 /* 시설정보-헤더 */
 .facility-header::before {content: ' ';display: block;}
@@ -24,6 +24,15 @@ a:hover {color: inherit;}
 .facility-detail__title {padding: 20px 0;font-weight: 700;}
 .facility-detail__info {padding: 8px;}
 
+/* 시설 정보 푸터 (최근 리뷰 업로드 이미지) */
+.facility-footer {width: 100%; margin-bottom: 120px;}
+.facility-footer .title {margin: 0 auto; width: 70%;ext-align: center; font-size: 18px;}
+.facility-footer .title span {padding: 8px; border-bottom: 2px solid black}
+.new-image-wrap {display: flex; justify-content: center; padding: 32px; margin: 12px auto; height: 200px; width: 70%; box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;}
+.new-image-wrap .empty-message {width: 100%; height: 100%}
+.new-image-wrap .upload-img {flex: 0.2}
+.new-image-wrap .upload-img img {width: 100%; height: 100%;}
+
 /* 리뷰 정보 */
 .review {position:relative; display: flex;flex-direction: column;justify-content: center;align-items: center;width: 80%;margin-bottom: 24px;box-sizing: content-box;}
 .review-header {display: flex;justify-content: space-between; margin-top:72px ; width: 60%;min-width: 700px;max-width: 1000px;}
@@ -34,6 +43,8 @@ a:hover {color: inherit;}
 .write-btn-wrap {display: flex;justify-content: flex-end; align-items: flex-end;width: 130px;}
 .write-btn-wrap .btn-review {display: inline-block;height: 40px;}
 .empty-message {display: flex;justify-content: center;align-items: center;width: 100%;height: 300px;}
+
+/* 리뷰 리스트 */
 .review-lists {width: 700px;margin-top: 48px;}
 .review-lists .review-card {position: relative;min-width: 600px;margin: 82px 0;border-bottom: 1px solid rgba(134, 132, 132, 0.368);}
 .review-lists .review-card__info {display: flex;flex-direction: column;width: 100%;margin: 12px 0;font-size: 1rem;}
@@ -41,14 +52,14 @@ a:hover {color: inherit;}
 .review-lists .review-card__info .user-name {font-size: 16px;font-weight: 600; padding: 0 6px;}
 .review-lists .review-btn-wrap {display: flex; margin-left: 8px}
 .review-lists .review-btn-wrap .btn-review {margin: 0 2px;padding: 4px; font-size: 14px}
-.review-lists .review-card__info .date {padding: 6px; padding-bottom: 48px;font-size: 12px;}
+.review-lists .review-card__info .date {padding: 6px; font-size: 12px;}
 .review-lists .review-card__star {position: absolute;top: 0;right: 0;font-size: 1.5em; border-radius: 10px;}
-.review-lists .preview-contents {padding: 0 4px; padding-bottom:32px; height: auto; color: #777777; border-style: none; overflow: hidden;word-break: break-all}
+.review-lists .preview-contents {padding: 22px 62px; height: auto; color: #777777; border-style: none; overflow: hidden;word-break: break-all}
+.btn-moreview {position: absolute;right: 0;top: 60px;padding: 6px; border-radius: 12px;border-style: none; background-color: #cee5f6;cursor: pointer;}
 
 /* 이미지 미리보기 */
-.preview-wrap {}
-.preview-wrap img {width: 100px;height: 100px;margin: 4px; margin-top: 52px}
-.btn-moreview {position: absolute;right: 0;top: 60px;padding: 6px; border-radius: 12px;border-style: none; color: black;cursor: pointer;}
+.preview-wrap {display: flex}
+.preview-wrap img {width: 100%;height: 100%;}
 
 /* 페이지네이션 */
 .pagination-wrap {display: flex;justify-content: center;}
@@ -72,6 +83,12 @@ a:hover {color: inherit;}
 .fixed-menu a:hover {color: var(--color-main-header);transform: scale(1.12);}
 .btn-review {color: white;border-style: none;border-radius: 4px;background-color: var(--color-others-header);}
 .order-by-selector {padding: 4px; margin-top: 36px; font-size: 12px; border: 1px solid #dee2e6;}
+.upload-img {flex: 0.2; padding: 12px; margin: 0 12px; box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; cursor: pointer}
+.upload-img:hover {transform: scale(1.03); box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;transition: all 0.3s;}
+
+/* 이미지 스타일 */
+.upload-img {padding: 2px; margin: 0 12px; box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; cursor: pointer}
+.upload-img:hover {transform: scale(1.03); box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;transition: all 0.3s;}
 
 /* 이미지 확대 */
 #modal .modal-body {padding: 0;}

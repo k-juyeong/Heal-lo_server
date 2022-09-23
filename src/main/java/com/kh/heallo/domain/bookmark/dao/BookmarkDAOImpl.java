@@ -70,14 +70,13 @@ public class BookmarkDAOImpl implements BookmarkDAO{
     public Long addBookmark(Long memno,Long fcno) {
         StringBuffer sql = new StringBuffer();
         sql.append(" insert into bookmark ");
-        sql.append("    values(bookmark_bmno_seq.nextval, ?, ?, ?) ");
+        sql.append("    values(bookmark_bmno_seq.nextval, ?, ?) ");
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement preparedStatement = con.prepareStatement(sql.toString(), new String[]{"bmno"});
             preparedStatement.setLong(1,memno);
             preparedStatement.setLong(2,fcno);
-            preparedStatement.setString(3,"ON");
             return preparedStatement;
         },keyHolder);
 

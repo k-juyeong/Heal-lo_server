@@ -39,3 +39,10 @@ select ufno,ufsname,uffname,uftype,ufpath,ufsize
 from uploadfile
 where code = 'RV000'
 and noid = 123;
+
+-- 운동시설 리뷰 최근업로드 이미지 조회
+select * from (select uf.* from review rv, uploadfile uf
+               where fcno = 863
+                 and  rv.rvno = uf.noid
+               order by ufcdate desc)
+where rownum <= 5;

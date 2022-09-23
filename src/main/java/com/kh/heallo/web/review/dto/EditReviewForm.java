@@ -17,7 +17,7 @@ public class EditReviewForm {
     private Long rvno;                      //리뷰번호
 
     @NotBlank
-    @Length(max = 2000)
+    @Length(max = 1000)
     private String rvcontents;                 //리뷰컨텐츠
 
     @NotNull
