@@ -4,6 +4,7 @@ import com.kh.heallo.domain.calendar.Calendar;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -36,7 +38,7 @@ public class CalendarDAOImpl implements CalendarDAO{
       @Override
       public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
         PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"cdno"});
-        pstmt.setClob(1, calendar.getCdContent());
+        pstmt.setString(1, calendar.getCdContent());
         pstmt.setString(2, calendar.getCdRDate());
         return pstmt;
       }
@@ -56,21 +58,22 @@ public class CalendarDAOImpl implements CalendarDAO{
 
   // 조회 (날짜 클릭 => 1일 조회)
   @Override
-  public Calendar findByDate(String date) {
+  public Optional<Calendar> findByDate(String date) {
     StringBuffer sql = new StringBuffer();
 
     // 로그인 후 회원 번호 쿼리 추가
-    sql.append("select cdcontent, cdrdate, cdcdate ");
-    sql.append("  from calendar ");
-    sql.append(" where cdrdate = ? ");
 
-    Calendar selectedCalendar = null;
+    sql.append("select cdcontent, cdrdate, cdcdate, cdudate ");
+    sql.append("  from calendar ");
+    sql.append(" where to_char(cdrdate, 'YYYY-MM-DD') = ? ");
+
     try {
-      selectedCalendar = jt.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Calendar.class), date);
-    } catch (DataAccessException e) {
-      log.info("해당 날짜의 정보를 찾을 수 없음={}", date);
+      Calendar selectedCalendar = jt.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Calendar.class), date);
+      return Optional.of(selectedCalendar);
+    } catch (EmptyResultDataAccessException e) {
+      e.printStackTrace();
+      return Optional.empty();
     }
-    return selectedCalendar;
   }
 
   // 수정
@@ -78,9 +81,10 @@ public class CalendarDAOImpl implements CalendarDAO{
   public void update(String date, Calendar calendar) {
     StringBuffer sql = new StringBuffer();
     sql.append("update calendar ");
-    sql.append("   set cdcontent = ? ");
+    sql.append("   set cdcontent = ?, ");
+    sql.append("       cdrdate = ?, ");
     sql.append("       cdudate = sysdate ");
-    sql.append(" where cdrdate = ? ");
+    sql.append(" where to_char(cdrdate, 'YYYY-MM-DD') = ? ");
 
     jt.update(sql.toString(), calendar.getCdContent(), date);
   }
@@ -88,7 +92,7 @@ public class CalendarDAOImpl implements CalendarDAO{
   // 삭제
   @Override
   public void del(String date) {
-    String sql = "delete from CALENDAR where cdrdate = ? ";
+    String sql = "delete from CALENDAR where to_char(cdrdate, 'YYYY-MM-DD') = ? ";
 
     jt.update(sql, date);
 
@@ -101,7 +105,7 @@ public class CalendarDAOImpl implements CalendarDAO{
     StringBuffer sql = new StringBuffer();
     sql.append("select cdcontent, cdrdate, cdcdate ");
     sql.append("  from calendar ");
-    sql.append( "where cdrdate between ? and ?; ");
+    sql.append( "where to_char(cdrdate, 'YYYY-MM-DD') between ? and ? ");
 
 
     return jt.query(sql.toString(), new BeanPropertyRowMapper<>(Calendar.class), startDate, finalDate);

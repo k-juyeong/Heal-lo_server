@@ -1,8 +1,8 @@
 @charset "utf-8";
 
-* {
+/* * {
     outline: 1px solid red;
-}
+} */
 #container {
     width: 80%;
     height: 800px;
@@ -16,7 +16,22 @@
     flex-direction: column;
 }
 #container #dayForm .selected__date{
-    font-size: 1.5em;
+    font-size: 1.7em;
+    margin-bottom: 20px;
+}
+#container #dayForm .dates {
+    margin-bottom: 20px;
+    flex-direction: column;
+}
+#container #dayForm .dates .written,
+#container #dayForm .dates .update {
+    display: flex;
+}
+
+#container #dayForm .written__date,
+#container #dayForm .update__date {
+    margin-left: 15px;
+    font-size: 1em;
 }
 #container #dayForm .content {
     width: 100%;
