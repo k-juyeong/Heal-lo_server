@@ -6,8 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
-    <link rel="stylesheet" href="../../static/resource/css/board/board.css" th:href="@{/resource/css/board/board.css}">
+    <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
     <th:block th:replace="${link}"></th:block>
+
+  <style>
+    .board-wrap .board-body{
+      display:grid;
+      grid-template-columns: 100px 300px;
+    }
+    .fieldError {
+      color:red;
+      font-size:0.8em;
+      font-weight:bold;
+    }
+  </style>
 </head>
 
 <body>
@@ -53,44 +65,56 @@
       </aside>
 
       <section class="board_write">
+
         <div class="write_area">
           <h2 class="board__title">자유게시판</h2>
+          <!-- <div class="textarea" name="" id="editor" contenteditable='true'></div> -->
         </div>
 
         <div class="board-body">
 
-          <form id="detailForm" action="" th:action th:object="${form}">
-            <div><label for="">게시글번호</label></div>
-            <div><input type="text" th:field="*{bdno}" readonly="readonly"></div>
+          <form id="updateForm" action="" th:action th:method="post" th:object="${form}">
+            <div th:if="${#fields.hasGlobalErrors()}">
+              <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
+            </div>
 
-            <div><label for="">카테고리</label></div>
-            <div><input type="text" th:field="*{bdcg}" readonly="readonly"></div>
+            <div><label th:for="bdno">게시글번호</label></div>
+            <div><input type="text" th:field="*{bdno}" readonly></div>
 
-            <div><label for="">작성일</label></div>
-            <div><input type="text" th:field="*{bdcdate}" readonly="readonly"></div>
+            <div><label th:for="memno">작성자번호</label></div>
+            <div><input type="text" th:field="*{memno}" readonly></div >
 
-            <div><label for="">작성자번호</label></div>
-            <div><input type="text" th:field="*{memno}" readonly="readonly"></div>
-
-            <div><label for="">수정일</label></div>
-            <div><input type="text" th:field="*{bdudate}" readonly="readonly"></div>
-
-            <div><label for="">제목</label></div>
-            <div><input type="text" th:field="*{bdtitle}" readonly="readonly"></div>
-
-            <div><label for="">내용</label></div>
-            <div><input type="text" th:field="*{bdcontent}" readonly="readonly"></div>
+            <div>
+              <label th:for="bdcg">카테고리</label>
+              <select name="" id="menu-list" th:field="*{bdcg}">
+                <option value="자유게시판">자유게시판</option>
+                <option value="정보공유">정보공유</option>
+                <option value="문의하기">문의하기</option>
+              </select>
+              <div class="fieldError" th:errors="*{bdcg}"></div>
+            </div>
 
 
+
+            <div><label th:for="bdtitle">제목</label></div>
+            <div>
+              <input type="text" th:field="*{bdtitle}">
+              <div class="fieldError" th:errors="*{bdtitle}"></div>
+            </div >
+
+
+            <div><label th:for="bdcontent">내용</label></div>
+            <div>
+              <textarea type="text" th:field="*{bdcontent}"></textarea>
+              <div class="fieldError" th:errors="*{bdcontent}"></div>
+            </div>
           </form>
         </div>
+
         <div class="board-btngrp">
           <button type="button" id="updateBtn">수정</button>
-          <button type="button" id="deleteBtn">삭제</button>
           <button type="button" id="listBtn">목록</button>
         </div>
-
-
 
       </section>
 
@@ -113,30 +137,25 @@
       </div>
     </footer>
     </div>
+
   <script>
-    //수정이동
+    //수정완료
     const $updateBtn = document.getElementById('updateBtn');
     $updateBtn.addEventListener('click', evt=>{
-      const bdno = document.getElementById('detailForm').bdno.value;
+      const frm = document.getElementById('updateForm')
+      const bdno = frm.bdno.value;
       const url = `/boards/${bdno}/edit`;
-      location.href = url;
+
+<!--      frm.action = url;-->
+      frm.submit();
     });
-    //삭제
-    const $deleteBtn = document.getElementById('deleteBtn');
-    $deleteBtn.addEventListener('click', evt=>{
-      if(confirm('삭제하시겠습니까?')){
-        const bdno = document.getElementById('detailForm').bdno.value;
-        const url = `/boards/${bdno}/del`;
-        location.href = url;
-      }
-    });
+
     //목록
      const $listBtn = document.getElementById('listBtn');
      $listBtn.addEventListener('click', evt=>{
       location.href = '/boards';
      });
   </script>
-
 
 <!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->
 <!--    <script src="../../static/resource/js/template/layout-sub.js" th:src="@{/resource/js/template/layout-sub.js}"></script>-->

@@ -2,48 +2,38 @@
 <html
   lang="ko"
   xmlns:th="http://www.thymeleaf.org"
-  th:fragment="layoutSub (title,link,main,script)"
+  th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}"
 >
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:replace="${title}">게시판</title>
-    <link
-      rel="stylesheet"
-      href="../../static/resource/css/template/common.css"
-      th:href="@{/resource/css/template/common.css}"
-    />
-    <link
-      rel="stylesheet"
-      href="../../static/resource/css/template/layout-sub.css"
-      th:href="@{/resource/css/template/layout-sub.css}"
-    />
+    <title>게시판</title>
     <link
       rel="stylesheet"
       href="../../static/resource/css/board/board.css"
       th:href="@{/resource/css/board/board.css}"
     />
     <th:block th:replace="${link}"></th:block>
-
-
   </head>
 
   <body>
     <div id="wrapper">
       <!-- 헤더 -->
+      <!-- 헤더 -->
       <header id="header">
         <!-- 탑 메뉴 -->
-        <div
-          class="header__menu-top"
-          th:replace="~{layout/top-menu:: ${session.LOGIN_MEMBER} ? loginOnTopMenu : loginOffTopMenu}"
-        ></div>
+        <div class="header__menu-top">
+          <span class="header__my-menu"><a href="#">로그아웃</a></span>
+          <span class="header__my-menu"><a href="#">마이페이지</a></span>
+          <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
+        </div>
 
         <!-- 베너 -->
         <div class="header__banner">
           <!-- 메인 로고 -->
           <div class="header__main-logo">
-            <a href="/">
+            <a href="#">
               <h1 class="header__main-title">Heal-lo</h1>
               <p class="header__sub-title">:Healthy location</p>
             </a>
@@ -51,7 +41,7 @@
           <div class="header__sitemenu" id="siteMenuContain">
             <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div>
             <!-- 스크립트용 -->
-            <a href="/facilities"
+            <a href="#"
               ><i class="fa-solid fa-location-dot header__site-icon"></i
             ></a>
             <a href="#"
@@ -81,39 +71,38 @@
             <li><a href="#">최신등록순</a></li>
             <li><a href="#">추천순</a></li>
           </ul>
+          <div class="board__box">
+            <table class="board__table">
+              <thead>
+                <tr>
+                  <th width="50">No.</th>
+                  <th width="110">카테고리</th>
+                  <th width="320">제목</th>
+                  <th width="160">작성자</th>
+                  <!--          <th width="100">추천수</th>-->
+                  <!--          <th width="100">조회수</th>-->
+                  <th width="210">작성일</th>
+                </tr>
+              </thead>
 
-         
-                <table class="board__table">
-                  <thead>
-                    <tr>
-                      <th width="70">No.</th>
-                      <th width="100">CGNO</th>
-                      <th width="500">제목</th>
-                      <th width="120">작성자</th>
-                      <!--          <th width="100">추천수</th>-->
-                      <!--          <th width="100">조회수</th>-->
-                      <th width="150">작성일</th>
-                    </tr>
-                  </thead>
-
-                  <tbody th:obejct="${form}">
-                    <tr th:each="board:${list}">
-                      <td>[[${boardStat.count}]]</td>
-                      <td th:text="${board.bdcg}"></td>
-                      <td>
-                        <a
-                          href=""
-                          th:href="@{/boards/{id}/detail(id=${board.bdno})}"
-                          th:text="${board.bdtitle}"
-                        ></a>
-                      </td>
-                      <td th:text="${board.memno}"></td>
-                      <!-- <td th:text="${board.bdcdate}"></td> -->
-                      <td>[[${{board.bdcdate}}]]</td>
-                    </tr>
-                  </tbody>
-                </table>
-            
+              <tbody th:obejct="${form}">
+                <tr th:each="board:${list}">
+                  <td>[[${boardStat.count}]]</td>
+                  <td th:text="${board.bdcg}"></td>
+                  <td>
+                    <a
+                      href=""
+                      th:href="@{/boards/{id}/detail(id=${board.bdno})}"
+                      th:text="${board.bdtitle}"
+                    ></a>
+                  </td>
+                  <td th:text="${board.memnickname}"></td>
+                  <!--                       <td th:text="${board.bdcdate}"></td>-->
+                  <td>[[${{board.bdcdate}}]]</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <!-- 하단 글쓰기, 검색버튼 -->
           <div class="board__bottom">
@@ -166,14 +155,14 @@
         location.href = '/boards/add';
       });
     </script>
-    <script
-      src="https://kit.fontawesome.com/7ee6b8223a.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="../../static/resource/js/template/layout-sub.js"
-      th:src="@{/resource/js/template/layout-sub.js}"
-    ></script>
-    <th:block th:replace="${script}"></th:block>
+    <!--    <script-->
+    <!--      src="https://kit.fontawesome.com/7ee6b8223a.js"-->
+    <!--      crossorigin="anonymous"-->
+    <!--    ></script>-->
+    <!--    <script-->
+    <!--      src="../../static/resource/js/template/layout-sub.js"-->
+    <!--      th:src="@{/resource/js/template/layout-sub.js}"-->
+    <!--    ></script>-->
+    <!--    <th:block th:replace="${script}"></th:block>-->
   </body>
 </html>

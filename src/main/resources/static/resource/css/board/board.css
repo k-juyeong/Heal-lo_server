@@ -1,4 +1,5 @@
 @charset "utf-8";
+/* 공통 */
 .btn {
   background-color: #16a085;
   color: white;
@@ -9,11 +10,12 @@
 }
 #container {
   display: flex;
-  height: 1200px;
+  height: auto;
   border-top: 3px solid #777;
-  padding: 10px;
+  padding: 10px 10px 50px 10px;
 }
 
+/* 사이드바 */
 #container .title {
   width: 15%;
   flex-shrink: 0;
@@ -36,14 +38,15 @@
   font-size: 26px;
 }
 
+/* 게시판 */
+#container .board {
+  width: 85%;
+}
+
 #container .board .board__title {
   text-align: center;
   font-size: 28px;
   padding: 30px 0;
-}
-
-#container .board {
-  width: 85%;
 }
 
 #container .board .board__sort {
@@ -56,21 +59,45 @@
   padding: 10px 20px;
   transition: all 0.4s;
 }
+
 #container .board .board__sort a:hover {
   text-decoration: underline;
 }
 
+
+
 /* 테이블 */
+
+#container .board .board__box{
+  /* border: 1px solid gray; */
+  min-height: 500px;
+
+}
 #container .board .board__table {
   margin: 0 auto;
+  table-layout: fixed;
 }
+
 #container .board .board__table th,
 #container .board .board__table td {
   text-align: center;
   vertical-align: middle;
   padding: 14px 10px;
-  border-top: 1px #eaeaea solid;
 }
+#container .board .board__table th{
+  /* border: 1px #eaeaea solid; */
+  font-weight:bold ;
+  color: #777;
+  background-color: #eaeaea;
+  outline: 1px solid #eaeaea;
+}
+
+#container .board .board__table td{
+  border-bottom: 1px #eaeaea solid;
+}
+
+
+
 
 /* 하단 */
 #container .board .board__bottom {
