@@ -154,6 +154,7 @@ public class MemberController {
     member.setMememail(editForm.getMememail());
     member.setMempw(editForm.getMempw());
     member.setMemtel(editForm.getMemtel());
+    member.setMemudate(editForm.getMemudate());
 
     memberSVC.update(memno,member);
 
@@ -181,16 +182,18 @@ public class MemberController {
 
   //아이디 찾기 처리
   @PostMapping("/find_id_pw")
-  public String findIdPW(@ModelAttribute("form") FindIdPwForm findIdPwForm, Model model){
-
-    Member member = memberSVC.findId(findIdPwForm.getMemname(), findIdPwForm.getMememail());
-
-    FindIdPwForm findIdPwForm1 = new FindIdPwForm();
-    findIdPwForm1.setMemid(member.getMemid());
+  public String  findIdPW(@ModelAttribute("form") FindIdPwForm findIdPwForm, Model model){
 
 
-    log.info("findIdPwForm1={}", findIdPwForm1);
-    model.addAttribute("form", findIdPwForm1);
+    FindIdPwForm findId = new FindIdPwForm();
+    findId.setMemname(findIdPwForm.getMemname());
+    findId.setMememail(findIdPwForm.getMememail());
+
+    Member id = memberSVC.findId(findId.getMemname(), findId.getMememail());
+    findId.setMemid(id.getMemid());
+
+    log.info("findId={}", findId);
+    model.addAttribute("form", findId);
     return "find_id_pw/success_find_id";
   }
 }

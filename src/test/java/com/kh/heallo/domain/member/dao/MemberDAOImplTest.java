@@ -54,7 +54,7 @@ public class MemberDAOImplTest {
   @Test
   @DisplayName("수정")
   @Order(3)
-  void update(){
+  void update() {
     Member member = new Member();
     String memid = "naim123";
     member.setMemname("테스트1");
@@ -64,8 +64,8 @@ public class MemberDAOImplTest {
     member.setMemtel("010-1111-2221");
     member.setMemid(memid);
 
-    memberDAO.update(memid,member);
     Long memno = 2L;
+    memberDAO.update(memno, member);
     Member findedMember = memberDAO.findById(memno);
     Assertions.assertThat(findedMember.getMemname()).isEqualTo("테스트1");
     Assertions.assertThat(findedMember.getMemnickname()).isEqualTo("테슷트1");

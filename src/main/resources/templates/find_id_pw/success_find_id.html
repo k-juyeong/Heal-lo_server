@@ -36,7 +36,7 @@
           <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
           <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
           <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
-        </div>
+        </div>+
       </div>  
     </header>
       
@@ -45,8 +45,8 @@
         <div th:object="${form}">
           <div id="idText">
               <p id='seccessId'>아이디 찾기완료!</p>
-              <p id='seccessIdSub'>고객님의 정보와 일치하는 아이디입니다.</p>
-              <p th:text="form.memid"></p>
+              <p id='seccessIdSub'>회원님의 정보와 일치하는 아이디입니다.</p>
+              <div id="id" th:name="form.memid" th:text="*{memid}"></div>
               <div class="btn">
                 <button class="btn__login"><a href="#">로그인하기</a></button>
                 <button class="btn__pw"><a href="#">비밀번호 찾기</a></button>

@@ -87,7 +87,7 @@ public class MemberDAOImpl implements  MemberDAO{
     log.info("memno={}",memno);
     log.info("member={}",member);
 
-    sql.append("update member ");
+    sql.append(" update member ");
     sql.append("   set memname = ?, ");
     sql.append("       memnickname = ?, ");
     sql.append("       mememail = ?, ");

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +17,5 @@ public class EditForm {
   private String memnickname;  //varchar2(30)
   private String mememail;     //varchar2(30)
   private String memname;      //varchar2(12)
+  private LocalDateTime memudate;
 }
