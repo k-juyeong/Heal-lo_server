@@ -63,11 +63,7 @@ public class MemberDAOImplTest {
     member.setMempw("12341");
     member.setMemtel("010-1111-2221");
     member.setMemid(memid);
-
-<<<<<<< HEAD
-=======
     memberDAO.update(Long.valueOf(memid), member);
->>>>>>> 8cc8b01b4f3ca1031db36546771003f8c8534f10
     Long memno = 2L;
     memberDAO.update(memno, member);
     Member findedMember = memberDAO.findById(memno);

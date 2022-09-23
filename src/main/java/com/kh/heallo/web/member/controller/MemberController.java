@@ -131,12 +131,15 @@ public class MemberController {
     Member findedMember = memberSVC.findById(memno);
 
     EditForm editForm = new EditForm();
+    editForm.setMemno(memno);
     editForm.setMemid(findedMember.getMemid());
     editForm.setMempw(findedMember.getMempw());
     editForm.setMemtel(findedMember.getMemtel());
     editForm.setMemnickname(findedMember.getMemnickname());
     editForm.setMememail(findedMember.getMememail());
     editForm.setMemname(findedMember.getMemname());
+
+    log.info("memno={}",memno);
 
     model.addAttribute("editForm",editForm);
 
