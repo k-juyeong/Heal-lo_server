@@ -64,7 +64,7 @@ public class MemberDAOImplTest {
     member.setMemtel("010-1111-2221");
     member.setMemid(memid);
 
-    memberDAO.update(memid,member);
+    memberDAO.update(Long.valueOf(memid), member);
     Long memno = 2L;
     Member findedMember = memberDAO.findById(memno);
     Assertions.assertThat(findedMember.getMemname()).isEqualTo("테스트1");

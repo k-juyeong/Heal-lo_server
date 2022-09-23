@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}"
+>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,8 +15,6 @@
       th:href="@{/resource/css/board/board.css}"
     />
     <th:block th:replace="${link}"></th:block>
-
-
   </head>
 
   <body>
@@ -22,7 +22,6 @@
       <!-- 헤더 -->
       <!-- 헤더 -->
       <header id="header">
-
         <!-- 탑 메뉴 -->
         <div class="header__menu-top">
           <span class="header__my-menu"><a href="#">로그아웃</a></span>
@@ -32,7 +31,6 @@
 
         <!-- 베너 -->
         <div class="header__banner">
-
           <!-- 메인 로고 -->
           <div class="header__main-logo">
             <a href="#">
@@ -41,17 +39,23 @@
             </a>
           </div>
           <div class="header__sitemenu" id="siteMenuContain">
-            <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
-            <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
-            <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
-            <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
+            <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div>
+            <!-- 스크립트용 -->
+            <a href="#"
+              ><i class="fa-solid fa-location-dot header__site-icon"></i
+            ></a>
+            <a href="#"
+              ><i class="fa-solid fa-book-open header__site-icon"></i
+            ></a>
+            <a href="#"
+              ><i class="fa-solid fa-calendar-days header__site-icon"></i
+            ></a>
           </div>
         </div>
       </header>
 
       <!-- 메인 컨텐츠 -->
       <main id="container">
-
         <aside class="title">
           <div class="title__list">
             <a href="#">자유게시판</a>
@@ -67,46 +71,38 @@
             <li><a href="#">최신등록순</a></li>
             <li><a href="#">추천순</a></li>
           </ul>
+          <div class="board__box">
+            <table class="board__table">
+              <thead>
+                <tr>
+                  <th width="50">No.</th>
+                  <th width="110">카테고리</th>
+                  <th width="320">제목</th>
+                  <th width="160">작성자</th>
+                  <!--          <th width="100">추천수</th>-->
+                  <!--          <th width="100">조회수</th>-->
+                  <th width="210">작성일</th>
+                </tr>
+              </thead>
 
-         
-                <table class="board__table">
-                  <thead>
-                    <tr>
-                      <th width="70">No.</th>
-                      <th width="100">CGNO</th>
-                      <th width="500">제목</th>
-                      <th width="120">작성자</th>
-                      <!--          <th width="100">추천수</th>-->
-                      <!--          <th width="100">조회수</th>-->
-                      <th width="150">작성일</th>
-                    </tr>
-                  </thead>
-
-                  <tbody th:obejct="${form}" >
-                    <tr th:each="board:${list}">
-                      <td>[[${boardStat.count}]]</td>
-                      <td th:text="${board.bdcg}"></td>
-                      <td>
-                        <a
-                          href=""
-                          th:href="@{/boards/{id}/detail(id=${board.bdno})}"
-                          th:text="${board.bdtitle}"
-                        ></a>
-                      </td>
-                      <td th:text="${board.memnickname}"></td>
-<!--                       <td th:text="${board.bdcdate}"></td>-->
-                      <td>[[${{board.bdcdate}}]]</td>
-                    </tr>
-                  </tbody>
-
-
-
-
-
-
-
-                </table>
-            
+              <tbody th:obejct="${form}">
+                <tr th:each="board:${list}">
+                  <td>[[${boardStat.count}]]</td>
+                  <td th:text="${board.bdcg}"></td>
+                  <td>
+                    <a
+                      href=""
+                      th:href="@{/boards/{id}/detail(id=${board.bdno})}"
+                      th:text="${board.bdtitle}"
+                    ></a>
+                  </td>
+                  <td th:text="${board.memnickname}"></td>
+                  <!--                       <td th:text="${board.bdcdate}"></td>-->
+                  <td>[[${{board.bdcdate}}]]</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <!-- 하단 글쓰기, 검색버튼 -->
           <div class="board__bottom">
@@ -138,7 +134,6 @@
         </section>
       </main>
 
-
       <!-- footer -->
       <footer id="footer">
         <div class="inner">
@@ -147,12 +142,12 @@
             <li>상호명: heal-lo</li>
             <li>대표: 1팀</li>
             <li>주소: 울산광역시 남구 신정동</li>
-            <li>이메일: ulsanheallo@naver.com</li><br>
+            <li>이메일: ulsanheallo@naver.com</li>
+            <br />
             <li>Copyright 2022 헬로. All Rights Reserved.</li>
           </ul>
         </div>
       </footer>
-
     </div>
     <script>
       const $writeBtn = document.getElementById('writeBtn');
@@ -160,14 +155,14 @@
         location.href = '/boards/add';
       });
     </script>
-<!--    <script-->
-<!--      src="https://kit.fontawesome.com/7ee6b8223a.js"-->
-<!--      crossorigin="anonymous"-->
-<!--    ></script>-->
-<!--    <script-->
-<!--      src="../../static/resource/js/template/layout-sub.js"-->
-<!--      th:src="@{/resource/js/template/layout-sub.js}"-->
-<!--    ></script>-->
-<!--    <th:block th:replace="${script}"></th:block>-->
+    <!--    <script-->
+    <!--      src="https://kit.fontawesome.com/7ee6b8223a.js"-->
+    <!--      crossorigin="anonymous"-->
+    <!--    ></script>-->
+    <!--    <script-->
+    <!--      src="../../static/resource/js/template/layout-sub.js"-->
+    <!--      th:src="@{/resource/js/template/layout-sub.js}"-->
+    <!--    ></script>-->
+    <!--    <th:block th:replace="${script}"></th:block>-->
   </body>
 </html>
