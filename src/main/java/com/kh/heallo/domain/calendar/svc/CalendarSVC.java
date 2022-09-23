@@ -4,6 +4,7 @@ import com.kh.heallo.domain.calendar.Calendar;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CalendarSVC {
   /**
@@ -14,15 +15,14 @@ public interface CalendarSVC {
    */
   Long save(String date, Calendar calendar);
 
-  Long save(String date, Calendar calendar, MultipartFile img);
-  Long save(String date, Calendar calendar, List<MultipartFile> imgs);
+  Long save(String date, Calendar calendar, List<MultipartFile> files);
 
   /**
    * 운동기록 조회(1회)
    * @param date 조회 날짜
    * @return 조회 내용
    */
-  Calendar findByDate(String date);
+  Optional<Calendar> findByDate(String date);
 
   /**
    * 운동기록 수정

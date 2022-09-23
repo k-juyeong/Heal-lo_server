@@ -5,13 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Clob;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class AddForm {
+@NoArgsConstructor
+public class EditForm {
   private String cdContent;  // CDCONTENT	CLOB	Yes		3
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private String cdRDate;    // CDRDATE	DATE	Yes		4
+
 }

@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>달력화면</title>
+  <title>운동기록 등록</title>
   <link rel="stylesheet" href="../../static/resource/css/calendar/addForm.css" th:href="@{/resource/css/calendar/addForm.css}">
 </head>
 <body>
@@ -40,28 +40,24 @@
   </header>
   <!--메인 컨텐츠-->
   <main id="container">
-    <form id="addForm" th:method="post" th:object="${form}">
+    <form id="addForm" method="post">
       <div class="selected__date">
-        <input type="date" value="${rdate}" name="cdRDate">
+        <input type="date" id="" name="cdRDate">
       </div>
       <div class="editor">
         <div class="font__size">글자크기</div>
         <div class="font__family">글씨체</div>
         <div class="font__weight">글자굵기</div>
-        <div class="add__img"><input type="file"></div>
+        <!--        <div class="add__img"><input type="file"></div>-->
       </div>
       <div class="content">
         <textarea rows="30" name="cdContent"></textarea>
       </div>
     </form>
-    <div class="btngrp addBtns">
-      <button type="submit" id="addBtn">저장</button>
+    <div class="btngrp">
+      <button type="button" id="addBtn">저장</button>
       <button type="button" id="cancelBtn">취소</button>
     </div>
-<!--    <div class="btngrp editBtns">-->
-<!--      <button type="button" id="editBtn">수정</button>-->
-<!--      <button type="button" id="cancelBtn2">취소</button>-->
-<!--    </div>-->
   </main>
   <!-- footer -->
   <footer id="footer">
@@ -78,16 +74,10 @@
   </footer>
 </div>
 <script>
-  // 저장하는 화면일 경우 저장, 취소 버튼 노출
-  // 수정하는 화면일 경우 추정, 취소 버튼 노출
-  // 화면 모드
-
-  // 선택한 날을 기본 날짜로 설정
-
-  cancelBtn.addEventListener('click', e=>{
-    if(!confirm) return;
-    location.href = '/calendar';
-  });
+  // 저장
+    addBtn.addEventListener('click', e=>{
+      document.getElementById('addForm').submit();
+    });
 
 </script>
 </body>
