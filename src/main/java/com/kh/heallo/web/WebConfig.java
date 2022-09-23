@@ -6,7 +6,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -27,6 +26,10 @@ public class WebConfig implements WebMvcConfigurer {
         whiteList.add("/reviews/*/new-images");
         whiteList.add("/calendar/**");
         whiteList.add("/images/*/*");
+        whiteList.add("/members/find_id_pw");
+
+        whiteList.add("/boards/**");
+
 
         //로그인체크 인터셉터
         registry.addInterceptor(new LoginCheckInterceptor())

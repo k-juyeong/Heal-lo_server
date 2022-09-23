@@ -3,6 +3,7 @@ package com.kh.heallo.web.member.controller;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
 import com.kh.heallo.web.member.dto.EditForm;
+import com.kh.heallo.web.member.dto.FindIdPwForm;
 import com.kh.heallo.web.member.dto.JoinForm;
 import com.kh.heallo.web.member.dto.LoginForm;
 import com.kh.heallo.web.member.session.LoginMember;
@@ -124,12 +125,13 @@ public class MemberController {
   }
 
   //조회와 동시에 수정
-  @GetMapping("/{id}")
+  @GetMapping("/{id}/edit")
   public String findById(@PathVariable("id") Long memno, Model model){
 
     Member findedMember = memberSVC.findById(memno);
 
     EditForm editForm = new EditForm();
+    editForm.setMemno(memno);
     editForm.setMemid(findedMember.getMemid());
     editForm.setMempw(findedMember.getMempw());
     editForm.setMemtel(findedMember.getMemtel());
@@ -137,26 +139,31 @@ public class MemberController {
     editForm.setMememail(findedMember.getMememail());
     editForm.setMemname(findedMember.getMemname());
 
+    log.info("memno={}",memno);
+
     model.addAttribute("editForm",editForm);
 
     return "member/my_page";
   }
 
   //수정처리
-  @GetMapping("/{id}/edit")
-  public String update(@PathVariable("id") String memid, EditForm editForm){
+  @PostMapping("/{id}/edit")
+  public String update(@PathVariable("id") Long memno, EditForm editForm){
 
     Member member = new Member();
-    member.setMemid(memid);
+    member.setMemno(memno);
     member.setMemname(editForm.getMemname());
     member.setMemnickname(editForm.getMemnickname());
     member.setMememail(editForm.getMememail());
     member.setMempw(editForm.getMempw());
     member.setMemtel(editForm.getMemtel());
+    member.setMemudate(editForm.getMemudate());
 
-    memberSVC.update(memid,member);
+    memberSVC.update(memno,member);
 
-    return "redirect:/members/"+memid;
+    log.info("editForm={}",editForm);
+
+    return "redirect:/members/"+memno+"/edit";
   }
 
   //삭제(탈퇴)
@@ -164,6 +171,32 @@ public class MemberController {
   public String delete(@PathVariable("id") String memid) {
 
     memberSVC.del(memid);
-    return "redirect:index";
+
+    log.info("memid={}",memid);
+    return "redirect:/";
+  }
+
+  //아이디 찾기 화면
+  @GetMapping("/find_id_pw")
+  public String findIdPWForm(){
+
+    return "find_id_pw/find_id_pw";
+  }
+
+  //아이디 찾기 처리
+  @PostMapping("/find_id_pw")
+  public String  findIdPW(@ModelAttribute("form") FindIdPwForm findIdPwForm, Model model){
+
+
+    FindIdPwForm findId = new FindIdPwForm();
+    findId.setMemname(findIdPwForm.getMemname());
+    findId.setMememail(findIdPwForm.getMememail());
+
+    Member id = memberSVC.findId(findId.getMemname(), findId.getMememail());
+    findId.setMemid(id.getMemid());
+
+    log.info("findId={}", findId);
+    model.addAttribute("form", findId);
+    return "find_id_pw/success_find_id";
   }
 }

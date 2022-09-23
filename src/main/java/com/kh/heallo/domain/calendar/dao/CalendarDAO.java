@@ -4,6 +4,7 @@ package com.kh.heallo.domain.calendar.dao;
 import com.kh.heallo.domain.calendar.Calendar;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CalendarDAO {
   /**
@@ -25,7 +26,7 @@ public interface CalendarDAO {
    * @param date 조회 날짜
    * @return 조회 내용
    */
-  Calendar findByDate(String date);
+  Optional<Calendar> findByDate(String date);
 
   /**
    * 운동기록 수정

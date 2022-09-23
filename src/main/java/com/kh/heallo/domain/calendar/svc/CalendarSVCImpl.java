@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -27,16 +28,13 @@ public class CalendarSVCImpl implements CalendarSVC{
     return calendarDAO.save(date, calendar);
   }
 
-  @Override
-  public Long save(String date, Calendar calendar, MultipartFile img) {
-    Long id = calendarDAO.save(date, calendar);
-    return null;
-  }
 
   @Override
-  public Long save(String date, Calendar calendar, List<MultipartFile> imgs) {
-    Long id = calendarDAO.save(date, calendar);
-    return null;
+  public Long save(String date, Calendar calendar, List<MultipartFile> files) {
+    Long cdno = calendarDAO.save(date, calendar);
+//    uploadFileSVC.fileUpload(AttachCode.CD_CODE, cdno, files);
+
+    return cdno;
   }
 
   /**
@@ -46,7 +44,7 @@ public class CalendarSVCImpl implements CalendarSVC{
    * @return 조회 내용
    */
   @Override
-  public Calendar findByDate(String date) {
+  public Optional<Calendar> findByDate(String date) {
     return calendarDAO.findByDate(date);
   }
 

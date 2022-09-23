@@ -1,4 +1,4 @@
-package com.kh.heallo.domain.board.svc.dao;
+package com.kh.heallo.domain.board.dao;
 
 import com.kh.heallo.domain.board.Board;
 

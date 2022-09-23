@@ -76,25 +76,28 @@ public class MemberDAOImpl implements  MemberDAO{
 
   /**
    * 수정
-   * @param memid  아이디
+   * @param memno  아이디
    * @param member 수정할 정보
    * @return  수정건수
    */
   @Override
-  public void update(String memid, Member member) {
+  public void update(Long memno, Member member) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("update member ");
+    log.info("memno={}",memno);
+    log.info("member={}",member);
+
+    sql.append(" update member ");
     sql.append("   set memname = ?, ");
     sql.append("       memnickname = ?, ");
     sql.append("       mememail = ?, ");
     sql.append("       mempw = ?, ");
     sql.append("       memtel = ?, ");
     sql.append("       memudate = sysdate ");
-    sql.append(" where memid = ? ");
+    sql.append(" where memno = ? ");
 
     jdbcTemplate.update(sql.toString(), member.getMemname(), member.getMemnickname(),
-            member.getMememail(), member.getMempw(), member.getMemtel(), member.getMemid());
+            member.getMememail(), member.getMempw(), member.getMemtel(), memno);
   }
 
   /**
@@ -136,4 +139,34 @@ public class MemberDAOImpl implements  MemberDAO{
       return Optional.empty();
     }
   }
+
+  /**
+   * 아이디 찾기
+   *
+   * @param memname  이름
+   * @param mememail 이메일
+   * @return 아이디
+   */
+  @Override
+  public Member findId(String memname, String mememail) {
+    StringBuffer sql = new StringBuffer();
+
+    log.info(memname);
+    log.info(mememail);
+
+    sql.append(" select memid ");
+    sql.append("  from member ");
+    sql.append(" where memname = ? ");
+    sql.append("   and mememail = ? ");
+
+    Member findId = null;
+    try{
+      findId = jdbcTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Member.class), memname, mememail);
+    }catch (DataAccessException e) {
+      log.info("찾고자하는 회원이 없습니다={}", memname,mememail);
+    }
+    return findId;
+
+  }
+
 }

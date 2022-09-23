@@ -40,13 +40,13 @@ public class MemberSVCImpl implements MemberSVC{
   /**
    * 수정
    *
-   * @param memid  아이디
+   * @param memno  아이디
    * @param member 수정할 정보
    * @return 수정건수
    */
   @Override
-  public void update(String memid, Member member) {
-    memberDAO.update(memid,member);
+  public void update(Long memno, Member member) {
+    memberDAO.update(memno,member);
   }
 
   /**
@@ -70,5 +70,17 @@ public class MemberSVCImpl implements MemberSVC{
   public Optional<Member> login(String memid, String mempw) {
 
     return memberDAO.login(memid,mempw);
+  }
+
+  /**
+   * 아이디 찾기
+   *
+   * @param memname  이름
+   * @param mememail 이메일
+   * @return 아이디
+   */
+  @Override
+  public Member findId(String memname, String mememail) {
+    return memberDAO.findId(memname,mememail);
   }
 }
