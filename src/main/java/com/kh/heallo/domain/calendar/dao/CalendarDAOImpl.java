@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,14 +49,6 @@ public class CalendarDAOImpl implements CalendarDAO{
     return Long.valueOf(keyHolder.getKeys().get("cdno").toString());
   }
 
-//  // 달력 번호 생성
-//  @Override
-//  public Long createCdno() {
-//    String sql = "select calendar_cdno_seq.nextval from dual ";
-//    Long cdno = Long.valueOf(jt.update(sql, Long.class));
-//    return cdno;
-//  }
-
   // 조회 (날짜 클릭 => 1일 조회)
   @Override
   public Optional<Calendar> findByDate(String date) {
@@ -82,7 +75,6 @@ public class CalendarDAOImpl implements CalendarDAO{
     StringBuffer sql = new StringBuffer();
     sql.append("update calendar ");
     sql.append("   set cdcontent = ?, ");
-    sql.append("       cdrdate = ?, ");
     sql.append("       cdudate = sysdate ");
     sql.append(" where to_char(cdrdate, 'YYYY-MM-DD') = ? ");
 
@@ -101,13 +93,24 @@ public class CalendarDAOImpl implements CalendarDAO{
 
   // 달력 조회 (1달)
   @Override
-  public List<Calendar> monthly(String startDate, String finalDate) {
+  public List<Calendar> monthly(String year, String month) {
     StringBuffer sql = new StringBuffer();
     sql.append("select cdcontent, cdrdate, cdcdate ");
     sql.append("  from calendar ");
     sql.append( "where to_char(cdrdate, 'YYYY-MM-DD') between ? and ? ");
 
+    // 전체 날짜 구하기
+    int selectedYear = Integer.parseInt(year);
+    int selectMonth = Integer.parseInt(month);
+    LocalDate totalDate = LocalDate.of(selectedYear, selectMonth, 1);
 
-    return jt.query(sql.toString(), new BeanPropertyRowMapper<>(Calendar.class), startDate, finalDate);
+    int lengthOfMonth = totalDate.lengthOfMonth();
+
+
+    String yearMonth = String.valueOf(totalDate).substring(0, 7);
+    String firstDateOfMonth = yearMonth + "-01";
+    String lastDateOfMonth = yearMonth + "-"+ lengthOfMonth;
+
+    return jt.query(sql.toString(), new BeanPropertyRowMapper<>(Calendar.class), firstDateOfMonth, lastDateOfMonth);
   }
 }

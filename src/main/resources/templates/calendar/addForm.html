@@ -43,6 +43,7 @@
     <form id="addForm" method="post">
       <div class="selected__date">
         <input type="date" id="" name="cdRDate">
+<!--        <input type="date" th:action th:value="${rdate}">-->
       </div>
       <div class="editor">
         <div class="font__size">글자크기</div>
@@ -76,6 +77,8 @@
 <script>
   // 저장
     addBtn.addEventListener('click', e=>{
+    // input 날짜 고정하면 submit이 안됨 ㅠㅠ
+      // document.querySelector('input').value;
       document.getElementById('addForm').submit();
     });
 

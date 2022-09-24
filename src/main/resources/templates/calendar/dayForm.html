@@ -83,6 +83,7 @@
 
     // 삭제버튼 클릭 시
     delBtn.addEventListener('click', e=>{
+      if(!confirm('정말로 삭제하시겠습니까?')) return;
       const rdate = document.querySelector('.selected__date').textContent;
       const url = `/calendar/${rdate}/del`;
       location.href = url;

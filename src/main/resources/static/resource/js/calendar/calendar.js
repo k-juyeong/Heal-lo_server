@@ -12,7 +12,7 @@ const createCalendar = () => {
 
     // 현재 출력되는 연도,월 표시하기
     const $showSelectedMonth = document.querySelector('.calendar__selected-month');
-    $showSelectedMonth.textContent = `${selectedYear}년 ${selectedMonth}월`;
+    $showSelectedMonth.textContent = `${selectedYear}년 ${viewedMonth}월`;
 
 
     // 달력 날짜 채우기
@@ -95,7 +95,11 @@ const $goPrev = document.querySelector('.calendar__go-prev');
 $goPrev.addEventListener('click', goPrev_h = () => {
     date.setMonth(date.getMonth()-1);
     createCalendar();
-//    console.log("click");
+  const yearMonth = document.querySelector('.calendar__selected-month').textContent;
+  const year = yearMonth.substr(0,4);
+  const month = yearMonth.substr(6,2);
+
+  monthly(year, month);
 });
 
 // 다음달 달력 가져오기
@@ -103,6 +107,12 @@ const $goNext = document.querySelector('.calendar__go-next');
 $goNext.addEventListener('click', goNext_h = () => {
     date.setMonth(date.getMonth()+1);
     createCalendar();
+      const yearMonth = document.querySelector('.calendar__selected-month').textContent;
+      const year = yearMonth.substr(0,4);
+      const month = yearMonth.substr(6,2);
+
+      monthly(year, month);
+
 });
 
 // 이번달 달력으로 돌아오기
@@ -110,17 +120,10 @@ const $today = document.querySelector('.calendar__go-today');
 $today.addEventListener('click', goToday_h = () => {
     date = new Date();
     createCalendar();
+      const yearMonth = document.querySelector('.calendar__selected-month').textContent;
+      const year = yearMonth.substr(0,4);
+      const month = yearMonth.substr(6,2);
+
+      monthly(year, month);
+
 });
-
-// 달력 날짜 클릭 시
-//const $selectedDate = document.querySelector('.calendar__date');
-//$selectedDate.addEventListener('click', e=> {
-////        e.target
-//        console.log("click");
-////<!--      if(e.target.tagName == )-->
-////        location.href='calendar/addForm';
-//});
-
-//function dateClick(){
-//    console.log("click");
-//}

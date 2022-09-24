@@ -41,9 +41,9 @@ public interface CalendarSVC {
 
   /**
    * 달력 조회(1달)
-   * @param startDate 조회 달 첫째날
-   * @param finalDate 조회 달 마지막 날
+   * @param year 조회 달 첫째날
+   * @param month 조회 달 마지막 날
    * @return
    */
-  List<Calendar> monthly(String startDate, String finalDate);
+  List<Calendar> monthly(String year, String month);
 }

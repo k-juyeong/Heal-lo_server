@@ -31,25 +31,25 @@ insert into calendar
 select t1.*
   from calendar t1, member t2
  where t1.memno = t2.memno
-   and cdrdate = '2022/09/18';
+   and to_char(cdrdate, 'YYYY-MM-DD') = '2022/09/18';
 
 select *
   from calendar
-where cdrdate = '2022/09/18';
+where to_char(cdrdate, 'YYYY-MM-DD') = '2022/09/18';
 
 --운동기록 조회(1달)
 select cdcontent, cdrdate, cdcdate
   from calendar
- where cdrdate between '2022/09/01' and '2022/09/31';
+ where to_char(cdrdate, 'YYYY-MM-DD') between '2022/09/01' and '2022/09/31';
 
 --운동기록 수정
 update CALENDAR
    set CDCONTENT = ''
- where cdrdate = '2022/09/20';
+ where to_char(cdrdate, 'YYYY-MM-DD') = '2022/09/20';
 
 --운동기록 삭제
 delete from CALENDAR
-      where cdrdate = '20220831';
+      where to_char(cdrdate, 'YYYY-MM-DD') = '20220831';
 
 
 select * from calendar;

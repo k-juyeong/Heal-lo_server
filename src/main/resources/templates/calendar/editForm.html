@@ -42,7 +42,8 @@
   <main id="container">
     <form id="editForm" method="post" th:object="${form}">
       <div class="selected__date">
-        <input type="date" id="" name="cdRDate" th:value="*{{cdRDate}}">
+        <div th:text="*{{cdRDate}}"></div>
+        <!--        <input type="date" id="" name="cdRDate" th:value="*{{cdRDate}}">-->
       </div>
       <div class="editor">
         <div class="font__size">글자크기</div>

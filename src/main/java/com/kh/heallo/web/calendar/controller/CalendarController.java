@@ -28,13 +28,7 @@ public class CalendarController {
 
   // 달력 메인 (전체)
   @GetMapping
-  public String calendar(
-//          String startDate,
-//          String finalDate
-  ) {
-
-//    calendarSVC.monthly(startDate, finalDate);
-//  csr로 하기
+  public String calendar() {
 
     return "calendar/calendarForm";
   }
@@ -118,15 +112,15 @@ public class CalendarController {
   @PostMapping("/{rdate}/edit")
   public String edit(
       @PathVariable String rdate,
-      EditForm editForm
+      EditForm editForm,
+      Model model
   ) {
     Calendar calendarRecord = new Calendar();
-    String newRdate = editForm.getCdRDate();
-    calendarRecord.setCdRDate(newRdate);
     calendarRecord.setCdContent(editForm.getCdContent());
+    calendarSVC.update(rdate, calendarRecord);
 
-
-    return "redirect:/calendar/"+newRdate;
+    model.addAttribute("form", editForm);
+    return "redirect:/calendar/"+rdate;
   }
 
   // 운동기록 삭제
