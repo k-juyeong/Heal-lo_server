@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}"
+>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지</title>
+  <link rel="stylesheet" href="../../css/admin/admin.css" th:href="@{/resource/css/admin/admin.css}">
+
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <!-- 헤더 -->
+    <header id="header">
+      <!-- 탑 메뉴 -->
+      <div class="header__menu-top">
+        <span class="header__my-menu"><a href="#">로그아웃</a></span>
+        <span class="header__my-menu"><a href="#">마이페이지</a></span>
+        <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
+      </div>
+
+      <!-- 베너 -->
+      <div class="header__banner">
+        <!-- 메인 로고 -->
+        <div class="header__main-logo">
+          <a href="#">
+            <h1 class="header__main-title">Heal-lo</h1>
+            <p class="header__sub-title">:Healthy location</p>
+          </a>
+        </div>
+        <div class="header__sitemenu" id="siteMenuContain">
+          <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
+          <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
+          <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
+          <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
+          <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+
+    <main id="container">
+      <nav id="menu">
+        <div class="content content-m">
+          <ul class="menu-lists">
+            <li class="menu-list__list"><a href="#">회원계정관리</a></li>
+            <li class="menu-list__list"><a href="#">게시물관리</a></li>
+          </ul>
+        </div>
+      </nav>
+      <section class="content">
+        <table class="list-table">
+          <thead>
+            <tr>
+              <th width="70">No.</th>
+              <th width="120">아이디</th>
+              <th width="120">닉네임</th>
+              <th width="120">가입날짜</th>
+              <th width="100">관리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3</td>
+              <td>아이디</td>
+              <td>닉네임</td>
+              <td>가입날짜</td>
+              <td><button class="btn btn_delete">탈퇴</button></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>아이디</td>
+              <td>닉네임</td>
+              <td>가입날짜</td>
+              <td><button class="btn btn_delete">탈퇴</button></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>아이디</td>
+              <td>닉네임</td>
+              <td>가입날짜</td>
+              <td><button class="btn btn_delete">탈퇴</button></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>아이디</td>
+              <td>닉네임</td>
+              <td>가입날짜</td>
+              <td><button class="btn btn_delete">탈퇴</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <aside class="aside">
+
+        <div class="content content-s">
+
+          <select name="" id="">
+            <option value="">==선택==</option>
+            <option value="">닉네임</option>
+            <option value="">아이디</option>
+          </select>
+          <input type="text" id="search_spot">
+          <button class="btn btn__search">검색</button>
+          
+        </div>
+
+      </aside>
+
+
+
+    </main>
+
+    <!-- footer -->
+    <footer id="footer">
+      <div class="inner">
+        <h2>Heal-lo</h2>
+        <ul>
+          <li>상호명: heal-lo</li>
+          <li>대표: 1팀</li>
+          <li>주소: 울산광역시 남구 신정동</li>
+          <li>이메일: ulsanheallo@naver.com</li><br>
+          <li>Copyright 2022 헬로. All Rights Reserved.</li>
+        </ul>
+      </div>
+    </footer>
+
+    <script th:src="@{/resource/js/admin/admin.js}"></script>
+
+</body>
+
+</html>

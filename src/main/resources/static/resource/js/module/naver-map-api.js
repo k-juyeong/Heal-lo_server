@@ -3,58 +3,58 @@ export default class MapUtile {
     constructor(map) {
         this.map = map;
         this.markers = [];
-        this.infowindow = new naver.maps.InfoWindow();
+        this.infowindows = [];
     }
+
+    CustomOverlay = function(options) {
+        this._element = $('<div style="position:absolute;left:0;top:0;width:120px;height:30px;line-height:30px;text-align:center;background-color:#fff;border:2px solid #f00;">커스텀오버레이</div>')
+        this.setPosition(options.position);
+        this.setMap(options.map || null);
+    };
 
     //마커들 생성 + 위치이동
     makeMarkers(data) {
+
+        //내위치 초기화
         if(this.myMarker) {
             this.myMarker.setMap(null);
             this.myMarker = null;
         }
-        
+
         //기존 마커들 초기화
         if(this.markers.length != 0) {
             this.markers.forEach(ele => {
                 ele.setMap(null);
             })
         }
+
+        this.infowindows = [];
         this.markers = [];
         const bound = new naver.maps.LatLngBounds();
         this.beforeBound = bound;
 
         //마커 생성
-        data.forEach(ele => {
+        data.forEach((ele,idx) => {
             const marker =
                 this.makeMarker(
                     ele.fclat,
                     ele.fclng,
-                    `<div class="facility-location-marker marker">
+                    `
+                                <div class="facility-location-marker marker">
+                                    <span onclick="location.href='/facilities/${ele.fcno}'" class="marker-info">${ele.fcname}</span>
                                     <i class="fa-solid fa-location-dot"></i>
-                                </div>`
+                                </div>`,
+                    idx + 1
                 )
 
             this.markers.push(marker);
             bound.extend(new naver.maps.LatLng(ele.fclat, ele.fclng));
 
             //마커 클릭 이벤트
-            naver.maps.Event.addListener(marker, 'click', () => {
-                const contentHTML = this.createInfoHTML(ele);
-                this.infowindow.setContent(contentHTML);
-
-                this.infowindow.open(this.map, marker);
-
-            });
-
             naver.maps.Event.addListener(marker, 'dblclick', () => {
                 this.moveMap(ele.fclat, ele.fclng);
 
             });
-
-            //지도 클릭 시 인포창 닫기
-            naver.maps.Event.addListener(this.map,'click',() => {
-                this.infowindow.close();
-            },true)
 
         });
         this.map.panToBounds(bound)
@@ -66,14 +66,14 @@ export default class MapUtile {
         console.log(this.myMarker)
 
         if(!this.myMarker) {
-
             const myMarker =
                 this.makeMarker(
                     lat,
                     lng,
                     `<div class="my-location-marker marker">
                             <i class="fa-solid fa-house"></i>
-                        </div>`
+                        </div>`,
+                    11
                 )
             this.myMarker = myMarker;
         }
@@ -92,31 +92,23 @@ export default class MapUtile {
     }
 
     //마커 생성
-    makeMarker(lat,lng,contentHTML) {
+    makeMarker(lat,lng,contentHTML,idx) {
+
         const location = new naver.maps.LatLng(lat,lng);
-        const markerOptions = {
-            map: this.map,
-            position: location,
-            icon: {
-                content : contentHTML,
-                anchor : new naver.maps.Point(10, 0)
-            }
-        }
-        const marker = new naver.maps.Marker(markerOptions);
+        const marker = new naver.maps.Marker({
+                map: this.map,
+                position: location,
+                icon: {
+                    content : contentHTML,
+                    size: new naver.maps.Size(300, 40),
+                    anchor: new naver.maps.Point(150, 40),
+                },
+                zIndex: idx
+            });
 
         return marker;
-    }
 
-    //인포창 컨텐츠 생성
-    createInfoHTML(data) {
-        const contentHTML =
-            `
-            <div class="infoWindow">
-                <p>${data.fcname}</p>
-            </div>
-            
-            `
-        return contentHTML;
+
     }
 
 }

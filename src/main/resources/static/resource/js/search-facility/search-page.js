@@ -189,8 +189,7 @@ function initDefaultCategory() {
 //지도 생성
 function createMap() {
   const mapOptions = {
-    center: new naver.maps.LatLng(35.5352, 129.3109),
-    zoom: 8
+    zoom: 8,
   };
   const map = new naver.maps.Map('map', mapOptions);
   return new MapUtile(map);

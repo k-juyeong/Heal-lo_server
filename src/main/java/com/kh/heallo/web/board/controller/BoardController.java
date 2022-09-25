@@ -6,6 +6,7 @@ import com.kh.heallo.web.board.dto.DetailForm;
 import com.kh.heallo.web.board.dto.EditForm;
 import com.kh.heallo.web.board.dto.SaveForm;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
@@ -21,8 +22,7 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-//@RequiredArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/boards")
 public class BoardController {
   private final BoardSVC boardSVC;
