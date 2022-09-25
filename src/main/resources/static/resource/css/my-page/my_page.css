@@ -37,5 +37,5 @@
 .myInformation .btn #btnOut {width: 50px; background-color: #16a085; color: white;  margin-left: 440px;}
 
 #container #none {position: relative; flex: 1;}
-#container #none button {position: absolute; left: 25px; top: 170px;}
-#container #none p {position: absolute; left: 25px; top: 450px;}
+#container #none button {position: absolute; left: 25px; top: 200px;}
+#container #none p {position: absolute; left: 25px; top: 480px;}

@@ -7,9 +7,11 @@ import com.kh.heallo.web.member.dto.FindIdPwForm;
 import com.kh.heallo.web.member.dto.JoinForm;
 import com.kh.heallo.web.member.dto.LoginForm;
 import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.session.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -126,12 +128,22 @@ public class MemberController {
 
   //조회와 동시에 수정
   @GetMapping("/{id}/edit")
-  public String findById(@PathVariable("id") Long memno, Model model){
+  public String findById(@PathVariable("id") Long memno, Model model,HttpServletRequest request){
 
-    Member findedMember = memberSVC.findById(memno);
+    //회원 조회
+    if (request.getAttribute(Session.NOT_LOGIN.name()) != null) {
+      ResponseEntity<ResponseMsg> notLoginResponseEntity = (ResponseEntity) request.getAttribute(Session.NOT_LOGIN.name());
+      return String.valueOf(notLoginResponseEntity);
+    }
+
+    //회원 조회 성공
+    HttpSession session = request.getSession();
+    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+
+    Member findedMember = memberSVC.findById(loginMember.getMemno());
 
     EditForm editForm = new EditForm();
-    editForm.setMemno(memno);
+    editForm.setMemno(loginMember.getMemno());
     editForm.setMemid(findedMember.getMemid());
     editForm.setMempw(findedMember.getMempw());
     editForm.setMemtel(findedMember.getMemtel());
@@ -139,7 +151,8 @@ public class MemberController {
     editForm.setMememail(findedMember.getMememail());
     editForm.setMemname(findedMember.getMemname());
 
-    log.info("memno={}",memno);
+    log.info("loginMember.getMemno()={}",loginMember.getMemno());
+    log.info("editForm={}",editForm);
 
     model.addAttribute("editForm",editForm);
 
@@ -148,10 +161,21 @@ public class MemberController {
 
   //수정처리
   @PostMapping("/{id}/edit")
-  public String update(@PathVariable("id") Long memno, EditForm editForm){
+  public String update(@PathVariable("id") Long memno, EditForm editForm, HttpServletRequest request){
+
+    //회원 조회
+    if (request.getAttribute(Session.NOT_LOGIN.name()) != null) {
+      ResponseEntity<ResponseMsg> notLoginResponseEntity = (ResponseEntity) request.getAttribute(Session.NOT_LOGIN.name());
+      return String.valueOf(notLoginResponseEntity);
+    }
+
+    //회원 조회 성공
+    HttpSession session = request.getSession();
+    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+
 
     Member member = new Member();
-    member.setMemno(memno);
+    member.setMemno(loginMember.getMemno());
     member.setMemname(editForm.getMemname());
     member.setMemnickname(editForm.getMemnickname());
     member.setMememail(editForm.getMememail());
@@ -159,11 +183,12 @@ public class MemberController {
     member.setMemtel(editForm.getMemtel());
     member.setMemudate(editForm.getMemudate());
 
-    memberSVC.update(memno,member);
+    memberSVC.update(loginMember.getMemno(),member);
 
     log.info("editForm={}",editForm);
+    log.info("member={}",member);
 
-    return "redirect:/members/"+memno+"/edit";
+    return "redirect:/members/"+loginMember.getMemno()+"/edit";
   }
 
   //삭제(탈퇴)
@@ -185,8 +210,7 @@ public class MemberController {
 
   //아이디 찾기 처리
   @PostMapping("/find_id_pw")
-  public String  findIdPW(@ModelAttribute("form") FindIdPwForm findIdPwForm, Model model){
-
+  public String findIdPW(@ModelAttribute("form") FindIdPwForm findIdPwForm, Model model){
 
     FindIdPwForm findId = new FindIdPwForm();
     findId.setMemname(findIdPwForm.getMemname());
@@ -199,4 +223,35 @@ public class MemberController {
     model.addAttribute("form", findId);
     return "find_id_pw/success_find_id";
   }
+
+  //비밀번호 변경 화면
+  @GetMapping("/find_id_pw/set_pw")
+  public String setPwForm(){
+
+    return "find_id_pw/change_pw";
+  }
+
+  //마이페이지 활동 (게시글) 활동 이동 시 첫 페이지
+  @GetMapping("/{id}/board")
+  public String myActivityBoard(@PathVariable("id")Long memno){
+
+    return "member/my_page_activity_board";
+  }
+
+  //마이페이지 활동 (댓글)
+  @GetMapping("/{id}/reply")
+  public String myActivityReply(){
+
+    return "member/my_page_activity_reply";
+  }
+
+  //마이페이지 활동 (리뷰)
+  @GetMapping("/{id}/review")
+  public String myActivityReview(@PathVariable("id")Long memno, Long rvno){
+
+    //List<Review> reviews = memberSVC.findReviewByMemno(memno,rvno);
+
+    return "member/my_page_activity_review";
+  }
+
 }

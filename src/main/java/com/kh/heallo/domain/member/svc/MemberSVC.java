@@ -1,7 +1,9 @@
 package com.kh.heallo.domain.member.svc;
 
 import com.kh.heallo.domain.member.Member;
+import com.kh.heallo.domain.review.Review;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberSVC {
@@ -51,4 +53,12 @@ public interface MemberSVC {
    * @return          아이디
    */
   Member findId(String memname, String mememail);
+
+  /**
+   * 로그인 계정 작성 리뷰 조회
+   * @param memno   회원번호
+   * @param rvno    리뷰번호
+   * @return        리뷰내용
+   */
+  List<Review> findReviewByMemno(Long memno, Long rvno);
 }
