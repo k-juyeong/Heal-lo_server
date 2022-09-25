@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -28,7 +30,15 @@ public class CalendarController {
 
   // 달력 메인 (전체)
   @GetMapping
-  public String calendar() {
+  public String calendar(
+//    HttpServletRequest request
+  ) {
+
+//    // 로그인 여부
+//    HttpSession session = request.getSession(false);
+//    if (session != null) {
+//      session.invalidate();
+//    }
 
     return "calendar/calendarForm";
   }
