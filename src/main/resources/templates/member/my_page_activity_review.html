@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/my-page/my_page_activity_review.css" th:href="@{/resource/css/my-page/my_page_activity_review.css}">
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- 헤더 -->
+      <header id="header">
+        <!-- 탑 메뉴 -->
+        <div class="header__menu-top">
+          <span class="header__my-menu"><a href="#">로그아웃</a></span>
+          <span class="header__my-menu"><a href="#">마이페이지</a></span>
+          <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
+        </div>
+
+        <!-- 베너 -->
+        <div class="header__banner">
+          <!-- 메인 로고 -->
+          <div class="header__main-logo">
+            <a href="#">
+              <h1 class="header__main-title">Heal-lo</h1>
+              <p class="header__sub-title">:Healthy location</p>
+            </a>
+          </div>
+          <div class="header__sitemenu" id="siteMenuContain">
+            <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div>
+            <!-- 스크립트용 -->
+            <a href="#"
+              ><i class="fa-solid fa-location-dot header__site-icon"></i
+            ></a>
+            <a href="#"
+              ><i class="fa-solid fa-book-open header__site-icon"></i
+            ></a>
+            <a href="#"
+              ><i class="fa-solid fa-calendar-days header__site-icon"></i
+            ></a>
+            <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
+          </div>
+        </div>
+      </header>
+
+      <!-- 메인 컨텐츠 -->
+      <main id="container">
+        <div class="content">
+          <div class="text-box">
+            <div class="my-page">
+              <p>마이 페이지</p>
+            </div>
+            <div class="information">
+              <p><a href="#">나의 정보수정</a></p>
+            </div>
+            <div class="activity">
+              <p><a href="#"> 나의 활동</a></p>
+          </div>
+        </div>
+        <div class="history">
+          <div class="menu">
+            <p class="notice"><a href="my_page_activity_notice.html">작성한 게시물</a></p>
+            <p class="coment"><a href="my_page_activity_coment.html">댓글</a></p>
+            <p class="review"><a href="my_page_activity_review.html">리뷰</a></p>
+          </div>
+          <div class="record">
+            <p class="title">내용</p>
+            <p class="dateline">작성일</p>
+            <p class="star">별점</p>
+          </div>
+          <div class="substance">
+            <a href="#"><p class="substance-notice">Lorem ipsum dolor sit amet.</p></a>
+            <p class="substance-dateline">2022.08.13</p>
+            <p class="substance-star">3.5</p>
+            <div class="button-box">
+              <button class="editBtn">수정</button>
+              <button class="delBtn">삭제</button>
+            </div>
+          </div>
+          <div class="substance">
+            <a href="#"><p class="substance-notice">Lorem ipsum dolor sit amet.</p></a>
+            <p class="substance-dateline">2022.08.13</p>
+            <p class="substance-star">3.5</p>
+            <div class="button-box">
+              <button class="editBtn">수정</button>
+              <button class="delBtn">삭제</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- footer -->
+      <footer id="footer">
+        <div class="inner">
+          <h2>Heal-lo</h2>
+          <ul>
+            <li>상호명: heal-lo</li>
+            <li>대표: 1팀</li>
+            <li>주소: 울산광역시 남구 신정동</li>
+            <li>이메일: ulsanheallo@naver.com</li>
+            <br />
+            <li>Copyright 2022 헬로. All Rights Reserved.</li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+
+    <script></script>
+  </body>
+</html>
+

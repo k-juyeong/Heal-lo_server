@@ -1,6 +1,7 @@
 package com.kh.heallo.domain.member.dao;
 
 import com.kh.heallo.domain.member.Member;
+import com.kh.heallo.domain.review.Review;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -169,4 +171,22 @@ public class MemberDAOImpl implements  MemberDAO{
 
   }
 
+  /**
+   * 로그인 계정 작성 리뷰 조회
+   * @param memno   회원번호
+   * @param rvno    리뷰번호
+   * @return        리뷰내용
+   */
+  @Override
+  public List<Review> findReviewByMemno(Long memno, Long rvno) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append(" select R.RVCONTENTS, R.RVCDATE, R.RVSCORE ");
+    sql.append("   from  MEMBER M, REVIEW R ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+
+    List<Review> reviews = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class));
+
+    return reviews;
+  }
 }
