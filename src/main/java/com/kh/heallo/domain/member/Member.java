@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.member;
 
+import com.kh.heallo.domain.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,5 @@ public class Member {
   private String memcode;      //varchar2(15)
   private LocalDateTime memcdate;       //date
   private LocalDateTime memudate;       //date
+  private Review review;
 }

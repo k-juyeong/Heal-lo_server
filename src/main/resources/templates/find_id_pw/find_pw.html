@@ -44,32 +44,32 @@
       <!-- 메인 컨텐츠 -->
       <main id="container">
         <form action="" th:method="post" th:object="${form}">
-            <div id="id">
-              <p class="container__title1">아이디 찾기</p>
+<!--            <div id="id">-->
+<!--              <p class="container__title1">아이디 찾기</p>-->
 
-              <div class="container__id">
-                <label id="idNameFont" for="idName">이름</label>
-                <input id="idName" type="text" name="memname">
-                <label id="idEmailFont" for="idEmail">이메일</label>
-                <input id="idEmail" type="text" name="mememail">
-              </div>
-              <div class="button">
-                <button id="idBtn">완료</button>
-              </div>
-          </div>
+<!--              <div class="container__id">-->
+<!--                <label id="idNameFont" for="idName">이름</label>-->
+<!--                <input id="idName" type="text">-->
+<!--                <label id="idEmailFont" for="idEmail">이메일</label>-->
+<!--                <input id="idEmail" type="text">-->
+<!--              </div>-->
+<!--              <div class="button">-->
+<!--                <button id="idBtn">완료</button>-->
+<!--              </div>-->
+<!--          </div>-->
             <div id="pw">
               <p class="container__title2">비밀번호 찾기</p>
 
               <div class="container__pw">
                 <label id="pwIdFont" for="pwId">아이디</label>
-                <input id="pwId" type="text">
+                <input id="pwId" type="text" name="memid">
                 <label id="pwNameFont" for="pwName">이름</label>
-                <input id="pwName" type="text">
+                <input id="pwName" type="text" name="memname">
                 <label id="pwEmailFont" for="pwEmail">이메일</label>
-                <input id="pwEmail" type="text">
+                <input id="pwEmail" type="text" name="mememail">
               </div>
               <div class="button">
-                <button id="pwBtn"><a href="" th:href="@{/members/find_id_pw/set_pw}">완료</a></button>
+                <button id="pwBtn">완료</button>
               </div>
             </div>
         </form>

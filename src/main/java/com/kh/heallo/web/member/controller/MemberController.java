@@ -2,15 +2,14 @@ package com.kh.heallo.web.member.controller;
 
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
-import com.kh.heallo.web.member.dto.EditForm;
-import com.kh.heallo.web.member.dto.FindIdPwForm;
-import com.kh.heallo.web.member.dto.JoinForm;
-import com.kh.heallo.web.member.dto.LoginForm;
+import com.kh.heallo.domain.review.Review;
+import com.kh.heallo.web.member.dto.*;
 import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.session.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -202,19 +203,19 @@ public class MemberController {
   }
 
   //아이디 찾기 화면
-  @GetMapping("/find_id_pw")
+  @GetMapping("/find_id")
   public String findIdPWForm(){
 
-    return "find_id_pw/find_id_pw";
+    return "find_id_pw/find_id";
   }
 
   //아이디 찾기 처리
-  @PostMapping("/find_id_pw")
-  public String findIdPW(@ModelAttribute("form") FindIdPwForm findIdPwForm, Model model){
+  @PostMapping("/find_id")
+  public String findIdPW(@ModelAttribute("form") FindIdForm findIdForm, Model model){
 
-    FindIdPwForm findId = new FindIdPwForm();
-    findId.setMemname(findIdPwForm.getMemname());
-    findId.setMememail(findIdPwForm.getMememail());
+    FindIdForm findId = new FindIdForm();
+    findId.setMemname(findIdForm.getMemname());
+    findId.setMememail(findIdForm.getMememail());
 
     Member id = memberSVC.findId(findId.getMemname(), findId.getMememail());
     findId.setMemid(id.getMemid());
@@ -224,11 +225,27 @@ public class MemberController {
     return "find_id_pw/success_find_id";
   }
 
-  //비밀번호 변경 화면
-  @GetMapping("/find_id_pw/set_pw")
-  public String setPwForm(){
+  //비밀번호
+  @GetMapping("/find_pw")
+  public String findIdPWForm2(){
 
-    return "find_id_pw/change_pw";
+    return "find_id_pw/find_pw";
+  }
+
+  @PostMapping("/find_pw")
+  public String findPw(@ModelAttribute("form")FindPwForm findPwForm, Model model){
+
+    FindPwForm findPw = new FindPwForm();
+    findPw.setMemid(findPwForm.getMemid());
+    findPw.setMemname(findPwForm.getMemname());
+    findPw.setMememail(findPwForm.getMememail());
+
+    Member pw = memberSVC.findPw(findPw.getMemid(), findPw.getMemname(), findPw.getMememail());
+    findPw.setMempw(pw.getMempw());
+
+    log.info("findPw={}", findPw);
+    model.addAttribute("form", findPw);
+    return "find_id_pw/success_find_pw";
   }
 
   //마이페이지 활동 (게시글) 활동 이동 시 첫 페이지
@@ -247,10 +264,20 @@ public class MemberController {
 
   //마이페이지 활동 (리뷰)
   @GetMapping("/{id}/review")
-  public String myActivityReview(@PathVariable("id")Long memno, Long rvno){
+  public String myActivityReview(@PathVariable("id")Long memno, Long rvno,Model model){
 
-    //List<Review> reviews = memberSVC.findReviewByMemno(memno,rvno);
+    List<Review> reviews = memberSVC.findReviewByMemno(memno,rvno);
+    List<Review> list = new ArrayList<>();
 
+    reviews.stream().forEach(review->{
+      Review review1 = new Review();
+      BeanUtils.copyProperties(review,review1);
+      list.add(review1);
+    });
+
+    log.info("list={}",list);
+
+    model.addAttribute("list", list);
     return "member/my_page_activity_review";
   }
 

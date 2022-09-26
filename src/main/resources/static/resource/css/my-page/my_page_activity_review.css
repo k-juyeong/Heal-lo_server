@@ -49,10 +49,15 @@
     border: 1px solid #ccc;
     padding: 5px;
   }
-  .history .record .title {flex: 6; text-align: center; font-size: 1.3rem; font-weight: 300;}
-  .history .record .dateline {flex: 2; text-align: center; font-size: 1.3rem; font-weight: 300;}
-  .history .record .star {flex: 2; text-align: center; font-size: 1.3rem; font-weight: 300;}
+  .history .record .title {flex: 3.2; text-align: center; font-size: 1.3rem; font-weight: 300;}
+  .history .record .dateline {flex: 1.2; text-align: center; font-size: 1.3rem; font-weight: 300;}
+  .history .record .star {flex: 3; text-align: center; font-size: 1.3rem; font-weight: 300;}
 
   .history .substance {display:flex; padding-top: 50px;padding-right: 10px;padding-left: 10px; padding-bottom: 20px; border-bottom: 1px solid #ccc;}
-  .history .substance a {flex:6; text-align: center; font-size: 1.3rem;} 
-  .history .substance .substance-dateline,.substance-star {flex: 2; text-align: center; font-size: 1.3rem;}
+  .history .substance a {flex:1.2; text-align: center; font-size: 1.3rem;}
+  .history .substance .substance-dateline {flex: 0.8; text-align: center; font-size: 1.3rem}
+  .history .substance .substance-star {flex: 1; text-align: center; font-size: 1.3rem}
+
+  .button-box{display: flex; flex-direction: column;}
+  .editBtn {width: 50px; background-color: #16a085; color: white; margin: 2.5px 0;}
+  .delBtn {width: 50px; background-color: #16a085; color: white; margin: 2.5px 0;}

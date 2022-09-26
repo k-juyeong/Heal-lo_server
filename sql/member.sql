@@ -30,3 +30,6 @@ alter table member add constraint mememail_uk unique (mememail);
 
 -- 회원 시퀀스
 create sequence member_memno_seq;
+
+insert into member values (member_memno_seq.nextval ,'naim11' ,'heallo1234' ,'010-1234-5678' ,'닉네임'
+                            ,'heallo123@naver.com' ,'테스트' ,'normal' ,sysdate ,sysdate ) ");
