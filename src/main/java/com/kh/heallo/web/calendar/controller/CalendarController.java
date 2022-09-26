@@ -1,8 +1,10 @@
 package com.kh.heallo.web.calendar.controller;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.kh.heallo.domain.calendar.Calendar;
 import com.kh.heallo.domain.calendar.svc.CalendarSVC;
+import com.kh.heallo.domain.uploadfile.AttachCode;
+import com.kh.heallo.domain.uploadfile.FileData;
+import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
 import com.kh.heallo.web.calendar.dto.AddForm;
 import com.kh.heallo.web.calendar.dto.DayForm;
 import com.kh.heallo.web.calendar.dto.EditForm;
@@ -13,11 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import javax.naming.Binding;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -27,6 +29,7 @@ import java.util.Optional;
 public class CalendarController {
 
   private final CalendarSVC calendarSVC;
+  private final UploadFileSVC uploadFileSVC;
 
   // 달력 메인 (전체)
   @GetMapping
@@ -52,35 +55,34 @@ public class CalendarController {
 
   // 운동기록 등록처리
   @PostMapping("/{rdate}/add")
-  public String add(AddForm addForm) {
-
+  public String add(
+    @ModelAttribute("form") AddForm addForm,
+    BindingResult bindingResult
+//    List<MultipartFile> imageFiles
+  ) {
     // 기본 검증
+    if (bindingResult.hasErrors()) {
+      log.info("bindingResult={}", bindingResult);
+      return "calendar/addForm";
+    }
 
     // 오브젝트 검증
     // 첨부파일 & 내용 아무것도 없을 때
+
 
     Calendar calendarRecord = new Calendar();
     String rdate = addForm.getCdRDate();
     calendarRecord.setCdRDate(rdate);
     calendarRecord.setCdContent(addForm.getCdContent());
 
+    // 첨부파일 있으면 함께 등록
+    if (!addForm.getImageFiles().get(0).isEmpty()) {
+      calendarSVC.save(rdate, calendarRecord, addForm.getImageFiles());
+    } else {
+      calendarSVC.save(rdate, calendarRecord);
+    }
 
-    calendarSVC.save(rdate, calendarRecord);
     return "redirect:/calendar/"+rdate;
-
-    // 이미지 첨부 코드
-
-
-
-//    Calendar calendarRecord = new Calendar();
-//    calendarRecord.setCdContent(addForm.getCdContent());
-//    calendarRecord.setCdRDate(addForm.getCdRDate());
-//
-//    String rdate = calendarRecord.getCdRDate();
-//    calendarSVC.save(rdate, calendarRecord);
-//
-//    redirectAttributes.addAttribute("rdate", rdate);
-//    return "redirect:/calendar/{rdate}";
   }
 
   // 운동기록 조회
@@ -98,6 +100,17 @@ public class CalendarController {
       String cdRDate = foundRecord.get().getCdRDate().substring(0, 10);
       dayForm.setCdRDate(cdRDate);
     }
+
+    // 첨부파일 있으면 조회
+    List<FileData> foundImageList = uploadFileSVC.findImages(AttachCode.CD_CODE, foundRecord.get().getCdno());
+    if (foundImageList.size() > 0) {
+      List<FileData> imageFiles = new ArrayList<>();
+      for (FileData file : foundImageList) {
+        imageFiles.add(file);
+      }
+      dayForm.setFoundImageFiles(imageFiles);
+    }
+
     model.addAttribute("form", dayForm);
     return "calendar/dayForm";
   }
@@ -114,6 +127,17 @@ public class CalendarController {
       BeanUtils.copyProperties(foundRecord.get(), editForm);
     }
 
+    // 첨부파일 있으면 조회
+    List<FileData> foundImageList = uploadFileSVC.findImages(AttachCode.CD_CODE, foundRecord.get().getCdno());
+    if (foundImageList.size() > 0) {
+      List<FileData> imageFiles = new ArrayList<>();
+      for (FileData file : foundImageList) {
+        imageFiles.add(file);
+      }
+      editForm.setFoundImageFiles(imageFiles);
+    }
+
+
     model.addAttribute("form", editForm);
     return "calendar/editForm";
   }
@@ -122,12 +146,19 @@ public class CalendarController {
   @PostMapping("/{rdate}/edit")
   public String edit(
       @PathVariable String rdate,
-      EditForm editForm,
+      @ModelAttribute("form") EditForm editForm,
       Model model
+//      List<MultipartFile> imageFiles
   ) {
+
     Calendar calendarRecord = new Calendar();
     calendarRecord.setCdContent(editForm.getCdContent());
-    calendarSVC.update(rdate, calendarRecord);
+
+    if (!editForm.getImageFiles().get(0).isEmpty()) {
+      calendarSVC.update(rdate, calendarRecord, editForm.getImageFiles());
+    } else {
+      calendarSVC.update(rdate, calendarRecord);
+    }
 
     model.addAttribute("form", editForm);
     return "redirect:/calendar/"+rdate;
