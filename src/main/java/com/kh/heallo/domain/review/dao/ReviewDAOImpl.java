@@ -69,10 +69,7 @@ public class ReviewDAOImpl implements ReviewDAO{
         sql.append("                          order by " + criteria.getOrderBy() + ") review, member ");
         sql.append("                  where review.memno = member.memno ");
         sql.append("                  and review.fcno = ?) ");
-        sql.append("  where rowno > ? and rowno <= ? ");
-
-        Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
-        Integer startPage = endPage - criteria.getNumOfRow();
+        sql.append("  where rowno >= ? and rowno <= ? ");
 
         List<Review> reviewList = jdbcTemplate.query(sql.toString(), new RowMapper<Review>() {
             @Override
@@ -92,7 +89,7 @@ public class ReviewDAOImpl implements ReviewDAO{
 
                 return review;
             }
-        },fcno,startPage,endPage);
+        },fcno,criteria.getStartNo(),criteria.getEndNo());
 
         if (reviewList.isEmpty()) {
             throw new DataAccessException("데이터를 찾을수 없습니다") {

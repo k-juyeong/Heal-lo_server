@@ -156,11 +156,8 @@ document.querySelector('.text-input__body').addEventListener('submit',(e) => {
   //임계상태 변경
   requstStatus = false;
 
-  //요청 파라미터 생성
-  const requestPram = createRequestPram();
-
-  //검색시작
-  search(requestPram);
+  //검색
+  search();
 })
 
 //카테고리 선택
@@ -383,7 +380,8 @@ function createRequestPram() {
 }
 
 //검색
-function search(requestPram) {
+function search() {
+  const requestPram = createRequestPram()
   const queryPram = `?fcaddr=${requestPram.loca}&fctype=${requestPram.type}&fcname=${requestPram.text}&pageNo=${requestPram.pageNo}`;
 
   fetch('/facilities/list' + queryPram, {
@@ -461,8 +459,7 @@ function createPagination(pageInfo) {
     //이전버튼 클릭 이벤트
     link.addEventListener('click', e => {
       currentPage = pageInfo.startPage - pageInfo.page_COUNT_PER_PAGE;
-      const requestPram = createRequestPram();
-      search(requestPram)
+      search();
     })
   }
 
@@ -474,6 +471,7 @@ function createPagination(pageInfo) {
     const {page,link} = createPagTag(startIdx);
     pagination.appendChild(page);
 
+    //페이지 클릭 표시
     if (startIdx == currentPage) {
       link.classList.add('on');
     }
@@ -486,8 +484,7 @@ function createPagination(pageInfo) {
       currentPage = parseInt(target.textContent);
 
       //검색
-      const requestPram =  createRequestPram();
-      search(requestPram);
+      search();
     });
   }
 
@@ -501,8 +498,7 @@ function createPagination(pageInfo) {
     //다음버튼 클릭 이벤트
     link.addEventListener('click', e => {
       currentPage = pageInfo.endPage + 1;
-      const requestPram = createRequestPram();
-      search(requestPram)
+      search();
     })
   }
 

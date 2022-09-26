@@ -33,7 +33,7 @@ public class ExceptionHandlerAdvice {
         responseMsg
                 .createHeader(StatusCode.DATA_NOT_FOUND_ERROR);
 
-        return new ResponseEntity(responseMsg, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseMsg, HttpStatus.OK);
     }
 
     //ModelAttribute 검증오류 발생 시 호출

@@ -129,6 +129,8 @@ public class FacilityRestController {
 
         double fcScore = facilitySVC.findByFcno(fcno).getFcscore();
 
+        log.info("fcscore {}", fcScore);
+
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
                 .createHeader(StatusCode.SUCCESS)

@@ -1,5 +1,6 @@
 package com.kh.heallo.web.review.controller;
 
+import com.kh.heallo.domain.common.paging.PageCriteria;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
 import com.kh.heallo.domain.review.OrderBy;
 import com.kh.heallo.domain.review.Review;
@@ -16,6 +17,8 @@ import com.kh.heallo.web.utility.DtoModifier;
 import com.kh.heallo.web.review.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -40,36 +43,27 @@ public class ReviewRestController {
     private final DtoModifier dtoModifier;
     private final ReviewFileValidator fileValidator;
 
-    //리뷰 total 조회
-    @GetMapping("/{fcno}/total")
-    public ResponseEntity<ResponseMsg> getTotalCount(@PathVariable("fcno") Long fcno) {
-        Integer totalCount = reviewSVC.getTotalCount(fcno);
-
-        //Create ResponseEntity
-        ResponseMsg responseMsg = new ResponseMsg()
-                .createHeader(StatusCode.SUCCESS)
-                .setData("totalCount", totalCount);
-
-        return new ResponseEntity<>(responseMsg, HttpStatus.OK);
-    }
+    @Autowired
+    @Qualifier("pc10_5")
+    private PageCriteria pc;
 
     //해당 운동시설 리뷰 리스트 조회(페이징)
     @GetMapping("/{fcno}/list")
     public ResponseEntity<ResponseMsg> findListByFcno(
             HttpServletRequest request,
             @PathVariable("fcno") Long fcno,
-            @ModelAttribute ReviewCriteriaDto searchCriteria
+            @ModelAttribute ReviewCriteriaDto reviewCriteriaDto
     ) {
 
         //정렬기준 셋팅
-        switch(searchCriteria.getOrderBy()) {
-            case "dateAsc": searchCriteria.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
+        switch(reviewCriteriaDto.getOrderBy()) {
+            case "dateAsc": reviewCriteriaDto.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
             break;
-            case "dateDesc": searchCriteria.setOrderBy(OrderBy.DATE_DESC.getOrderBy());
+            case "dateDesc": reviewCriteriaDto.setOrderBy(OrderBy.DATE_DESC.getOrderBy());
             break;
-            case "scoreDsc": searchCriteria.setOrderBy(OrderBy.SCORE_DSC.getOrderBy());
+            case "scoreDsc": reviewCriteriaDto.setOrderBy(OrderBy.SCORE_DSC.getOrderBy());
             break;
-            default: searchCriteria.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
+            default: reviewCriteriaDto.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
         }
 
         //회원번호 조회
@@ -80,8 +74,19 @@ public class ReviewRestController {
             memno = loginMember.getMemno();
         }
 
+        //FindCriteria 설정
+        pc.getRc().setReqPage(reviewCriteriaDto.getPageNo());
+
+        //ReviewCriteriaDto => ReviewCriteria
+        ReviewCriteria reviewCriteria = dtoModifier.getReviewCriteria(reviewCriteriaDto);
+        reviewCriteria.setStartNo(pc.getRc().getStartRec());
+        reviewCriteria.setEndNo(pc.getRc().getEndRec());
+
+        //토탈 카운트 검색
+        Integer totalCount = reviewSVC.getTotalCount(fcno);
+        pc.setTotalRec(totalCount);
+
         //리뷰 조회
-        ReviewCriteria reviewCriteria = dtoModifier.getReviewCriteria(searchCriteria);
         Long finalMemno = memno;
         List<ReviewDto> reviewDtos = reviewSVC
                 .findListByFcno(fcno, reviewCriteria)
@@ -95,6 +100,7 @@ public class ReviewRestController {
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
                 .createHeader(StatusCode.SUCCESS)
+                .setData("pagination", pc)
                 .setData("reviews", reviewDtos);
 
         return new ResponseEntity<>(responseMsg, HttpStatus.OK);
@@ -255,6 +261,7 @@ public class ReviewRestController {
         ResponseMsg responseMsg = new ResponseMsg()
                 .createHeader(StatusCode.SUCCESS)
                 .setData("resultCount",resultCount);
+
         return new ResponseEntity<>(responseMsg, HttpStatus.OK);
     }
 }

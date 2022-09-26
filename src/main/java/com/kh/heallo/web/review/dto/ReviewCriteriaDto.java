@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewCriteriaDto {
     private Integer pageNo;         //페이지번호
-    private Integer numOfRow;       //한 페이지 수
     private String orderBy;   //정렬기준
 }

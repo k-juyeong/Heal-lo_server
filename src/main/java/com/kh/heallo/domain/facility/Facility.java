@@ -22,7 +22,9 @@ public class Facility {
     private double fcscore;     //평균평점
     private Integer rvtotal;     //리뷰 전체 갯수
 
-    public Facility(String fcname, String fctype, String fchomepage, String fctel, double fclat, double fclng, String fcaddr, String fcpostCode, String fcstatus, String fcimg) {
+    public Facility(String fcname, String fctype, String fchomepage, String fctel,
+                    double fclat, double fclng, String fcaddr, String fcpostCode,
+                    String fcstatus, String fcimg) {
         this.fcname = fcname;
         this.fctype = fctype;
         this.fchomepage = fchomepage;
