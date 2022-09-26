@@ -2,12 +2,12 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시판</title>
-    <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
-    <th:block th:replace="${link}"></th:block>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시판</title>
+  <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
+  <th:block th:replace="${link}"></th:block>
 
   <style>
     .board-wrap .board-body{
@@ -23,122 +23,124 @@
 </head>
 
 <body>
-  <div id="wrapper">
+<div id="wrapper">
 
-    <!-- 헤더 -->
-    <header id="header">
-      <!-- 탑 메뉴 -->
-      <div class="header__menu-top">
-        <span class="header__my-menu"><a href="#">로그아웃</a></span>
-        <span class="header__my-menu"><a href="#">마이페이지</a></span>
-        <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
-      </div>
-
-      <!-- 베너 -->
-      <div class="header__banner">
-        <!-- 메인 로고 -->
-        <div class="header__main-logo">
-          <a href="#">
-            <h1 class="header__main-title">Heal-lo</h1>
-            <p class="header__sub-title">:Healthy location</p>
-          </a>
-        </div>
-        <div class="header__sitemenu" id="siteMenuContain">
-          <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
-          <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
-          <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
-          <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
-          <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
-        </div>
-      </div>
-    </header>
-      
-    <!-- 메인 컨텐츠 -->
-    <main id="container">
-      <aside class="title">
-        <div class="title__list">
-          <a href="#">자유게시판</a>
-          <a href="#">정보공유방</a>
-          <a href="#">추천글</a>
-          <a href="#">문의하기</a>
-        </div>
-      </aside>
-
-      <section class="board_write">
-
-        <div class="write_area">
-          <h2 class="board__title">자유게시판</h2>
-          <!-- <div class="textarea" name="" id="editor" contenteditable='true'></div> -->
-        </div>
-
-        <div class="board-body">
-
-          <form id="updateForm" action="" th:action th:method="post" th:object="${form}">
-            <div th:if="${#fields.hasGlobalErrors()}">
-              <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
-            </div>
-
-            <div><label th:for="bdno">게시글번호</label></div>
-            <div><input type="text" th:field="*{bdno}" readonly></div>
-
-            <div><label th:for="memno">작성자번호</label></div>
-            <div><input type="text" th:field="*{memno}" readonly></div >
-
-            <div>
-              <label th:for="bdcg">카테고리</label>
-              <select name="" id="menu-list" th:field="*{bdcg}">
-                <option value="자유게시판">자유게시판</option>
-                <option value="정보공유">정보공유</option>
-                <option value="문의하기">문의하기</option>
-              </select>
-              <div class="fieldError" th:errors="*{bdcg}"></div>
-            </div>
-
-
-
-            <div><label th:for="bdtitle">제목</label></div>
-            <div>
-              <input type="text" th:field="*{bdtitle}">
-              <div class="fieldError" th:errors="*{bdtitle}"></div>
-            </div >
-
-
-            <div><label th:for="bdcontent">내용</label></div>
-            <div>
-              <textarea type="text" th:field="*{bdcontent}"></textarea>
-              <div class="fieldError" th:errors="*{bdcontent}"></div>
-            </div>
-          </form>
-        </div>
-
-        <div class="board-btngrp">
-          <button type="button" id="updateBtn">수정</button>
-          <button type="button" id="listBtn">목록</button>
-        </div>
-
-      </section>
-
-
-
-
-    </main>
-
-    <!-- footer -->
-    <footer id="footer">
-      <div class="inner">
-        <h2>Heal-lo</h2>
-        <ul>
-          <li>상호명: heal-lo</li>
-          <li>대표: 1팀</li>
-          <li>주소: 울산광역시 남구 신정동</li>
-          <li>이메일: ulsanheallo@naver.com</li><br>
-          <li>Copyright 2022 헬로. All Rights Reserved.</li>
-        </ul>
-      </div>
-    </footer>
+  <!-- 헤더 -->
+  <header id="header">
+    <!-- 탑 메뉴 -->
+    <div class="header__menu-top">
+      <span class="header__my-menu"><a href="#">로그아웃</a></span>
+      <span class="header__my-menu"><a href="#">마이페이지</a></span>
+      <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
     </div>
 
-  <script>
+    <!-- 베너 -->
+    <div class="header__banner">
+      <!-- 메인 로고 -->
+      <div class="header__main-logo">
+        <a href="#">
+          <h1 class="header__main-title">Heal-lo</h1>
+          <p class="header__sub-title">:Healthy location</p>
+        </a>
+      </div>
+      <div class="header__sitemenu" id="siteMenuContain">
+        <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
+        <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
+        <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
+        <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
+        <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 컨텐츠 -->
+  <main id="container">
+    <aside class="title">
+      <div class="title__list">
+        <a href="#">자유게시판</a>
+        <a href="#">정보공유방</a>
+        <a href="#">추천글</a>
+        <a href="#">문의하기</a>
+      </div>
+    </aside>
+
+    <section class="board_write">
+
+      <div class="board_title">
+        <h2 class="title__main">게시글 수정</h2>
+      </div>
+
+      <div class="board_content">
+
+        <form id="updateForm" action="" th:action th:method="post" th:object="${form}" class="writeForm" enctype="multipart/form-data">
+          <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
+          </div>
+
+          <div class="line">
+            <label th:for="bdcg">카테고리</label>
+            <select name="" id="menu-list" th:field="*{bdcg}">
+              <option value="자유게시판">자유게시판</option>
+              <option value="정보공유">정보공유</option>
+              <option value="문의하기">문의하기</option>
+            </select>
+            <div class="fieldError" th:errors="*{bdcg}"></div>
+          </div>
+
+          <div class="line">
+            <label th:for="bdtitle">제목</label>
+            <input type="text" th:field="*{bdtitle}">
+            <div class="fieldError" th:errors="*{bdtitle}"></div>
+          </div>
+
+          <div class="line">
+            <label th:for="memno">작성자</label>
+            <input type="text" th:field="*{memno}" readonly>
+            <div class="fieldError" th:errors="*{memno}" ></div>
+          </div>
+
+          <div class="line">
+            <label th:for="bdno">게시글번호</label>
+            <input type="text" th:field="*{bdno}" readonly>
+          </div>
+
+
+          <div>
+            <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
+            <div class="fieldError" th:errors="*{bdcontent}"></div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="board-btngrp writeBtn_area">
+        <button type="button" id="updateBtn" class="btn btn__search">수정</button>
+        <button type="button" id="listBtn" class="btn btn__search">목록</button>
+      </div>
+
+    </section>
+
+
+
+
+  </main>
+
+  <!-- footer -->
+  <footer id="footer">
+    <div class="inner">
+      <h2>Heal-lo</h2>
+      <ul>
+        <li>상호명: heal-lo</li>
+        <li>대표: 1팀</li>
+        <li>주소: 울산광역시 남구 신정동</li>
+        <li>이메일: ulsanheallo@naver.com</li><br>
+        <li>Copyright 2022 헬로. All Rights Reserved.</li>
+      </ul>
+    </div>
+  </footer>
+</div>
+
+<script>
     //수정완료
     const $updateBtn = document.getElementById('updateBtn');
     $updateBtn.addEventListener('click', evt=>{
@@ -146,7 +148,6 @@
       const bdno = frm.bdno.value;
       const url = `/boards/${bdno}/edit`;
 
-<!--      frm.action = url;-->
       frm.submit();
     });
 
