@@ -134,18 +134,18 @@ public class FacilityDAOImpl implements FacilityDAO{
         sql.append("                    and fcaddr like ? ");
         sql.append("                    and fctype like ? ");
         sql.append("               order by rvtotal desc) fc2) fc3 ");
-        sql.append(" where fc3.rowno > ? and fc3.rowno <= ? ");
+        sql.append(" where fc3.rowno >= ? and fc3.rowno <= ? ");
 
-        Integer endPage = criteria.getPageNo() * criteria.getNumOfRow();
-        Integer startPage = endPage - criteria.getNumOfRow();
+        log.info("criteria {} ", criteria);
+
         List<Facility> foundFacilityList = jdbcTemplate.query(
                 sql.toString(),
                 new BeanPropertyRowMapper<>(Facility.class),
                 criteria.getFcname(),
                 criteria.getFcaddr(),
                 criteria.getFctype(),
-                startPage,
-                endPage
+                criteria.getStartNo(),
+                criteria.getEndNo()
         );
 
         if (foundFacilityList.size() == 0) {

@@ -12,5 +12,4 @@ public class FacilityCriteriaDto {
     private String fctype;          //운동시설분류
     private String fcname;          //운동시설명
     private Integer pageNo;         //페이지번호
-    private Integer numOfRow;       //한 페이지 수
 }

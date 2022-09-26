@@ -2,11 +2,11 @@ package com.kh.heallo.web.facility.controller;
 
 import com.kh.heallo.domain.bookmark.Bookmark;
 import com.kh.heallo.domain.bookmark.svc.BookmarkSVC;
+import com.kh.heallo.domain.common.paging.PageCriteria;
 import com.kh.heallo.domain.facility.AutoComplete;
 import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
-import com.kh.heallo.domain.review.svc.ReviewSVC;
 import com.kh.heallo.web.facility.dto.AutoCompleteDto;
 import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.response.StatusCode;
@@ -18,6 +18,8 @@ import com.kh.heallo.web.facility.dto.FacilityCriteriaDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,20 +41,9 @@ public class FacilityRestController {
     private final DtoModifier dtoModifier;
     private final BookmarkSVC bookmarkSVC;
 
-    //검색 결과 수
-    @ResponseBody
-    @GetMapping("/total")
-    public ResponseEntity<ResponseMsg> totalCount(@ModelAttribute FacilityCriteriaDto searchCriteria) {
-        FacilityCriteria facilityCriteria = dtoModifier.getFacilityCriteria(searchCriteria);
-        Integer totalCount = facilitySVC.getTotalCount(facilityCriteria);
-
-        //Create ResponseEntity
-        ResponseMsg responseMsg = new ResponseMsg()
-                .createHeader(StatusCode.SUCCESS)
-                .setData("totalCount", totalCount);
-
-        return new ResponseEntity<>(responseMsg, HttpStatus.OK);
-    }
+    @Autowired
+    @Qualifier("pc10_5") //동일한 타입의 객체가 여러개있을때 빈이름을 명시적으로 지정해서 주입받을때
+    private PageCriteria pc;
 
     //검색 결과(페이징)
     @ResponseBody
@@ -61,8 +52,17 @@ public class FacilityRestController {
             HttpServletRequest request,
             @ModelAttribute FacilityCriteriaDto searchCriteria) {
 
+        //FindCriteria 설정
+        pc.getRc().setReqPage(searchCriteria.getPageNo());
+
         //FacilityCriteriaDto => FacilityCriteria
         FacilityCriteria criteria = dtoModifier.getFacilityCriteria(searchCriteria);
+        criteria.setStartNo(pc.getRc().getStartRec());
+        criteria.setEndNo(pc.getRc().getEndRec());
+
+        //토탈 카운트 검색
+        Integer totalCount = facilitySVC.getTotalCount(criteria);
+        pc.setTotalRec(totalCount);
 
         //검색
         List<Facility> facilityList = facilitySVC.search(criteria);
@@ -98,6 +98,7 @@ public class FacilityRestController {
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
                 .createHeader(StatusCode.SUCCESS)
+                .setData("pagination", pc)
                 .setData("facilities", facilitySearchDtos);
 
         return new ResponseEntity<>(responseMsg, HttpStatus.OK);
@@ -110,7 +111,7 @@ public class FacilityRestController {
             FacilityCriteriaDto criteriaDto
     ) {
         FacilityCriteria facilityCriteria = dtoModifier.getFacilityCriteria(criteriaDto);
-        List<AutoComplete> autoCompleteData = facilitySVC.autoComplete(facilityCriteria, facilityCriteria.getNumOfRow());
+        List<AutoComplete> autoCompleteData = facilitySVC.autoComplete(facilityCriteria, 10);
         List<AutoCompleteDto> autoCompleteDtos = dtoModifier.getAutoCompleteDto(autoCompleteData);
 
         //Create ResponseEntity
