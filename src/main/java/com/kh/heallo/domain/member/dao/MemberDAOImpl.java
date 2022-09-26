@@ -212,7 +212,7 @@ public class MemberDAOImpl implements  MemberDAO{
   public List<Review> findReviewByMemno(Long memno, Long rvno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append(" select review.RVCONTENTS, review.RVCDATE, review.RVSCORE ");
+    sql.append(" select review.RVCONTENTS rvcontents, review.RVCDATE rvcdate, review.RVSCORE  rvscore");
     sql.append("   from  member, review ");
     sql.append("  where  member.MEMNO = review.MEMNO ");
 

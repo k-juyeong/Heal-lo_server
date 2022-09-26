@@ -18,10 +18,11 @@
       <!-- 헤더 -->
       <header id="header">
         <!-- 탑메뉴 -->
-        <div class="header__menu-top">
+        <div class="header__menu-top" th:replace="~{layout/top-menu:: ${session.LOGIN_MEMBER} ? loginOnTopMenu : loginOffTopMenu}">
           <span><a href="#" th:href="@{/members/login}">로그인</a></span>
           <span><a href="#" th:href="@{/members/join}">회원가입</a></span>
-          <span><a href="#">ID/PW 찾기</a></span>
+          <span><a href="#" th:href="@{/members/find_id}">아이디 찾기</a></span>
+          <span><a href="#" th:href="@{/members/find_pw}">비밀번호 찾기</a></span>
         </div>
 
         <!-- 베너-->
@@ -96,7 +97,7 @@
           <artticle class="section1__search">
             <div>
               <a href="#" th:href="@{/facilities}"><div class="section1__search-content">
-                <img src="../img/sear4.jpg" alt="" />
+                <img src="../img/sear4.jpg" alt="" th:src="@{resource/img/sear4.jpg}"/>
                 <p class="onImage">Find your <br> healthy place</p>
               </div></a>
               <p class="underImage"><a href="#" th:href="@{/facilities}">우리집 근처 운동시설 찾기</a></p>
@@ -105,7 +106,7 @@
           <artticle class="section1__calendar">
             <div>
               <a href="#"><div class="section1__calendar-content">
-                <img src="../img/cal1.jpg" alt="" />
+                <img src="../img/cal1.jpg" alt="" th:src="@{resource/img/cal1.jpg}"/>
                 <p class="onImage">Record your <br> healthy days</p>
               </div></a>
               <p class="underImage"><a href="#">내 운동기록 보기</a></p>
@@ -114,7 +115,7 @@
           <artticle class="section1__community">
             <div>
               <a href="#"><div class="section1__community-content">
-                <img src="../img/commu2.jpg" alt="" />
+                <img src="../img/commu2.jpg" alt="" th:src="@{resource/img/commu2.jpg}"/>
                 <p class="onImage">Share your <br> healthy experiences</p>
               </div></a>
               <p class="underImage"><a href="#">커뮤니티</a></p>
@@ -153,7 +154,7 @@
             </article>
           </div>
           <div class="bg bg__box-community">
-            <img src="../img/community.jpg" alt="" />
+            <img src="../img/community.jpg" alt="" th:src="@{resource/img/community.jpg}"/>
             <article class="section2__community">
               <div class="section2__community-title">
                 <h1>더 스마트하게</h1>
@@ -185,7 +186,7 @@
                 <p>당신의 건강한 습관을 매일 확인하세요!</p>
               </div>
             </article>
-            <img src="../img/calendar.jpg" alt="" />
+            <img src="../img/calendar.jpg" alt="" th:src="@{resource/img/calendar.jpg}"/>
           </div>
         </section>
       </main>

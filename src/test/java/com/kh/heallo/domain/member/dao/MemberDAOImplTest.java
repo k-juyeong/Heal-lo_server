@@ -1,11 +1,14 @@
 package com.kh.heallo.domain.member.dao;
 
 import com.kh.heallo.domain.member.Member;
+import com.kh.heallo.domain.review.Review;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -84,5 +87,24 @@ public class MemberDAOImplTest {
     Long memno = 24L;
     Member findedMember = memberDAO.findById(memno);
     Assertions.assertThat(findedMember).isNull();
+  }
+
+  @Test
+  @DisplayName("리뷰 내용 불러오기")
+  @Order(5)
+  void reviewList(){
+    Long memno = 21L;
+    Long rvno = 1L;
+
+    List<Review> reviewByMemno = memberDAO.findReviewByMemno(memno, rvno);
+
+    log.info("리뷰:{}",reviewByMemno.size());
+
+    for(Review r : reviewByMemno){
+      log.info("리뷰:{}",r);
+    }
+
+    //Assertions.assertThat(reviewByMemno.size()).isEqualTo(1);
+
   }
 }
