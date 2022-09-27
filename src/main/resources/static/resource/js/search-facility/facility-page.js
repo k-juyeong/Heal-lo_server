@@ -109,9 +109,24 @@ function createDefault(msg) {
 //리뷰 생성
 function createList(data) {
 
-    //리뷰 본문 미리보기 생성
-    const previewContents = data.rvcontents.substr(0,200) + '...';
-    const isMoreview = data.rvcontents.length > 200;
+    //리뷰 미리보기 생성
+    let preContents = data.rvcontents;
+    let isMoreview = false;
+
+    //라인 검사
+    if (data.rvline > 5) {
+        let findIdx = 0;
+        for (let i = 0; i < 5; i++) {
+            findIdx = data.rvcontents.indexOf('\n', i + findIdx);
+        }
+        preContents = data.rvcontents.substr(0, findIdx);
+        isMoreview = true;
+
+    //길이 검사
+    } else if(data.rvcontents.length > 200) {
+        preContents = data.rvcontents.substr(0, 200);
+        isMoreview = true;
+    }
 
     const reviewCard =
         makeElements('div',{class : 'review-card', id : `${data.rvno}`},
@@ -126,10 +141,9 @@ function createList(data) {
                         makeElements('button',{class : 'review-update btn-review'},'수정'),
                         makeElements('button',{class : 'review-delete btn-review'},'삭제')) : ''),
                 makeElements('span',{class : 'date'},data.rvcdate),
-                makeElements('div',{class : 'preview-contents'},isMoreview ? previewContents : data.rvcontents,
+                makeElements('div',{class : 'preview-contents'},preContents,
                     isMoreview ? makeElements('div',{class : 'btn-moreview'},'더보기') : ''),
                 makeElements('div',{class : 'preview-wrap'})));
-
 
     //별점 설정
     reviewCard.querySelector('.inner-star').style.width = data.rvscore*20 + '%';

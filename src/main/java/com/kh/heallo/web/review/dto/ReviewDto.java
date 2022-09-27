@@ -19,6 +19,7 @@ public class ReviewDto {
     private Long memno;                       //회원번호
     private Long fcno;                        //운동시설번호
     private String rvcontents;                  //리뷰컨텐츠
+    private Integer rvline;                  //리뷰컨텐츠
     private double rvscore;                     //리뷰별점
     private String rvcdate;                     //리뷰등록날짜
     private String memnickname;                 //회원닉네임

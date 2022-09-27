@@ -16,6 +16,7 @@ public class Review {
 
     private Long rvno;                      //리뷰번호
     private String rvcontents;              //리뷰컨텐츠
+    private Integer rvline;                 //컨텐츠 줄바꿈 횟수
     private double rvscore;                 //리뷰별점
     private LocalDateTime rvcdate;          //등록날짜
     private LocalDateTime rvudate;          //수정날짜

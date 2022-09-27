@@ -50,16 +50,22 @@ $textarea.addEventListener('click', () => {
 $textarea.addEventListener('keyup',e => {
 
     //리뷰 컨텐츠 길이 검증
-    if (e.target.value.trim('').length == 1000) {
-        $errorClass.textContent = '최대 1000자 입력 가능합니다.';
+    if (value.length > 1000) {
+        $errorClass.textContent = '최대 1000자 작성 가능합니다.';
         $textarea.style.border = '1px solid red';
-    }  else if (e.target.value.split("\n").length - 1 >= 25) {
-        $errorClass.textContent = '최대 25줄 입력 가능합니다.';
+
+        return;
+    }
+
+    if (value.split("\n").length - 1 > 50) {
+        $errorClass.textContent = '최대 50줄 작성 가능합니다.';
         $textarea.style.border = '1px solid red';
+        e.target.value = value.slice(0, value.length - 1);
+
+        return;
     }
-    else {
-        clearError();
-    }
+
+    clearError();
 })
 
 //이미지 업로드 이벤트
@@ -113,7 +119,6 @@ document.querySelector('.btn-update').addEventListener('click', () => {
     }
 
     updateReview();
-
 });
 
 //취소버튼 이벤트
@@ -128,6 +133,7 @@ function createFormData() {
     const formData = new FormData();
     formData.append('rvscore', ratingScore);
     formData.append('rvcontents', $textarea.value);
+    formData.append('rvline', $textarea.value.split("\n").length - 1);
     formData.append('deleteImages',deleteImages)
     uploadImgs?.forEach(ele => {
         formData.append('multipartFiles', ele);

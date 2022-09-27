@@ -20,6 +20,9 @@ public class EditReviewForm {
     @Length(max = 1000)
     private String rvcontents;                 //리뷰컨텐츠
 
+    @Max(50)
+    private Integer rvline;                    //컨텐츠 줄바꿈 횟수
+
     @NotNull
     @DecimalMax("5")
     @DecimalMin("0.5")

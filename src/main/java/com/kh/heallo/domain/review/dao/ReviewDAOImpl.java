@@ -77,11 +77,12 @@ public class ReviewDAOImpl implements ReviewDAO{
                 Review review = new Review();
                 review.setRvno(rs.getLong(2));
                 review.setRvcontents(rs.getString(3));
-                review.setRvscore(rs.getDouble(4));
-                review.setRvcdate(rs.getTimestamp(5).toLocalDateTime());
-                review.setRvudate(rs.getTimestamp(6).toLocalDateTime());
-                review.setMemno(rs.getLong(7));
-                review.setFcno(rs.getLong(8));
+                review.setRvline(rs.getInt(4));
+                review.setRvscore(rs.getDouble(5));
+                review.setRvcdate(rs.getTimestamp(6).toLocalDateTime());
+                review.setRvudate(rs.getTimestamp(7).toLocalDateTime());
+                review.setMemno(rs.getLong(8));
+                review.setFcno(rs.getLong(9));
 
                 Member member = new Member();
                 member.setMemnickname(rs.getString(9));
@@ -112,16 +113,17 @@ public class ReviewDAOImpl implements ReviewDAO{
     public Long add(Review review) {
         StringBuffer sql = new StringBuffer();
         sql.append(" insert into review ");
-        sql.append(" values(review_rvno_seq.nextval, ?, ?, sysdate, sysdate, ?, ?) ");
+        sql.append(" values(review_rvno_seq.nextval, ?, ?, ?, sysdate, sysdate, ?, ?) ");
 
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement preparedStatement = con.prepareStatement(sql.toString(), new String[]{"rvno"});
             preparedStatement.setString(1, review.getRvcontents());
-            preparedStatement.setDouble(2, review.getRvscore());
-            preparedStatement.setLong(3, review.getMemno());
-            preparedStatement.setLong(4, review.getFcno());
+            preparedStatement.setInt(2, review.getRvline());
+            preparedStatement.setDouble(3, review.getRvscore());
+            preparedStatement.setLong(4, review.getMemno());
+            preparedStatement.setLong(5, review.getFcno());
 
             return preparedStatement;
         }, keyHolder);
@@ -140,11 +142,12 @@ public class ReviewDAOImpl implements ReviewDAO{
         StringBuffer sql = new StringBuffer();
         sql.append(" update review set ");
         sql.append("         rvcontents = ?, ");
+        sql.append("         rvline = ?, ");
         sql.append("         rvscore = ?, ");
         sql.append("         rvudate = sysdate ");
         sql.append(" where review.rvno = ? ");
 
-        return jdbcTemplate.update(sql.toString(), review.getRvcontents(), review.getRvscore(), review.getRvno());
+        return jdbcTemplate.update(sql.toString(), review.getRvcontents(), review.getRvline(), review.getRvscore(), review.getRvno());
     }
 
     /**

@@ -83,6 +83,7 @@ create sequence bookmark_bmno_seq;
 create table review (
                         rvno         number(8),
                         rvcontents   clob,
+                        rvline       number(2),
                         rvscore      number(2,1),
                         rvcdate      date,
                         rvudate      date,
@@ -103,6 +104,7 @@ alter table review modify rvudate constraint review_rvudate_nn not null;
 alter table review modify fcno constraint review_fcno_nn not null;
 alter table review modify memno constraint review_memno_nn not null;
 alter table review add constraint review_rvscore_ck check (rvscore between 0 and 5);
+alter table review add constraint review_rvline_ck check (rvline <= 50);
 
 -- 리뷰 시퀀스
 create sequence review_rvno_seq;

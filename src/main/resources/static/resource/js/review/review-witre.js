@@ -30,18 +30,20 @@ $textarea.addEventListener('click', () => {
 });
 
 $textarea.addEventListener('keyup',e => {
+    const value = e.target.value;
 
     //리뷰 컨텐츠 길이 검증
-    if (e.target.value.trim('').length == 1000) {
-        $errorClass.textContent = '최대 1000자 입력 가능합니다.';
+    if (value.length > 1000) {
+        $errorClass.textContent = '최대 1000자 작성 가능합니다.';
         $textarea.style.border = '1px solid red';
 
         return;
     }
-    console.log(e.target.value.split("\n").length - 1)
-    if (e.target.value.split("\n").length - 1 >= 25) {
-        $errorClass.textContent = '최대 25줄 입력 가능합니다.';
+
+    if (value.split("\n").length - 1 > 50) {
+        $errorClass.textContent = '최대 50줄 작성 가능합니다.';
         $textarea.style.border = '1px solid red';
+        e.target.value = value.slice(0, value.length - 1);
 
         return;
     }
@@ -113,9 +115,12 @@ function createFormData() {
     const formData = new FormData();
     formData.append('rvscore', ratingScore);
     formData.append('rvcontents', $textarea.value);
+    formData.append('rvline', $textarea.value.split("\n").length - 1);
     uploadImgs?.forEach(ele => {
         formData.append('multipartFiles', ele);
     })
+
+    console.dir($textarea.value);
 
     return formData;
 }
@@ -125,16 +130,16 @@ function addReview() {
 
     const formData = createFormData();
 
-    fetch(`/reviews/${fcno}`, {
-        method: 'POST',
-        body: formData
-    })
-        .then((response) => response.json())
-        .then((jsonData) => {
-            if (jsonData.header.code == '00') location.href = jsonData.data.redirect;
-            else throw new Error(jsonData.message)
-        })
-        .catch((error) => console.log(error));
+    // fetch(`/reviews/${fcno}`, {
+    //     method: 'POST',
+    //     body: formData
+    // })
+    //     .then((response) => response.json())
+    //     .then((jsonData) => {
+    //         if (jsonData.header.code == '00') location.href = jsonData.data.redirect;
+    //         else throw new Error(jsonData.message)
+    //     })
+    //     .catch((error) => console.log(error));
 }
 
 //에러 텍스트 제거
