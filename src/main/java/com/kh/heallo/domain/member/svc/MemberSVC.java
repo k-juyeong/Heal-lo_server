@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.member.svc;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.review.Review;
 
@@ -65,10 +66,45 @@ public interface MemberSVC {
   Member findPw(String memid, String memname, String mememail);
 
   /**
+   * 로그인 계정 작성 게시글 조회
+   * @param memno 회원번호
+   * @return
+   */
+  List<Board> findBoardByMemno(Long memno);
+
+  /**
    * 로그인 계정 작성 리뷰 조회
    * @param memno   회원번호
    * @param rvno    리뷰번호
    * @return        리뷰내용
    */
   List<Review> findReviewByMemno(Long memno, Long rvno);
+
+  /**
+   * 아이디 중복체크
+   * @param memid 아이디
+   * @return 존재하면 true
+   */
+  Boolean dupChkOfMemid(String memid);
+
+  /**
+   * 전화번호 중복체크
+   * @param memtel 아이디
+   * @return 존재하면 true
+   */
+  Boolean dupChkOfMemtel(String memtel);
+
+  /**
+   * 이메일 중복체크
+   * @param mememail 아이디
+   * @return 존재하면 true
+   */
+  Boolean dupChkOfMememail(String mememail);
+
+  /**
+   * 닉네임 중복체크
+   * @param memnickname 닉네임
+   * @return 존재하면 true
+   */
+  Boolean dupChkOfMemnickname(String memnickname);
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class JoinForm {
   private String memid;        //varchar2(40)
   private String  mempw;       //varchar2(20)
+  private String  mempwCk;       //varchar2(20)
   private String memtel;       //varchar2(13)
   private String memnickname;  //varchar2(30)
   private String mememail;     //varchar2(30)

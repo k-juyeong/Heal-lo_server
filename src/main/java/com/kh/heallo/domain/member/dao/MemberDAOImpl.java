@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.member.dao;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.review.Review;
 import lombok.RequiredArgsConstructor;
@@ -203,6 +204,25 @@ public class MemberDAOImpl implements  MemberDAO{
   }
 
   /**
+   * 로그인 계정 작성 게시글 조회
+   *
+   * @param memno 회원번호
+   * @return
+   */
+  @Override
+  public List<Board> findBoardByMemno(Long memno) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append(" select board.BDNO bdno, board.BDTITLE bdtitle, board.BDCDATE bdcdate, board.BDVIEW bdview ");
+    sql.append("   from member, board ");
+    sql.append("  where member.MEMNO = board.MEMNO ");
+
+    List<Board> boards = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class));
+
+    return boards;
+  }
+
+  /**
    * 로그인 계정 작성 리뷰 조회
    * @param memno   회원번호
    * @param rvno    리뷰번호
@@ -212,12 +232,71 @@ public class MemberDAOImpl implements  MemberDAO{
   public List<Review> findReviewByMemno(Long memno, Long rvno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append(" select review.RVCONTENTS rvcontents, review.RVCDATE rvcdate, review.RVSCORE  rvscore");
+    sql.append(" select  member.MEMNO memno, review.RVNO rvno, review.RVCONTENTS rvcontents, review.RVCDATE rvcdate, review.RVSCORE  rvscore ");
     sql.append("   from  member, review ");
     sql.append("  where  member.MEMNO = review.MEMNO ");
 
     List<Review> reviews = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class));
 
     return reviews;
+  }
+
+  /**
+   * 아이디 중복체크
+   *
+   * @param memid 아이디
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMemid(String memid) {
+
+    String sql = "select count(memid) from member where memid = ? ";
+
+    Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, memid);
+    return rowCount == 1 ? true : false;
+  }
+
+  /**
+   * 전화번호 중복체크
+   *
+   * @param memtel 아이디
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMemtel(String memtel) {
+
+    String sql = "select count(memtel) from member where memtel = ? ";
+
+    Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, memtel);
+    return rowCount == 1 ? true : false;
+  }
+
+  /**
+   * 이메일 중복체크
+   *
+   * @param mememail 아이디
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMememail(String mememail) {
+
+    String sql = "select count(mememail) from member where mememail = ? ";
+
+    Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, mememail);
+    return rowCount == 1 ? true : false;
+  }
+
+  /**
+   * 닉네임 중복체크
+   *
+   * @param memnickname 닉네임
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMemnickname(String memnickname) {
+    String sql = "select count(memnickname) from member where memnickname = ? ";
+
+    Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, memnickname);
+    return rowCount == 1 ? true : false;
   }
 }

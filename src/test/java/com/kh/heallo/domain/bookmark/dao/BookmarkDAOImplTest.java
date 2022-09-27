@@ -1,6 +1,8 @@
 package com.kh.heallo.domain.bookmark.dao;
 
 import com.kh.heallo.domain.bookmark.Bookmark;
+import com.kh.heallo.domain.facility.Facility;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 class BookmarkDAOImplTest {
@@ -54,4 +57,20 @@ class BookmarkDAOImplTest {
         assertThat(bookmarkListByMemno2.size()).isEqualTo(0);
     }
 
+    @Test
+    @DisplayName("즐겨찾기 페이지 리스트 불러오기")
+    @Order(4)
+    void bookmarkPageList(){
+
+        List<Facility> bookmarks = bookmarkDAO.bookmarkPageList();
+
+        log.info("즐겨찾기:{}",bookmarks.size());
+
+        for(Facility f : bookmarks){
+            log.info("즐겨찾기:{}",f);
+        }
+
+        //Assertions.assertThat(reviewByMemno.size()).isEqualTo(1);
+
+    }
 }

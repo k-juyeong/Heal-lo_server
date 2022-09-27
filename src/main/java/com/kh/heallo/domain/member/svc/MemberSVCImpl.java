@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.member.svc;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.dao.MemberDAO;
 import com.kh.heallo.domain.review.Review;
@@ -100,6 +101,17 @@ public class MemberSVCImpl implements MemberSVC{
   }
 
   /**
+   * 로그인 계정 작성 게시글 조회
+   *
+   * @param memno 회원번호
+   * @return
+   */
+  @Override
+  public List<Board> findBoardByMemno(Long memno) {
+    return memberDAO.findBoardByMemno(memno);
+  }
+
+  /**
    * 로그인 계정 작성 리뷰 조회
    *
    * @param memno 회원번호
@@ -109,5 +121,49 @@ public class MemberSVCImpl implements MemberSVC{
   @Override
   public List<Review> findReviewByMemno(Long memno, Long rvno) {
     return memberDAO.findReviewByMemno(memno, rvno);
+  }
+
+  /**
+   * 아이디 중복체크
+   *
+   * @param memid 아이디
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMemid(String memid) {
+    return memberDAO.dupChkOfMemid(memid);
+  }
+
+  /**
+   * 전화번호 중복체크
+   *
+   * @param memtel 아이디
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMemtel(String memtel) {
+    return memberDAO.dupChkOfMemtel(memtel);
+  }
+
+  /**
+   * 이메일 중복체크
+   *
+   * @param mememail 아이디
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMememail(String mememail) {
+    return memberDAO.dupChkOfMememail(mememail);
+  }
+
+  /**
+   * 닉네임 중복체크
+   *
+   * @param memnickname 닉네임
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMemnickname(String memnickname) {
+    return memberDAO.dupChkOfMemnickname(memnickname);
   }
 }

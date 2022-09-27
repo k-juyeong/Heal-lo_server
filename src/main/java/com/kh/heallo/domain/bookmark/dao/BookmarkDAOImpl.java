@@ -1,6 +1,7 @@
 package com.kh.heallo.domain.bookmark.dao;
 
 import com.kh.heallo.domain.bookmark.Bookmark;
+import com.kh.heallo.domain.facility.Facility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -10,7 +11,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Book;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
@@ -97,5 +97,21 @@ public class BookmarkDAOImpl implements BookmarkDAO{
         return resultCount;
     }
 
+    /**
+     * 즐겨찾기 페이지 리스트
+     *
+     * @return
+     */
+    @Override
+    public List<Facility> bookmarkPageList() {
+        StringBuffer sql = new StringBuffer();
 
+        sql.append(" select FACILITY.FCIMG fcimg,FACILITY.FCADDR fcaddr, FACILITY.FCTEL fctel, FACILITY.FCSCORE fcscore, FACILITY.FCNAME fcname ");
+        sql.append("   from BOOKMARK, FACILITY, MEMBER ");
+        sql.append("  where BOOKMARK.FCNO=FACILITY.FCNO and BOOKMARK.memno = MEMBER.memno ");
+
+        List<Facility> bookmarks = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Facility.class));
+
+        return bookmarks;
+    }
 }

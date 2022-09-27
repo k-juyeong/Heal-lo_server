@@ -52,8 +52,9 @@
           <div class="join__form">
             <div class="join__info">
               <label for="id">*아이디 </label>
-              <input type="text" id="id" required maxlength='15' name="memid" th:field="*{memid}">
-              <input type="submit" value="중복확인" class="btn">
+              <input type="text" id="id" required maxlength='15' name="memid" th:field="*{memid}"
+                     th:class="${#fields.hasErrors('memid')} ? fieldError ">
+<!--              <input type="submit" value="중복확인" class="btn">-->
               <span class="error_next_box" id="idMsg" style="" aria-live="assertive">5~15자의 영문 소문자, 숫자를 사용하세요.</span>
             </div>
 
@@ -61,38 +62,31 @@
 
             <div class="join__info">
               <label for="pw">*비밀번호 </label>
-              <input id="pw" required maxlength='16' name="mempw">
+              <input id="pw" required maxlength='16' name="mempw" th:field="*{mempw}">
               <span class="error_next_box" id="pswd1Msg" style="" aria-live="assertive">8~16자의 영문 대 소문자, 숫자를 사용하세요.</span>
             </div>
             <div class="join__info">
               <label for="pwc">*비밀번호확인 </label>
-              <input id="pwc" required maxlength='20'>
+              <input id="pwc" required maxlength='16' name="mempwCk" th:field="*{mempwCk}">
             </div>
             <div class="join__info">
               <label for="customer_name">*이름 </label>
-              <input id="customer_name" name="memname" required>
+              <input id="customer_name" name="memname" required th:field="*{memname}">
             </div>
-<!--            <div class="join__info"> 생년월일 X-->
-<!--              <label for="birth-date">*생년월일</label>-->
-<!--              <input type="date" id="birth-date" maxlength='8'>-->
-<!--            </div>-->
             <div class="join__info">
               <label for="phone_number">*전화번호 </label>
-              <input type="tel" id="phone_number" name="memtel" placeholder="-를 제외하고 입력해 주세요.">
+              <input type="tel" id="phone_number" name="memtel" placeholder="-를 제외하고 입력해 주세요." th:field="*{memtel}"
+                     th:class="${#fields.hasErrors('memtel')} ? fieldError">
             </div>
+            <span id="memtelErr" th:if="${#fields.hasErrors('memtel')}" th:errors="*{memtel}"></span>
+
             <div class="join__info">
               <label for="email_address">*이메일 </label>
-              <input type="text" id="email_address" name="mememail" placeholder="이메일을 입력해 주세요.">
-<!--              <p>@</p>-->
-<!--              <input type="text" id="domain-txt">-->
-<!--              <select class="box" id="domain-list">-->
-<!--                <option value="type">직접 입력</option>-->
-<!--                <option value="naver.com">naver.com</option>-->
-<!--                <option value="google.com">gmail.com</option>-->
-<!--                <option value="hanmail.net">hanmail.net</option>-->
-              </select>
+              <input type="text" id="email_address" name="mememail" placeholder="이메일을 입력해 주세요." th:field="*{mememail}"
+                     th:class="${#fields.hasErrors('mememail')} ? fieldError">
 <!--              <input type="button" value="인증번호 전송" class="btn">-->
             </div>
+            <span id="mememailErr" th:if="${#fields.hasErrors('mememail')}" th:errors="*{mememail}"></span>
 <!--            <div class="join__info">-->
 <!--              <label for="email_check">*인증번호 </label>-->
 <!--              <input type="email" id="email_check">-->
@@ -100,12 +94,13 @@
 <!--            </div>-->
 
             <div class="join__info">
-              <label for="ename">*닉네임 </label>
-              <input id="ename" name="memnickname" required maxlength='10'>
-              <input type="button" value="중복확인" class="btn">
+              <label for="mename">*닉네임 </label>
+              <input id="mename" name="memnickname" required maxlength='10' th:field="*{memnickname}"
+                     th:class="${#fields.hasErrors('memnickname')} ? fieldError">
+<!--              <input type="button" value="중복확인" class="btn">-->
               <span class="error_next_box" id="enameMsg" style="" aria-live="assertive">2~10자의 한글, 숫자를 사용하세요.</span>
-
             </div>
+              <span id="memnicknameErr" th:if="${#fields.hasErrors('memnickname')}" th:errors="*{memnickname}"></span>
           </div>
           
           
@@ -114,10 +109,6 @@
           </div>
         </div>
       </form>
-
-
-
-      
     </main>
 
     <!-- footer -->

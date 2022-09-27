@@ -1,5 +1,6 @@
 package com.kh.heallo.web.member.controller;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
 import com.kh.heallo.domain.review.Review;
@@ -59,9 +60,38 @@ public class MemberController {
       return "member/join";
     }
 
+    //회원아이디 중복체크
+    Boolean isExistId = memberSVC.dupChkOfMemid(joinForm.getMemid());
+    if(isExistId){
+      bindingResult.rejectValue("memid","dup.memid", "동일한 아이디가 존재합니다");
+      return "member/join";
+    }
+
+    //회원전화번호 중복체크
+    Boolean isExistTel = memberSVC.dupChkOfMemtel(joinForm.getMemtel());
+    if(isExistTel){
+      bindingResult.rejectValue("memtel","dup.memtel", "동일한 전화번호가 존재합니다");
+      return "member/join";
+    }
+
+    //회원이메일 중복체크
+    Boolean isExistEmail = memberSVC.dupChkOfMememail(joinForm.getMememail());
+    if(isExistEmail){
+      bindingResult.rejectValue("mememail","dup.mememail", "동일한 이메일이 존재합니다");
+      return "member/join";
+    }
+
+    //회원닉네임 중복체크
+    Boolean isExistNickname = memberSVC.dupChkOfMemnickname(joinForm.getMemnickname());
+    if(isExistNickname){
+      bindingResult.rejectValue("memnickname","dup.memnickname", "동일한 닉네임이 존재합니다");
+      return "member/join";
+    }
+
     Member member = new Member();
     member.setMemid(joinForm.getMemid());
     member.setMempw(joinForm.getMempw());
+    member.setMempw(joinForm.getMempwCk());
     member.setMemtel(joinForm.getMemtel());
     member.setMemnickname(joinForm.getMemnickname());
     member.setMememail(joinForm.getMememail());
@@ -246,8 +276,22 @@ public class MemberController {
 
   //마이페이지 활동 (게시글) 활동 이동 시 첫 페이지
   @GetMapping("/{id}/board")
-  public String myActivityBoard(@PathVariable("id")Long memno){
+  public String myActivityBoard(@PathVariable("id")Long memno, Model model){
 
+    List<Board> boards = memberSVC.findBoardByMemno(memno);
+    List<Board> list = new ArrayList<>();
+
+    log.info("boards={}",boards);
+
+    boards.stream().forEach(board -> {
+      Board board1 = new Board();
+      BeanUtils.copyProperties(board,board1);
+      list.add(board1);
+    });
+
+    log.info("list={}",list);
+
+    model.addAttribute("list",list);
     return "member/my_page_activity_board";
   }
 
