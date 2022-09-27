@@ -8,26 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>달력화면</title>
   <link rel="stylesheet" href="../../static/resource/css/calendar/calendar.css" th:href="@{/resource/css/calendar/calendar.css}">
-  <style>
-    .existContent {
-      position: relative;
-      /*color: #FFF;*/
-      z-index: 100;
-    }
-    .existContent::before {
-      display: block;
-      position: absolute;
-      left: 15%;
-      width: 70%; height: 60%;
-      z-index: -1;
-      background-color: #D1E4D7;
-      /*transform: translate(-50%,-50%);*/
-      content: '';
-    }
-  </style>
 </head>
 <body>
 <div id="wrapper">
+
   <!-- 헤더 -->
   <header id="header">
     <!-- 탑 메뉴 -->
@@ -55,6 +39,7 @@
       </div>
     </div>
   </header>
+
   <!--메인 컨텐츠-->
   <main id="container">
     <div class="calendar">
@@ -81,6 +66,7 @@
       </div>
     </div>
   </main>
+
   <!-- footer -->
   <footer id="footer">
     <div class="inner">
@@ -95,6 +81,7 @@
     </div>
   </footer>
 </div>
+
   <script src="../../static/resource/js/calendar/calendar.js" th:src="@{/resource/js/calendar/calendar.js}"></script>
   <script>
   // 달력 날짜 클릭 시
@@ -110,11 +97,16 @@
   }
 
   // 현재 달력 조회
-  const yearMonth = document.querySelector('.calendar__selected-month').textContent;
-  const year = yearMonth.substr(0,4);
-  const month = yearMonth.substr(6,2);
+  function getYearMonth() {
+    const yearMonth = document.querySelector('.calendar__selected-month').textContent;
+    const year = yearMonth.substr(0,4);
+    const month = yearMonth.substr(6,2);
 
-  monthly(year, month);
+    monthly(year, month);
+
+  }
+
+  getYearMonth();
 
   // 운동기록 달력에 표시
   function monthly(year, month) {
@@ -129,7 +121,7 @@
             // console.log(res.data);
             for (let i in res.data){
               for (let j in res.data[i]) {
-               // console.log(res.data[i][j].cdRDate.substr(0,10));
+                 // console.log(res.data[i][j].cdRDate.substr(0,10));
                  const selectedDate = res.data[i][j].cdRDate.substr(0,10)
                  const $thisDate = document.querySelectorAll('.calendar__date');
                  for (let date of $thisDate) {

@@ -92,38 +92,28 @@ createCalendar();
 
 // 이전달 달력 가져오기
 const $goPrev = document.querySelector('.calendar__go-prev');
-$goPrev.addEventListener('click', goPrev_h = () => {
+$goPrev.addEventListener('click', goPrev = () => {
     date.setMonth(date.getMonth()-1);
     createCalendar();
-  const yearMonth = document.querySelector('.calendar__selected-month').textContent;
-  const year = yearMonth.substr(0,4);
-  const month = yearMonth.substr(6,2);
 
-  monthly(year, month);
+    getYearMonth();
 });
+
 
 // 다음달 달력 가져오기
 const $goNext = document.querySelector('.calendar__go-next');
-$goNext.addEventListener('click', goNext_h = () => {
+$goNext.addEventListener('click', goNext = () => {
     date.setMonth(date.getMonth()+1);
     createCalendar();
-      const yearMonth = document.querySelector('.calendar__selected-month').textContent;
-      const year = yearMonth.substr(0,4);
-      const month = yearMonth.substr(6,2);
 
-      monthly(year, month);
-
+    getYearMonth();
 });
 
 // 이번달 달력으로 돌아오기
 const $today = document.querySelector('.calendar__go-today');
-$today.addEventListener('click', goToday_h = () => {
+$today.addEventListener('click', goToday = () => {
     date = new Date();
     createCalendar();
-      const yearMonth = document.querySelector('.calendar__selected-month').textContent;
-      const year = yearMonth.substr(0,4);
-      const month = yearMonth.substr(6,2);
 
-      monthly(year, month);
-
+    getYearMonth();
 });
