@@ -1,6 +1,5 @@
 package com.kh.heallo.web;
 
-import com.kh.heallo.web.interceptor.AdminLoginCheckInterceptor;
 import com.kh.heallo.web.interceptor.LoginCheckInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +29,6 @@ public class WebConfig implements WebMvcConfigurer {
         whiteList.add("/facilities/**");
         whiteList.add("/reviews/*/list");
         whiteList.add("/reviews/*/new-images");
-        whiteList.add("/calendar/**");
         whiteList.add("/images/*/*");
         whiteList.add("/members/find_id/**");
         whiteList.add("/members/find_pw/**");

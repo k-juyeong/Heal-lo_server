@@ -34,7 +34,7 @@ public class MemberDAOImplTest {
 
     Long joinedMember = memberDAO.join(member);
     Member findedMember = memberDAO.findById(joinedMember);
-    log.info("findedMember={}",findedMember);
+//    log.info("findedMember={}",findedMember);
   }
 
   @Test

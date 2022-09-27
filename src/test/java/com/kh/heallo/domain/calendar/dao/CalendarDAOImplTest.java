@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -27,10 +29,11 @@ class CalendarDAOImplTest {
     calendar.setMemno(Long.valueOf("3"));
     calendar.setCdContent("운동함");
     calendar.setCdRDate("2022-09-28");
+    calendar.setCdCDate(LocalDateTime.now());
+    calendar.setCdUDate(LocalDateTime.now());
     String rdate = "2022-09-28";
 
     Long savedRecord = calendarDAO.save(rdate, calendar);
-    log.info("savedRecord={}", savedRecord);
   }
 
   @Test
@@ -44,6 +47,7 @@ class CalendarDAOImplTest {
       Assertions.assertThat(foundRecord.get().getCdRDate()).isEqualTo("2022-09-28");
 
     }
+
   }
 
   @Test

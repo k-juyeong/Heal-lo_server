@@ -11,15 +11,9 @@ public interface CalendarDAO {
    * 운동기록 등록
    * @param date 운동기록 날짜
    * @param calendar 등록 내용
-   * @return 등록 건수
+   * @return 등록 번호
    */
   Long save(String date, Calendar calendar);
-
-//  /**
-//   * 운동기록 번호 생성
-//   * @return 생성 번호
-//   */
-//  Long createCdno();
 
   /**
    * 운동기록 조회(1회)

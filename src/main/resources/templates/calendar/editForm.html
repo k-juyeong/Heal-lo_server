@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>운동기록 수정</title>
-  <link rel="stylesheet" href="../../static/resource/css/calendar/addForm.css" th:href="@{/resource/css/calendar/addForm.css}">
+  <link rel="stylesheet" href="../../static/resource/css/calendar/editForm.css" th:href="@{/resource/css/calendar/editForm.css}">
 </head>
 <body>
 <div id="wrapper">
@@ -42,17 +42,11 @@
   <main id="container">
     <form id="editForm" method="post" th:object="${form}">
       <div class="selected__date">
-        <div th:text="*{{cdRDate}}"></div>
-        <!--        <input type="date" id="" name="cdRDate" th:value="*{{cdRDate}}">-->
+        <div class="rdate" th:text="${rdate}"></div>
       </div>
-      <div class="editor">
-        <div class="font__size">글자크기</div>
-        <div class="font__family">글씨체</div>
-        <div class="font__weight">글자굵기</div>
-        <!--        <div class="add__img"><input type="file"></div>-->
-      </div>
+
       <div class="content">
-        <textarea rows="30" name="cdContent" th:text="*{cdContent}"></textarea>
+        <textarea rows="30" id="editor" name="cdContent" th:text="*{cdContent}"></textarea>
       </div>
     </form>
     <div class="btngrp">
@@ -74,6 +68,7 @@
     </div>
   </footer>
 </div>
+<script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
 <script>
     // 수정
     editBtn.addEventListener('click', e=>{
@@ -83,10 +78,74 @@
 
     // 취소
     cancelBtn.addEventListener('click', e=>{
-      const rdate = document.querySelector('.selected__date').value;
+      const rdate = document.querySelector('.rdate').textContent;
       const url = `/calendar/${rdate}`;
       location.href = url;
     });
+
+    // 에디터 툴
+    ClassicEditor
+		.create( document.querySelector( '#editor' ), {
+		 plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
+			toolbar: {
+				items: [
+					'heading',
+					'|',
+					'underline',
+					'bold',
+					'italic',
+					'link',
+					'bulletedList',
+					'numberedList',
+					'todoList',
+					'|',
+					'outdent',
+					'indent',
+					'|',
+					'imageInsert',
+					'imageUpload',
+					'blockQuote',
+					'insertTable',
+					'mediaEmbed',
+					'markdown',
+					'undo',
+					'redo',
+					'|',
+					'highlight',
+					'fontFamily',
+					'fontColor',
+					'fontBackgroundColor',
+					'fontSize',
+					'|',
+					'htmlEmbed',
+					'specialCharacters'
+				]
+			},
+			language: 'en',
+			image: {
+				toolbar: [
+					'imageTextAlternative',
+					'imageStyle:full',
+					'imageStyle:side'
+				]
+			},
+			table: {
+				contentToolbar: [
+					'tableColumn',
+					'tableRow',
+					'mergeTableCells',
+					'tableCellProperties',
+					'tableProperties'
+				]
+			},
+		})
+		.then( editor => {
+
+			window.editor = editor;
+		} )
+		.catch( error => {
+			console.error( error );
+		} );
 
 </script>
 </body>

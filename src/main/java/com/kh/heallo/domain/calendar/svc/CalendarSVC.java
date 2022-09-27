@@ -11,7 +11,7 @@ public interface CalendarSVC {
    * 운동기록 등록
    * @param date 운동기록 날짜
    * @param calendar 등록 내용
-   * @return 등록 건수
+   * @return 등록 번호
    */
   Long save(String date, Calendar calendar);
 

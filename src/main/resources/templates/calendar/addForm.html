@@ -8,6 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>운동기록 등록</title>
   <link rel="stylesheet" href="../../static/resource/css/calendar/addForm.css" th:href="@{/resource/css/calendar/addForm.css}">
+  <style>
+    .ck-editor__editable {height: 500px;}
+    .ck-content {font-size: 12px;}
+  </style>
 </head>
 <body>
 <div id="wrapper">
@@ -41,19 +45,12 @@
 
   <!--메인 컨텐츠-->
   <main id="container">
-    <form id="addForm" method="post" enctype="multipart/form-data">
+    <form id="addForm" method="post" th:object="${form}" enctype="multipart/form-data">
       <div class="selected__date">
-        <input type="date" th:value="${rdate}" name="cdRDate">
+        <input type="date" th:value="${cdRDate}" name="cdRDate">
       </div>
-      <div class="editor">
-        <div class="font__size">글자크기</div>
-        <div class="font__family">글씨체</div>
-        <div class="font__weight">글자굵기</div>
-        <!--        <div class="add__img"><input type="file"></div>-->
-      </div>
-      <div class="content">
-        <textarea rows="30" name="cdContent"></textarea>
-      </div>
+
+      <textarea rows="30" id="editor" th:field="*{cdContent}"></textarea>
     </form>
     <div class="btngrp">
       <button type="button" id="addBtn">저장</button>
@@ -74,12 +71,87 @@
     </div>
   </footer>
 </div>
+<script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
 <script>
   // 저장
     addBtn.addEventListener('click', e=>{
       document.getElementById('addForm').submit();
     });
 
+ // 취소
+    cancelBtn.addEventListener('click', e=>{
+      location.href = '/calendar';
+    });
+
+  // 에디터 툴
+  ClassicEditor
+		.create( document.querySelector( '#editor' ), {
+		 plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
+			toolbar: {
+				items: [
+					'heading',
+					'|',
+					'underline',
+					'bold',
+					'italic',
+					'link',
+					'bulletedList',
+					'numberedList',
+					'todoList',
+					'|',
+					'outdent',
+					'indent',
+					'|',
+					'imageInsert',
+					'imageUpload',
+					'blockQuote',
+					'insertTable',
+					'mediaEmbed',
+					'markdown',
+					'undo',
+					'redo',
+					'|',
+					'highlight',
+					'fontFamily',
+					'fontColor',
+					'fontBackgroundColor',
+					'fontSize',
+					'|',
+					'htmlEmbed',
+					'specialCharacters'
+				]
+			},
+			language: 'en',
+			image: {
+				toolbar: [
+					'imageTextAlternative',
+					'imageStyle:full',
+					'imageStyle:side'
+				]
+			},
+			table: {
+				contentToolbar: [
+					'tableColumn',
+					'tableRow',
+					'mergeTableCells',
+					'tableCellProperties',
+					'tableProperties'
+				]
+			},
+		})
+		.then( editor => {
+
+			window.editor = editor;
+		} )
+		.catch( error => {
+			console.error( error );
+		} );
+
+  // 에디터 크기 고정
+//  CKEDITOR.editorConfig = function(config) {
+//    config.resize_minHeight = 400;
+//    config.resize_maxHeight = 500;
+//  };
 </script>
 </body>
 </html>
