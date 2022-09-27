@@ -126,12 +126,13 @@ function createList(data) {
                         makeElements('button',{class : 'review-update btn-review'},'수정'),
                         makeElements('button',{class : 'review-delete btn-review'},'삭제')) : ''),
                 makeElements('span',{class : 'date'},data.rvcdate),
-                makeElements('p',{class : 'preview-contents'},isMoreview ? previewContents : data.rvcontents,
+                makeElements('div',{class : 'preview-contents'},isMoreview ? previewContents : data.rvcontents,
                     isMoreview ? makeElements('div',{class : 'btn-moreview'},'더보기') : ''),
                 makeElements('div',{class : 'preview-wrap'})));
 
-    reviewCard.querySelector('.inner-star').style.width = data.rvscore*20 + '%';
 
+    //별점 설정
+    reviewCard.querySelector('.inner-star').style.width = data.rvscore*20 + '%';
 
     //더보기 이벤트
     reviewCard.querySelector('.btn-moreview')?.addEventListener('click',(e) => {
@@ -167,9 +168,7 @@ function getReviewList() {
     })
         .then(response => response.json())
         .then(jsonData => {
-
-            //운동시설 별점 세팅
-            getFacilityScore();
+            const $resultCount = document.querySelector('.review-cnt')
 
             //기존노드 삭제
             $reviewLists.innerHTML = '';
@@ -177,26 +176,30 @@ function getReviewList() {
             //최신 업로드 이미지 노드 삭제
             $newImageWrap.innerHTML = '';
 
-            //총 검색 결과 표시
-            const $resultCount = document.querySelector('.review-cnt')
-            $resultCount.textContent = jsonData.data.pagination.totalRec;
+            //운동시설 별점 세팅
+            getFacilityScore();
 
             //최신 업로드 이미지 5개 설정
             setNewReviewImage();
 
-            //검색결과 0이면 기본 메세지
-            if (jsonData.data.totalRec == 0) {
+            if (jsonData.header.code == '00') {
+
+                //총 검색 결과 표시
+                $resultCount.textContent = jsonData.data.pagination.totalRec;
+
+                //목록 생성
+                jsonData.data.reviews.forEach(ele => $reviewLists.appendChild(createList(ele)));
+
+                //페이지네이션 생성
+                const paginationWrap = createPagination(jsonData.data.pagination);
+                $reviewLists.appendChild(paginationWrap);
+
+            } else if (jsonData.header.code == '02') {
+
+                $resultCount.textContent = '0';
                 $reviewLists.innerHTML = createDefault('리뷰가 없습니다. 리뷰를 달아주세요!');
                 return;
             }
-
-            //목록 생성
-            jsonData.data.reviews.forEach(ele => $reviewLists.appendChild(createList(ele)));
-
-            //페이지네이션 생성
-            const paginationWrap = createPagination(jsonData.data.pagination);
-            $reviewLists.appendChild(paginationWrap);
-
         })
         .catch(error => console.log(error));
 }
@@ -227,7 +230,6 @@ function deleteReview(rvno) {
     })
         .then(response => response.json())
         .then(jsonData => {
-            console.log(jsonData)
             getReviewList()
         })
         .catch(error => console.log(error));

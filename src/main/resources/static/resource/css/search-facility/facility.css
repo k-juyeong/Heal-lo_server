@@ -54,7 +54,7 @@ a:hover {color: inherit;}
 .review-lists .review-btn-wrap .btn-review {margin: 0 2px;padding: 4px; font-size: 14px}
 .review-lists .review-card__info .date {padding: 6px; font-size: 12px;}
 .review-lists .review-card__star {position: absolute;top: 0;right: 0;font-size: 1.5em; border-radius: 10px;}
-.review-lists .preview-contents {padding: 22px 62px; height: auto; color: #777777; border-style: none; overflow: hidden;word-break: break-all}
+.review-lists .preview-contents {padding: 22px 62px; border-style: none; word-break: break-all; white-space: pre-wrap;}
 .btn-moreview {position: absolute;right: 0;top: 60px;padding: 6px; border-radius: 12px;border-style: none; background-color: #cee5f6;cursor: pointer;}
 
 /* 이미지 미리보기 */

@@ -1,6 +1,7 @@
 package com.kh.heallo.web.exception;
 
 import com.kh.heallo.web.response.FieldErrorDetail;
+import com.kh.heallo.web.response.ObjectErrorDetail;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.facility.controller.FacilityRestController;
@@ -39,15 +40,26 @@ public class ExceptionHandlerAdvice {
     //ModelAttribute 검증오류 발생 시 호출
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ResponseMsg> ExceptionHandler(BindException e , Locale locale) {
-    List<FieldErrorDetail> errorDetails =  e.getBindingResult().getFieldErrors().stream().map(fieldError -> {
-                FieldErrorDetail fieldErrorDetail = FieldErrorDetail.create(fieldError, messageSource, locale);
-                return fieldErrorDetail;
-            }).collect(Collectors.toList());
+
+        //필드에러 메세지
+        List<FieldErrorDetail> fieldErrorDetails =  e.getBindingResult().getFieldErrors().stream().map(fieldError -> {
+                    FieldErrorDetail fieldErrorDetail = FieldErrorDetail.create(fieldError, messageSource, locale);
+
+                    return fieldErrorDetail;
+                }).collect(Collectors.toList());
+
+        //오브젝트에러 메세지
+        List<ObjectErrorDetail> objectErrorDetails = e.getBindingResult().getGlobalErrors().stream().map(objectError -> {
+            ObjectErrorDetail objectErrorDetail = ObjectErrorDetail.create(objectError, messageSource, locale);
+
+            return objectErrorDetail;
+        }).collect(Collectors.toList());
 
         ResponseMsg responseMsg = new ResponseMsg();
         responseMsg
                 .createHeader(StatusCode.VALIDATION_ERROR)
-                .setData("errors",errorDetails);
+                .setData("objectError",objectErrorDetails)
+                .setData("errors",fieldErrorDetails);
 
         return new ResponseEntity<>(responseMsg, HttpStatus.BAD_REQUEST);
     }

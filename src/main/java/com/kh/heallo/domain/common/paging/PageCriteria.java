@@ -11,7 +11,7 @@ public class PageCriteria {
   private final int PAGE_COUNT_PER_PAGE;  //요청페이지에 보여줄 페이지수
   private int startPage;									//요청페이지의 시작페이지
   private int endPage;										//요청페이지의 종료페이지
-  private long totalRec;									//전체레코드수
+  private Integer totalRec;									//전체레코드수
   private int finalEndPage;								//최종페이지
   private boolean prev;										//이전페이지 보여줄지 여부 판단
   private boolean next;										//다음페이지	보여줄지 여부 판단
@@ -51,7 +51,7 @@ public class PageCriteria {
    * board테이블의 전체레코드수
    * @param totalRec
    */
-  public void setTotalRec(long totalRec) {
+  public void setTotalRec(Integer totalRec) {
     this.totalRec = totalRec;
     this.calculatePaging();
   }

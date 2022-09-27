@@ -145,6 +145,14 @@ public class ReviewRestController {
         LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
         Long memno = loginMember.getMemno();
 
+        //컨텐츠 줄바꿈 횟수 검증
+        int newLine = addReviewForm.getRvcontents().split("\r").length - 1;
+        if (newLine >= 25) {
+            BindException bindException = new BindException(addReviewForm, "addReviewForm");
+            bindException.rejectValue("rvcontents","rvcontents.newLine", new Object[]{"25"},"줄바꿈은 최대 25번 가능합니다.");
+            throw bindException;
+        }
+
         //파일 검증
         if (multipartFiles != null) {
             fileValidator.validate(
@@ -209,6 +217,16 @@ public class ReviewRestController {
                     imgSize
             );
         }
+
+        //컨텐츠 줄바꿈 횟수 검증
+        int newLine = editReviewForm.getRvcontents().split("\r").length - 1;
+        log.info("newLine {}",newLine);
+        if (newLine >= 25) {
+            BindException bindException = new BindException(editReviewForm, "addReviewForm");
+            bindException.rejectValue("rvcontents","rvcontents.newLine", new Object[]{"25"},"줄바꿈은 최대 25번 가능합니다.");
+            throw bindException;
+        }
+
 
         //리뷰등록
         Review review = dtoModifier.getReviewByEditReviewForm(editReviewForm);
