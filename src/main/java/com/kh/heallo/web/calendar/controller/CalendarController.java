@@ -6,6 +6,8 @@ import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
 import com.kh.heallo.web.calendar.dto.AddForm;
 import com.kh.heallo.web.calendar.dto.DayForm;
 import com.kh.heallo.web.calendar.dto.EditForm;
+import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.Session;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -46,7 +48,9 @@ public class CalendarController {
 
   // 운동기록 등록화면
   @GetMapping("/{rdate}/add")
-  public String addForm(@PathVariable("rdate") String cdRDate, Model model) {
+  public String addForm(
+      @PathVariable("rdate") String cdRDate, Model model
+  ) {
     model.addAttribute("cdRDate", cdRDate);
     model.addAttribute("form", new AddForm());
     return "calendar/addForm";
@@ -57,7 +61,8 @@ public class CalendarController {
   public String add(
     @ModelAttribute("form") AddForm addForm,
     BindingResult bindingResult,
-    RedirectAttributes redirectAttributes
+    RedirectAttributes redirectAttributes,
+    HttpServletRequest request
   ) throws IOException {
     // 기본 검증
     if (bindingResult.hasErrors()) {
@@ -68,13 +73,21 @@ public class CalendarController {
     // 오브젝트 검증
     // 첨부파일 & 내용 아무것도 없을 때
 
+    // 회원번호
+    Long memno = 0L;
+    HttpSession session = request.getSession(false);
+    if (session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
+
     Calendar calendarRecord = new Calendar();
     String rdate = addForm.getCdRDate();
     calendarRecord.setCdRDate(rdate);
     calendarRecord.setCdContent(addForm.getCdContent());
 
 
-    calendarSVC.save(rdate, calendarRecord);
+    calendarSVC.save(memno, rdate, calendarRecord);
 
 
     redirectAttributes.addAttribute("rdate", rdate);

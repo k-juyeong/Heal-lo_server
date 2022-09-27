@@ -28,14 +28,14 @@ public class CalendarSVCImpl implements CalendarSVC{
    * @return 등록 건수
    */
   @Override
-  public Long save(String date, Calendar calendar) {
-    return calendarDAO.save(date, calendar);
+  public Long save(Long memno, String date, Calendar calendar) {
+    return calendarDAO.save(memno, date, calendar);
   }
 
 
   @Override
-  public Long save(String date, Calendar calendar, List<MultipartFile> files) {
-    Long cdno = calendarDAO.save(date, calendar);
+  public Long save(Long memno, String date, Calendar calendar, List<MultipartFile> files) {
+    Long cdno = calendarDAO.save(memno, date, calendar);
     uploadFileSVC.fileUpload(AttachCode.CD_CODE, cdno, files);
 
     return cdno;

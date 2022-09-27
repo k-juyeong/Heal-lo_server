@@ -13,9 +13,9 @@ public interface CalendarSVC {
    * @param calendar 등록 내용
    * @return 등록 번호
    */
-  Long save(String date, Calendar calendar);
+  Long save(Long memno, String date, Calendar calendar);
 
-  Long save(String date, Calendar calendar, List<MultipartFile> files);
+  Long save(Long memno, String date, Calendar calendar, List<MultipartFile> files);
 
   /**
    * 운동기록 조회(1회)

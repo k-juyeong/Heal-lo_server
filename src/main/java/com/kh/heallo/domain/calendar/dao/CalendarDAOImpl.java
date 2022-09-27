@@ -26,10 +26,10 @@ public class CalendarDAOImpl implements CalendarDAO{
 
   // 등록
   @Override
-  public Long save(String date, Calendar calendar) {
+  public Long save(Long memno, String date, Calendar calendar) {
     StringBuffer sql = new StringBuffer();
     sql.append("insert into calendar (cdno, memno, cdContent, cdrdate, cdcdate, cdudate) ");
-    sql.append("values (calendar_cdno_seq.nextval, 2, ?, ?, sysdate, sysdate) ");
+    sql.append("values (calendar_cdno_seq.nextval, ?, ?, ?, sysdate, sysdate) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -38,8 +38,9 @@ public class CalendarDAOImpl implements CalendarDAO{
       @Override
       public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
         PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"cdno"});
-        pstmt.setString(1, calendar.getCdContent());
-        pstmt.setString(2, calendar.getCdRDate());
+        pstmt.setLong(1, calendar.getMemno());
+        pstmt.setString(2, calendar.getCdContent());
+        pstmt.setString(3, calendar.getCdRDate());
         return pstmt;
       }
     }, keyHolder);
