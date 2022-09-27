@@ -50,7 +50,7 @@
             <p class="grade">평점 높은순</p>
           </div>
         </div>
-        <div class="bookmark" th:each="rec : ${list}">
+        <div id="bookmarkList" class="bookmark" th:each="rec : ${list}">
           <img  th:src="${rec.fcimg}"src="https://cdn.pixabay.com/photo/2016/03/27/23/00/weight-lifting-1284616_960_720.jpg" alt="">
           <ul>
             <div id="flex">
@@ -60,7 +60,7 @@
             <li th:text="${rec.fcaddr}">Lorem ipsum dolor sit amet.</li>
             <li th:text="${rec.fctel}">052-1111-1111</li>
           </ul>
-          <i class="fa-solid fa-heart header__site-icon bookmarkBtn bookmark-btn-color"></i>
+          <i id="heart" class="fa-solid fa-heart header__site-icon bookmarkBtn bookmark-btn-color"></i>
         </div>
       </div>
       <div class="none"></div>
@@ -82,5 +82,33 @@
   </div>  
 
   <script src="../../js/my-page/bookmark.js" th:src="@{/resource/js/my-page/bookmark.js}"></script>
+  <script>
+      const $bookmarkList = document.getElementById('bookmarkList');
+
+      for( let i = 0; i < $bookmarkList.length; i++ ){
+        $bookmarkList[3].addEventListener('click',alerts);
+      }
+
+			function alerts(){
+			  console.log('하트 클릭~!');
+			}
+
+     //즐겨찾기 삭제 (i 태그)
+     //function delete(fcno){
+     //const url = `http://localhost:9080/bookmarks/{fcno}`;
+     //fetch( url,{            //url
+     //  method:'PATCH',        //http method
+     //  headers:{             //http header
+     //    'Content-Type':'application/json',
+     //    'Accept':'application/json'
+     //   },
+     //   body: JSON.stringify(product)  //http body
+     //   }).then(res=>res.json())
+     //     .then(data=>{
+     //       console.log(data);
+     //    })
+     //    .catch(err=>console.log(err));
+     //}
+  </script>
 </body>
 </html>
