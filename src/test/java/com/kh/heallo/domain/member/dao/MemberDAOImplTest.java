@@ -126,4 +126,6 @@ public class MemberDAOImplTest {
     //Assertions.assertThat(reviewByMemno.size()).isEqualTo(1);
 
   }
+
+
 }

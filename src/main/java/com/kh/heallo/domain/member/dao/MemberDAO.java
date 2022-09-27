@@ -79,6 +79,34 @@ public interface MemberDAO {
    * @return        리뷰내용
    */
   List<Review> findReviewByMemno(Long memno, Long rvno);
+
+  /**
+   * 아이디 중복체크
+   * @param memid 아이디
+   * @return 존재하면 true
+   */
+  Boolean dupChkOfMemid(String memid);
+
+  /**
+   * 전화번호 중복체크
+   * @param memtel 아이디
+   * @return 존재하면 true
+   */
+  Boolean dupChkOfMemtel(String memtel);
+
+  /**
+   * 이메일 중복체크
+   * @param mememail 아이디
+   * @return 존재하면 true
+   */
+  Boolean dupChkOfMememail(String mememail);
+
+  /**
+   * 닉네임 중복체크
+   * @param memnickname 닉네임
+   * @return 존재하면 true
+   */
+  Boolean dupChkOfMemnickname(String memnickname);
 }
 
 

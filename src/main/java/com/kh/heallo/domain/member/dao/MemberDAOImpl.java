@@ -240,4 +240,63 @@ public class MemberDAOImpl implements  MemberDAO{
 
     return reviews;
   }
+
+  /**
+   * 아이디 중복체크
+   *
+   * @param memid 아이디
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMemid(String memid) {
+
+    String sql = "select count(memid) from member where memid = ? ";
+
+    Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, memid);
+    return rowCount == 1 ? true : false;
+  }
+
+  /**
+   * 전화번호 중복체크
+   *
+   * @param memtel 아이디
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMemtel(String memtel) {
+
+    String sql = "select count(memtel) from member where memtel = ? ";
+
+    Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, memtel);
+    return rowCount == 1 ? true : false;
+  }
+
+  /**
+   * 이메일 중복체크
+   *
+   * @param mememail 아이디
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMememail(String mememail) {
+
+    String sql = "select count(mememail) from member where mememail = ? ";
+
+    Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, mememail);
+    return rowCount == 1 ? true : false;
+  }
+
+  /**
+   * 닉네임 중복체크
+   *
+   * @param memnickname 닉네임
+   * @return 존재하면 true
+   */
+  @Override
+  public Boolean dupChkOfMemnickname(String memnickname) {
+    String sql = "select count(memnickname) from member where memnickname = ? ";
+
+    Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, memnickname);
+    return rowCount == 1 ? true : false;
+  }
 }
