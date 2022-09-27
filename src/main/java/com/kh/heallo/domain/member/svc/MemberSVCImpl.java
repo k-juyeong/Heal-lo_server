@@ -87,6 +87,19 @@ public class MemberSVCImpl implements MemberSVC{
   }
 
   /**
+   * 비밀번호 찾기
+   *
+   * @param memid    아이디
+   * @param memname  이름
+   * @param mememail 이메일
+   * @return
+   */
+  @Override
+  public Member findPw(String memid, String memname, String mememail) {
+    return memberDAO.findPw(memid,memname,mememail);
+  }
+
+  /**
    * 로그인 계정 작성 리뷰 조회
    *
    * @param memno 회원번호

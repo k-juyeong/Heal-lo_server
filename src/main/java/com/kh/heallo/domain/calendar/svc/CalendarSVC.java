@@ -11,7 +11,7 @@ public interface CalendarSVC {
    * 운동기록 등록
    * @param date 운동기록 날짜
    * @param calendar 등록 내용
-   * @return 등록 건수
+   * @return 등록 번호
    */
   Long save(String date, Calendar calendar);
 
@@ -30,6 +30,13 @@ public interface CalendarSVC {
    * @param calendar 수정 내용
    */
   void update(String date, Calendar calendar);
+  // 운동기록 수정 중 파일 추가
+  void update(String date, Calendar calendar, List<MultipartFile> files);
+
+  // 운동기록 수정 중 파일 삭제
+  void update(String date, Calendar calendar, Long[] deletedFiles);
+  // 운동기록 수정 중 파일 삭제, 파일 추가
+  void update(String date, Calendar calendar, List<MultipartFile> files, Long[] deletedFiles);
 
   /**
    * 운동기록 삭제

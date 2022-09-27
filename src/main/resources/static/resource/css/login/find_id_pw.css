@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-#container {flex-flow: column wrap; justify-content: center; align-items: center;}
+#container {flex-flow: column wrap; justify-content: center; align-items: center; height:700px;}
 #container p {font-size: 2rem; font-weight: 500;}
 
 #container #id {display: flex; flex-direction: column; align-items: center; justify-content: center; height: 600px}
@@ -14,7 +14,7 @@
 #container #id .button button {display: block; width: 80px; font-size: 16px; background-color: #16a085; color: white;}
 
 #container #pw {display: flex; flex-direction: column; align-items: center; height: 600px;}
-#container .container__title2 {text-align: center;}
+#container .container__title2 {text-align: center; margin-top:50px}
 #container .container__pw {display:flex; flex-flow: column; justify-content: center; width: 720px; height:450px; background-color:#ccc; margin-top: 20px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #888;}
 #container #pwIdFont {margin-left: 10px; font-size: 25px;}
 #container #pwNameFont {margin-left: 10px; font-size: 25px;}

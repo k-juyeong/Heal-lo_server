@@ -48,34 +48,34 @@
                 <div class="my-page">
                     <p>마이 페이지</p>
                 </div>
-<!--                <div class="information">-->
-<!--                    <p><a href="" th:href="@{/members/{id}/edit}(id=${ediForm.memno}) ">>나의 정보수정</a></p>-->
-<!--                </div>-->
+                <div class="information">
+                    <p><a href="" th:href="@{/members/{id}/edit(id=${form.memno})}">> 나의 정보수정</a></p>
+                </div>
                 <div class="activity">
-                    <p><a href="">> 나의 활동</a></p>
+                    <p><a href="" th:href="@{/members/{id}/board(id=${form.memno})}">> 나의 활동</a></p>
                 </div>
             </div>
             <div class="myInformation">
                 <label id="name" for="name">이름</label>
-                <input id="name" type="text" name="memname" th:value="${editForm.memname}">
+                <input id="name" type="text" name="memname" th:field="${form.memname}">
 
                 <label id="nname" for="nname">닉네임</label>
-                <input id="nname" type="text" name="memnickname" th:value="${editForm.memnickname}">
+                <input id="nname" type="text" name="memnickname" th:field="${form.memnickname}">
 
                 <label id="id" for="id">아이디</label>
-                <input id="id" type="text" name="memid" th:value="${editForm.memid}" readonly>
+                <input id="id" type="text" name="memid" th:field="${form.memid}" readonly>
 
                 <label id="email" for="email">이메일</label>
-                <input id="email" type="text" name="mememail" th:value="${editForm.mememail}">
+                <input id="email" type="text" name="mememail" th:field="${form.mememail}">
 
                 <label id="changePw" for="changePw">비밀번호 변경</label>
-                <input id="changePw" type="text" name="mempw" th:value="${editForm.mempw}">
+                <input id="changePw" type="text" name="mempw" th:field="${form.mempw}">
 
   <!--              <label id="changePwCh" for="changePwCh">비밀번호 변경확인</label>-->
   <!--              <input id="changePwCh" type="text">-->
 
                 <label id="phoneNb" for="phoneNb">휴대전화 번호</label>
-                <input id="phoneNb" type="text" name="memtel" th:value="${editForm.memtel}">
+                <input id="phoneNb" type="text" name="memtel" th:field="${form.memtel}">
                 <div class="btn">
                   <button id="btnChange">수정완료</button>
                   <button id="btnOut" type="button">탈퇴</button>

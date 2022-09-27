@@ -2,6 +2,9 @@ package com.kh.heallo.domain.calendar.svc;
 
 import com.kh.heallo.domain.calendar.Calendar;
 import com.kh.heallo.domain.calendar.dao.CalendarDAO;
+import com.kh.heallo.domain.uploadfile.AttachCode;
+import com.kh.heallo.domain.uploadfile.FileData;
+import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CalendarSVCImpl implements CalendarSVC{
   private final CalendarDAO calendarDAO;
+  private final UploadFileSVC uploadFileSVC;
 
   /**
    * 운동기록 등록
@@ -32,7 +36,7 @@ public class CalendarSVCImpl implements CalendarSVC{
   @Override
   public Long save(String date, Calendar calendar, List<MultipartFile> files) {
     Long cdno = calendarDAO.save(date, calendar);
-//    uploadFileSVC.fileUpload(AttachCode.CD_CODE, cdno, files);
+    uploadFileSVC.fileUpload(AttachCode.CD_CODE, cdno, files);
 
     return cdno;
   }
@@ -59,6 +63,36 @@ public class CalendarSVCImpl implements CalendarSVC{
     calendarDAO.update(date, calendar);
   }
 
+  @Override
+  public void update(String date, Calendar calendar, List<MultipartFile> files) {
+    // 운동기록 수정
+    calendarDAO.update(date, calendar);
+
+    // 첨부파일 추가
+    uploadFileSVC.fileUpload(AttachCode.CD_CODE, calendar.getCdno(), files);
+  }
+
+  @Override
+  public void update(String date, Calendar calendar, Long[] deletedFiles) {
+    // 운동기록 수정
+    calendarDAO.update(date, calendar);
+
+    // 첨부파일 삭제
+    uploadFileSVC.delete(deletedFiles);
+  }
+
+  @Override
+  public void update(String date, Calendar calendar, List<MultipartFile> files, Long[] deletedFiles) {
+    // 운동기록 수정
+    calendarDAO.update(date, calendar);
+
+    // 첨부파일 추가
+    uploadFileSVC.fileUpload(AttachCode.CD_CODE, calendar.getCdno(), files);
+
+    // 첨부파일 삭제
+    uploadFileSVC.delete(deletedFiles);
+  }
+
   /**
    * 운동기록 삭제
    *
@@ -66,7 +100,31 @@ public class CalendarSVCImpl implements CalendarSVC{
    */
   @Override
   public void del(String date) {
+
+    Optional<Calendar> foundRecord = calendarDAO.findByDate(date);
+    Long cdno = foundRecord.get().getCdno();
+
+    // 첨부파일 있는지 확인
+    List<FileData> foundImagesList = uploadFileSVC.findImages(AttachCode.CD_CODE, cdno);
+
+    // 운동기록 삭제
     calendarDAO.del(date);
+
+
+    // 로컬 파일 삭제
+    if (foundImagesList != null) {
+      Long[] foundImages = foundImagesList.stream()
+          .map(image -> image.getUfno())
+          .toArray(Long[]::new);
+      for (Long ufno : foundImages) {
+//        uploadFileSVC.delete(ufno);
+        log.info("images={}", ufno);
+      }
+//      uploadFileSVC.delete(foundImages);
+    } else {
+      log.info("없음");
+    }
+
   }
 
   /**
@@ -80,4 +138,5 @@ public class CalendarSVCImpl implements CalendarSVC{
   public List<Calendar> monthly(String year, String month) {
     return calendarDAO.monthly(year, month);
   }
+
 }

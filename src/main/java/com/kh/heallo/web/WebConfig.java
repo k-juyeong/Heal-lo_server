@@ -1,13 +1,8 @@
 package com.kh.heallo.web;
 
-import com.kh.heallo.domain.member.dao.MemberDAOImpl;
-import com.kh.heallo.domain.member.svc.MemberSVCImpl;
-import com.kh.heallo.web.interceptor.AdminLoginCheckInterceptor;
 import com.kh.heallo.web.interceptor.LoginCheckInterceptor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -19,7 +14,7 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final LoginCheckInterceptor loginCheckInterceptor;
-    private final AdminLoginCheckInterceptor adminLoginCheckInterceptor;
+//    private final AdminLoginCheckInterceptor adminLoginCheckInterceptor;
 
     //인터셉터 추가
     @Override
@@ -32,13 +27,11 @@ public class WebConfig implements WebMvcConfigurer {
         whiteList.add("/members/join");
         whiteList.add("/members/login");
         whiteList.add("/facilities/**");
-        whiteList.add("/reviews/*/total");
         whiteList.add("/reviews/*/list");
         whiteList.add("/reviews/*/new-images");
-        whiteList.add("/calendar/**");
         whiteList.add("/images/*/*");
-        whiteList.add("/members/find_id_pw/**");
-
+        whiteList.add("/members/find_id/**");
+        whiteList.add("/members/find_pw/**");
         whiteList.add("/boards/**");
 
         //로그인체크 인터셉터
@@ -47,9 +40,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns(whiteList);
 
-        registry.addInterceptor(adminLoginCheckInterceptor)
-                .order(2)
-                .addPathPatterns("/admin/**");
+//        registry.addInterceptor(adminLoginCheckInterceptor)
+//                .order(2)
+//                .addPathPatterns("/admin/**");
     }
 
 }

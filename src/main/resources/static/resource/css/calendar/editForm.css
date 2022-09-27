@@ -16,8 +16,7 @@
     flex-direction: column;
 }
 #container #addForm .selected__date {
-    margin-top: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 #container #addForm .editor {
     display: flex;

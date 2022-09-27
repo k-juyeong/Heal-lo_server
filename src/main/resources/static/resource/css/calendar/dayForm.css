@@ -15,9 +15,17 @@
     display: flex;
     flex-direction: column;
 }
-#container #dayForm .selected__date{
+#container #dayForm .top {
+    display: flex;
+    justify-content: space-between;
+}
+#container #dayForm .top .selected__date{
     font-size: 1.7em;
     margin-bottom: 20px;
+}
+#container #dayForm .top button {
+    background-color: #16a085;
+    color: white;
 }
 #container #dayForm .dates {
     margin-bottom: 20px;
@@ -32,6 +40,11 @@
 #container #dayForm .update__date {
     margin-left: 15px;
     font-size: 1em;
+}
+#container #dayForm .update {
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    border-bottom: 0.5px solid #ddd;
 }
 #container #dayForm .content {
     width: 100%;

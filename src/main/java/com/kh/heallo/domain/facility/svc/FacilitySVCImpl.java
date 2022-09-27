@@ -141,7 +141,6 @@ public class FacilitySVCImpl implements FacilitySVC{
      */
     @Override
     public List<Facility> search(FacilityCriteria criteria) {
-        criteriaFormating(criteria);
 
         return facilityDAO.search(criteria);
     }
@@ -155,7 +154,6 @@ public class FacilitySVCImpl implements FacilitySVC{
      */
     @Override
     public List<AutoComplete> autoComplete(FacilityCriteria criteria, Integer row) {
-        criteriaFormating(criteria);
 
         return facilityDAO.autoComplete(criteria, row);
     }
@@ -168,7 +166,6 @@ public class FacilitySVCImpl implements FacilitySVC{
      */
     @Override
     public Integer getTotalCount(FacilityCriteria criteria) {
-        criteriaFormating(criteria);
 
         return facilityDAO.getTotalCount(criteria);
     }
@@ -194,11 +191,5 @@ public class FacilitySVCImpl implements FacilitySVC{
     public Facility findByFcno(Long fcno) {
 
         return facilityDAO.findByFcno(fcno);
-    }
-
-    private void criteriaFormating(FacilityCriteria criteria) {
-        criteria.setFcaddr(criteria.getFcaddr()+"%");
-        criteria.setFcname(criteria.getFcname()+"%");
-        criteria.setFctype("%"+ criteria.getFctype()+"%");
     }
 }

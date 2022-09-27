@@ -55,6 +55,16 @@ public interface MemberSVC {
   Member findId(String memname, String mememail);
 
   /**
+   * 비밀번호 찾기
+   *
+   * @param memid    아이디
+   * @param memname  이름
+   * @param mememail 이메일
+   * @return
+   */
+  Member findPw(String memid, String memname, String mememail);
+
+  /**
    * 로그인 계정 작성 리뷰 조회
    * @param memno   회원번호
    * @param rvno    리뷰번호

@@ -53,6 +53,7 @@ export default class sweetalert {
                 Swal.fire(
                     '삭제를 완료했습니다.',
                 )
+                console.log("실행")
                 callBack();
             }
         })

@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +34,6 @@ class CalendarDAOImplTest {
     String rdate = "2022-09-28";
 
     Long savedRecord = calendarDAO.save(rdate, calendar);
-//    log.info("saveRecord={}", savedRecord);
   }
 
   @Test
@@ -52,20 +53,33 @@ class CalendarDAOImplTest {
   @Test
   @DisplayName("운동기록 수정")
   void update() {
-    String date = "2022-09-28";
+    Calendar calendar = new Calendar();
+    String rdate = "2022-09-28";
+    calendar.setCdContent("오운완");
+    calendar.setCdUDate(LocalDateTime.now());
 
-
+    calendarDAO.update(rdate, calendar);
+    Optional<Calendar> foundRecord = calendarDAO.findByDate(rdate);
+    Assertions.assertThat(foundRecord.get().getCdContent()).isEqualTo("우운완");
   }
 
   @Test
   @DisplayName("운동기록 삭제")
   void del() {
+    String rdate = "2022-09-28";
 
+    calendarDAO.del(rdate);
+    Optional<Calendar> foundRecord = calendarDAO.findByDate(rdate);
+    Assertions.assertThat(foundRecord.get()).isNull();
   }
 
   @Test
   @DisplayName("운동기록 조회(1달)")
   void monthly() {
+    String year = "2022";
+    String month = "09";
 
+    List<Calendar> monthly = calendarDAO.monthly(year, month);
+    log.info("list of monthly={}", monthly.size());
   }
 }

@@ -69,7 +69,6 @@ class ReviewDAOImplTest {
     void findListByFcno() {
         ReviewCriteria criteria = new ReviewCriteria();
         criteria.setPageNo(1);
-        criteria.setNumOfRow(5);
         criteria.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
         List<Review> reviewList = reviewDAO.findListByFcno(1L, criteria);
         Review foundReview = reviewDAO.findByRvno(review.getRvno());

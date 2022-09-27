@@ -23,5 +23,4 @@ public class Review {
     private Long memno;                   //회원번호
     private List<FileData> imageFiles;   //등록이미지들
     private Member member;
-
 }

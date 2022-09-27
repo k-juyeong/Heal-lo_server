@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewCriteria {
-    private Integer pageNo;         //페이지번호
-    private Integer numOfRow;       //한 페이지 수
-    private String OrderBy;   //정렬기준
+    private String orderBy;   //정렬기준
+    private Integer pageNo;   //페이지번호
+    private Integer startNo;
+    private Integer endNo;
 }

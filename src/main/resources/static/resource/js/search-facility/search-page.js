@@ -16,12 +16,7 @@ const $textInput = document.getElementById('textSearchInput');
 let requstStatus = 'false';
 
 //페이지네이션 설정
-const limitPage = 5;      //  페이지 최대 생성 수
-const onePageNum = 10;    //  1페이지에 최대 목록 수
 let currentPage = 1;          //  현재 페이지
-
-//자동완성 행 개수
-const autoCompleteRowNo = 10;
 
 //검색 조건 저장
 let selectedCgLocaSave = {level1 : '', level2 : ''};
@@ -161,11 +156,8 @@ document.querySelector('.text-input__body').addEventListener('submit',(e) => {
   //임계상태 변경
   requstStatus = false;
 
-  //요청 파라미터 생성
-  const requestPram = createRequestPram();
-
-  //검색시작
-  search(requestPram);
+  //검색
+  search();
 })
 
 //카테고리 선택
@@ -274,13 +266,13 @@ function autoComplete(requestPram) {
   let queryPram = `?fcaddr=${requestPram.loca}`;
   queryPram += `&fctype=${requestPram.type}`;
   queryPram += `&fcname=${requestPram.text}`;
-  queryPram += `&numOfRow=${autoCompleteRowNo}`;
 
   fetch('/facilities/auto-complete' + queryPram, {
     method: 'GET'
   })
       .then(response => response.json())
       .then(jsonData => {
+        console.log(jsonData)
         $acWrap.innerHTML = '';
         if (jsonData.header.code == '00') {
           jsonData.data.autoComplete.map(ele => {
@@ -304,6 +296,8 @@ function autoComplete(requestPram) {
 
 //운동시설 항목 생성
 function createList(itemData) {
+
+  console.log(itemData)
 
   const listWrap =
       makeElements('div', {class: 'searched-lists__item'},
@@ -380,45 +374,45 @@ function createRequestPram() {
     type : selectedTypeCgSave,
     loca : locationValue,
     pageNo : currentPage,
-    numOfRow : onePageNum
   };
 
   return pram;
 }
 
-//결과 수 검색
-function search(requestPram) {
-  const queryPram = `?fcaddr=${requestPram.loca}&fctype=${requestPram.type}&fcname=${requestPram.text}`;
+//검색
+function search() {
+  const requestPram = createRequestPram()
+  const queryPram = `?fcaddr=${requestPram.loca}&fctype=${requestPram.type}&fcname=${requestPram.text}&pageNo=${requestPram.pageNo}`;
 
-  fetch('/facilities/total' + queryPram, {
+  fetch('/facilities/list' + queryPram, {
     method: 'GET'
   })
       .then(response => response.json())
       .then(jsonData => {
         requstStatus = true;
-        currentPage = 1;
 
         //검색결과 체크
-        if (jsonData.data.totalCount == 0) {
+        if (jsonData.data.pagination.totalCount == 0) {
           alert('검색결과가 없습니다.');
           requstStatus = true;
           return;
         }
 
-        //기존 목록 삭제
+        //기존 목록, 페이징 삭제
         $searchedLists.innerHTML = '';
 
         //총 검색 결과 표시
-        document.querySelector('.result-count').textContent = jsonData.data.totalCount;
+        document.querySelector('.result-count').textContent = jsonData.data.pagination.totalRec;
 
-        //전체 결과 수 조회
-        const totalPage = Math.ceil(jsonData.data.totalCount / onePageNum);
+        //목록 생성
+        jsonData.data.facilities.forEach(ele => $searchedLists.appendChild(createList(ele)));
 
         //페이지네이션 생성
-        const paginationWrap = createPagination(totalPage);
-
-        //페이지네이션 추가
+        const paginationWrap = createPagination(jsonData.data.pagination);
         $searchedLists.appendChild(paginationWrap);
+
+        //운동시설 마커 생성
+        mapUtil.makeMarkers(jsonData.data.facilities);
 
         //목록 활성화
         if (!$searchedLists.classList.contains('open-lists')) {
@@ -426,36 +420,6 @@ function search(requestPram) {
         }
       })
       .catch(error => console.log(error))
-}
-
-//페이징 검색
-function searchByPage(requestPram) {
-  const queryPram = `?fcaddr=${requestPram.loca}&fctype=${requestPram.type}&fcname=${requestPram.text}&pageNo=${requestPram.pageNo}&numOfRow=${requestPram.numOfRow}`;
-
-  fetch('/facilities/list' + queryPram, {
-    method : 'GET'
-  })
-      .then(response => response.json())
-      .then(jsonData => {
-        requstStatus = true;
-
-        //이전 목록들 초기화
-        [...$searchedLists.children].filter(ele => ele.classList.contains('searched-lists__item'))
-            .forEach(ele => ele.remove());
-
-        //새 목록 생성
-        const facilityCardList =
-        jsonData.data.facilities
-            .reverse()
-            .forEach(ele => $searchedLists.prepend(createList(ele)));
-        $searchedLists.scrollTop = 0;
-
-        //운동시설 마커 생성
-        mapUtil.makeMarkers(jsonData.data.facilities);
-
-      })
-
-      .catch(error => console.log(error));
 }
 
 //페이지 태그 생성
@@ -471,10 +435,7 @@ function createPagTag(text) {
 }
 
 //페이지네이션 생성
-function createPagination(totalPage) {
-
-  //이전 페이지네이션 삭제
-  $searchedLists.querySelector('.pagination-wrap')?.remove();
+function createPagination(pageInfo) {
 
   //페이지네이션 객체
   const paginationWrap = document.createElement('li');
@@ -485,12 +446,11 @@ function createPagination(totalPage) {
   paginationWrap.appendChild(pagination);
 
   //페이지 설정
-  let pageLv = Math.ceil(currentPage/limitPage);
-  let startIdx = currentPage;
-  let lastIdx = currentPage + limitPage;
+  let startIdx = pageInfo.startPage;
+  let lastIdx = pageInfo.endPage;
 
   //이전버튼 생성
-  if(pageLv != 1) {
+  if(pageInfo.prev) {
 
     //페이지 태그 생성
     const {page,link} = createPagTag('이전');
@@ -498,44 +458,38 @@ function createPagination(totalPage) {
 
     //이전버튼 클릭 이벤트
     link.addEventListener('click', e => {
-      currentPage = limitPage*pageLv - (limitPage*2-1);
-      const paginationWrap = createPagination(totalPage);
-      $searchedLists.appendChild(paginationWrap);
+      currentPage = pageInfo.startPage - pageInfo.page_COUNT_PER_PAGE;
+      search();
     })
   }
 
   //페이지 생성
-  for (startIdx; startIdx < lastIdx && startIdx <= totalPage; startIdx++) {
+  for (startIdx; startIdx <= lastIdx; startIdx++) {
+    console.log(currentPage)
 
     //페이지 태그 생성
     const {page,link} = createPagTag(startIdx);
     pagination.appendChild(page);
 
+    //페이지 클릭 표시
+    if (startIdx == currentPage) {
+      link.classList.add('on');
+    }
+
     // 페이지 클릭 이벤트
     link.addEventListener('click', ({target}) => {
 
-      //임계 설정
-      requstStatus = false;
-
       //현재 페이지 저장
+      console.log(target.textContent + " target")
       currentPage = parseInt(target.textContent);
 
-      //페이징 검색
-      const requestPram = createRequestPram();
-      searchByPage(requestPram);
-
-      //클릭 표시
-      [...paginationWrap.querySelectorAll('a')]
-          .forEach(ele => ele.classList.remove('on'));
-      target.classList.add('on');
+      //검색
+      search();
     });
-
-    //페이징 첫페이지 클릭
-    link.textContent == currentPage && link.click();
   }
 
   //다음버튼 생성
-  if(pageLv != Math.ceil(totalPage/limitPage)) {
+  if(pageInfo.next) {
 
     //페이지 태그 생성
     const {page,link} = createPagTag('다음');
@@ -543,9 +497,8 @@ function createPagination(totalPage) {
 
     //다음버튼 클릭 이벤트
     link.addEventListener('click', e => {
-      currentPage = limitPage*pageLv + 1;
-      const paginationWrap = createPagination(totalPage);
-      $searchedLists.appendChild(paginationWrap);
+      currentPage = pageInfo.endPage + 1;
+      search();
     })
   }
 

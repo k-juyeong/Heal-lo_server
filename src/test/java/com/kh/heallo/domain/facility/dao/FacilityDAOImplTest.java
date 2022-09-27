@@ -29,6 +29,7 @@ class FacilityDAOImplTest {
     void add() {
         facility = new Facility("TEST", "당구장업", ".", "010-1111",
                                     35.121, 121.121, "울산광역시 X", "15151", "정상운영", "#");
+        facility.setRvtotal(0);
         Long connectedFcno = facilityDAO.add(facility);
         facility.setFcno(connectedFcno);
 
@@ -79,7 +80,9 @@ class FacilityDAOImplTest {
     @Test
     @DisplayName("운동시설 조건검색")
     void search() {
-        FacilityCriteria criteria = new FacilityCriteria("울산광역시%","%당구장업%","%TEST%",1,10);
+        FacilityCriteria criteria = new FacilityCriteria(
+                "울산광역시%","%당구장업%","%TEST%",1,1,10
+        );
         List<Facility> searchedList = facilityDAO.search(criteria);
 
         assertThat(searchedList).contains(facility);
@@ -89,7 +92,9 @@ class FacilityDAOImplTest {
     @Test
     @DisplayName("운동시설 조건검색 결과 수")
     void getTotalCount() {
-        FacilityCriteria criteria = new FacilityCriteria("울산광역시%","%당구장업%","%TEST%",1,10);
+        FacilityCriteria criteria = new FacilityCriteria(
+                "울산광역시%","%당구장업%","%TEST%",1,1,10
+        );
         Integer totalCount = facilityDAO.getTotalCount(criteria);
 
         assertThat(totalCount).isEqualTo(1);

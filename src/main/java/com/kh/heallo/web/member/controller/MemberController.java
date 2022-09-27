@@ -2,16 +2,15 @@ package com.kh.heallo.web.member.controller;
 
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
-import com.kh.heallo.web.member.dto.EditForm;
-import com.kh.heallo.web.member.dto.FindIdPwForm;
-import com.kh.heallo.web.member.dto.JoinForm;
-import com.kh.heallo.web.member.dto.LoginForm;
+import com.kh.heallo.domain.review.Review;
+import com.kh.heallo.web.member.dto.*;
 import com.kh.heallo.web.member.session.LoginMember;
-import com.kh.heallo.web.response.ResponseMsg;
+import com.kh.heallo.web.review.dto.ReviewDto;
 import com.kh.heallo.web.session.Session;
+import com.kh.heallo.web.utility.DtoModifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -29,6 +31,8 @@ import java.util.Optional;
 public class MemberController {
 
   private final MemberSVC memberSVC;
+
+  private final DtoModifier dtoModifier;
 
   //회원가입
   @GetMapping("/join")
@@ -109,8 +113,8 @@ public class MemberController {
     HttpSession session = request.getSession(true);
     session.setAttribute(Session.LOGIN_MEMBER.name(), loginMember);
 
-    if (requestURI.equals("/")) {
-      return "index";
+    if (requestURI.equals("/members/login")) {
+      return "redirect:/";
     }
     return "redirect:"+requestURI;
   }
@@ -130,20 +134,17 @@ public class MemberController {
   @GetMapping("/{id}/edit")
   public String findById(@PathVariable("id") Long memno, Model model,HttpServletRequest request){
 
-    //회원 조회
-    if (request.getAttribute(Session.NOT_LOGIN.name()) != null) {
-      ResponseEntity<ResponseMsg> notLoginResponseEntity = (ResponseEntity) request.getAttribute(Session.NOT_LOGIN.name());
-      return String.valueOf(notLoginResponseEntity);
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
     }
 
-    //회원 조회 성공
-    HttpSession session = request.getSession();
-    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-
-    Member findedMember = memberSVC.findById(loginMember.getMemno());
+    Member findedMember = memberSVC.findById(memno);
 
     EditForm editForm = new EditForm();
-    editForm.setMemno(loginMember.getMemno());
+    editForm.setMemno(memno);
     editForm.setMemid(findedMember.getMemid());
     editForm.setMempw(findedMember.getMempw());
     editForm.setMemtel(findedMember.getMemtel());
@@ -151,10 +152,10 @@ public class MemberController {
     editForm.setMememail(findedMember.getMememail());
     editForm.setMemname(findedMember.getMemname());
 
-    log.info("loginMember.getMemno()={}",loginMember.getMemno());
+    log.info("memno={}",memno);
     log.info("editForm={}",editForm);
 
-    model.addAttribute("editForm",editForm);
+    model.addAttribute("form",editForm);
 
     return "member/my_page";
   }
@@ -163,19 +164,15 @@ public class MemberController {
   @PostMapping("/{id}/edit")
   public String update(@PathVariable("id") Long memno, EditForm editForm, HttpServletRequest request){
 
-    //회원 조회
-    if (request.getAttribute(Session.NOT_LOGIN.name()) != null) {
-      ResponseEntity<ResponseMsg> notLoginResponseEntity = (ResponseEntity) request.getAttribute(Session.NOT_LOGIN.name());
-      return String.valueOf(notLoginResponseEntity);
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
     }
 
-    //회원 조회 성공
-    HttpSession session = request.getSession();
-    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-
-
     Member member = new Member();
-    member.setMemno(loginMember.getMemno());
+    member.setMemno(memno);
     member.setMemname(editForm.getMemname());
     member.setMemnickname(editForm.getMemnickname());
     member.setMememail(editForm.getMememail());
@@ -183,12 +180,12 @@ public class MemberController {
     member.setMemtel(editForm.getMemtel());
     member.setMemudate(editForm.getMemudate());
 
-    memberSVC.update(loginMember.getMemno(),member);
+    memberSVC.update(memno,member);
 
     log.info("editForm={}",editForm);
     log.info("member={}",member);
 
-    return "redirect:/members/"+loginMember.getMemno()+"/edit";
+    return "redirect:/members/"+memno+"/edit";
   }
 
   //삭제(탈퇴)
@@ -202,19 +199,19 @@ public class MemberController {
   }
 
   //아이디 찾기 화면
-  @GetMapping("/find_id_pw")
+  @GetMapping("/find_id")
   public String findIdPWForm(){
 
-    return "find_id_pw/find_id_pw";
+    return "find_id_pw/find_id";
   }
 
   //아이디 찾기 처리
-  @PostMapping("/find_id_pw")
-  public String findIdPW(@ModelAttribute("form") FindIdPwForm findIdPwForm, Model model){
+  @PostMapping("/find_id")
+  public String findIdPW(@ModelAttribute("form") FindIdForm findIdForm, Model model){
 
-    FindIdPwForm findId = new FindIdPwForm();
-    findId.setMemname(findIdPwForm.getMemname());
-    findId.setMememail(findIdPwForm.getMememail());
+    FindIdForm findId = new FindIdForm();
+    findId.setMemname(findIdForm.getMemname());
+    findId.setMememail(findIdForm.getMememail());
 
     Member id = memberSVC.findId(findId.getMemname(), findId.getMememail());
     findId.setMemid(id.getMemid());
@@ -224,11 +221,27 @@ public class MemberController {
     return "find_id_pw/success_find_id";
   }
 
-  //비밀번호 변경 화면
-  @GetMapping("/find_id_pw/set_pw")
-  public String setPwForm(){
+  //비밀번호
+  @GetMapping("/find_pw")
+  public String findIdPWForm2(){
 
-    return "find_id_pw/change_pw";
+    return "find_id_pw/find_pw";
+  }
+
+  @PostMapping("/find_pw")
+  public String findPw(@ModelAttribute("form")FindPwForm findPwForm, Model model){
+
+    FindPwForm findPw = new FindPwForm();
+    findPw.setMemid(findPwForm.getMemid());
+    findPw.setMemname(findPwForm.getMemname());
+    findPw.setMememail(findPwForm.getMememail());
+
+    Member pw = memberSVC.findPw(findPw.getMemid(), findPw.getMemname(), findPw.getMememail());
+    findPw.setMempw(pw.getMempw());
+
+    log.info("findPw={}", findPw);
+    model.addAttribute("form", findPw);
+    return "find_id_pw/success_find_pw";
   }
 
   //마이페이지 활동 (게시글) 활동 이동 시 첫 페이지
@@ -247,10 +260,31 @@ public class MemberController {
 
   //마이페이지 활동 (리뷰)
   @GetMapping("/{id}/review")
-  public String myActivityReview(@PathVariable("id")Long memno, Long rvno){
+  public String myActivityReview(@PathVariable("id")Long memno, Long rvno,Model model){
 
-    //List<Review> reviews = memberSVC.findReviewByMemno(memno,rvno);
+    List<Review> reviews = memberSVC.findReviewByMemno(memno,rvno);
+    List<Review> list = new ArrayList<>();
 
+    log.info("reviews={}",reviews);
+
+    List<ReviewDto> reviewDtoList = reviews.stream().map(review -> {
+      ReviewDto reviewDto = new ReviewDto();
+      BeanUtils.copyProperties(review, reviewDto);
+
+      return reviewDto;
+    }).collect(Collectors.toList());
+
+
+    reviews.stream().forEach(review->{
+      log.info("review={}",review);
+      Review review1 = new Review();
+      BeanUtils.copyProperties(review,review1);
+      list.add(review1);
+    });
+
+    log.info("list={}",reviewDtoList);
+
+    model.addAttribute("list", reviewDtoList);
     return "member/my_page_activity_review";
   }
 

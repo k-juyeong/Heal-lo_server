@@ -24,6 +24,9 @@ public class DtoModifier {
     public FacilityCriteria getFacilityCriteria(FacilityCriteriaDto facilityCriteriaDto) {
         FacilityCriteria criteria = new FacilityCriteria();
         BeanUtils.copyProperties(facilityCriteriaDto,criteria);
+        criteria.setFcaddr(criteria.getFcaddr()+"%");
+        criteria.setFcname(criteria.getFcname()+"%");
+        criteria.setFctype("%"+ criteria.getFctype()+"%");
 
         return criteria;
     }

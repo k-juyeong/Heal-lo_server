@@ -172,6 +172,37 @@ public class MemberDAOImpl implements  MemberDAO{
   }
 
   /**
+   * 비밀번호 찾기
+   *
+   * @param memid    아이디
+   * @param memname  이름
+   * @param mememail 이메일
+   * @return
+   */
+  @Override
+  public Member findPw(String memid, String memname, String mememail) {
+    StringBuffer sql = new StringBuffer();
+
+    log.info(memid);
+    log.info(memname);
+    log.info(mememail);
+
+    sql.append(" select mempw ");
+    sql.append("  from member ");
+    sql.append(" where memid = ? ");
+    sql.append("   and memname = ? ");
+    sql.append("   and mememail = ? ");
+
+    Member findPw = null;
+    try{
+      findPw = jdbcTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Member.class),memid, memname, mememail);
+    }catch (DataAccessException e) {
+      log.info("찾고자하는 회원이 없습니다={}",memid, memname,mememail);
+    }
+    return findPw;
+  }
+
+  /**
    * 로그인 계정 작성 리뷰 조회
    * @param memno   회원번호
    * @param rvno    리뷰번호
@@ -181,9 +212,9 @@ public class MemberDAOImpl implements  MemberDAO{
   public List<Review> findReviewByMemno(Long memno, Long rvno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append(" select R.RVCONTENTS, R.RVCDATE, R.RVSCORE ");
-    sql.append("   from  MEMBER M, REVIEW R ");
-    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append(" select review.RVCONTENTS rvcontents, review.RVCDATE rvcdate, review.RVSCORE  rvscore");
+    sql.append("   from  member, review ");
+    sql.append("  where  member.MEMNO = review.MEMNO ");
 
     List<Review> reviews = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class));
 

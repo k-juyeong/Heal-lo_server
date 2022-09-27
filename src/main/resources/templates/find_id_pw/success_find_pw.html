@@ -44,12 +44,11 @@
       <main id="container">
         <div th:object="${form}">
           <div id="idText">
-              <p id='seccessId'>아이디 찾기완료!</p>
-              <p id='seccessIdSub'>회원님의 정보와 일치하는 아이디입니다.</p>
-              <div id="id" th:name="form.memid" th:text="*{memid}"></div>
+              <p id='seccessId'>비밀번호 찾기완료!</p>
+              <p id='seccessIdSub'>회원님의 정보와 일치하는 비밀번호입니다.</p>
+              <div id="id" th:name="form.mempw" th:text="*{mempw}"></div>
               <div class="btn">
                 <button class="btn__login"><a href="" th:href="@{/members/login}">로그인하기</a></button>
-                <button class="btn__pw"><a href="" th:href="@{/members/find_pw}">비밀번호 찾기</a></button>
              </div>
           </div>
         </div>
