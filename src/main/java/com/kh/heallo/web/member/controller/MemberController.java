@@ -1,5 +1,6 @@
 package com.kh.heallo.web.member.controller;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
 import com.kh.heallo.domain.review.Review;
@@ -246,8 +247,22 @@ public class MemberController {
 
   //마이페이지 활동 (게시글) 활동 이동 시 첫 페이지
   @GetMapping("/{id}/board")
-  public String myActivityBoard(@PathVariable("id")Long memno){
+  public String myActivityBoard(@PathVariable("id")Long memno, Model model){
 
+    List<Board> boards = memberSVC.findBoardByMemno(memno);
+    List<Board> list = new ArrayList<>();
+
+    log.info("boards={}",boards);
+
+    boards.stream().forEach(board -> {
+      Board board1 = new Board();
+      BeanUtils.copyProperties(board,board1);
+      list.add(board1);
+    });
+
+    log.info("list={}",list);
+
+    model.addAttribute("list",list);
     return "member/my_page_activity_board";
   }
 

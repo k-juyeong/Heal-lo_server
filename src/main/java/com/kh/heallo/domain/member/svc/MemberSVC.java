@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.member.svc;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.review.Review;
 
@@ -63,6 +64,13 @@ public interface MemberSVC {
    * @return
    */
   Member findPw(String memid, String memname, String mememail);
+
+  /**
+   * 로그인 계정 작성 게시글 조회
+   * @param memno 회원번호
+   * @return
+   */
+  List<Board> findBoardByMemno(Long memno);
 
   /**
    * 로그인 계정 작성 리뷰 조회

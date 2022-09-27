@@ -1,6 +1,7 @@
 package com.kh.heallo.domain.bookmark.dao;
 
 import com.kh.heallo.domain.bookmark.Bookmark;
+import com.kh.heallo.domain.facility.Facility;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,4 +38,10 @@ public interface BookmarkDAO {
      * @return 결과 수
      */
     Integer deleteBookmark(Long bmno);
+
+    /**
+     * 즐겨찾기 페이지 리스트
+     * @return
+     */
+    List<Facility> bookmarkPageList();
 }

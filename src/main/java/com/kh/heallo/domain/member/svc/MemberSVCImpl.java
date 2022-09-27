@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.member.svc;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.dao.MemberDAO;
 import com.kh.heallo.domain.review.Review;
@@ -97,6 +98,17 @@ public class MemberSVCImpl implements MemberSVC{
   @Override
   public Member findPw(String memid, String memname, String mememail) {
     return memberDAO.findPw(memid,memname,mememail);
+  }
+
+  /**
+   * 로그인 계정 작성 게시글 조회
+   *
+   * @param memno 회원번호
+   * @return
+   */
+  @Override
+  public List<Board> findBoardByMemno(Long memno) {
+    return memberDAO.findBoardByMemno(memno);
   }
 
   /**

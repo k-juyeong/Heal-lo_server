@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.member.dao;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.review.Review;
 import lombok.extern.slf4j.Slf4j;
@@ -90,8 +91,26 @@ public class MemberDAOImplTest {
   }
 
   @Test
-  @DisplayName("리뷰 내용 불러오기")
+  @DisplayName("작성한 게시글 불러오기")
   @Order(5)
+  void boardList(){
+    Long memno = 21L;
+
+    List<Board> boards = memberDAO.findBoardByMemno(memno);
+
+    log.info("게시글:{}",boards.size());
+
+    for(Board b : boards){
+      log.info("게시글:{}",b);
+    }
+
+    //Assertions.assertThat(reviewByMemno.size()).isEqualTo(1);
+
+  }
+
+  @Test
+  @DisplayName("리뷰 내용 불러오기")
+  @Order(6)
   void reviewList(){
     Long memno = 21L;
     Long rvno = 1L;

@@ -1,6 +1,7 @@
 package com.kh.heallo.domain.bookmark.svc;
 
 import com.kh.heallo.domain.bookmark.Bookmark;
+import com.kh.heallo.domain.facility.Facility;
 
 import java.util.List;
 
@@ -20,5 +21,11 @@ public interface BookmarkSVC {
      * @return 상태값
      */
     Boolean replace(Long memno, Long fcno);
+
+    /**
+     * 즐겨찾기 페이지 리스트
+     * @return
+     */
+    List<Facility> bookmarkPageList();
 
 }

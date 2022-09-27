@@ -71,15 +71,10 @@
             <p class="dateline">작성일</p>
             <p class="hits">조회</p>
           </div>
-          <div class="substance">
-            <a href="#"><p class="substance-notice">Lorem ipsum dolor sit amet.</p></a>
-            <p class="substance-dateline">2022.08.13</p>
-            <p class="substance-hits">10</p>
-          </div>
-          <div class="substance">
-            <a href="#"><p class="substance-notice">Lorem ipsum dolor sit amet.</p></a>
-            <p class="substance-dateline">2022.08.13</p>
-            <p class="substance-hits">10</p>
+          <div class="substance" th:each="rec : ${list}">
+            <a href="#"><p class="substance-notice" th:text="${rec.bdtitle}">Lorem ipsum dolor sit amet.</p></a>
+            <p class="substance-dateline" th:text="${{rec.bdcdate}}">2022.08.13</p>
+            <p class="substance-hits" th:text="${rec.bdview}">10</p>
           </div>
         </div>
         </div>

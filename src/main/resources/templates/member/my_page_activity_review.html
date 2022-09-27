@@ -75,8 +75,8 @@
             <p class="substance-dateline" th:text="${rec.rvcdate}">2022.08.13</p>
             <p class="substance-star" th:text="${rec.rvscore}">3.5</p>
             <div class="button-box">
-              <button class="editBtn">수정</button>
-              <button class="delBtn">삭제</button>
+              <button id="editBtn"><a id="toEditRv" href="" th:href="@{/reviews/{rvno}/edit(rvno=${rec.rvno})}">수정</a></button>
+              <button id="delBtn"><a id="toDel" href="" th:href="@{/reviews/{rvno}(rvno=${rec.rvno})}">삭제</a></button>
             </div>
           </div>
         </div>

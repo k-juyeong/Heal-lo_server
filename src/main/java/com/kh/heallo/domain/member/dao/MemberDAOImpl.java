@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.member.dao;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.review.Review;
 import lombok.RequiredArgsConstructor;
@@ -203,6 +204,25 @@ public class MemberDAOImpl implements  MemberDAO{
   }
 
   /**
+   * 로그인 계정 작성 게시글 조회
+   *
+   * @param memno 회원번호
+   * @return
+   */
+  @Override
+  public List<Board> findBoardByMemno(Long memno) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append(" select board.BDNO bdno, board.BDTITLE bdtitle, board.BDCDATE bdcdate, board.BDVIEW bdview ");
+    sql.append("   from member, board ");
+    sql.append("  where member.MEMNO = board.MEMNO ");
+
+    List<Board> boards = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class));
+
+    return boards;
+  }
+
+  /**
    * 로그인 계정 작성 리뷰 조회
    * @param memno   회원번호
    * @param rvno    리뷰번호
@@ -212,7 +232,7 @@ public class MemberDAOImpl implements  MemberDAO{
   public List<Review> findReviewByMemno(Long memno, Long rvno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append(" select review.RVCONTENTS rvcontents, review.RVCDATE rvcdate, review.RVSCORE  rvscore");
+    sql.append(" select  member.MEMNO memno, review.RVNO rvno, review.RVCONTENTS rvcontents, review.RVCDATE rvcdate, review.RVSCORE  rvscore ");
     sql.append("   from  member, review ");
     sql.append("  where  member.MEMNO = review.MEMNO ");
 
