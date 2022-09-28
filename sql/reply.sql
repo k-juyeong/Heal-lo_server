@@ -11,7 +11,9 @@
 -- 댓글테이블
   CREATE TABLE REPLY (
 	RPNO        NUMBER(8),
-	BDNO 		NUMBER(8),
+	BDNO 		    NUMBER(8),
+	RPGROUP     NUMBER(10),
+	RPDEPTH     NUMBER(10),
 	MEMNO       NUMBER(8),
 	RPCOMMENT 	CLOB,
 	RPCDATE     timestamp default systimestamp,
@@ -41,5 +43,27 @@
  VALUES (REPLY_RPNO_SEQ.nextval, BOARD_BDNO_SEQ.currval, 1,'댓글내용');
  
  SELECT * FROM REPLY;
-  
 
+-- 댓글 수
+SELECT COUNT(RPNO)
+  FROM REPLY
+ WHERE BDNO=1;
+
+-- 댓글 불러오기
+SELECT *
+  FROM REPLY
+ WHERE BDNO=1;
+
+-- 대댓글작성**
+INSERT INTO REPLY
+    VALUES (REPLY_RPNO_SEQ.NEXTVAL, 1,1(부모댓글),1(들여쓰기), 1, '대댓글', SYSDATE, SYSDATE);
+
+-- 댓글 수정
+UPDATE REPLY
+   SET       RPCOMMENT = '수정댓글',
+            RPUDATE = SYSDATE
+ WHERE  RPNO =1 AND BDNO= 1;
+
+-- 댓글 삭제
+DELETE FROM REPLY
+WHERE RPNO = 1 AND BDNO=1 AND BDCG=1;

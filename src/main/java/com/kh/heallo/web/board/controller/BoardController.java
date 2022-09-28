@@ -1,20 +1,25 @@
 package com.kh.heallo.web.board.controller;
 
 import com.kh.heallo.domain.board.Board;
+import com.kh.heallo.domain.board.dao.BbsFilterCondition;
 import com.kh.heallo.domain.board.svc.BoardSVC;
+import com.kh.heallo.domain.common.paging.FindCriteria;
 import com.kh.heallo.web.board.dto.DetailForm;
 import com.kh.heallo.web.board.dto.EditForm;
 import com.kh.heallo.web.board.dto.SaveForm;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +33,36 @@ public class BoardController {
   private final BoardSVC boardSVC;
 
 
+
+  @Autowired
+  @Qualifier("fc10_5") //동일한 타입의 객체가 여러개있을때 빈이름을 명시적으로 지정해서 주입받을때
+  private FindCriteria fc;
+
   //등록양식
   @GetMapping("/add")
-  public String saveForm(Model model) {
+  public String saveForm( Long memno, Model model,
+                         HttpServletRequest request) {
+
+//     //로그인 여부
+//    HttpSession session2 = request.getSession(false);
+//    if (session2 != null) {
+//      session2.invalidate();
+//    }
+
+//    //회원번호 조회
+//    HttpSession session = request.getSession(false);
+//    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+//      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+//      memno = loginMember.getMemno();
+//    }
+//    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+//    SaveForm saveForm = new SaveForm();
+//    saveForm.setMemno(memno);
+//    saveForm.setMemnickname(loginMember.getMemnickname());
+
+
     model.addAttribute("form", new SaveForm());
+
     return "board/saveForm";
   }
 
@@ -40,7 +71,8 @@ public class BoardController {
   @PostMapping("/add")
   public String add(@Valid @ModelAttribute("form") SaveForm saveForm,
                     BindingResult bindingResult,
-                    RedirectAttributes redirectAttributes){
+                    RedirectAttributes redirectAttributes,
+                    HttpServletRequest request){
     //기본검증
     if(bindingResult.hasErrors()){
       log.info("bindingResult={}", bindingResult);
@@ -144,16 +176,96 @@ public class BoardController {
 
 
   //목록
-  @GetMapping
-  public String findAll(Model model) {
-    List<Board> boards = boardSVC.findAll();
-    List<Board> list = new ArrayList<>();
+  @GetMapping({"",
+      "/{reqPage}",
+      "/{reqPage}//",
+      "/{reqPage}/{searchType}/{keyword}"})
+  public String findAll(
+      @PathVariable(required = false) Optional<Integer> reqPage,
+      @PathVariable(required = false) Optional<String> searchType,
+      @PathVariable(required = false) Optional<String> keyword,
+      @RequestParam(required = false) Optional<String> bdcg,
+      Model model) {
 
-    boards.stream().forEach(board->{
+    log.info("/list 요청됨{},{},{},{}",reqPage,searchType,keyword,bdcg);
+
+    String cate = getCategory(bdcg);
+
+
+    //FindCriteria 값 설정
+    fc.getRc().setReqPage(reqPage.orElse(1)); //요청페이지, 요청없으면 1
+    fc.setSearchType(searchType.orElse(""));  //검색유형
+    fc.setKeyword(keyword.orElse(""));        //검색어
+
+    List<Board> list = null;
+    //게시물 목록 전체
+    if(bdcg == null || StringUtils.isEmpty(cate)) {
+      log.info("1");
+      //검색어 있음
+      if(searchType.isPresent() && keyword.isPresent()){
+        BbsFilterCondition filterCondition = new BbsFilterCondition(
+            "",fc.getRc().getStartRec(), fc.getRc().getEndRec(),
+            searchType.get(),
+            keyword.get());
+        fc.setTotalRec(boardSVC.totalCount(filterCondition));
+        fc.setSearchType(searchType.get());
+        fc.setKeyword(keyword.get());
+        list = boardSVC.findAll(filterCondition);
+        log.info("2");
+        //검색어 없음
+      }else {
+        log.info("3");
+        //총레코드수
+        fc.setTotalRec(boardSVC.totalCount());
+        list = boardSVC.findAll(fc.getRc().getStartRec(), fc.getRc().getEndRec());
+      }
+
+      //카테고리별 목록
+    }else{
+      log.info("4");
+      //검색어 있음
+      if(searchType.isPresent() && keyword.isPresent()){
+        BbsFilterCondition filterCondition = new BbsFilterCondition(
+            bdcg.get(),fc.getRc().getStartRec(), fc.getRc().getEndRec(),
+            searchType.get(),
+            keyword.get());
+        fc.setTotalRec(boardSVC.totalCount(filterCondition));
+        fc.setSearchType(searchType.get());
+        fc.setKeyword(keyword.get());
+        list = boardSVC.findAll(filterCondition);
+        log.info("5");
+        //검색어 없음
+      }else {
+        log.info("6");
+        fc.setTotalRec(boardSVC.totalCount(cate));
+        log.info("{}-{}-{}-{}-{}",cate, fc.getRc().getStartRec(), fc.getRc().getEndRec());
+        list = boardSVC.findAll(cate, fc.getRc().getStartRec(), fc.getRc().getEndRec());
+        log.info("size={}", list.size());
+      }
+    }
+
+
+
+    List<Board> list2 = new ArrayList<>();
+    list.stream().forEach(board->{
+      log.info("red={}",board);
       BeanUtils.copyProperties(board, new DetailForm());
-      list.add(board);
+      list2.add(board);
     });
-    model.addAttribute("list", list);
+    model.addAttribute("list", list2);
+    model.addAttribute("fc",fc);
+    model.addAttribute("category", cate);
+
     return "board/all";
   }
+
+
+
+  //쿼리스트링 카테고리 읽기, 없으면 ""반환
+  private String getCategory(Optional<String> category) {
+    String cate = category.isPresent()? category.get():"";
+    log.info("category={}", cate);
+    return cate;
+  }
+
 }

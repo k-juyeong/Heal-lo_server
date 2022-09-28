@@ -10,6 +10,15 @@
     <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
     
     <th:block th:replace="${link}"></th:block>
+  <style>
+    .board-wrap .board-body{
+      display:grid;
+      grid-template-columns: 100px 300px;
+    }
+
+    .ck-editor__editable {height: 500px;}
+    .ck-content {font-size: 12px;}
+  </style>
 </head>
 
 <body>
@@ -47,10 +56,10 @@
     <main id="container">
       <aside class="title">
         <div class="title__list">
-          <a href="#">자유게시판</a>
-          <a href="#">정보공유방</a>
-          <a href="#">추천글</a>
-          <a href="#">문의하기</a>
+          <a  th:href="@{/boards}">자유게시판</a>
+          <a  th:href="@{/boards/?bdcg=정보공유}">정보공유</a>
+          <a  th:href="@{/boards/?bdcg=추천글}">추천글</a>
+          <a  th:href="@{/boards/?bdcg=문의하기}">문의하기</a>
         </div>
       </aside>
 
@@ -69,48 +78,27 @@
           </div>
 
             <div class="line">
-              <!-- <label for="">카테고리</label> -->
               <label th:for="bdcg">카테고리</label>
               <input type="text" th:field="*{bdcg}" readonly="readonly">
             </div>
+
             <div class="line">
-              <!-- <label for="">제목</label> -->
               <label th:for="bdtitle">제목</label>
               <input type="text" th:field="*{bdtitle}" readonly="readonly">
             </div>
-
 
             <div class="line">
               <label  th:for="bdcdate">작성일</label>
               <input type="text" th:field="*{bdcdate}" readonly="readonly">
             </div>
 
-
-            <!-- <div class="line">
-              <label for="">작성자번호</label>
-              <input type="text" th:field="*{memno}" readonly="readonly">
-            </div> -->
-
             <div class="line">
-              <label th:for="memnickname">닉네임</label>
+              <label th:for="memnickname">작성자</label>
               <input type="text" th:field="*{memnickname}" readonly="readonly">
             </div>
-
-            <!-- <div><label for="">수정일</label></div>
-            <div><input type="text" th:field="*{bdudate}" readonly="readonly"></div>
-
-     -->
-<!-- 
-            <div><label for="">내용</label></div>
-            <div><input type="text" th:field="*{bdcontent}" readonly="readonly"></div> -->
-
             <div>
-              <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}" readonly="readonly"></textarea>
+              <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
             </div>
-
-
-
-
           </form>
         </div>
         <div class="writeBtn_area ">
@@ -118,11 +106,7 @@
           <button type="button" id="deleteBtn" class="btn btn__search">삭제</button>
           <button type="button" id="listBtn" class="btn btn__search">목록</button>
         </div>
-
-
-
       </section>
-
 
 
 
@@ -142,6 +126,8 @@
       </div>
     </footer>
     </div>
+  <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
+
   <script>
 
     //수정이동
@@ -167,6 +153,73 @@
      $listBtn.addEventListener('click', evt=>{
       location.href = '/boards';
      });
+
+
+
+    // 에디터 툴
+    ClassicEditor
+		.create( document.querySelector( '#editor' ), {
+      plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
+			toolbar: {
+				items: [
+					'heading',
+					'|',
+					'underline',
+					'bold',
+					'italic',
+					'link',
+					'bulletedList',
+					'numberedList',
+					'todoList',
+					'|',
+					'outdent',
+					'indent',
+					'|',
+					'imageInsert',
+					'imageUpload',
+					'blockQuote',
+					'insertTable',
+					'mediaEmbed',
+					'markdown',
+					'undo',
+					'redo',
+					'|',
+					'highlight',
+					'fontFamily',
+					'fontColor',
+					'fontBackgroundColor',
+					'fontSize',
+					'|',
+					'htmlEmbed',
+					'specialCharacters'
+				]
+			},
+			language: 'en',
+			image: {
+				toolbar: [
+					'imageTextAlternative',
+					'imageStyle:full',
+					'imageStyle:side'
+				]
+			},
+			table: {
+				contentToolbar: [
+					'tableColumn',
+					'tableRow',
+					'mergeTableCells',
+					'tableCellProperties',
+					'tableProperties'
+				]
+			},
+		})
+		.then( editor => {
+			window.editor = editor;
+			editor.isReadOnly = true;  //읽기모드적용
+		} )
+		.catch( error => {
+			console.error( error );
+		} );
+
 
   </script>
 

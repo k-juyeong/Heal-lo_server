@@ -61,11 +61,13 @@
           </div>
         </div>
         <div class="history">
-          <div class="menu">
-            <p class="notice"><a href="my_page_activity_notice.html">작성한 게시물</a></p>
-            <p class="coment"><a href="my_page_activity_coment.html">댓글</a></p>
-            <p class="review"><a href="my_page_activity_review.html">리뷰</a></p>
-          </div>
+          <form action="" th:method="post" th:object="${form}">
+            <div class="menu">
+              <p class="notice"><a href="my_page_activity_notice.html" th:href="@{/members/{id}/board(id=${form.memno})}">작성한 게시물</a></p>
+              <p class="coment"><a href="my_page_activity_coment.html" th:href="@{/members/{id}/reply(id=${form.memno})}">댓글</a></p>
+              <p class="review"><a href="my_page_activity_review.html" th:href="@{/members/{id}/review(id=${form.memno})}">리뷰</a></p>
+            </div>
+          </form>
           <div class="record">
             <p class="title">제목</p>
             <p class="dateline">작성일</p>

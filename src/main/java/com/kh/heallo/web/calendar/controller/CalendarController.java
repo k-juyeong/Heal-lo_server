@@ -38,10 +38,10 @@ public class CalendarController {
   ) {
 
     // 로그인 여부
-    HttpSession session = request.getSession(false);
-    if (session != null) {
-      session.invalidate();
-    }
+//    HttpSession session = request.getSession(false);
+//    if (session != null) {
+//      session.invalidate();
+//    }
 
     return "calendar/calendarForm";
   }
@@ -49,8 +49,18 @@ public class CalendarController {
   // 운동기록 등록화면
   @GetMapping("/{rdate}/add")
   public String addForm(
-      @PathVariable("rdate") String cdRDate, Model model
+      @PathVariable("rdate") String cdRDate,
+      Model model,
+      HttpServletRequest request
   ) {
+
+//    //회원 번호 조회
+//    HttpSession session = request.getSession(false);
+//    if (session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+//      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+//      Long memno = loginMember.getMemno();
+//    }
+
     model.addAttribute("cdRDate", cdRDate);
     model.addAttribute("form", new AddForm());
     return "calendar/addForm";
@@ -83,11 +93,12 @@ public class CalendarController {
 
     Calendar calendarRecord = new Calendar();
     String rdate = addForm.getCdRDate();
+    calendarRecord.setMemno(memno);
     calendarRecord.setCdRDate(rdate);
     calendarRecord.setCdContent(addForm.getCdContent());
 
 
-    calendarSVC.save(memno, rdate, calendarRecord);
+    calendarSVC.save(calendarRecord.getMemno(), rdate, calendarRecord);
 
 
     redirectAttributes.addAttribute("rdate", rdate);
@@ -98,10 +109,17 @@ public class CalendarController {
   @GetMapping("/{rdate}")
   public String findByDate(
       @PathVariable String rdate,
-      Model model
+      Model model,
+      HttpServletRequest request
   ) {
+
+    // 회원번호 가져오기
+    HttpSession session = request.getSession(false);
+    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+    Long memno = loginMember.getMemno();
+
     DayForm dayForm = new DayForm();
-    Optional<Calendar> foundRecord = calendarSVC.findByDate(rdate);
+    Optional<Calendar> foundRecord = calendarSVC.findByDate(rdate, memno);
     if (!foundRecord.isEmpty()) {
       dayForm.setCdContent(foundRecord.get().getCdContent());
       dayForm.setCdUDate(foundRecord.get().getCdUDate());
@@ -119,10 +137,17 @@ public class CalendarController {
   @GetMapping("/{rdate}/edit")
   public String editForm(
       @PathVariable String rdate,
-      Model model
+      Model model,
+      HttpServletRequest request
   ) {
+
+    // 회원번호 가져오기
+    HttpSession session = request.getSession(false);
+    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+    Long memno = loginMember.getMemno();
+
     EditForm editForm = new EditForm();
-    Optional<Calendar> foundRecord = calendarSVC.findByDate(rdate);
+    Optional<Calendar> foundRecord = calendarSVC.findByDate(rdate, memno);
     if (!foundRecord.isEmpty()) {
       BeanUtils.copyProperties(foundRecord.get(), editForm);
     }
@@ -138,14 +163,20 @@ public class CalendarController {
   public String edit(
       @PathVariable String rdate,
       @ModelAttribute("form") EditForm editForm,
-      Model model
+      Model model,
+      HttpServletRequest request
 //      List<MultipartFile> imageFiles
   ) {
+
+    // 회원번호
+    HttpSession session = request.getSession(false);
+    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+    Long memno = loginMember.getMemno();
 
     Calendar calendarRecord = new Calendar();
     calendarRecord.setCdContent(editForm.getCdContent());
 
-      calendarSVC.update(rdate, calendarRecord);
+    calendarSVC.update(rdate, calendarRecord, memno);
 
     model.addAttribute("form", editForm);
     return "redirect:/calendar/"+rdate;
@@ -153,8 +184,15 @@ public class CalendarController {
 
   // 운동기록 삭제
   @GetMapping("/{rdate}/del")
-  public String del(@PathVariable String rdate) {
-      calendarSVC.del(rdate);
+  public String del(
+      @PathVariable String rdate, HttpServletRequest request
+  ) {
+    // 회원번호
+    HttpSession session = request.getSession(false);
+    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+    Long memno = loginMember.getMemno();
+
+    calendarSVC.del(rdate, memno);
 
     return "redirect:/calendar";
   }

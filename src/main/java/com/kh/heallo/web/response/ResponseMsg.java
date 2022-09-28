@@ -1,13 +1,18 @@
 package com.kh.heallo.web.response;
-import lombok.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
 public class ResponseMsg {
     private Header header;
     private Map<String, Object> data = new HashMap<>();
+    private List<Object> list = new ArrayList<>();
 
     @Data
     @AllArgsConstructor
@@ -25,6 +30,17 @@ public class ResponseMsg {
         data.put(key, value);
         return this;
     }
+
+    public ResponseMsg setData(Object value) {
+        list = (List<Object>) value;
+        return this;
+    }
+
+    public ResponseMsg setData(List<Object> value) {
+        list = value;
+        return this;
+    }
+
 }
 
 

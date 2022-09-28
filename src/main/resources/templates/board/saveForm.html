@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
     <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
-<!--    <th:block th:replace="${link}"></th:block>-->
+    <th:block th:replace="${link}"></th:block>
 
   <style>
     .board-wrap .board-body{
@@ -19,6 +19,8 @@
       font-size:0.8em;
       font-weight:bold;
     }
+    .ck-editor__editable {height: 500px;}
+    .ck-content {font-size: 12px;}
   </style>
 </head>
 
@@ -57,10 +59,10 @@
     <main id="container">
       <aside class="title">
         <div class="title__list">
-          <a href="#">자유게시판</a>
-          <a href="#">정보공유방</a>
-          <a href="#">추천글</a>
-          <a href="#">문의하기</a>
+          <a  th:href="@{/boards}">자유게시판</a>
+          <a  th:href="@{/boards/?bdcg=정보공유}">정보공유</a>
+          <a  th:href="@{/boards/?bdcg=추천글}">추천글</a>
+          <a  th:href="@{/boards/?bdcg=문의하기}">문의하기</a>
         </div>
       </aside>
 
@@ -75,7 +77,7 @@
 
         <div class="board_content">
 
-          <form id="saveForm" action="" th:action th:method="post" th:object="${form}" enctype="multipart/form-data">
+          <form id="saveForm" action="" th:action th:method="post" th:object="${form}" class="writeForm" enctype="multipart/form-data">
 
             <div th:if="${#fields.hasGlobalErrors()}">
               <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
@@ -106,18 +108,11 @@
               <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
               <div class="fieldError" th:errors="*{bdcontent}"></div>
             </div>
-          </form>
 
+          </form>
         </div>
 
-
-
         <div class="writeBtn_area">
-          <!--        <div><label th:for="files">이미지첨부</label></div>-->
-          <!--        <div>-->
-          <!--          <input type="file" multiple="multiple" th:field="*{files}">-->
-          <!--          <div class="fieldError" th:errors="*{files}"></div>-->
-          <!--        </div>-->
           <button type="button" class="btn btn__search" id="saveBtn">등록</button>
         </div>
 
@@ -142,11 +137,78 @@
       </div>
     </footer>
     </div>
+  <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
   <script>
     const $saveBtn = document.getElementById('saveBtn');
     $saveBtn.addEventListener('click', evt=>{
       document.getElementById('saveForm').submit();
     });
+
+
+  // 에디터 툴
+  ClassicEditor
+		.create( document.querySelector( '#editor' ), {
+		 plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
+			toolbar: {
+				items: [
+					'heading',
+					'|',
+					'underline',
+					'bold',
+					'italic',
+					'link',
+					'bulletedList',
+					'numberedList',
+					'todoList',
+					'|',
+					'outdent',
+					'indent',
+					'|',
+					'imageInsert',
+					'imageUpload',
+					'blockQuote',
+					'insertTable',
+					'mediaEmbed',
+					'markdown',
+					'undo',
+					'redo',
+					'|',
+					'highlight',
+					'fontFamily',
+					'fontColor',
+					'fontBackgroundColor',
+					'fontSize',
+					'|',
+					'htmlEmbed',
+					'specialCharacters'
+				]
+			},
+			language: 'en',
+			image: {
+				toolbar: [
+					'imageTextAlternative',
+					'imageStyle:full',
+					'imageStyle:side'
+				]
+			},
+			table: {
+				contentToolbar: [
+					'tableColumn',
+					'tableRow',
+					'mergeTableCells',
+					'tableCellProperties',
+					'tableProperties'
+				]
+			},
+		})
+		.then( editor => {
+
+			window.editor = editor;
+		} )
+		.catch( error => {
+			console.error( error );
+		} );
+
   </script>
 
 <!--  <script>-->

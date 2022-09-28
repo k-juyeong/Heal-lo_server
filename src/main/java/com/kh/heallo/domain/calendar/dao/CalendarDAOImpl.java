@@ -51,17 +51,18 @@ public class CalendarDAOImpl implements CalendarDAO{
 
   // 조회 (날짜 클릭 => 1일 조회)
   @Override
-  public Optional<Calendar> findByDate(String date) {
+  public Optional<Calendar> findByDate(String date, Long memno) {
     StringBuffer sql = new StringBuffer();
 
     // 로그인 후 회원 번호 쿼리 추가
 
     sql.append("select cdcontent, cdrdate, cdcdate, cdudate ");
     sql.append("  from calendar ");
-    sql.append(" where to_char(cdrdate, 'YYYY-MM-DD') = ? ");
+    sql.append(" where to_char(cdrdate, 'YYYY-MM-DD') = ?");
+    sql.append("   and memno = ? ");
 
     try {
-      Calendar selectedCalendar = jt.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Calendar.class), date);
+      Calendar selectedCalendar = jt.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Calendar.class), date, memno);
       return Optional.of(selectedCalendar);
     } catch (EmptyResultDataAccessException e) {
       e.printStackTrace();
@@ -71,33 +72,37 @@ public class CalendarDAOImpl implements CalendarDAO{
 
   // 수정
   @Override
-  public void update(String date, Calendar calendar) {
+  public void update(String date, Calendar calendar, Long memno) {
     StringBuffer sql = new StringBuffer();
     sql.append("update calendar ");
     sql.append("   set cdcontent = ?, ");
     sql.append("       cdudate = sysdate ");
     sql.append(" where to_char(cdrdate, 'YYYY-MM-DD') = ? ");
+    sql.append("   and memno = ?");
 
-    jt.update(sql.toString(), calendar.getCdContent(), date);
+    jt.update(sql.toString(), calendar.getCdContent(), date, memno);
   }
 
   // 삭제
   @Override
-  public void del(String date) {
-    String sql = "delete from CALENDAR where to_char(cdrdate, 'YYYY-MM-DD') = ? ";
+  public void del(String date, Long memno) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("delete from CALENDAR ");
+    sql.append("      where to_char(cdrdate, 'YYYY-MM-DD') = ? ");
+    sql.append("        and memno = ? ");
 
-    jt.update(sql, date);
-
+    jt.update(sql.toString(), date, memno);
   }
 
 
   // 달력 조회 (1달)
   @Override
-  public List<Calendar> monthly(String year, String month) {
+  public List<Calendar> monthly(String year, String month, Long memno) {
     StringBuffer sql = new StringBuffer();
     sql.append("select cdcontent, cdrdate, cdcdate ");
     sql.append("  from calendar ");
-    sql.append( "where to_char(cdrdate, 'YYYY-MM-DD') between ? and ? ");
+    sql.append(" where to_char(cdrdate, 'YYYY-MM-DD') between ? and ? ");
+    sql.append("   and memno = ? ");
 
     // 전체 날짜 구하기
     int selectedYear = Integer.parseInt(year);
@@ -111,6 +116,6 @@ public class CalendarDAOImpl implements CalendarDAO{
     String firstDateOfMonth = yearMonth + "-01";
     String lastDateOfMonth = yearMonth + "-"+ lengthOfMonth;
 
-    return jt.query(sql.toString(), new BeanPropertyRowMapper<>(Calendar.class), firstDateOfMonth, lastDateOfMonth);
+    return jt.query(sql.toString(), new BeanPropertyRowMapper<>(Calendar.class), firstDateOfMonth, lastDateOfMonth, memno);
   }
 }

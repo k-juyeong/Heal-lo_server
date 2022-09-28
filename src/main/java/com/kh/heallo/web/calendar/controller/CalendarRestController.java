@@ -2,8 +2,10 @@ package com.kh.heallo.web.calendar.controller;
 
 import com.kh.heallo.domain.calendar.Calendar;
 import com.kh.heallo.domain.calendar.svc.CalendarSVC;
+import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
+import com.kh.heallo.web.session.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -27,9 +31,18 @@ public class CalendarRestController {
   @GetMapping("/{year}/{month}")
   public ResponseEntity<ResponseMsg> calendar(
     @PathVariable String year,
-    @PathVariable String month
+    @PathVariable String month,
+    HttpServletRequest request
   ) {
-    List<Calendar> monthly = calendarSVC.monthly(year, month);
+    // 회원번호
+    Long memno = 0L;
+    HttpSession session = request.getSession(false);
+    if (session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
+    log.info("memno={}", memno);
+    List<Calendar> monthly = calendarSVC.monthly(year, month, memno);
 
     // Create ResponseEntity
     ResponseMsg responseMsg = new ResponseMsg()
