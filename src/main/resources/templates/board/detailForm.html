@@ -47,10 +47,10 @@
     <main id="container">
       <aside class="title">
         <div class="title__list">
-          <a href="#">자유게시판</a>
-          <a href="#">정보공유방</a>
-          <a href="#">추천글</a>
-          <a href="#">문의하기</a>
+          <a  th:href="@{/boards}">자유게시판</a>
+          <a  th:href="@{/boards/?bdcg=정보공유}">정보공유</a>
+          <a  th:href="@{/boards/?bdcg=추천글}">추천글</a>
+          <a  th:href="@{/boards/?bdcg=문의하기}">문의하기</a>
         </div>
       </aside>
 
@@ -66,6 +66,7 @@
           <div class="line">
             <label for="">게시글번호</label>
             <input type="text" th:field="*{bdno}" readonly="readonly">
+<!--            <input type="text" th:field="*{bdno}" readonly="readonly">-->
           </div>
 
             <div class="line">
@@ -73,45 +74,37 @@
               <label th:for="bdcg">카테고리</label>
               <input type="text" th:field="*{bdcg}" readonly="readonly">
             </div>
+
             <div class="line">
               <!-- <label for="">제목</label> -->
               <label th:for="bdtitle">제목</label>
               <input type="text" th:field="*{bdtitle}" readonly="readonly">
             </div>
 
-
             <div class="line">
               <label  th:for="bdcdate">작성일</label>
               <input type="text" th:field="*{bdcdate}" readonly="readonly">
             </div>
 
-
             <!-- <div class="line">
               <label for="">작성자번호</label>
               <input type="text" th:field="*{memno}" readonly="readonly">
             </div> -->
-
             <div class="line">
               <label th:for="memnickname">닉네임</label>
               <input type="text" th:field="*{memnickname}" readonly="readonly">
             </div>
-
             <!-- <div><label for="">수정일</label></div>
             <div><input type="text" th:field="*{bdudate}" readonly="readonly"></div>
-
      -->
 <!-- 
             <div><label for="">내용</label></div>
             <div><input type="text" th:field="*{bdcontent}" readonly="readonly"></div> -->
-
             <div>
               <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}" readonly="readonly"></textarea>
             </div>
-
-
-
-
           </form>
+
         </div>
         <div class="writeBtn_area ">
           <button type="button" id="updateBtn" class="btn btn__search">수정</button>
@@ -122,7 +115,6 @@
 
 
       </section>
-
 
 
 

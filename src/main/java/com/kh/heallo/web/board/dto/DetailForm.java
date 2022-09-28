@@ -8,14 +8,15 @@ import java.time.LocalDateTime;
 public class DetailForm {
   private String bdcg;
   private Long bdno;
+  private Long no;
   private String bdtitle;
   private String bdcontent;
   private Long memno;
 
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
   private LocalDateTime bdcdate;  //작성일
 
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
   private LocalDateTime bdudate;  //수정일
 
   private String memnickname; //닉네임
