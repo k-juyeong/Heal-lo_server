@@ -10,6 +10,7 @@ public class EditForm {
 
   @NotNull
   private String bdcg;
+  private Long no;
 
   private Long bdno;
 
