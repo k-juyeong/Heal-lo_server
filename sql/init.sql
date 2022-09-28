@@ -4,7 +4,6 @@ drop table Board;
 drop table Calendar;
 drop table review;
 drop table member;
-DROP TABLE REPLY;
 drop table code;
 
 drop sequence member_memno_seq;
@@ -28,6 +27,7 @@ create table code (
 insert into code values('RV000','리뷰','',null,'Y',systimestamp,systimestamp);
 insert into code values('BD000','게시판','',null,'Y',systimestamp,systimestamp);
 insert into code values('CD000','캘린더','',null,'Y',systimestamp,systimestamp);
+
 
 -- 회원
 create table member (
@@ -110,23 +110,41 @@ alter table review add constraint review_rvline_ck check (rvline <= 50);
 -- 리뷰 시퀀스
 create sequence review_rvno_seq;
 
--- 게시판
-CREATE TABLE Board (
-                       BDNO NUMBER(8) PRIMARY KEY,
-                       BDCG NUMBER(10),
-                       BDTITLE VARCHAR2(150),
-                       MEMNO NUMBER(8) REFERENCES Member(memno),
-                       BDCONTENT CLOB,
-                       BDGROUP NUMBER(10) NOT NULL,
-                       BDDEPTH NUMBER(10) NOT NULL,
-                       BDVIEW NUMBER(10),
-                       BDHIT NUMBER(10),
-                       BDCDATE DATE,
-                       BDUDATE DATE
-);
 
--- 게시판 시퀀스
-create sequence board_BDNO_seq;
+
+-- 게시판 글번호 시퀀스
+CREATE SEQUENCE BOARD_BDNO_SEQ START WITH 1
+  INCREMENT BY 1;
+
+-- 게시판 테이블
+ CREATE TABLE BOARD (
+  BDNO          NUMBER(8),
+  BDCG 		      VARCHAR2(20),
+  BDTITLE 		  VARCHAR2(100),
+  MEMNO 	      NUMBER(8),
+  BDCONTENT 	  CLOB,
+  BDVIEW        NUMBER(8)DEFAULT 0,
+  BDHIT         NUMBER(8)DEFAULT 0,
+  BDCDATE       timestamp default systimestamp,
+  BDUDATE       timestamp default systimestamp
+  );
+
+--게시판 제약조건
+ ALTER TABLE BOARD ADD CONSTRAINT BOARD_BDNO_PK PRIMARY KEY (BDNO);
+ ALTER TABLE BOARD ADD CONSTRAINT BOARD_MEMNO_FK FOREIGN KEY (MEMNO)
+      REFERENCES MEMBER(MEMNO);
+ ALTER TABLE BOARD MODIFY BDCG CONSTRAINT BOARD_BDCG_NN NOT NULL;
+ ALTER TABLE BOARD MODIFY BDTITLE CONSTRAINT BOARD_BDTITLE_NN NOT NULL;
+ ALTER TABLE BOARD MODIFY MEMNO CONSTRAINT BOARD_MEMNO_NN NOT NULL;
+ ALTER TABLE BOARD MODIFY BDCONTENT CONSTRAINT BOARD_BDCONTENT_NN NOT NULL;
+ ALTER TABLE BOARD MODIFY BDVIEW CONSTRAINT BOARD_BDVIEW_NN NOT NULL;
+ ALTER TABLE BOARD MODIFY BDHIT CONSTRAINT BOARD_BDHIT_NN NOT NULL;
+ ALTER TABLE BOARD MODIFY BDCDATE CONSTRAINT BOARD_BDCDATE_NN NOT NULL;
+ ALTER TABLE BOARD MODIFY BDUDATE CONSTRAINT BOARD_BDUDATE_NN NOT NULL;
+
+
+
+
 
 -- 캘린더
 CREATE TABLE Calendar (
