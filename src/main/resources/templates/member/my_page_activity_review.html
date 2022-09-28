@@ -53,17 +53,17 @@
               <p>마이 페이지</p>
             </div>
             <div class="information">
-              <p><a href="#">나의 정보수정</a></p>
+              <p><a href="" th:href="@{/members/{id}/edit(id=${session.LOGIN_MEMBER.memno})}">>나의 정보수정</a></p>
             </div>
             <div class="activity">
-              <p><a href="#">> 나의 활동</a></p>
+              <p><a href="" th:href="@{/members/{id}/board(id=${session.LOGIN_MEMBER.memno})}">>나의 활동</a></p>
           </div>
         </div>
         <div class="history">
           <div class="menu">
-            <p class="notice"><a href="my_page_activity_notice.html">작성한 게시물</a></p>
-            <p class="coment"><a href="my_page_activity_coment.html">댓글</a></p>
-            <p class="review"><a href="my_page_activity_review.html">리뷰</a></p>
+            <p class="notice"><a href="" th:href="@{/members/{id}/board(id=${session.LOGIN_MEMBER.memno})}">작성한 게시물</a></p>
+            <p class="coment"><a href="" th:href="@{/members/{id}/reply(id=${session.LOGIN_MEMBER.memno})}">댓글</a></p>
+            <p class="review"><a href="" th:href="@{/members/{id}/review(id=${session.LOGIN_MEMBER.memno})}">리뷰</a></p>
           </div>
           <div class="record">
             <p class="title">내용</p>
