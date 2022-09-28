@@ -6,6 +6,7 @@ import com.kh.heallo.domain.facility.Facility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -30,79 +32,97 @@ public class FacilityDAOImpl implements FacilityDAO{
     @Override
     public boolean contains(Facility facility) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT fcno cnt from facility ");
-        sql.append("          where fcname = ? ");
-        sql.append("            and fcaddr = ? ");
+        sql.append(" SELECT count(*) from facility ");
+        sql.append("          where  fcaddr = ? ");
+        sql.append("          and    fcname = ? ");
 
-        Long fcno = null;
+        Integer count = 0;
         try {
-            fcno = jdbcTemplate.queryForObject(sql.toString(), Long.class, facility.getFcname(), facility.getFcaddr());
-        } catch (DataAccessException e) {
-            log.info("DataAccessException {}", e.getMessage());
+            count += jdbcTemplate.queryForObject(
+                    sql.toString(),
+                    Integer.class,
+                    facility.getFcaddr(),
+                    facility.getFcname()
+            );
+        } catch (Exception e) {
+            log.info("Exception {}", e.getMessage());
+            count += 1;
         }
-        return fcno != null ? true : false;
+        return count == 1 ? true : false;
     }
 
     /**
      * 운동시설 등록
-     * @param facility 운동시설
+     * @param facilityList 운동시설
      * @return 시퀀스 번호
      */
     //등록
     @Override
-    public Long add(Facility facility) {
+    public int[] add(List<Facility> facilityList) {
         String sql = "insert into facility values (facility_fcno_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"fcno"});
-            ps.setString(1, facility.getFcname());
-            ps.setString(2, facility.getFctype());
-            ps.setString(3, facility.getFchomepage());
-            ps.setString(4, facility.getFctel());
-            ps.setDouble(5, facility.getFclat());
-            ps.setDouble(6, facility.getFclng());
-            ps.setString(7, facility.getFcaddr());
-            ps.setString(8, facility.getFcpostcode());
-            ps.setString(9, facility.getFcstatus());
-            ps.setString(10, facility.getFcimg());
-            ps.setDouble(11, facility.getFcscore());
-            return ps;
-        },keyHolder);
+        int[] results = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, facilityList.get(i).getFcname());
+                ps.setString(2, facilityList.get(i).getFctype());
+                ps.setString(3, facilityList.get(i).getFchomepage());
+                ps.setString(4, facilityList.get(i).getFctel());
+                ps.setDouble(5, facilityList.get(i).getFclat());
+                ps.setDouble(6, facilityList.get(i).getFclng());
+                ps.setString(7, facilityList.get(i).getFcaddr());
+                ps.setString(8, facilityList.get(i).getFcpostcode());
+                ps.setString(9, facilityList.get(i).getFcstatus());
+                ps.setString(10, facilityList.get(i).getFcimg());
+                ps.setDouble(11, facilityList.get(i).getFcscore());
+            }
 
-        return Long.valueOf(keyHolder.getKeys().get("fcno").toString());
+            //배치처리할 건수
+            @Override
+            public int getBatchSize() {
+                return facilityList.size();
+            }
+        });
+
+        return results;
     }
 
     /**
      * 운동시설 업데이트
-     * @param facility 운동시설
+     * @param facilityList 운동시설
      * @return 결과 수
      */
     //수정
     @Override
-    public Integer update(Facility facility) {
+    public int[] update(List<Facility> facilityList) {
         StringBuffer sql = new StringBuffer();
         sql.append(" update facility ");
         sql.append("            set   fcname = ?, fctype = ?, fchomepage = ?, fctel = ?,  ");
-        sql.append("                  fclat = ?, fclng = ?, fcaddr = ?, fcpostcode = ?, fcstatus = ? ");
-        sql.append("            where fcname = ? or fcaddr = ? ");
+        sql.append("                  fcpostcode = ?, fcstatus = ? ");
+        sql.append("            where fcaddr = ? or fclat = ? and fclng = ? ");
 
-        Integer resultCount = jdbcTemplate.update(
-                sql.toString(),
-                facility.getFcname(),
-                facility.getFctype(),
-                facility.getFchomepage(),
-                facility.getFctel(),
-                facility.getFclat(),
-                facility.getFclng(),
-                facility.getFcaddr(),
-                facility.getFcpostcode(),
-                facility.getFcstatus(),
-                facility.getFcname(),
-                facility.getFcaddr()
-        );
+        int[] results = jdbcTemplate.batchUpdate(sql.toString(), new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1,facilityList.get(i).getFcname());
+                ps.setString(2,facilityList.get(i).getFctype());
+                ps.setString(3,facilityList.get(i).getFchomepage());
+                ps.setString(4,facilityList.get(i).getFctel());
+                ps.setString(5,facilityList.get(i).getFcpostcode());
+                ps.setString(6,facilityList.get(i).getFcstatus());
+                ps.setString(7,facilityList.get(i).getFcaddr());
+                ps.setDouble(8,facilityList.get(i).getFclat());
+                ps.setDouble(9,facilityList.get(i).getFclng());
+            }
 
-        return resultCount;
+            //배치처리할 건수
+            @Override
+            public int getBatchSize() {
+                return facilityList.size();
+            }
+        });
+
+        return results;
     }
 
     /**

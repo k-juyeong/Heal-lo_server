@@ -33,7 +33,7 @@ class CalendarDAOImplTest {
     calendar.setCdUDate(LocalDateTime.now());
     String rdate = "2022-09-28";
 
-    Long savedRecord = calendarDAO.save(rdate, calendar);
+//    Long savedRecord = calendarDAO.save(rdate, calendar);
   }
 
   @Test

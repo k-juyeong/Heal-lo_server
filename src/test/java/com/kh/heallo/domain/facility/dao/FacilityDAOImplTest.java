@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,13 +28,23 @@ class FacilityDAOImplTest {
     @Test
     @DisplayName("false 운동시설 등록")
     void add() {
-        facility = new Facility("TEST", "당구장업", ".", "010-1111",
-                                    35.121, 121.121, "울산광역시 X", "15151", "정상운영", "#");
-        facility.setRvtotal(0);
-        Long connectedFcno = facilityDAO.add(facility);
-        facility.setFcno(connectedFcno);
+        ArrayList<Facility> facilities = new ArrayList<>();
+        facility = new Facility(
+                "TEST", "당구장업", ".", "010-1111",
+                35.121, 121.121, "울산광역시 X",
+                "15151", "정상운영", "#",0);
+        facilities.add(facility);
+        int[] results = facilityDAO.add(facilities);
 
-        assertThat(connectedFcno).isNotNull();
+        FacilityCriteria criteria = new FacilityCriteria(
+                "울산광역시%","%당구장업%","%TEST%",1,1,10
+        );
+        List<Facility> searchedList = facilityDAO.search(criteria);
+        log.info("add searchedList {}", searchedList);
+
+        facility.setFcno(searchedList.get(0).getFcno());
+
+        assertThat(results[0]).isEqualTo(1);
     }
 
     @Order(2)
@@ -61,9 +72,12 @@ class FacilityDAOImplTest {
     @DisplayName("true 운동시설 업데이트")
     void update() {
         facility.setFcstatus("폐업");
-        Integer resultCount = facilityDAO.update(facility);
+        ArrayList<Facility> facilities = new ArrayList<>();
+        facilities.add(facility);
+        int[] results = facilityDAO.update(facilities);
         Facility foundFacility = facilityDAO.findByFcno(facility.getFcno());
 
+        assertThat(results[0]).isEqualTo(1);
         assertThat(foundFacility.getFcstatus()).isEqualTo("폐업");
     }
 

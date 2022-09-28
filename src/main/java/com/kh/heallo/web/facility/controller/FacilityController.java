@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -31,8 +32,9 @@ public class FacilityController {
     //공공데이터 연동
     @GetMapping("/api")
     public String connect(Model model) {
-        Integer resultCount = facilitySVC.connect();
-        model.addAttribute("resultCount", resultCount);
+        Map<String, Integer> result = facilitySVC.connect();
+        model.addAttribute("addCount", result.get("addCount"));
+        model.addAttribute("updateCount", result.get("updateCount"));
 
         return "search-facility/publicApiStatus";
     }
