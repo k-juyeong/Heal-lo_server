@@ -85,7 +85,7 @@ public class ReviewDAOImpl implements ReviewDAO{
                 review.setFcno(rs.getLong(9));
 
                 Member member = new Member();
-                member.setMemnickname(rs.getString(9));
+                member.setMemnickname(rs.getString(10));
                 review.setMember(member);
 
                 return review;
