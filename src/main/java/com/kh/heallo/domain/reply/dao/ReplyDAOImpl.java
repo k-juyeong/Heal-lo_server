@@ -47,12 +47,11 @@ public class ReplyDAOImpl implements ReplyDAO {
    * @return 댓글 번호
    */
   // 게시글 번호 받기
-  // 멤버 번호 받기
   @Override
-  public Long save(Reply reply) {
+  public Long save(Long memno, Reply reply) {
     StringBuffer sql = new StringBuffer();
     sql.append("INSERT INTO REPLY(RPNO, BDNO,MEMNO,RPCOMMENT) ");
-    sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, BOARD_BDNO_SEQ.currval, 1, ?) ");
+    sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, BOARD_BDNO_SEQ.currval, ?, ?) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -60,7 +59,8 @@ public class ReplyDAOImpl implements ReplyDAO {
       @Override
       public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
         PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"rpno"});
-        pstmt.setString(1, reply.getRpComment());
+        pstmt.setLong(1, memno);
+        pstmt.setString(2, reply.getRpComment());
         return pstmt;
       }
     }, keyHolder);
@@ -76,10 +76,10 @@ public class ReplyDAOImpl implements ReplyDAO {
    */
   // 부모댓글, 들여쓰기 번호 받기
   @Override
-  public Long savePlusReply(Reply reply) {
+  public Long savePlusReply(Long memno, Reply reply) {
     StringBuffer sql = new StringBuffer();
     sql.append("INSERT INTO REPLY ");
-    sql.append("     VALUES (REPLY_RPNO_SEQ.NEXTVAL, 1,1(부모댓글),1(들여쓰기), 1, '대댓글', SYSDATE, SYSDATE) ");
+    sql.append("     VALUES (REPLY_RPNO_SEQ.NEXTVAL, 1,1(부모댓글),1(들여쓰기), ?, '대댓글', SYSDATE, SYSDATE) ");
 
 
 

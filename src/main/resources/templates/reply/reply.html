@@ -6,8 +6,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>달력화면</title>
-  <link rel="stylesheet" href="../../static/resource/css/calendar/calendar.css" th:href="@{/resource/css/calendar/calendar.css}">
+  <title>댓글 연습용</title>
+  <link rel="stylesheet" href="../../static/resource/css/board/reply.css" th:href="@{/resource/css/board/reply.css}">
 </head>
 <body>
 <div id="wrapper">
@@ -42,29 +42,7 @@
 
   <!--메인 컨텐츠-->
   <main id="container">
-    <div class="calendar">
-      <div class="calendar__top">My Calendar</div>
-      <div class="calendar__nav">
-        <div id="pd" class="calendar__selected-month"></div>
-        <div class="calendar__move-month">
-          <div class="calendar__go-prev"></div>
-          <div class="calendar__go-today">today</div>
-          <div class="calendar__go-next"></div>
-        </div>
-      </div>
-      <div class="calendar__main">
-        <div class="calendar__days">
-          <div class="calendar__day">일</div>
-          <div class="calendar__day">월</div>
-          <div class="calendar__day">화</div>
-          <div class="calendar__day">수</div>
-          <div class="calendar__day">목</div>
-          <div class="calendar__day">금</div>
-          <div class="calendar__day">토</div>
-        </div>
-        <div class="calendar__dates"></div>
-      </div>
-    </div>
+
   </main>
 
   <!-- footer -->
@@ -82,8 +60,7 @@
   </footer>
 </div>
 
-  <script src="../../static/resource/js/calendar/calendar.js" th:src="@{/resource/js/calendar/calendar.js}"></script>
-  <script>
+<script>
   // 달력 날짜 클릭 시
   function dateClick(date) {
       const isExisted = date.classList.contains("existContent")
@@ -137,6 +114,9 @@
       })
       .catch(err=>console.log(err));
   }
+
+  // 댓글 목록 조회
+
   </script>
 </body>
 </html>

@@ -16,17 +16,17 @@ public interface FacilityDAO {
 
     /**
      * 운동시설 등록
-     * @param facility 운동시설
+     * @param facilityList 운동시설
      * @return 시퀀스 번호
      */
-    Long add(Facility facility);
+    int[] add(List<Facility> facilityList);
 
     /**
      * 운동시설 업데이트
-     * @param facility 운동시설
+     * @param facilityList 운동시설
      * @return 결과 수
      */
-    Integer update(Facility facility);
+    int[] update(List<Facility> facilityList);
 
     /**
      * 운동시설 삭제

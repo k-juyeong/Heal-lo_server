@@ -17,16 +17,15 @@ public interface ReplyDAO {
    * @param reply 등록할 댓글
    * @return 댓글 번호
    */
-  // 매개변수에 멤버 번호 추가
-  Long save(Reply reply);
+  Long save(Long memno, Reply reply);
 
   /**
+   * 대댓글 등록
    * 대댓글 등록
    * @param reply 등록할 대댓글
    * @return 댓글 번호
    */
-  // 매개변수에 멤버 번호 추가
-  Long savePlusReply(Reply reply);
+  Long savePlusReply(Long memno, Reply reply);
 
   /**
    * 댓글 수정

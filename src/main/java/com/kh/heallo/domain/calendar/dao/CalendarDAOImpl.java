@@ -38,7 +38,7 @@ public class CalendarDAOImpl implements CalendarDAO{
       @Override
       public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
         PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"cdno"});
-        pstmt.setLong(1, calendar.getMemno());
+        pstmt.setLong(1, memno);
         pstmt.setString(2, calendar.getCdContent());
         pstmt.setString(3, calendar.getCdRDate());
         return pstmt;

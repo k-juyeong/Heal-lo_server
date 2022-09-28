@@ -115,7 +115,6 @@ public class ReviewDAOImpl implements ReviewDAO{
         sql.append(" insert into review ");
         sql.append(" values(review_rvno_seq.nextval, ?, ?, ?, sysdate, sysdate, ?, ?) ");
 
-
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement preparedStatement = con.prepareStatement(sql.toString(), new String[]{"rvno"});
@@ -147,7 +146,13 @@ public class ReviewDAOImpl implements ReviewDAO{
         sql.append("         rvudate = sysdate ");
         sql.append(" where review.rvno = ? ");
 
-        return jdbcTemplate.update(sql.toString(), review.getRvcontents(), review.getRvline(), review.getRvscore(), review.getRvno());
+        return jdbcTemplate.update(
+                sql.toString(),
+                review.getRvcontents(),
+                review.getRvline(),
+                review.getRvscore(),
+                review.getRvno()
+        );
     }
 
     /**

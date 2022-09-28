@@ -17,14 +17,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class FacilitySVCImpl implements FacilitySVC{
 
-    private static final int NUM_OF_ROWS = 10000;
+    private static int NUM_OF_ROWS = 6001;
     private final FacilityDAO facilityDAO;
     private final ObjectMapper objectMapper;
 
@@ -33,7 +36,7 @@ public class FacilitySVCImpl implements FacilitySVC{
      * 공공데이터 연동
      */
     @Override
-    public Integer connect() {
+    public Map<String,Integer> connect() {
         String[] exampleImages = new String[]{
                 "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Z3ltfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=60",
                 "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGd5bXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=400&q=60",
@@ -46,45 +49,80 @@ public class FacilitySVCImpl implements FacilitySVC{
                 "https://cdn.pixabay.com/photo/2013/03/09/14/38/gym-91849_960_720.jpg",
                 "https://cdn.pixabay.com/photo/2020/04/03/20/49/gym-5000169_960_720.jpg"
         };
+
         Integer totalCount = Integer.parseInt(String.valueOf(publicConnectApi(1, 2).getResponse().getBody().getTotalCount()));
-        Integer resultCount = 0;
-        for (int i = 0; i < totalCount / NUM_OF_ROWS; i++) {
-            FacilityJson jsonObjectToFacility = publicConnectApi(i+1, NUM_OF_ROWS);
-
-            for (FacilityJson.Response.Body.Items.Item item : jsonObjectToFacility.getResponse().getBody().getItems().getItem()) {
-                if (
-                        item.getFaciStat().equals("폐업") ||
-                                item.getFaciPointX().equals("-") ||
-                                item.getFaciPointY().equals("-") ||
-                                item.getFaciPointX().equals("0") ||
-                                item.getFaciPointY().equals("0") ||
-                                item.getFcobNm().equals("-") ||
-                                item.getFaciRoadAddr1().equals("-") ||
-                                item.getFaciTel().equals("-")
-                ) continue;
-
-                int idx = (int) (Math.random() * 10);
-                Facility facility = new Facility(
-                        item.getFaciNm(),
-                        item.getFcobNm(),
-                        item.getFaciHomepage(),
-                        item.getFaciTel(),
-                        Double.valueOf(item.getFaciPointY()),
-                        Double.valueOf(item.getFaciPointX()),
-                        item.getFaciRoadAddr1(),
-                        item.getFaciRoadPost(),
-                        item.getFaciStat(),
-                        exampleImages[idx]
-                );
-
-                if(!facilityDAO.contains(facility)) facilityDAO.add(facility);
-                else facilityDAO.update(facility);
-
-                resultCount++;
+        while (true) {
+            if (totalCount % NUM_OF_ROWS <= 1) {
+                NUM_OF_ROWS++;
+            } else {
+                break;
             }
         }
 
-        return resultCount;
+        List<Facility> addFacilityList = new ArrayList<>();
+        List<Facility> updateFacilityList = new ArrayList<>();
+        int addCnt = 0;
+        int updateCnt = 0;
+
+        for (int i = 0; i < totalCount / NUM_OF_ROWS; i++) {
+            FacilityJson jsonObjectToFacility = publicConnectApi(i+1, NUM_OF_ROWS);
+            log.info("jsonObjectToFacility {}", jsonObjectToFacility);
+
+            try {
+                for (FacilityJson.Response.Body.Items.Item item : jsonObjectToFacility.getResponse().getBody().getItems().getItem()) {
+                    if (
+                            item.getFaciStat().equals("폐업") ||
+                                    item.getFaciPointX().equals("-") ||
+                                    item.getFaciPointY().equals("-") ||
+                                    item.getFaciPointX().equals("0") ||
+                                    item.getFaciPointY().equals("0") ||
+                                    item.getFcobNm().equals("-") ||
+                                    item.getFaciRoadAddr1().equals("-") ||
+                                    item.getFaciTel().equals("-")
+                    ) continue;
+
+                    int idx = (int) (Math.random() * 10);
+                    Facility facility = new Facility(
+                            item.getFaciNm(),
+                            item.getFcobNm(),
+                            item.getFaciHomepage(),
+                            item.getFaciTel(),
+                            Double.valueOf(item.getFaciPointY()),
+                            Double.valueOf(item.getFaciPointX()),
+                            item.getFaciRoadAddr1(),
+                            item.getFaciRoadPost(),
+                            item.getFaciStat(),
+                            exampleImages[idx],
+                            0
+                    );
+
+                    if(facilityDAO.contains(facility)){
+                        updateFacilityList.add(facility);
+                        log.info("updateitem {}", item.getFaciNm());
+                    } else{
+                        addFacilityList.add(facility);
+                        log.info("additme {}", item.getFaciNm());
+                    }
+                }
+            } catch (Exception e) {
+                log.info("e {}", e.getMessage());
+                i--;
+                continue;
+            }
+
+            facilityDAO.add(addFacilityList);
+            facilityDAO.update(updateFacilityList);
+            addCnt += addFacilityList.size();
+            updateCnt += updateFacilityList.size();
+            addFacilityList.clear();
+            updateFacilityList.clear();
+        }
+
+        HashMap<String, Integer> result = new HashMap<>();
+        result.put("addCount", addCnt);
+        result.put("updateCount", updateCnt);
+
+        return result;
     }
 
     //공공데이터 연동 메서드

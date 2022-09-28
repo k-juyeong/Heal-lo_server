@@ -24,7 +24,7 @@ public class Facility {
 
     public Facility(String fcname, String fctype, String fchomepage, String fctel,
                     double fclat, double fclng, String fcaddr, String fcpostCode,
-                    String fcstatus, String fcimg) {
+                    String fcstatus, String fcimg, Integer rvtotal) {
         this.fcname = fcname;
         this.fctype = fctype;
         this.fchomepage = fchomepage;
@@ -35,5 +35,6 @@ public class Facility {
         this.fcpostcode = fcpostCode;
         this.fcstatus = fcstatus;
         this.fcimg = fcimg;
+        this.rvtotal = rvtotal;
     }
 }

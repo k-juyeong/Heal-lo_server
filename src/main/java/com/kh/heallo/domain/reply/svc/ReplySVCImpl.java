@@ -35,9 +35,9 @@ public class ReplySVCImpl implements ReplySVC{
    * @return 댓글 번호
    */
   @Override
-  public Long save(Reply reply) {
+  public Long save(Long memno, Reply reply) {
 
-    return replyDAO.save(reply);
+    return replyDAO.save(memno, reply);
   }
 
   /**
@@ -47,9 +47,9 @@ public class ReplySVCImpl implements ReplySVC{
    * @return 댓글 번호
    */
   @Override
-  public Long savePlusReply(Reply reply) {
+  public Long savePlusReply(Long memno, Reply reply) {
 
-    return replyDAO.savePlusReply(reply);
+    return replyDAO.savePlusReply(memno, reply);
   }
 
   /**
