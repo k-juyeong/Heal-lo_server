@@ -52,11 +52,12 @@ public class BoardSVCImpl implements BoardSVC{
     return boardDAO.findAll(filterCondition);
   }
 
-
   //조회
   @Override
   public Optional<Board> findByBoardId(Long boardId) {
-    return boardDAO.findByBoardId(boardId);
+    Optional<Board> byBoardId = boardDAO.findByBoardId(boardId);
+    boardDAO.increaseViewCount(boardId);
+    return byBoardId;
   }
 
 

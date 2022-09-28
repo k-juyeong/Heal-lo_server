@@ -82,11 +82,10 @@
                   <th width="320">제목</th>
                   <th width="160">작성자</th>
                   <!--          <th width="100">추천수</th>-->
-                  <!--          <th width="100">조회수</th>-->
+                  <th width="100">조회수</th>
                   <th width="210">작성일</th>
                 </tr>
               </thead>
-
               <tbody th:obejct="${form}">
                 <tr th:each="board:${list}">
                   <td th:text="${board.bdno}"></td>
@@ -99,29 +98,20 @@
                     ></a>
                   </td>
                   <td th:text="${board.memnickname}"></td>
-<!--                                         <td th:text="${board.bdcdate}"></td>-->
+                  <td th:text="${board.bdview}"></td>
                   <td>[[${{board.bdcdate}}]]</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-
-
           <!-- 페이지네이션` -->
           <div class="board__page">
-<!--            <a href="#"><i class="fa-solid fa-angle-left"></i></a>-->
-<!--            <ol>-->
-<!--              <li class="page__num"><a href="#">1</a></li>-->
-<!--              <li class="page__num"><a href="#">2</a></li>-->
-<!--            </ol>-->
-<!--            <a href="#"><i class="fa-solid fa-angle-right"></i></a>-->
-
-
           <th:block th:if="${fc.prev}">
             <a class="bbs-page-item" href=""
                th:href="@{/boards/1/{searchType}/{keyword}(searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}">
-              <i class="fa-solid fa-angle-left"></i>
+<!--              <i class="fa-solid fa-angle-left"></i>-->
+              첫페이지
             </a>
             <a class="bbs-page-item" href=""
                th:href="@{/boards/{reqPage}/{searchType}/{keyword}(reqPage=${fc.startPage-1},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}">
@@ -148,8 +138,10 @@
             </a>
             <a class="bbs-page-item" href=""
                th:href="@{/boards/{reqPage}/{searchType}/{keyword}(reqPage=${fc.finalEndPage},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}">
-              <i class="fa-solid fa-angle-right"></i>
+<!--              <i class="fa-solid fa-angle-right"></i>-->
+              끝페이지
             </a>
+
           </th:block>
 
 
