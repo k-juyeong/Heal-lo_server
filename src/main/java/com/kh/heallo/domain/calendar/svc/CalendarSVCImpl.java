@@ -48,8 +48,8 @@ public class CalendarSVCImpl implements CalendarSVC{
    * @return 조회 내용
    */
   @Override
-  public Optional<Calendar> findByDate(String date) {
-    return calendarDAO.findByDate(date);
+  public Optional<Calendar> findByDate(String date, Long memno) {
+    return calendarDAO.findByDate(date, memno);
   }
 
   /**
@@ -59,14 +59,14 @@ public class CalendarSVCImpl implements CalendarSVC{
    * @param calendar 수정 내용
    */
   @Override
-  public void update(String date, Calendar calendar) {
-    calendarDAO.update(date, calendar);
+  public void update(String date, Calendar calendar, Long memno) {
+    calendarDAO.update(date, calendar, memno);
   }
 
   @Override
   public void update(String date, Calendar calendar, List<MultipartFile> files) {
     // 운동기록 수정
-    calendarDAO.update(date, calendar);
+    calendarDAO.update(date, calendar, calendar.getMemno());
 
     // 첨부파일 추가
     uploadFileSVC.fileUpload(AttachCode.CD_CODE, calendar.getCdno(), files);
@@ -75,7 +75,7 @@ public class CalendarSVCImpl implements CalendarSVC{
   @Override
   public void update(String date, Calendar calendar, Long[] deletedFiles) {
     // 운동기록 수정
-    calendarDAO.update(date, calendar);
+    calendarDAO.update(date, calendar, calendar.getMemno());
 
     // 첨부파일 삭제
     uploadFileSVC.delete(deletedFiles);
@@ -84,7 +84,7 @@ public class CalendarSVCImpl implements CalendarSVC{
   @Override
   public void update(String date, Calendar calendar, List<MultipartFile> files, Long[] deletedFiles) {
     // 운동기록 수정
-    calendarDAO.update(date, calendar);
+    calendarDAO.update(date, calendar, calendar.getMemno());
 
     // 첨부파일 추가
     uploadFileSVC.fileUpload(AttachCode.CD_CODE, calendar.getCdno(), files);
@@ -99,16 +99,16 @@ public class CalendarSVCImpl implements CalendarSVC{
    * @param date 삭제 날짜
    */
   @Override
-  public void del(String date) {
+  public void del(String date, Long memno) {
 
-    Optional<Calendar> foundRecord = calendarDAO.findByDate(date);
+    Optional<Calendar> foundRecord = calendarDAO.findByDate(date, memno);
     Long cdno = foundRecord.get().getCdno();
 
     // 첨부파일 있는지 확인
     List<FileData> foundImagesList = uploadFileSVC.findImages(AttachCode.CD_CODE, cdno);
 
     // 운동기록 삭제
-    calendarDAO.del(date);
+    calendarDAO.del(date, memno);
 
 
     // 로컬 파일 삭제
@@ -135,8 +135,8 @@ public class CalendarSVCImpl implements CalendarSVC{
    * @return
    */
   @Override
-  public List<Calendar> monthly(String year, String month) {
-    return calendarDAO.monthly(year, month);
+  public List<Calendar> monthly(String year, String month, Long memno) {
+    return calendarDAO.monthly(year, month, memno);
   }
 
 }

@@ -22,14 +22,14 @@ public interface CalendarSVC {
    * @param date 조회 날짜
    * @return 조회 내용
    */
-  Optional<Calendar> findByDate(String date);
+  Optional<Calendar> findByDate(String date, Long memno);
 
   /**
    * 운동기록 수정
    * @param date 수정 날짜
    * @param calendar 수정 내용
    */
-  void update(String date, Calendar calendar);
+  void update(String date, Calendar calendar, Long memno);
   // 운동기록 수정 중 파일 추가
   void update(String date, Calendar calendar, List<MultipartFile> files);
 
@@ -42,7 +42,7 @@ public interface CalendarSVC {
    * 운동기록 삭제
    * @param date 삭제 날짜
    */
-  void del(String date);
+  void del(String date, Long memno);
 
 
 
@@ -52,5 +52,5 @@ public interface CalendarSVC {
    * @param month 조회 달 마지막 날
    * @return
    */
-  List<Calendar> monthly(String year, String month);
+  List<Calendar> monthly(String year, String month, Long memno);
 }
