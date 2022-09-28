@@ -10,6 +10,15 @@
     <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
     
     <th:block th:replace="${link}"></th:block>
+  <style>
+    .board-wrap .board-body{
+      display:grid;
+      grid-template-columns: 100px 300px;
+    }
+
+    .ck-editor__editable {height: 500px;}
+    .ck-content {font-size: 12px;}
+  </style>
 </head>
 
 <body>
@@ -117,6 +126,8 @@
       </div>
     </footer>
     </div>
+  <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
+
   <script>
 
     //수정이동
@@ -148,7 +159,7 @@
     // 에디터 툴
     ClassicEditor
 		.create( document.querySelector( '#editor' ), {
-		 plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
+      plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
 			toolbar: {
 				items: [
 					'heading',
@@ -211,7 +222,6 @@
 
 
   </script>
-  <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
 
 
 <!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->

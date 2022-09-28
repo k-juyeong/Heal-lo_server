@@ -67,7 +67,6 @@ public class BoardDAOImpl implements BoardDAO{
   }
 
 
-
   @Override
   public List<Board> findAll(int startRec, int endRec) {
     StringBuffer sql = new StringBuffer();
@@ -156,7 +155,6 @@ public class BoardDAOImpl implements BoardDAO{
     sql.append("  from board B, member M ");
     sql.append(" where M.memno=B.memno and B.bdno= ? ");
 
-
     try {
       Board board = jt.queryForObject(
           sql.toString(),
@@ -167,7 +165,6 @@ public class BoardDAOImpl implements BoardDAO{
       return Optional.empty();
     }
   }
-
 
   //수정
   @Override
@@ -180,6 +177,7 @@ public class BoardDAOImpl implements BoardDAO{
     sql.append("       bdcontent = ?, ");
     sql.append("       bdudate = systimestamp ");
     sql.append(" where bdno = ? ");
+
 
     int affectedRow = jt.update(sql.toString(),
         board.getBdcg(),board.getMemno(), board.getBdtitle(), board.getBdcontent(),BoardId);

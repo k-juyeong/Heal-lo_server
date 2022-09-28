@@ -65,6 +65,7 @@ public class BoardSVCImpl implements BoardSVC{
   public void update(Long boardId, Board board) {
     boardDAO.update(boardId, board);
   }
+
   @Override
   public void update(Long BoardId, Board board, List<MultipartFile> files) {
     boardDAO.update(board.getBdno(), board);

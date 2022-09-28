@@ -19,6 +19,8 @@
       font-size:0.8em;
       font-weight:bold;
     }
+       .ck-editor__editable {height: 500px;}
+    .ck-content {font-size: 12px;}
   </style>
 </head>
 
@@ -94,16 +96,15 @@
           </div>
 
           <div class="line">
-            <label th:for="memnickname">작성자</label>
-            <input type="text" th:field="*{memnickname}" readonly>
-            <div class="fieldError" th:errors="*{memnickname}" ></div>
+            <label th:for="memno">작성자</label>
+            <input type="text" th:field="*{memno}" readonly>
+            <div class="fieldError" th:errors="*{memno}" ></div>
           </div>
 
           <div class="line">
             <label th:for="bdno">게시글번호</label>
             <input type="text" th:field="*{bdno}" readonly>
           </div>
-
 
           <div>
             <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
@@ -139,7 +140,7 @@
     </div>
   </footer>
 </div>
-
+<script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
 <script>
     //수정완료
     const $updateBtn = document.getElementById('updateBtn');
@@ -222,7 +223,6 @@
 		} );
 
   </script>
-<script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
 
 <!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->
 <!--    <script src="../../static/resource/js/template/layout-sub.js" th:src="@{/resource/js/template/layout-sub.js}"></script>-->
