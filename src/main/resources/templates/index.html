@@ -54,10 +54,10 @@
               <li>
                 커뮤니티
                 <ul>
-                  <li><a href="#">자유게시판</a></li>
-                  <li><a href="#">정보공유판</a></li>
-                  <li><a href="#">추천글</a></li>
-                  <li><a href="#">문의하기</a></li>
+                  <li><a href="" th:href="@{/boards/?bdcg=자유게시판}">자유게시판</a></li>
+                  <li><a href="" th:href="@{/boards/?bdcg=정보공유}">정보공유판</a></li>
+                  <li><a href="" th:href="@{/boards/?bdcg=추천글}">추천글</a></li>
+                  <li><a href="" th:href="@{/boards/?bdcg=문의하기}">문의하기</a></li>
                 </ul>
               </li>
               <li>
@@ -113,11 +113,11 @@
           </artticle>
           <artticle class="section1__community">
             <div>
-              <a href="#"><div class="section1__community-content">
+              <a href="" th:href="@{/boards/?bdcg=자유게시판}"><div class="section1__community-content">
                 <img src="../img/commu2.jpg" alt="" th:src="@{resource/img/commu2.jpg}"/>
                 <p class="onImage">Share your <br> healthy experiences</p>
               </div></a>
-              <p class="underImage"><a href="#">커뮤니티</a></p>
+              <p class="underImage"><a href="" th:href="@{/boards/?bdcg=자유게시판}">커뮤니티</a></p>
             </div>
           </artticle>
         </section>
