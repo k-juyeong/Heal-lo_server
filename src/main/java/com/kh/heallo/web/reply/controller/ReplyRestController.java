@@ -2,16 +2,20 @@ package com.kh.heallo.web.reply.controller;
 
 import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.reply.svc.ReplySVC;
+import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.reply.dto.AddForm;
 import com.kh.heallo.web.reply.dto.EditForm;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
+import com.kh.heallo.web.session.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -29,16 +33,28 @@ public class ReplyRestController {
     // Create ResponseEntity
     ResponseMsg responseMsg = new ResponseMsg()
         .createHeader(StatusCode.SUCCESS)
-        .setData(all);
+        .setData("all", all);
     return new ResponseEntity<>(responseMsg, HttpStatus.OK);
   }
 
   // 댓글 등록
   @PostMapping
-  public ResponseEntity<ResponseMsg> save(AddForm addForm) {
+  public ResponseEntity<ResponseMsg> save(
+      AddForm addForm,
+      HttpServletRequest request
+  ) {
+
+    // 회원번호 찾기
+    Long memno = 0L;
+    HttpSession session = request.getSession(false);
+    if (session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
+
     Reply reply = new Reply();
     reply.setRpComment(addForm.getRpComment());
-    replySVC.save(reply);
+    replySVC.save(memno, reply);
 
     ResponseMsg responseMsg = new ResponseMsg()
         .createHeader(StatusCode.SUCCESS);
@@ -48,10 +64,22 @@ public class ReplyRestController {
 
   // 대댓글 등록
   @PostMapping("/plus")
-  public ResponseEntity<ResponseMsg> savePlus(AddForm addForm) {
+  public ResponseEntity<ResponseMsg> savePlus(
+      AddForm addForm,
+      HttpServletRequest request
+      ) {
+
+    // 회원번호 찾기
+    Long memno = 0L;
+    HttpSession session = request.getSession(false);
+    if (session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
+
     Reply reply = new Reply();
     reply.setRpComment(addForm.getRpComment());
-    replySVC.savePlusReply(reply);
+    replySVC.savePlusReply(memno, reply);
 
     ResponseMsg responseMsg = new ResponseMsg()
         .createHeader(StatusCode.SUCCESS);
@@ -60,6 +88,7 @@ public class ReplyRestController {
   }
 
   // 댓글 수정
+  // 본인 댓글이면 수정 삭제 버튼 노출
   @PatchMapping("/{rpno}")
   public ResponseEntity<ResponseMsg> update(@PathVariable Long rpno, EditForm editForm) {
     Reply reply = new Reply();

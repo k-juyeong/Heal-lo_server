@@ -33,6 +33,8 @@ public class WebConfig implements WebMvcConfigurer {
         whiteList.add("/members/find_id/**");
         whiteList.add("/members/find_pw/**");
         whiteList.add("/boards/**");
+        whiteList.add("/admin/**");
+
 
         //로그인체크 인터셉터
         registry.addInterceptor(loginCheckInterceptor)

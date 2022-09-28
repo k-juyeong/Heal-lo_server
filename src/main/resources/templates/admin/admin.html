@@ -50,44 +50,34 @@
       <nav id="menu">
         <div class="content content-m">
           <ul class="menu-lists">
-            <li class="menu-list__list"><a href="#">회원계정관리</a></li>
-            <li class="menu-list__list"><a href="#">게시물관리</a></li>
+            <li class="menu-list__list" onclick="manageMember()"><a href="#">회원계정관리</a></li>
+            <li class="menu-list__list" onclick="managePost()"><a href="#">게시물관리</a></li>
           </ul>
         </div>
       </nav>
+      <nav id="submenu">
+        <div class="content content-s">
+          <ul class="submenu-lists">
+            <li class="submenu-list__list" onclick="manageBoard()"><a href="#">전체 게시글</a></li>
+            <li class="submenu-list__list" onclick="manageReply()"><a href="#">댓글</a></li>
+            <li class="submenu-list__list" onclick="manageBoard()"><a href="#">문의글</a></li>
+            <li class="submenu-list__list" onclick="manageReview()"><a href="#">리뷰</a></li>
+          </ul>
+        </div>
+      </nav>
+
       <section class="content">
         <table class="list-table">
           <thead>
-            <tr>
-              <th width="70">No.</th>
-              <th width="120">아이디</th>
-              <th width="120">닉네임</th>
-              <th width="120">가입날짜</th>
+            <tr class="memberList">
+              <th width="70" class="th__1">No.</th>
+              <th width="120" class="th__2">아이디</th>
+              <th width="120" class="th__3">닉네임</th>
+              <th width="120" class="th__4">가입날짜</th>
               <th width="100">관리</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>3</td>
-              <td>아이디</td>
-              <td>닉네임</td>
-              <td>가입날짜</td>
-              <td><button class="btn btn_delete">탈퇴</button></td>
-            </tr>
-<!--            <tr>-->
-<!--              <td>3</td>-->
-<!--              <td>아이디</td>-->
-<!--              <td>닉네임</td>-->
-<!--              <td>가입날짜</td>-->
-<!--              <td><button class="btn btn_delete">탈퇴</button></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>3</td>-->
-<!--              <td>아이디</td>-->
-<!--              <td>닉네임</td>-->
-<!--              <td>가입날짜</td>-->
-<!--              <td><button class="btn btn_delete">탈퇴</button></td>-->
-<!--            </tr>-->
 <!--            <tr>-->
 <!--              <td>3</td>-->
 <!--              <td>아이디</td>-->
@@ -99,11 +89,8 @@
         </table>
       </section>
 
-
       <aside class="aside">
-
         <div class="content content-s">
-
           <select name="" id="">
             <option value="">==선택==</option>
             <option value="">닉네임</option>
@@ -111,12 +98,8 @@
           </select>
           <input type="text" id="search_spot">
           <button class="btn btn__search">검색</button>
-          
         </div>
-
       </aside>
-
-
 
     </main>
 
