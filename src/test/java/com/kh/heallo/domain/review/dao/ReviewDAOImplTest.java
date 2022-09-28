@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,13 +29,14 @@ class ReviewDAOImplTest {
     void add() {
         review = new Review();
         review.setRvcontents("시설이 너무 좋습니다 적극 추천드립니다");
+        review.setRvline(0);
         review.setRvscore(4.5);
         review.setFcno(1L);
         review.setMemno(1L);
-        Long rvno = reviewDAO.add(review);
-        review.setRvno(rvno);
+        review.setRvno(reviewDAO.add(review));
+        Review foundReview = reviewDAO.findByRvno(review.getRvno());
 
-        assertThat(rvno).isNotNull();
+        assertThat(foundReview.getRvno()).isEqualTo(review.getRvno());
     }
 
     @Order(2)
@@ -44,8 +46,6 @@ class ReviewDAOImplTest {
         Review foundReview = reviewDAO.findByRvno(review.getRvno());
 
         assertThat(foundReview.getRvno()).isEqualTo(review.getRvno());
-        assertThat(foundReview.getRvcontents()).isEqualTo(review.getRvcontents());
-        assertThat(foundReview.getRvscore()).isEqualTo(review.getRvscore());
     }
 
     @Order(3)
@@ -53,14 +53,15 @@ class ReviewDAOImplTest {
     @DisplayName("리뷰수정")
     void update() {
         Review newReview = new Review();
-        newReview.setRvcontents("시설이 너무 좋습니다 적극 추천드립니다 수정!");
+        newReview.setRvno(review.getRvno());
+        newReview.setRvline(1);
+        newReview.setRvcontents("시설이 너무 좋습니다. \n적극 추천드립니다 수정!");
         newReview.setRvscore(2.5);
-        Integer resultCount = reviewDAO.update(review);
+        reviewDAO.update(newReview);
         Review foundReview = reviewDAO.findByRvno(review.getRvno());
 
-        assertThat(resultCount).isEqualTo(1);
-        assertThat(foundReview.getRvcontents()).isEqualTo(review.getRvcontents());
-        assertThat(foundReview.getRvscore()).isEqualTo(review.getRvscore());
+        assertThat(foundReview.getRvcontents()).isEqualTo(newReview.getRvcontents());
+        assertThat(foundReview.getRvscore()).isEqualTo(newReview.getRvscore());
     }
 
     @Order(4)
@@ -69,7 +70,9 @@ class ReviewDAOImplTest {
     void findListByFcno() {
         ReviewCriteria criteria = new ReviewCriteria();
         criteria.setPageNo(1);
-        criteria.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
+        criteria.setOrderBy(OrderBy.RV_DATE_ASC.getOrderBy());
+        criteria.setStartNo(1);
+        criteria.setEndNo(10);
         List<Review> reviewList = reviewDAO.findListByFcno(1L, criteria);
         Review foundReview = reviewDAO.findByRvno(review.getRvno());
         reviewList.stream().forEach(ele -> ele.setMember(null));
@@ -83,7 +86,7 @@ class ReviewDAOImplTest {
     void getTotalCount() {
         Integer totalCount = reviewDAO.getTotalCount(1L);
 
-        assertThat(totalCount).isEqualTo(1);
+        assertThat(totalCount).isGreaterThan(0);
     }
 
     @Order(6)

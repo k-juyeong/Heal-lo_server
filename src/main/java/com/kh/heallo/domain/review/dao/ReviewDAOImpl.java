@@ -85,7 +85,7 @@ public class ReviewDAOImpl implements ReviewDAO{
                 review.setFcno(rs.getLong(9));
 
                 Member member = new Member();
-                member.setMemnickname(rs.getString(9));
+                member.setMemnickname(rs.getString(10));
                 review.setMember(member);
 
                 return review;
@@ -114,7 +114,6 @@ public class ReviewDAOImpl implements ReviewDAO{
         StringBuffer sql = new StringBuffer();
         sql.append(" insert into review ");
         sql.append(" values(review_rvno_seq.nextval, ?, ?, ?, sysdate, sysdate, ?, ?) ");
-
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
@@ -147,7 +146,13 @@ public class ReviewDAOImpl implements ReviewDAO{
         sql.append("         rvudate = sysdate ");
         sql.append(" where review.rvno = ? ");
 
-        return jdbcTemplate.update(sql.toString(), review.getRvcontents(), review.getRvline(), review.getRvscore(), review.getRvno());
+        return jdbcTemplate.update(
+                sql.toString(),
+                review.getRvcontents(),
+                review.getRvline(),
+                review.getRvscore(),
+                review.getRvno()
+        );
     }
 
     /**

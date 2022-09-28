@@ -71,7 +71,7 @@
             <p class="star">별점</p>
           </div>
           <div class="substance" th:each="rec : ${list}">
-            <a href="#"><p class="substance-notice" th:text="${rec.rvcontents}">Lorem ipsum dolor sit amet.</p></a>
+            <a href="" th:href="@{/{fcno(fcno=${rec.fcno})}}"><p class="substance-notice" th:text="${rec.rvcontents}">Lorem ipsum dolor sit amet.</p></a>
             <p class="substance-dateline" th:text="${rec.rvcdate}">2022.08.13</p>
             <p class="substance-star" th:text="${rec.rvscore}">3.5</p>
             <div class="button-box">

@@ -1,6 +1,5 @@
-package com.kh.heallo.web.bookmark;
+package com.kh.heallo.web.bookmark.controller;
 
-import com.kh.heallo.domain.bookmark.Bookmark;
 import com.kh.heallo.domain.bookmark.svc.BookmarkSVC;
 import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
@@ -8,22 +7,21 @@ import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.session.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Fetch;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RestController
 @RequestMapping("/bookmarks")
 @RequiredArgsConstructor
 @Slf4j
-public class BookmarkController {
+public class BookmarkRestController {
 
     private final BookmarkSVC bookmarkSVC;
 

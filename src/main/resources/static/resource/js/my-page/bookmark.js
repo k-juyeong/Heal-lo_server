@@ -20,12 +20,21 @@ function domClean(e) {
                 console.log(jsonData);
                 document.querySelectorAll('.bookmark').remove();
             } else if (jsonData.header.code == '03') {
-
-
             } else {
                 throw new Error(jsonData.data);
-
             }
         })
         .catch(err => console.log(err));
 }
+
+const $new = document.querySelector('.new');
+$new.addEventListener('click',e=>{
+    console.log('최신 등록순 클릭');
+    location.href=`/bookmarks?orderBy=${e.target.dataset.order}`
+});
+
+const $grade = document.querySelector('.grade');
+$grade.addEventListener('click',e=>{
+    console.log('별점 높은순 클릭');
+    location.href=`/bookmarks?orderBy=${e.target.dataset.order}`
+});

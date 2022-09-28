@@ -1,7 +1,8 @@
-package com.kh.heallo.web.bookmark;
+package com.kh.heallo.web.bookmark.controller;
 
 import com.kh.heallo.domain.bookmark.svc.BookmarkSVC;
 import com.kh.heallo.domain.facility.Facility;
+import com.kh.heallo.domain.review.OrderBy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +18,23 @@ import java.util.List;
 @Slf4j
 @Controller
 @AllArgsConstructor
-@RequestMapping("/bookmark")
-public class BookmarkPageController {
+@RequestMapping("/bookmarks")
+public class BookmarkController {
 
   private final BookmarkSVC bookmarkSVC;
 
   //북마크 페이지
   @GetMapping
-  public String bookmarkHome(Model model){
+  public String bookmarkHome(@RequestParam(value = "orderBy",required = false) String order, Model model){
 
-    List<Facility> bookmarks = bookmarkSVC.bookmarkPageList();
+    if (order == null) {
+      order = OrderBy.FC_NAME_ASC.getOrderBy();
+    } else {
+      if(order.equals("score")) order = OrderBy.FC_SCORE_DESC.getOrderBy();
+      if(order.equals("date")) order = OrderBy.FC_NAME_ASC.getOrderBy();
+    }
+
+    List<Facility> bookmarks = bookmarkSVC.bookmarkPageList(order);
     List<Facility> list = new ArrayList<>();
 
     log.info("bookmarks={}",bookmarks);

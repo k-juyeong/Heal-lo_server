@@ -130,16 +130,16 @@ function addReview() {
 
     const formData = createFormData();
 
-    // fetch(`/reviews/${fcno}`, {
-    //     method: 'POST',
-    //     body: formData
-    // })
-    //     .then((response) => response.json())
-    //     .then((jsonData) => {
-    //         if (jsonData.header.code == '00') location.href = jsonData.data.redirect;
-    //         else throw new Error(jsonData.message)
-    //     })
-    //     .catch((error) => console.log(error));
+     fetch(`/reviews/${fcno}`, {
+         method: 'POST',
+         body: formData
+     })
+         .then((response) => response.json())
+         .then((jsonData) => {
+             if (jsonData.header.code == '00') location.href = jsonData.data.redirect;
+             else throw new Error(jsonData.message)
+         })
+         .catch((error) => console.log(error));
 }
 
 //에러 텍스트 제거

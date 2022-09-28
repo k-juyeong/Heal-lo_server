@@ -57,13 +57,13 @@ public class ReviewRestController {
 
         //정렬기준 셋팅
         switch(reviewCriteriaDto.getOrderBy()) {
-            case "dateAsc": reviewCriteriaDto.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
+            case "dateAsc": reviewCriteriaDto.setOrderBy(OrderBy.RV_DATE_ASC.getOrderBy());
             break;
-            case "dateDesc": reviewCriteriaDto.setOrderBy(OrderBy.DATE_DESC.getOrderBy());
+            case "dateDesc": reviewCriteriaDto.setOrderBy(OrderBy.RV_DATE_DESC.getOrderBy());
             break;
-            case "scoreDsc": reviewCriteriaDto.setOrderBy(OrderBy.SCORE_DSC.getOrderBy());
+            case "scoreDsc": reviewCriteriaDto.setOrderBy(OrderBy.RV_SCORE_DSC.getOrderBy());
             break;
-            default: reviewCriteriaDto.setOrderBy(OrderBy.DATE_ASC.getOrderBy());
+            default: reviewCriteriaDto.setOrderBy(OrderBy.RV_DATE_ASC.getOrderBy());
         }
 
         //회원번호 조회

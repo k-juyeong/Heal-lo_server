@@ -73,7 +73,7 @@
           <form id="detailForm" action="" th:action th:object="${form}" class="writeForm">
 
           <div class="line">
-            <label for="">게시글번호</label>
+            <label th:for="bdno">게시글번호</label>
             <input type="text" th:field="*{bdno}" readonly="readonly">
           </div>
 
@@ -86,6 +86,11 @@
               <label th:for="bdtitle">제목</label>
               <input type="text" th:field="*{bdtitle}" readonly="readonly">
             </div>
+
+<!--            <div class="line">-->
+<!--              <label>조회수</label>-->
+<!--              <input type="text" th:field="*{bdview}" readonly="readonly">-->
+<!--            </div>-->
 
             <div class="line">
               <label  th:for="bdcdate">작성일</label>

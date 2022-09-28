@@ -34,6 +34,8 @@ public interface BoardDAO {
   int totalCount(BbsFilterCondition filterCondition);
 
 
+//조회수 증가
+  int increaseViewCount(Long boardId);
 
 
 }

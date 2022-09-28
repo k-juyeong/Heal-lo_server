@@ -128,6 +128,8 @@ function createList(data) {
         isMoreview = true;
     }
 
+    console.log(data)
+
     const reviewCard =
         makeElements('div',{class : 'review-card', id : `${data.rvno}`},
             makeElements('div',{class : 'review-card__info'},
