@@ -276,7 +276,7 @@ public class MemberController {
 
   //마이페이지 활동 (게시글) 활동 이동 시 첫 페이지
   @GetMapping("/{id}/board")
-  public String myActivityBoard(@PathVariable("id")Long memno, Model model){
+  public String myActivityBoard(@PathVariable("id")Long memno, Model model,HttpServletRequest request){
 
     List<Board> boards = memberSVC.findBoardByMemno(memno);
     List<Board> list = new ArrayList<>();
@@ -289,22 +289,43 @@ public class MemberController {
       list.add(board1);
     });
 
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
+
+    EditForm editForm = new EditForm();
+    editForm.setMemno(memno);
+
     log.info("list={}",list);
 
+    model.addAttribute("form",editForm);
     model.addAttribute("list",list);
     return "member/my_page_activity_board";
   }
 
   //마이페이지 활동 (댓글)
   @GetMapping("/{id}/reply")
-  public String myActivityReply(){
+  public String myActivityReply(@PathVariable("id")Long memno, Model model,HttpServletRequest request){
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
 
+    EditForm editForm = new EditForm();
+    editForm.setMemno(memno);
+
+    model.addAttribute("form",editForm);
     return "member/my_page_activity_reply";
   }
 
   //마이페이지 활동 (리뷰)
   @GetMapping("/{id}/review")
-  public String myActivityReview(@PathVariable("id")Long memno, Long rvno,Model model){
+  public String myActivityReview(@PathVariable("id")Long memno, Long rvno,Model model,HttpServletRequest request){
 
     List<Review> reviews = memberSVC.findReviewByMemno(memno,rvno);
     List<Review> list = new ArrayList<>();
@@ -325,9 +346,20 @@ public class MemberController {
       BeanUtils.copyProperties(review,review1);
       list.add(review1);
     });
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
+
+    EditForm editForm = new EditForm();
+    editForm.setMemno(memno);
+
 
     log.info("list={}",reviewDtoList);
 
+    model.addAttribute("form",editForm);
     model.addAttribute("list", reviewDtoList);
     return "member/my_page_activity_review";
   }

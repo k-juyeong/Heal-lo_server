@@ -16,9 +16,9 @@
     <header id="header">
       <!-- 탑 메뉴 -->
       <div class="header__menu-top">
-        <span class="header__my-menu"><a href="#">로그아웃</a></span>
-        <span class="header__my-menu"><a href="#">마이페이지</a></span>
-        <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
+        <span class="header__my-menu"><a href="" th:href="@{/members/logout}">로그아웃</a></span>
+        <span class="header__my-menu"><a href="" th:href="@{/members/{id}/edit(id=${})}">마이페이지</a></span>
+        <span class="header__my-menu"><a href="" th:href="@{/bookmark}">즐겨찾기</a></span>
       </div>
 
       <!-- 베너 -->
