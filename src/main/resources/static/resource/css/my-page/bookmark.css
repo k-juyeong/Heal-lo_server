@@ -19,9 +19,9 @@
 #container .bookmark ul>li:nth-child(3) {padding: 5px; }
 #container .bookmark ul>li:nth-child(4) {padding: 5px; }
 #container .bookmark i {font-size: 2rem; height: 30px;}
-#container .bookmark i:hover {color: rgba(255, 155, 172, 0.462); transition: all 0.3s;}
+#container .bookmark i:hover {color: #f39c12; transition: all 0.3s;}
 
-.bookmark-btn-color { color: rgba(255, 155, 172, 0.462); }
+.bookmark-btn-color { color: #f39c12; }
 #flex {display: flex; margin-top: 20px; margin-bottom: 30px;}
 #flex li:nth-child(1) {padding: 5px; font-size: 1.5rem; font-weight: 500;}
 #flex li:nth-child(2) {padding: 10px; margin-left: 10px; font-size: 1.3rem; font-weight: 500;}
