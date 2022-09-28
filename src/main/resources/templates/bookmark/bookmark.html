@@ -46,8 +46,8 @@
         <div class="bookmark-font">
           <p class="my-bookmark">내 즐겨찾기</p>
           <div class="bookmark-sub-font">
-            <p class="new">최신 등록순</p>
-            <p class="grade">평점 높은순</p>
+            <p class="new" data-order="date">가나다순</p>
+            <p class="grade" data-order="score">평점 높은순</p>
           </div>
         </div>
         <th:block th:each="rec : ${list}">

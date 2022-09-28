@@ -54,8 +54,8 @@ public class MemberController {
       return "member/join";
     }
 
-    if(joinForm.getMemid().toLowerCase().trim().length() <= 5 &&
-            joinForm.getMemid().toUpperCase().trim().length() >= 15){
+    if(joinForm.getMemid().toLowerCase().trim().length() < 5 ||
+            joinForm.getMemid().toUpperCase().trim().length() > 15){
       bindingResult.rejectValue("memid","chk.memid.length", "아이디 규칙을 지켜주세요");
       return "member/join";
     }

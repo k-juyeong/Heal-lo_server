@@ -26,6 +26,6 @@ public interface BookmarkSVC {
      * 즐겨찾기 페이지 리스트
      * @return
      */
-    List<Facility> bookmarkPageList();
+    List<Facility> bookmarkPageList(String order);
 
 }

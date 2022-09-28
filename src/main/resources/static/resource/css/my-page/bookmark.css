@@ -4,7 +4,7 @@
 #container .content {display: flex; flex-direction: column; flex: 3; }
 .none { flex: 1; }
 
-#container .content .bookmark-font {display: flex; flex-direction: column; justify-content: space-around; height: 70px; padding: 10px; margin-bottom: 20px;}
+#container .content .bookmark-font {display: flex; flex-direction: column; justify-content: space-around; height: 70px; padding: 10px; margin-top:20px; margin-bottom: 20px;}
 #container .content .bookmark-font .my-bookmark {font-size: 1.5rem; font-weight: 500; margin: 10px;}
 
 #container .content .bookmark-sub-font {display: flex; }

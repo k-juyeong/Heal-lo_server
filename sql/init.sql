@@ -4,6 +4,7 @@ drop table Board;
 drop table Calendar;
 drop table review;
 drop table member;
+DROP TABLE REPLY;
 drop table code;
 
 drop sequence member_memno_seq;

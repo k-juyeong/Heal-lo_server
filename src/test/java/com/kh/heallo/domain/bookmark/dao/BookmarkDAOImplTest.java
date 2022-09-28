@@ -2,6 +2,7 @@ package com.kh.heallo.domain.bookmark.dao;
 
 import com.kh.heallo.domain.bookmark.Bookmark;
 import com.kh.heallo.domain.facility.Facility;
+import com.kh.heallo.domain.review.OrderBy;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ class BookmarkDAOImplTest {
     @Order(4)
     void bookmarkPageList(){
 
-        List<Facility> bookmarks = bookmarkDAO.bookmarkPageList();
+        List<Facility> bookmarks = bookmarkDAO.bookmarkPageList(OrderBy.FC_NAME_ASC.name());
 
         log.info("즐겨찾기:{}",bookmarks.size());
 
