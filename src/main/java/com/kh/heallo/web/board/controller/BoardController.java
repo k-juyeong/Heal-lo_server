@@ -40,8 +40,26 @@ public class BoardController {
 
   //등록양식
   @GetMapping("/add")
-  public String saveForm(Model model,
-                         HttpServletRequest request      ) {
+  public String saveForm( Long memno, Model model,
+                         HttpServletRequest request) {
+
+//     //로그인 여부
+//    HttpSession session2 = request.getSession(false);
+//    if (session2 != null) {
+//      session2.invalidate();
+//    }
+
+//    //회원번호 조회
+//    HttpSession session = request.getSession(false);
+//    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+//      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+//      memno = loginMember.getMemno();
+//    }
+//    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+//    SaveForm saveForm = new SaveForm();
+//    saveForm.setMemno(memno);
+//    saveForm.setMemnickname(loginMember.getMemnickname());
+
 
     model.addAttribute("form", new SaveForm());
 
@@ -53,7 +71,8 @@ public class BoardController {
   @PostMapping("/add")
   public String add(@Valid @ModelAttribute("form") SaveForm saveForm,
                     BindingResult bindingResult,
-                    RedirectAttributes redirectAttributes){
+                    RedirectAttributes redirectAttributes,
+                    HttpServletRequest request){
     //기본검증
     if(bindingResult.hasErrors()){
       log.info("bindingResult={}", bindingResult);
