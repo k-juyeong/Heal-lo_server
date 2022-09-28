@@ -1,6 +1,9 @@
 package com.kh.heallo.domain.admin.dao;
 
+import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
+import com.kh.heallo.domain.reply.Reply;
+import com.kh.heallo.domain.review.Review;
 
 import java.util.List;
 
@@ -28,17 +31,89 @@ public interface AdminDAO {
 
   // 게시물 - 게시글 목록
   // 게시물 - 게시글 제목 검색
-  // 게시물 - 게시글 작성자(닉네임) 검색
-  // 게시물 - 게시글 작성자(아이디) 검색
-  // 게시물 - 댓글 목록
-  // 게시물 - 댓글 내용 검색
-  // 게시물 - 댓글 작성자(닉네임) 검색
-  // 게시물 - 댓글 작성자(아이디) 검색
-  // 게시물 - 리뷰 목록
-  // 게시물 - 리뷰 내용 검색
-  // 게시물 - 리뷰 운동시설 검색
-  // 게시물 - 리뷰 작성자(닉네임) 검색
-  // 게시물 - 리뷰 작성자(아이디) 검색
+
+  /**
+   * 게시물 - 게시글 작성자(닉네임) 검색
+   * @param nickname 닉네임
+   * @return
+   */
+  List<Board> boardListByNickname(String nickname);
+
+
+  /**
+   * 게시물 - 게시글 작성자(아이디) 검색
+   * @param memId 아이디
+   * @return
+   */
+  List<Board> boardListById(String memId);
+
+
+  /**
+   * 게시물 - 댓글 목록
+   * @return
+   */
+  List<Reply> replyList();
+
+  /**
+   * 게시물 - 댓글 내용 검색
+   * @param rpContent 댓글 내용
+   * @return
+   */
+  List<Reply> replyListByContent(String rpContent);
+
+
+  /**
+   * 게시물 - 댓글 작성자(닉네임) 검색
+   * @param nickname 닉네임
+   * @return
+   */
+  List<Reply> replyListByNickname(String nickname);
+
+
+  /**
+   * 게시물 - 댓글 작성자(아이디) 검색
+   * @param memId 아이디
+   * @return
+   */
+  List<Reply> replyListById(String memId);
+
+
+  /**
+   * 게시물 - 리뷰 목록
+   * @return
+   */
+  List<Review> reviewList();
+
+
+  /**
+   * 게시물 - 리뷰 내용 검색
+   * @param content 리뷰 내용
+   * @return
+   */
+  List<Review> reviewListByContent(String content);
+
+
+  /**
+   * 게시물 - 리뷰 운동시설 검색
+   * @param fcName 운동시설
+   * @return
+   */
+  List<Review> reviewListByFacility(String fcName);
+
+  /**
+   * 게시물 - 리뷰 작성자(닉네임) 검색
+   * @param nickname 닉네임
+   * @return
+   */
+  List<Review> reviewListByNickname(String nickname);
+
+  /**
+   * 게시물 - 리뷰 작성자(아이디) 검색
+   * @param memId 아이디
+   * @return
+   */
+  List<Review> reviewListById(String memId);
+
   // 게시물 - 문의글 목록
   // 게시물 - 문의글 내용 검색
   // 게시물 - 문의글 작성자(닉네임) 검색

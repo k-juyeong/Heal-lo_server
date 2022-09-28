@@ -24,8 +24,20 @@ public class ReplyDAOImpl implements ReplyDAO {
   private final JdbcTemplate jdbcTemplate;
 
   /**
+   * 댓글 수
+   * @param bdno 게시글 번호
+   * @return
+   */
+  @Override
+  public int count(Long bdno) {
+    String sql = "SELECT COUNT(RPNO) FROM REPLY WHERE BDNO = ? ";
+
+    int affectedRow = jdbcTemplate.queryForObject(sql, Integer.class, bdno);
+    return affectedRow;
+  }
+
+  /**
    * 게시글에 해당하는 댓글 목록 조회
-   *
    * @return 댓글 목록
    */
   @Override
@@ -42,7 +54,6 @@ public class ReplyDAOImpl implements ReplyDAO {
 
   /**
    * 댓글 등록
-   *
    * @param reply 등록할 댓글
    * @return 댓글 번호
    */
@@ -70,7 +81,6 @@ public class ReplyDAOImpl implements ReplyDAO {
 
   /**
    * 대댓글 등록
-   *
    * @param reply 등록할 대댓글
    * @return 댓글 번호
    */

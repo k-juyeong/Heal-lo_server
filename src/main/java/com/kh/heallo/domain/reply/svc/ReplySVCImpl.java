@@ -16,6 +16,18 @@ public class ReplySVCImpl implements ReplySVC{
   private final ReplyDAO replyDAO;
 
   /**
+   * 댓글 수
+   *
+   * @param bdno 게시글 번호
+   * @return
+   */
+  @Override
+  public int count(Long bdno) {
+    int count = replyDAO.count(bdno);
+    return count;
+  }
+
+  /**
    * 게시글에 해당하는 댓글 목록 조회
    *
    * @param bdno

@@ -25,6 +25,18 @@ import java.util.List;
 public class ReplyRestController {
 
   private final ReplySVC replySVC;
+
+  // 댓글 수
+  @GetMapping("/count")
+  public ResponseEntity<ResponseMsg> count(Long bdno) {
+    int count = replySVC.count(bdno);
+
+    ResponseMsg responseMsg = new ResponseMsg()
+            .createHeader(StatusCode.SUCCESS)
+            .setData("count", count);
+    return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+  }
+
   // 댓글 목록 조회
   @GetMapping
   public ResponseEntity<ResponseMsg> all(Long bdno) {

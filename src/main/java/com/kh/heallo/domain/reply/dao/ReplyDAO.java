@@ -7,6 +7,13 @@ import java.util.List;
 public interface ReplyDAO {
 
   /**
+   * 댓글 수
+   * @param bdno 게시글 번호
+   * @return
+   */
+  int count(Long bdno);
+
+  /**
    * 게시글에 해당하는 댓글 목록 조회
    * @return 댓글 목록
    */

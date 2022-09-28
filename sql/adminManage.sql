@@ -12,3 +12,4 @@ order by MEMNO asc;
 -- 회원 계정 삭제
 delete from MEMBER
        where MEMNO = '1';
+
