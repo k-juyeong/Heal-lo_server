@@ -31,7 +31,7 @@ public class AdminRestController {
     // Create ResponseEntity
     ResponseMsg responseMsg = new ResponseMsg()
         .createHeader(StatusCode.SUCCESS)
-        .setData("member", memberAll);
+        .setData("memberAll", memberAll);
     return new ResponseEntity<>(responseMsg, HttpStatus.OK);
   }
 
