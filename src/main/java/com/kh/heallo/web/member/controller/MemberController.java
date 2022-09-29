@@ -245,7 +245,7 @@ public class MemberController {
     memberSVC.del(memid);
 
     log.info("memid={}",memid);
-    return "redirect:/logout";
+    return "redirect:/members/logout";
   }
 
   //아이디 찾기 화면
