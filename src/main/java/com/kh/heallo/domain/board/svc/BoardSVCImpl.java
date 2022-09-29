@@ -43,8 +43,8 @@ public class BoardSVCImpl implements BoardSVC{
     return boardDAO.findAll(startRec,endRec);
   }
   @Override
-  public List<Board> findAll(String bdcg, int startRec, int endRec) {
-    return boardDAO.findAll(bdcg, startRec,endRec);
+  public List<Board> findAll(String category, int startRec, int endRec) {
+    return boardDAO.findAll(category, startRec,endRec);
   }
 
   @Override
