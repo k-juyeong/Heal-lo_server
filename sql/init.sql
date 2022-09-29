@@ -5,6 +5,7 @@ drop table Calendar;
 drop table review;
 drop table member;
 drop table code;
+drop table reply;
 
 drop sequence member_memno_seq;
 drop sequence review_rvno_seq;
@@ -12,6 +13,7 @@ drop sequence uploadfile_ufno_seq;
 drop sequence CALENDAR_CDNO_SEQ;
 drop sequence board_BDNO_seq;
 drop sequence bookmark_bmno_seq;
+drop sequence reply_rpno_seq;
 
 -- code 테이블
 create table code (
@@ -197,3 +199,31 @@ alter table uploadfile modify ufsize constraint uploadfile_ufsize_nn not null;
 alter table uploadfile modify uftype constraint uploadfile_uftype_nn not null;
 alter table uploadfile modify ufpath constraint uploadfile_ufpath_nn not null;
 alter table uploadfile add constraint uploadfile_ufsname_uk unique (ufsname);
+
+-- 댓글테이블
+  CREATE TABLE REPLY (
+	RPNO        NUMBER(8),
+	BDNO 		    NUMBER(8),
+	RPGROUP     NUMBER(10),
+	RPDEPTH     NUMBER(10),
+	MEMNO       NUMBER(8),
+	RPCOMMENT 	CLOB,
+	RPCDATE     timestamp default systimestamp,
+	RPUDATE     timestamp default systimestamp
+  );
+
+-- 댓글번호 시퀀스
+    CREATE SEQUENCE REPLY_RPNO_SEQ START WITH 1
+    INCREMENT BY 1;
+
+-- 제약조건
+ ALTER TABLE REPLY ADD CONSTRAINT REPLY_RPNO_PK PRIMARY KEY (RPNO);
+ ALTER TABLE REPLY ADD CONSTRAINT REPLY_BDNO_FK FOREIGN KEY (BDNO)
+      REFERENCES BOARD(BDNO);
+ ALTER TABLE REPLY ADD CONSTRAINT REPLY_MEMNO_FK FOREIGN KEY (MEMNO)
+      REFERENCES MEMBER(MEMNO);
+ ALTER TABLE REPLY MODIFY BDNO CONSTRAINT REPLY_BDNO_NN NOT NULL;
+ ALTER TABLE REPLY MODIFY MEMNO CONSTRAINT REPLY_MEMNO_NN NOT NULL;
+ ALTER TABLE REPLY MODIFY RPCOMMENT CONSTRAINT REPLY_RPCOMMENT_NN NOT NULL;
+ ALTER TABLE REPLY MODIFY RPCDATE CONSTRAINT BOARD_RPCDATE_NN NOT NULL;
+ ALTER TABLE REPLY MODIFY RPUDATE CONSTRAINT BOARD_RPUDATE_NN NOT NULL;

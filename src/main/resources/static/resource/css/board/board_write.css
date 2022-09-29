@@ -41,9 +41,14 @@
 
 
 /* 작성공간 */
-#container .board_write {
+#container .board_main{
+  display: flex;
+  flex-direction: column;
   width: 85%;
 }
+/* #container .board_write {
+  width: 85%;
+} */
 
 #container .board_write .board_title .title__main {
   text-align: center;
