@@ -8,7 +8,8 @@
     <title>게시판</title>
     <!-- <link rel="stylesheet" href="../../static/resource/css/board/board.css" th:href="@{/resource/css/board/board.css}"> -->
     <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
-    
+    <link rel="stylesheet" href="../../static/resource/css/board/reply.css" th:href="@{/resource/css/board/reply.css}">
+
     <th:block th:replace="${link}"></th:block>
   <style>
     .board-wrap .board-body{
@@ -63,6 +64,7 @@
         </div>
       </aside>
 
+      <div class="board_main">
       <section class="board_write">
         <div class="board_title">
           <h2 class="title__main">자유게시판</h2>
@@ -113,7 +115,51 @@
         </div>
       </section>
 
-
+<!--      댓글-->
+      <div id="reply">
+        <div class="reply__hit">
+          <p>댓글</p><p>수</p>
+        </div>
+        <div class="reply__main">
+          <div class="reply__form">
+            <div class="reply__list">
+              <div class="reply__list nickname">토모</div>
+              <div class="reply__list content">완전 좋아여 사람도 별로 없음</div>
+              <div class="reply__list date">22.07.08</div>
+              <div class="reply__list btngrp">
+                <button class="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="delBtn"><i class="fa-solid fa-x"></i></button>
+              </div>
+            </div>
+            <div class="reply__list">
+              <div class="reply__list nickname">토모</div>
+              <div class="reply__list content">완전 좋아여 사람도 별로 없음</div>
+              <div class="reply__list date">22.07.08</div>
+              <div class="reply__list btngrp">
+                <button class="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="delBtn"><i class="fa-solid fa-x"></i></button>
+              </div>
+            </div>
+            <div class="reply__edit">
+              <textarea class="reply__edit toolbox" rows="10"></textarea>
+              <div class="reply__edit btngrp">
+                <button id="editBtn">수정</button>
+                <button id="cancelBtn">취소</button>
+              </div>
+            </div>
+          </div>
+          <div class="reply__write">
+            <div class="reply__write content">
+              <textarea class="reply__write toolbox" rows="10"></textarea>
+            </div>
+            <div class="reply__write btngrp">
+              <button id="saveBtn">등록</button>
+              <button id="notSaveBtn">취소</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
 
     </main>
 
@@ -132,6 +178,7 @@
     </footer>
     </div>
   <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
+  <script src="../../static/resource/js/board/reply.js" th:src="@{/resource/js/board/reply.js}"></script>
 
   <script>
 
