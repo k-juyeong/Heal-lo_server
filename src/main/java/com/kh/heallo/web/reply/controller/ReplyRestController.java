@@ -2,6 +2,7 @@ package com.kh.heallo.web.reply.controller;
 
 import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.reply.svc.ReplySVC;
+import com.kh.heallo.web.board.dto.DetailForm;
 import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.reply.dto.AddForm;
 import com.kh.heallo.web.reply.dto.EditForm;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,9 +55,15 @@ public class ReplyRestController {
   @PostMapping("/{bdno}")
   public ResponseEntity<ResponseMsg> save(
       @PathVariable Long bdno,
-      AddForm addForm,
+      @RequestBody DetailForm detailForm,
+      BindingResult bindingResult,
       HttpServletRequest request
   ) {
+    // 검증
+    if (bindingResult.hasErrors()) {
+      log.info("bindingResult={}", bindingResult);
+    }
+    log.info("detailForm={}", detailForm.getRpComment());
     // 회원번호 찾기
     Long memno = 0L;
     HttpSession session = request.getSession(false);
@@ -64,8 +72,10 @@ public class ReplyRestController {
       memno = loginMember.getMemno();
     }
 
+    // AddForm -> Reply 로 변환
     Reply reply = new Reply();
-    reply.setRpComment(addForm.getRpComment());
+//    BeanUtils.copyProperties(detailForm, reply);
+    reply.setRpComment(detailForm.getRpComment());
     replySVC.save(bdno, memno, reply);
 
     ResponseMsg responseMsg = new ResponseMsg()

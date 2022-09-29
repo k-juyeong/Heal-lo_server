@@ -41,7 +41,7 @@
 
 
 /* 작성공간 */
-#container .board_main{
+#container .board_main {
   display: flex;
   flex-direction: column;
   width: 85%;

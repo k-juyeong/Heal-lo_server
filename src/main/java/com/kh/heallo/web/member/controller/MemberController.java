@@ -135,7 +135,7 @@ public class MemberController {
     //회원인경우
     Member findedMember = member.get();
 
-    if (findedMember.getMemstatus().equals("withdraw")){
+    if (findedMember.getMemstatus().equals("WITHDRAW")){
       bindingResult.reject("LoginForm.login","회원정보가 없습니다");
       return "login/login";
     }

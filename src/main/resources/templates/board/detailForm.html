@@ -65,18 +65,19 @@
       </aside>
 
       <div class="board__main">
-      <section class="board_write">
+        <form id="detailForm" action="" th:action th:object="${form}">
+
+        <section class="board_write">
         <div class="board_title">
           <h2 class="title__main">자유게시판</h2>
         </div>
 
         <div class="board_content">
 
-          <form id="detailForm" action="" th:action th:object="${form}" class="writeForm">
-
+          <div class="writeForm">
           <div class="line">
             <label th:for="bdno">게시글번호</label>
-            <span th:text="*{bdno}"></span>
+            <span id="bdno" th:text="*{bdno}"></span>
           </div>
             <div class="line">
               <label th:for="bdcg">카테고리</label>
@@ -110,8 +111,9 @@
             <div>
               <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
             </div>
-          </form>
+          </div>
         </div>
+
         <div class="writeBtn_area ">
           <button type="button" id="updateBtn" class="btn btn__search">수정</button>
           <button type="button" id="deleteBtn" class="btn btn__search">삭제</button>
@@ -143,19 +145,20 @@
               </div>
             </div>
           </div>
-          <form id="addForm" method="post" class="reply__write">
+          <div class="reply__write">
             <div class="reply__write content">
-              <textarea id="rpComment" class="reply__write toolbox" rows="10"></textarea>
+              <textarea id="rpComment" th:field="*{rpComment}" class="reply__write toolbox" rows="10"></textarea>
             </div>
             <div class="reply__write btngrp">
-              <button id="saveBtn">등록</button>
-              <button id="notSaveBtn">취소</button>
+              <button type="button" id="saveBtn">등록</button>
+              <button type="button" id="notSaveBtn">취소</button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
-      </div>
-    </main>
+        </form>
+    </div>
+  </main>
 
     <!-- footer -->
     <footer id="footer">
@@ -172,6 +175,7 @@
     </footer>
     </div>
   <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
+  <script src="../../static/resource/js/board/reply.js" th:src="@{/resource/js/board/reply.js}"></script>
 
   <script>
 
