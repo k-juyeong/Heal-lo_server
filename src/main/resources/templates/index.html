@@ -81,14 +81,14 @@
       <main id="container">
         <!-- 검색 바 -->
         <section class="section1__search-bar">
-          <div class="section1__search-bar__group">
+          <form class="section1__search-bar__group">
             <input
               type="text"
               class="search-bar__content"
               placeholder="운동시설명을 입력하세요"
             />
-            <button>검색</button>
-          </div>
+            <button class="search-btn">검색</button>
+          </form>
         </section>
 
         <!-- 주요 기능-->
@@ -206,25 +206,6 @@
       </footer>
     </div>
 
-    <script>
-      const bgBoxTriggerMargin = 300;
-      const bgBoxElementList = document.querySelectorAll('.bg');
-
-      const bgBoxFunc = () => {
-        for (const ele of bgBoxElementList) {
-          if (!ele.classList.contains('show')) {
-            if (
-              window.innerHeight >
-              ele.getBoundingClientRect().top + bgBoxTriggerMargin
-            ) {
-              ele.classList.add('show');
-            }
-          }
-        }
-      };
-
-      window.addEventListener('load', bgBoxFunc);
-      window.addEventListener('scroll', bgBoxFunc);
-    </script>
+    <script th:src="@{/resource/js/main/index.js}"></script>
   </body>
 </html>

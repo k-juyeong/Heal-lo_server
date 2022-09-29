@@ -41,7 +41,14 @@ public class FacilityController {
 
     //운동시설 검색페이지
     @GetMapping
-    public String searchView() {
+    public String searchView(
+            @RequestParam(value = "keyword",required = false) String keyword,
+            Model model
+    ) {
+
+        if (keyword != null) {
+            model.addAttribute("keyword", keyword);
+        }
 
         return "search-facility/search-page";
     }
