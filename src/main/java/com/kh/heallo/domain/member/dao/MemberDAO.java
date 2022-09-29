@@ -2,6 +2,7 @@ package com.kh.heallo.domain.member.dao;
 
 import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
+import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.review.Review;
 
 import java.util.List;
@@ -71,6 +72,13 @@ public interface MemberDAO {
    * @return
    */
   List<Board> findBoardByMemno(Long memno);
+
+  /**
+   * 로그인 계정 작성 댓글 조회
+   * @param memno  회원번호
+   * @return
+   */
+  List<Reply> findReplyByMemno(Long memno);
 
   /**
    * 로그인 계정 작성 리뷰 조회

@@ -3,6 +3,7 @@ package com.kh.heallo.domain.member.svc;
 import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.dao.MemberDAO;
+import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.review.Review;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -109,6 +110,17 @@ public class MemberSVCImpl implements MemberSVC{
   @Override
   public List<Board> findBoardByMemno(Long memno) {
     return memberDAO.findBoardByMemno(memno);
+  }
+
+  /**
+   * 로그인 계정 작성 댓글 조회
+   *
+   * @param memno 회원번호
+   * @return
+   */
+  @Override
+  public List<Reply> findReplyByMemno(Long memno) {
+    return memberDAO.findReplyByMemno(memno);
   }
 
   /**

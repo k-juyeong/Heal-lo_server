@@ -58,6 +58,9 @@
                   <label th:for="mempw">비밀번호</label
                   ><input type="password" th:field="*{mempw}" />
                 </p>
+                <div th:if="${#fields.hasGlobalErrors()}">
+                  <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
+                </div>
                 <p id="msg"></p>
                 <p><button type="submit" class="btn" id="loginBtn">로그인</button></p>
 

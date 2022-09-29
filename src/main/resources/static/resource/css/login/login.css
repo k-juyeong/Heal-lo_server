@@ -91,3 +91,8 @@
 #container .wrap .loginBox .findBox .btn:hover {
   font-weight: bold;
 }
+
+.fieldError{
+  border: 1px solid red;
+  color: red;
+}

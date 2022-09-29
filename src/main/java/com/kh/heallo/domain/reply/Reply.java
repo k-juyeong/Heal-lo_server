@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.reply;
 
+import com.kh.heallo.domain.board.Board;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,4 +13,5 @@ public class Reply {
   private String rpComment;        // RPCOMMENT	CLOB
   private LocalDateTime rpCDate;   // RPCDATE	TIMESTAMP(6)
   private LocalDateTime rpUDate;   // RPUDATE	TIMESTAMP(6)
+  private Board board;
 }
