@@ -53,10 +53,10 @@
               <p>마이 페이지</p>
             </div>
             <div class="information">
-              <p><a href="" th:href="@{/members/{id}/edit(id=${session.LOGIN_MEMBER.memno})}">>나의 정보수정</a></p>
+              <p><a href="" th:href="@{/members/{id}/edit(id=${session.LOGIN_MEMBER.memno})}">> 나의 정보수정</a></p>
             </div>
             <div class="activity">
-              <p><a href="" th:href="@{/members/{id}/board(id=${session.LOGIN_MEMBER.memno})}">>나의 활동</a></p>
+              <p><a href="" th:href="@{/members/{id}/board(id=${session.LOGIN_MEMBER.memno})}">> 나의 활동</a></p>
           </div>
         </div>
         <div class="history">
@@ -74,7 +74,7 @@
             <a href="" th:href="@{/{fcno(fcno=${rec.fcno})}}"><p class="substance-notice" th:text="${rec.rvcontents}">Lorem ipsum dolor sit amet.</p></a>
             <p class="substance-dateline" th:text="${rec.rvcdate}">2022.08.13</p>
             <p class="substance-star" th:text="${rec.rvscore}">3.5</p>
-            <div class="button-box" th:id="${rec.fcno}">
+            <div class="button-box" th:id="${rec.rvno}">
               <button id="editBtn"><a id="toEditRv" href="" th:href="@{/reviews/{rvno}/edit(rvno=${rec.rvno})}">수정</a></button>
               <button id="delBtn" th:onclick="mpDeleteReview(event)">삭제</button>
             </div>

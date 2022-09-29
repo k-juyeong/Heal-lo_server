@@ -18,7 +18,7 @@ function domClean(e) {
         .then(jsonData => {
             if (jsonData.header.code == '00') {
                 console.log(jsonData);
-                document.querySelectorAll('.bookmark').remove();
+                e.target.closest('.bookmark').remove();
             } else if (jsonData.header.code == '03') {
             } else {
                 throw new Error(jsonData.data);

@@ -37,7 +37,7 @@ public class MemberDAOImpl implements  MemberDAO{
   public Long join(Member member) {
     StringBuffer sql = new StringBuffer();
     sql.append(" insert into member ");
-    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,'normal','JOIN',sysdate ,sysdate ) ");
+    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,'NORMAL','JOIN',sysdate ,sysdate ) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -259,15 +259,6 @@ public class MemberDAOImpl implements  MemberDAO{
         return reply;
       }
     });
-
-    if (replies.isEmpty()){
-      throw new DataAccessException("데이터를 찾을수 없습니다") {
-        @Override
-        public String getMessage() {
-          return super.getMessage();
-        }
-      };
-    }
 
     return replies;
   }
