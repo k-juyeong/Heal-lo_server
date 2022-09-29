@@ -2,6 +2,7 @@ package com.kh.heallo.domain.reply;
 
 import com.kh.heallo.domain.board.Board;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,13 @@ public class Reply {
   private Long memno;              // MEMNO	NUMBER(8,0)
   private String rpComment;        // RPCOMMENT	CLOB
   private LocalDateTime rpCDate;   // RPCDATE	TIMESTAMP(6)
+
+  @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
   private LocalDateTime rpUDate;   // RPUDATE	TIMESTAMP(6)
+<<<<<<< HEAD
+
+  private String memnickname; //닉네임
+=======
   private Board board;
+>>>>>>> 464db786fbfff9c69b2299aef1ffe1eb0c3591ca
 }

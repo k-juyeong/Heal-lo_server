@@ -21,14 +21,14 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/reply")
+@RequestMapping("/reply")
 public class ReplyRestController {
 
   private final ReplySVC replySVC;
 
   // 댓글 수
-  @GetMapping("/count")
-  public ResponseEntity<ResponseMsg> count(Long bdno) {
+  @GetMapping("/count/{bdno}")
+  public ResponseEntity<ResponseMsg> count(@PathVariable Long bdno) {
     int count = replySVC.count(bdno);
 
     ResponseMsg responseMsg = new ResponseMsg()
@@ -38,8 +38,8 @@ public class ReplyRestController {
   }
 
   // 댓글 목록 조회
-  @GetMapping
-  public ResponseEntity<ResponseMsg> all(Long bdno) {
+  @GetMapping("/{bdno}")
+  public ResponseEntity<ResponseMsg> all(@PathVariable Long bdno) {
     List<Reply> all = replySVC.all(bdno);
 
     // Create ResponseEntity
@@ -50,12 +50,12 @@ public class ReplyRestController {
   }
 
   // 댓글 등록
-  @PostMapping
+  @PostMapping("/{bdno}")
   public ResponseEntity<ResponseMsg> save(
+      @PathVariable Long bdno,
       AddForm addForm,
       HttpServletRequest request
   ) {
-
     // 회원번호 찾기
     Long memno = 0L;
     HttpSession session = request.getSession(false);
@@ -66,7 +66,7 @@ public class ReplyRestController {
 
     Reply reply = new Reply();
     reply.setRpComment(addForm.getRpComment());
-    replySVC.save(memno, reply);
+    replySVC.save(bdno, memno, reply);
 
     ResponseMsg responseMsg = new ResponseMsg()
         .createHeader(StatusCode.SUCCESS);
@@ -75,8 +75,9 @@ public class ReplyRestController {
   }
 
   // 대댓글 등록
-  @PostMapping("/plus")
+  @PostMapping("/plus/{bdno}")
   public ResponseEntity<ResponseMsg> savePlus(
+      @PathVariable Long bdno,
       AddForm addForm,
       HttpServletRequest request
       ) {
@@ -91,7 +92,7 @@ public class ReplyRestController {
 
     Reply reply = new Reply();
     reply.setRpComment(addForm.getRpComment());
-    replySVC.savePlusReply(memno, reply);
+    replySVC.savePlusReply(bdno, memno, reply);
 
     ResponseMsg responseMsg = new ResponseMsg()
         .createHeader(StatusCode.SUCCESS);

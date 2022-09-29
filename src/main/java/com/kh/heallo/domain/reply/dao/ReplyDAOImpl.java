@@ -44,12 +44,13 @@ public class ReplyDAOImpl implements ReplyDAO {
   public List<Reply> all(Long bdno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("SELECT * ");
-    sql.append("  FROM REPLY ");
-    sql.append("WHERE BDNO = ? ");
+    sql.append("SELECT t1.rpcomment, t1.rpudate, t2.memnickname ");
+    sql.append("  FROM reply t1, member t2 ");
+    sql.append("WHERE t1.memno = t2.memno ");
+    sql.append("  AND t1.bdno = ? ");
 
-    jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class), bdno);
-    return null;
+    List<Reply> list = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class), bdno);
+    return list;
   }
 
   /**
@@ -59,10 +60,10 @@ public class ReplyDAOImpl implements ReplyDAO {
    */
   // 게시글 번호 받기
   @Override
-  public Long save(Long memno, Reply reply) {
+  public Long save(Long bdno, Long memno, Reply reply) {
     StringBuffer sql = new StringBuffer();
     sql.append("INSERT INTO REPLY(RPNO, BDNO,MEMNO,RPCOMMENT) ");
-    sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, BOARD_BDNO_SEQ.currval, ?, ?) ");
+    sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, ?, ?, ?) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -70,8 +71,9 @@ public class ReplyDAOImpl implements ReplyDAO {
       @Override
       public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
         PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"rpno"});
-        pstmt.setLong(1, memno);
-        pstmt.setString(2, reply.getRpComment());
+        pstmt.setLong(1, bdno);
+        pstmt.setLong(2, memno);
+        pstmt.setString(3, reply.getRpComment());
         return pstmt;
       }
     }, keyHolder);
@@ -86,10 +88,10 @@ public class ReplyDAOImpl implements ReplyDAO {
    */
   // 부모댓글, 들여쓰기 번호 받기
   @Override
-  public Long savePlusReply(Long memno, Reply reply) {
+  public Long savePlusReply(Long bdno, Long memno, Reply reply) {
     StringBuffer sql = new StringBuffer();
     sql.append("INSERT INTO REPLY ");
-    sql.append("     VALUES (REPLY_RPNO_SEQ.NEXTVAL, 1,1(부모댓글),1(들여쓰기), ?, '대댓글', SYSDATE, SYSDATE) ");
+    sql.append("     VALUES (REPLY_RPNO_SEQ.NEXTVAL, ? ,1(부모댓글),1(들여쓰기), ?, '대댓글', SYSDATE, SYSDATE) ");
 
 
 

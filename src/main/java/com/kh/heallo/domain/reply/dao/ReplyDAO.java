@@ -24,7 +24,7 @@ public interface ReplyDAO {
    * @param reply 등록할 댓글
    * @return 댓글 번호
    */
-  Long save(Long memno, Reply reply);
+  Long save(Long bdno, Long memno, Reply reply);
 
   /**
    * 대댓글 등록
@@ -32,7 +32,7 @@ public interface ReplyDAO {
    * @param reply 등록할 대댓글
    * @return 댓글 번호
    */
-  Long savePlusReply(Long memno, Reply reply);
+  Long savePlusReply(Long bdno, Long memno, Reply reply);
 
   /**
    * 댓글 수정
