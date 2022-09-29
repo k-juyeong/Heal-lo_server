@@ -57,10 +57,10 @@
     <main id="container">
       <aside class="title">
         <div class="title__list">
-          <a  th:href="@{/boards/?category=BD001}">자유게시판</a>
-          <a  th:href="@{/boards/?category=BD002}">정보공유</a>
-          <a  th:href="@{/boards/?category=BD003}">추천글</a>
-          <a  th:href="@{/boards/?category=BD004}">문의하기</a>
+          <a  th:href="@{/boards/list/?category=BD001}">자유게시판</a>
+          <a  th:href="@{/boards/list/?category=BD002}">정보공유</a>
+          <a  th:href="@{/boards/list/?category=BD003}">추천글</a>
+          <a  th:href="@{/boards/list/?category=BD004}">문의하기</a>
         </div>
       </aside>
 
@@ -75,28 +75,23 @@
         <div class="board_content">
 
           <div class="writeForm">
-          <div class="line">
-            <label th:for="bdno">게시글번호</label>
-            <span id="bdno" th:text="*{bdno}"></span>
-          </div>
+            <div class="line">
+              <label th:for="bdno">게시글번호</label>
+              <span id="bdno" th:text="*{bdno}"th:field="*{bdno}"></span>
+            </div>
             <div class="line">
               <label th:for="bdcg">카테고리</label>
               <span th:text="${bdTitle['__${category}__']}?:_"></span>
-
-<!--              <input type="text" th:field="*{bdcg}" readonly="readonly">-->
-<!--              <input type="text" th:text="${#strings.isEmpty(category)?-->
-<!--                    bdTitle[board.bdcg]-->
-<!--                    :bdTitle['__${category}__']}" readonly="readonly">-->
             </div>
             <div class="line">
               <label th:for="bdtitle">제목</label>
               <span th:text="*{bdtitle}"></span>
             </div>
 
-<!--            <div class="line">-->
-<!--              <label>조회수</label>-->
-<!--              <input type="text" th:field="*{bdview}" readonly="readonly">-->
-<!--            </div>-->
+            <div class="line">
+              <label>조회수</label>
+              <span th:text="*{bdview}"></span>
+            </div>
 
             <div class="line">
               <label  th:for="bdcdate">작성일</label>
@@ -182,16 +177,18 @@
     //수정이동
     const $updateBtn = document.getElementById('updateBtn');
     $updateBtn.addEventListener('click', evt=>{
-      const bdno = document.getElementById('detailForm').bdno.value;
+     if(confirm('수정하시겠습니까?')){
+      const bdno = document.getElementById('bdno').textContent;
       const url = `/boards/${bdno}/edit`;
       location.href = url;
+    }
     });
 
     //삭제
     const $deleteBtn = document.getElementById('deleteBtn');
     $deleteBtn.addEventListener('click', evt=>{
       if(confirm('삭제하시겠습니까?')){
-        const bdno = document.getElementById('detailForm').bdno.value;
+              const bdno = document.getElementById('bdno').textContent;
         const url = `/boards/${bdno}/del`;
         location.href = url;
       }
@@ -200,7 +197,7 @@
     //목록
      const $listBtn = document.getElementById('listBtn');
      $listBtn.addEventListener('click', evt=>{
-      location.href = '/boards?category=';
+      location.href = '/boards/list?category=';
      });
 
 

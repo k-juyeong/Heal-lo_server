@@ -57,39 +57,35 @@
       
     <!-- 메인 컨텐츠 -->
     <main id="container">
+
       <aside class="title">
         <div class="title__list">
-          <a  th:href="@{/boards/?category=BD001}">자유게시판</a>
-          <a  th:href="@{/boards/?category=BD002}">정보공유</a>
-          <a  th:href="@{/boards/?category=BD003}">추천글</a>
-          <a  th:href="@{/boards/?category=BD004}">문의하기</a>
+          <a  th:href="@{/boards/list/?category=BD001}">자유게시판</a>
+          <a  th:href="@{/boards/list/?category=BD002}">정보공유</a>
+          <a  th:href="@{/boards/list/?category=BD003}">추천글</a>
+          <a  th:href="@{/boards/list/?category=BD004}">문의하기</a>
         </div>
       </aside>
-
-
-
       <section class="board_write">
-
         <div class="board_title">
           <h2 class="title__main">게시글작성</h2>
         </div>
-
-
         <div class="board_content">
-
           <form id="saveForm" action="" th:action th:method="post" th:object="${form}" class="writeForm" enctype="multipart/form-data">
+
+            <input type="text" th:field="*{memno}">
 
             <div th:if="${#fields.hasGlobalErrors()}">
               <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
             </div>
-
             <div class="line">
               <label>카테고리</label>
               <select name="" id="menu-list" th:field="*{bdcg}">
-                <th:block th:each="code : ${classifier}">
-                  <option value="" th:value="${code.code}" th:text="${code.decode}">게시판1</option>
-                </th:block>
-<!--                <option value="자유게시판">자유게시판</option>-->
+<!--                <th:block th:each="code : ${classifier}">-->
+<!--                  <option value="" th:value="${code.code}" th:text="${code.decode}">게시판1</option>-->
+<!--                </th:block>-->
+                <option value="BD001">자유게시판</option>
+                <option value="BD002">정보공유</option>
 <!--                <option value="정보공유">정보공유</option>-->
 <!--                <option value="문의하기">문의하기</option>-->
               </select>
@@ -100,17 +96,15 @@
               <input type="text" th:field="*{bdtitle}">
               <div class="fieldError" th:errors="*{bdtitle}"></div>
             </div>
-
             <div class="line">
               <label>작성자</label>
-<!--              <span th:text="*{memnickname}"></span>-->
-              <!--  <input type="text" th:field="*{memnickname}" th:text="${memnickname}">-->
+<!--              <span th:text="*{memno}"></span>-->
+              <span th:text="${session.LOGIN_MEMBER.memnickname}"></span>
             </div>
             <div>
               <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
               <div class="fieldError" th:errors="*{bdcontent}"></div>
             </div>
-
           </form>
         </div>
 

@@ -14,5 +14,4 @@ public class SaveForm {
   private String bdcontent;
   private Long memno;
   private String memnickname; //닉네임
-
 }

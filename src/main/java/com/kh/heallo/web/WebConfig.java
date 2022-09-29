@@ -32,8 +32,9 @@ public class WebConfig implements WebMvcConfigurer {
         whiteList.add("/images/*/*");
         whiteList.add("/members/find_id/**");
         whiteList.add("/members/find_pw/**");
-        whiteList.add("/boards");
-        whiteList.add("/boards/*/detail");
+        whiteList.add("/boards/list/**");
+        whiteList.add("/boards/list/**");
+
 
         //로그인체크 인터셉터
         registry.addInterceptor(loginCheckInterceptor)

@@ -24,6 +24,7 @@ import java.util.Optional;
 public class BoardDAOImpl implements BoardDAO{
   private final JdbcTemplate jt;
 
+
   /**
    * 등록
    * @param board
@@ -32,8 +33,8 @@ public class BoardDAOImpl implements BoardDAO{
   @Override
   public Long save(Board board) {
     StringBuffer sql = new StringBuffer();
-    sql.append("insert into board(bdno,bdcg,bdtitle,bdcontent,memno ) ");
-    sql.append("     values(board_bdno_seq.nextval, ?, ?, ?, ? ) ");
+    sql.append("insert into board(bdno,bdcg,bdtitle,bdcontent,memno  ) ");
+    sql.append("     values(board_bdno_seq.nextval, ?, ?, ?, ?  ) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
     jt.update(new PreparedStatementCreator() {
@@ -44,12 +45,12 @@ public class BoardDAOImpl implements BoardDAO{
         pstmt.setString(2, board.getBdtitle());
         pstmt.setString(3, board.getBdcontent());
         pstmt.setLong(4, board.getMemno());
-        pstmt.setString(5, board.getMemnickname());
         return pstmt;
       }
     },keyHolder);
     return Long.valueOf(keyHolder.getKeys().get("bdno").toString());
   }
+
 
   //목록
   @Override
@@ -222,7 +223,7 @@ public class BoardDAOImpl implements BoardDAO{
   @Override
   public int totalCount(BbsFilterCondition filterCondition) {
     StringBuffer sql = new StringBuffer();
-    sql.append("  select no, t3.bdno, t3.bdcg, t3.bdtitle, t3.memno, t3.bdcontent, t3.bdcdate, t3.bdview, t3.memnickname ");
+    sql.append("  select count(no) ");
     sql.append(" from ( ");
     sql.append("     select rownum no, t1.bdno, t1.bdcg, t1.bdtitle, t1.memno, t1.bdcontent, t1.bdcdate, t1.bdview, t2.memnickname ");
     sql.append("       from board t1, member t2 ");
