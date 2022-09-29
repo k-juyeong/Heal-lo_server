@@ -66,7 +66,9 @@
                 <input id="id" type="text" name="memid" th:field="${form.memid}" readonly>
 
                 <label class="email" for="email">이메일</label>
-                <input id="email" type="text" name="mememail" th:field="${form.mememail}">
+                <input id="email" type="text" name="mememail" th:field="${form.mememail}"
+                       th:class="${#fields.hasErrors('mememail')} ? fieldError">
+                <span id="mememailErr" th:if="${#fields.hasErrors('mememail')}" th:errors="*{mememail}"></span>
 
                 <label class="changePw" for="changePw">비밀번호 변경</label>
                 <input id="changePw" type="text" name="mempw" th:field="${form.mempw}">
@@ -75,7 +77,10 @@
   <!--              <input id="changePwCh" type="text">-->
 
                 <label class="phoneNb" for="phoneNb">휴대전화 번호</label>
-                <input id="phoneNb" type="text" name="memtel" th:field="${form.memtel}">
+                <input id="phoneNb" type="text" name="memtel" th:field="${form.memtel}"
+                       th:class="${#fields.hasErrors('memtel')} ? fieldError">
+                <span id="memtelErr" th:if="${#fields.hasErrors('memtel')}" th:errors="*{memtel}"></span>
+
                 <div class="btn">
                   <button id="btnChange">수정완료</button>
                   <button id="btnOut" type="button">탈퇴</button>

@@ -41,3 +41,11 @@
 #container #none p {position: absolute; left: 25px; top: 480px;}
 
 #btnCheck{border-radius:5px; background:var(--color-others-header); color:white; padding:5px;}
+
+.fieldError{border: 1px solid red; color: red;}
+.fieldSuccess{border: 1px solid blue; color: blue;}
+
+.errmsg {font-size:0.8em; font-weight:bold; color:red;}
+
+#memtelErr {text-align: start; font-size:0.8em; font-weight:bold; color:red;}
+#mememailErr {text-align: start; font-size:0.8em; font-weight:bold; color:red;}
