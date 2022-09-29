@@ -99,7 +99,15 @@
 
                 <!-- 시설명 검색 창 메인 -->
                 <form class="text-input__body input-group mb-3">
-                  <input type="text" class="form-control shadow-none" id="textSearchInput" autocomplete="off" placeholder="시설명을 입력해주세요" aria-label="Username" aria-describedby="basic-addon1">
+                  <input type="text"
+                         class="form-control shadow-none"
+                         id="textSearchInput"
+                         autocomplete="off"
+                         placeholder="시설명을 입력해주세요"
+                         aria-label="Username"
+                         aria-describedby="basic-addon1"
+                         th:value="${keyword} ? ${keyword} : _"
+                  >
                   <button type="submit"><i class="fa-solid fa-magnifying-glass-location"></i></button>
                 </form>      
               </div>

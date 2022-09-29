@@ -1,5 +1,7 @@
 const bgBoxTriggerMargin = 300;
 const bgBoxElementList = document.querySelectorAll('.bg');
+const textInput = document.querySelector('.search-bar__content');
+const form = document.querySelector('.section1__search-bar__group');
 
 const bgBoxFunc = () => {
     for(const ele of bgBoxElementList) {
@@ -16,3 +18,15 @@ const bgBoxFunc = () => {
 
 window.addEventListener('load', bgBoxFunc);
 window.addEventListener('scroll', bgBoxFunc);
+
+//운동시설 검색
+form.addEventListener('submit',(e) => {
+    e.preventDefault();
+
+    const keyword = textInput.value.trim('');
+    if (keyword == '') {
+        location.href = `/facilities`;
+    } else {
+        location.href = `/facilities?keyword=${keyword}`;
+    }
+});

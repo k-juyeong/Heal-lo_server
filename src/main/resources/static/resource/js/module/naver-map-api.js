@@ -15,21 +15,9 @@ export default class MapUtile {
     //마커들 생성 + 위치이동
     makeMarkers(data) {
 
-        //내위치 초기화
-        if(this.myMarker) {
-            this.myMarker.setMap(null);
-            this.myMarker = null;
-        }
+        //맵 초기상태 변경
+        this.defaultSet();
 
-        //기존 마커들 초기화
-        if(this.markers.length != 0) {
-            this.markers.forEach(ele => {
-                ele.setMap(null);
-            })
-        }
-
-        this.infowindows = [];
-        this.markers = [];
         const bound = new naver.maps.LatLngBounds();
         this.beforeBound = bound;
 
@@ -63,8 +51,6 @@ export default class MapUtile {
 
     //내 위치 마커생성 + 위치이동
     makeMyMarker(lat,lng) {
-        console.log(this.myMarker)
-
         if(!this.myMarker) {
             const myMarker =
                 this.makeMarker(
@@ -109,6 +95,28 @@ export default class MapUtile {
         return marker;
 
 
+    }
+
+    //기본 상태
+    defaultSet() {
+
+        //내위치 초기화
+        if(this.myMarker) {
+            this.myMarker.setMap(null);
+            this.myMarker = null;
+        }
+
+        //기존 마커들 초기화
+        if(this.markers.length != 0) {
+            this.markers.forEach(ele => {
+                ele.setMap(null);
+            })
+        }
+
+        this.infowindows = [];
+        this.markers = [];
+
+        this.map.setZoom(8, true);
     }
 
 }

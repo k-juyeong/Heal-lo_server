@@ -54,10 +54,10 @@
               <li>
                 커뮤니티
                 <ul>
-                  <li><a href="" th:href="@{/boards/?bdcg=자유게시판}">자유게시판</a></li>
-                  <li><a href="" th:href="@{/boards/?bdcg=정보공유}">정보공유판</a></li>
-                  <li><a href="" th:href="@{/boards/?bdcg=추천글}">추천글</a></li>
-                  <li><a href="" th:href="@{/boards/?bdcg=문의하기}">문의하기</a></li>
+                  <li><a href="" th:href="@{/boards/?category=BD001}">자유게시판</a></li>
+                  <li><a href="" th:href="@{/boards/?category=BD002}">정보공유판</a></li>
+                  <li><a href="" th:href="@{/boards/?category=BD003}">추천글</a></li>
+                  <li><a href="" th:href="@{/boards/?category=BD004}">문의하기</a></li>
                 </ul>
               </li>
               <li>
@@ -81,14 +81,14 @@
       <main id="container">
         <!-- 검색 바 -->
         <section class="section1__search-bar">
-          <div class="section1__search-bar__group">
+          <form class="section1__search-bar__group">
             <input
               type="text"
               class="search-bar__content"
               placeholder="운동시설명을 입력하세요"
             />
-            <button>검색</button>
-          </div>
+            <button class="search-btn">검색</button>
+          </form>
         </section>
 
         <!-- 주요 기능-->
@@ -113,11 +113,11 @@
           </artticle>
           <artticle class="section1__community">
             <div>
-              <a href="" th:href="@{/boards/?bdcg=자유게시판}"><div class="section1__community-content">
+              <a href="" th:href="@{/boards/?category=BD001}"><div class="section1__community-content">
                 <img src="../img/commu2.jpg" alt="" th:src="@{resource/img/commu2.jpg}"/>
                 <p class="onImage">Share your <br> healthy experiences</p>
               </div></a>
-              <p class="underImage"><a href="" th:href="@{/boards/?bdcg=자유게시판}">커뮤니티</a></p>
+              <p class="underImage"><a href="" th:href="@{/boards/?category=BD001}">커뮤니티</a></p>
             </div>
           </artticle>
         </section>
@@ -206,25 +206,6 @@
       </footer>
     </div>
 
-    <script>
-      const bgBoxTriggerMargin = 300;
-      const bgBoxElementList = document.querySelectorAll('.bg');
-
-      const bgBoxFunc = () => {
-        for (const ele of bgBoxElementList) {
-          if (!ele.classList.contains('show')) {
-            if (
-              window.innerHeight >
-              ele.getBoundingClientRect().top + bgBoxTriggerMargin
-            ) {
-              ele.classList.add('show');
-            }
-          }
-        }
-      };
-
-      window.addEventListener('load', bgBoxFunc);
-      window.addEventListener('scroll', bgBoxFunc);
-    </script>
+    <script th:src="@{/resource/js/main/index.js}"></script>
   </body>
 </html>

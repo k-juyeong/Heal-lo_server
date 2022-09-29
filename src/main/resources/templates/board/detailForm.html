@@ -8,8 +8,7 @@
     <title>게시판</title>
     <!-- <link rel="stylesheet" href="../../static/resource/css/board/board.css" th:href="@{/resource/css/board/board.css}"> -->
     <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
-    <link rel="stylesheet" href="../../static/resource/css/board/reply.css" th:href="@{/resource/css/board/reply.css}">
-
+    
     <th:block th:replace="${link}"></th:block>
   <style>
     .board-wrap .board-body{
@@ -57,14 +56,13 @@
     <main id="container">
       <aside class="title">
         <div class="title__list">
-          <a  th:href="@{/boards}">자유게시판</a>
-          <a  th:href="@{/boards/?bdcg=정보공유}">정보공유</a>
-          <a  th:href="@{/boards/?bdcg=추천글}">추천글</a>
-          <a  th:href="@{/boards/?bdcg=문의하기}">문의하기</a>
+          <a  th:href="@{/boards/?category=BD001}">자유게시판</a>
+          <a  th:href="@{/boards/?category=BD002}">정보공유</a>
+          <a  th:href="@{/boards/?category=BD003}">추천글</a>
+          <a  th:href="@{/boards/?category=BD004}">문의하기</a>
         </div>
       </aside>
 
-      <div class="board_main">
       <section class="board_write">
         <div class="board_title">
           <h2 class="title__main">자유게시판</h2>
@@ -76,17 +74,20 @@
 
           <div class="line">
             <label th:for="bdno">게시글번호</label>
-            <input id="bdno" type="text" th:field="*{bdno}" readonly="readonly">
+            <span th:text="*{bdno}"></span>
           </div>
-
             <div class="line">
               <label th:for="bdcg">카테고리</label>
-              <input type="text" th:field="*{bdcg}" readonly="readonly">
-            </div>
+              <span th:text="${bdTitle['__${category}__']}?:_"></span>
 
+<!--              <input type="text" th:field="*{bdcg}" readonly="readonly">-->
+<!--              <input type="text" th:text="${#strings.isEmpty(category)?-->
+<!--                    bdTitle[board.bdcg]-->
+<!--                    :bdTitle['__${category}__']}" readonly="readonly">-->
+            </div>
             <div class="line">
               <label th:for="bdtitle">제목</label>
-              <input type="text" th:field="*{bdtitle}" readonly="readonly">
+              <span th:text="*{bdtitle}"></span>
             </div>
 
 <!--            <div class="line">-->
@@ -96,12 +97,13 @@
 
             <div class="line">
               <label  th:for="bdcdate">작성일</label>
-              <input type="text" th:field="*{bdcdate}" readonly="readonly">
+              <span th:text="*{#temporals.format(bdcdate,'yy/MM/dd HH:dd')}"></span>
             </div>
 
             <div class="line">
               <label th:for="memnickname">작성자</label>
-              <input type="text" th:field="*{memnickname}" readonly="readonly">
+              <span th:text="*{memnickname}"></span>
+<!--              <input type="text"  readonly="readonly">-->
             </div>
             <div>
               <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
@@ -115,6 +117,7 @@
         </div>
       </section>
 
+<<<<<<< HEAD
 <!--      댓글-->
       <div id="reply">
         <div class="reply__hit">
@@ -151,6 +154,9 @@
         </div>
       </div>
       </div>
+=======
+
+>>>>>>> 464db786fbfff9c69b2299aef1ffe1eb0c3591ca
 
     </main>
 
@@ -169,7 +175,6 @@
     </footer>
     </div>
   <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
-  <script src="../../static/resource/js/board/reply.js" th:src="@{/resource/js/board/reply.js}"></script>
 
   <script>
 
@@ -194,7 +199,7 @@
     //목록
      const $listBtn = document.getElementById('listBtn');
      $listBtn.addEventListener('click', evt=>{
-      location.href = '/boards';
+      location.href = '/boards?category=';
      });
 
 

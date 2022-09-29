@@ -10,32 +10,34 @@
 #container .text-box .activity p {font-size: 1.3rem; font-weight: 550; margin-top: 40px; margin-left: 30px;}
 
 #container .myInformation {display: flex; flex-direction: column; flex: 1;}
-.myInformation label#name {font-weight: 500; margin-top: 70px; margin-bottom: 15px;}
+.myInformation label.name {font-weight: 500; margin-top: 70px; margin-bottom: 15px;}
 .myInformation input#name {padding: 10px 2px; border: 1px solid #888; border-radius: 10px;}
 
-.myInformation label#nname {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
+.myInformation label.nname {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
 .myInformation input#nname {padding: 10px 2px; border: 1px solid #888; border-radius: 10px;}
 
-.myInformation label#id {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
+.myInformation label.id {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
 .myInformation input#id {padding: 10px 2px; border: 1px solid #888; border-radius: 10px;}
 
-.myInformation label#email {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
+.myInformation label.email {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
 .myInformation input#email {padding: 10px 2px; border: 1px solid #888; border-radius: 10px;}
 
-.myInformation label#changePw {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
+.myInformation label.changePw {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
 .myInformation input#changePw {padding: 10px 2px; border: 1px solid #888; border-radius: 10px;}
 
-.myInformation label#changePwCh {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
+.myInformation label.changePwCh {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
 .myInformation input#changePwCh {padding: 10px 2px; border: 1px solid #888; border-radius: 10px;}
 
-.myInformation label#phoneNb {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
+.myInformation label.phoneNb {font-weight: 500; margin-top: 25px; margin-bottom: 15px;}
 .myInformation input#phoneNb {padding: 10px 2px; border: 1px solid #888; border-radius: 10px;}
 
 
 .myInformation .btn {display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; height: 162px;}
-.myInformation .btn #btnChange {width: 80px; background-color: #16a085; color: white; margin-top: 10px; }
-.myInformation .btn #btnOut {width: 50px; background-color: #16a085; color: white;  margin-left: 440px;}
+.myInformation .btn #btnChange {width: 80px; background-color: #16a085; color: white; margin-top: 10px; border-radius:5px; padding:5px;}
+.myInformation .btn #btnOut {width: 50px; background-color: #16a085; color: white;  margin-left: 440px; border-radius:5px; padding:5px;}
 
 #container #none {position: relative; flex: 1;}
-#container #none button {position: absolute; left: 25px; top: 200px;}
+#container #none button {position: absolute; left: 25px; top: 195px;}
 #container #none p {position: absolute; left: 25px; top: 480px;}
+
+#btnCheck{border-radius:5px; background:var(--color-others-header); color:white; padding:5px;}

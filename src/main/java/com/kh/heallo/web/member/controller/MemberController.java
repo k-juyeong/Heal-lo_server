@@ -3,6 +3,7 @@ package com.kh.heallo.web.member.controller;
 import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
+import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.web.member.dto.*;
 import com.kh.heallo.web.member.session.LoginMember;
@@ -136,6 +137,11 @@ public class MemberController {
     //회원인경우
     Member findedMember = member.get();
 
+    if (findedMember.getMemstatus().equals("withdraw")){
+      bindingResult.reject("LoginForm.login","회원정보가 없습니다");
+      return "login/login";
+    }
+
     //세션에 회원정보 저장
     LoginMember loginMember = new LoginMember(findedMember.getMemno(), findedMember.getMemnickname());
 
@@ -225,7 +231,7 @@ public class MemberController {
     memberSVC.del(memid);
 
     log.info("memid={}",memid);
-    return "redirect:/";
+    return "redirect:/logout";
   }
 
   //아이디 찾기 화면
@@ -278,6 +284,16 @@ public class MemberController {
   @GetMapping("/{id}/board")
   public String myActivityBoard(@PathVariable("id")Long memno, Model model,HttpServletRequest request){
 
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
+
+    EditForm editForm = new EditForm();
+    editForm.setMemno(memno);
+
     List<Board> boards = memberSVC.findBoardByMemno(memno);
     List<Board> list = new ArrayList<>();
 
@@ -288,16 +304,6 @@ public class MemberController {
       BeanUtils.copyProperties(board,board1);
       list.add(board1);
     });
-
-    //회원번호 조회
-    HttpSession session = request.getSession(false);
-    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
-      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-      memno = loginMember.getMemno();
-    }
-
-    EditForm editForm = new EditForm();
-    editForm.setMemno(memno);
 
     log.info("list={}",list);
 
@@ -319,13 +325,37 @@ public class MemberController {
     EditForm editForm = new EditForm();
     editForm.setMemno(memno);
 
+    List<Reply> replies = memberSVC.findReplyByMemno(memno);
+    List<Reply> list = new ArrayList<>();
+
+    log.info("replies={}",replies);
+
+    replies.stream().forEach(reply -> {
+      Reply reply1 = new Reply();
+      BeanUtils.copyProperties(reply,reply1);
+      list.add(reply1);
+    });
+
+    log.info("list={}",list);
+
     model.addAttribute("form",editForm);
+    model.addAttribute("list",list);
     return "member/my_page_activity_reply";
   }
 
   //마이페이지 활동 (리뷰)
   @GetMapping("/{id}/review")
   public String myActivityReview(@PathVariable("id")Long memno, Long rvno,Model model,HttpServletRequest request){
+
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
+
+    EditForm editForm = new EditForm();
+    editForm.setMemno(memno);
 
     List<Review> reviews = memberSVC.findReviewByMemno(memno,rvno);
     List<Review> list = new ArrayList<>();
@@ -346,16 +376,6 @@ public class MemberController {
       BeanUtils.copyProperties(review,review1);
       list.add(review1);
     });
-    //회원번호 조회
-    HttpSession session = request.getSession(false);
-    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
-      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-      memno = loginMember.getMemno();
-    }
-
-    EditForm editForm = new EditForm();
-    editForm.setMemno(memno);
-
 
     log.info("list={}",reviewDtoList);
 

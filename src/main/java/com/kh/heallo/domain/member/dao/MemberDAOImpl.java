@@ -2,17 +2,21 @@ package com.kh.heallo.domain.member.dao;
 
 import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.member.Member;
+import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.review.Review;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +37,7 @@ public class MemberDAOImpl implements  MemberDAO{
   public Long join(Member member) {
     StringBuffer sql = new StringBuffer();
     sql.append(" insert into member ");
-    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,'normal' ,sysdate ,sysdate ) ");
+    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,'NORMAL','JOIN',sysdate ,sysdate ) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -110,9 +114,13 @@ public class MemberDAOImpl implements  MemberDAO{
    */
   @Override
   public void del(String memid) {
-    String sql = "delete MEMBER where memid= ? ";
+    StringBuffer sql = new StringBuffer();
 
-    jdbcTemplate.update(sql, memid);
+    sql.append(" update MEMBER ");
+    sql.append("    set memstatus = 'WITHDRAW' ");
+    sql.append("  where memid= ? ");
+
+    jdbcTemplate.update(sql.toString(), memid);
   }
 
   /**
@@ -220,6 +228,39 @@ public class MemberDAOImpl implements  MemberDAO{
     List<Board> boards = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class));
 
     return boards;
+  }
+
+  /**
+   * 로그인 계정 작성 댓글 조회
+   *
+   * @param memno 회원번호
+   * @return
+   */
+  @Override
+  public List<Reply> findReplyByMemno(Long memno) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append(" select reply.RPCOMMENT rpComment, reply.RPCDATE rpCDate ,BOARD.bdno bdno, BOARD.BDTITLE bdtitle ");
+    sql.append("   from MEMBER, BOARD, reply ");
+    sql.append("  where MEMBER.MEMNO = BOARD.MEMNO and MEMBER.MEMNO = reply.MEMNO ");
+
+    List<Reply> replies = jdbcTemplate.query(sql.toString(), new RowMapper<Reply>() {
+      @Override
+      public Reply mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Reply reply = new Reply();
+        reply.setRpComment(rs.getString(1));
+        reply.setRpCDate(rs.getTimestamp(2).toLocalDateTime());
+        reply.setBdno(rs.getLong(3));
+
+        Board board = new Board();
+        board.setBdtitle(rs.getString(4));
+        reply.setBoard(board);
+
+        return reply;
+      }
+    });
+
+    return replies;
   }
 
   /**

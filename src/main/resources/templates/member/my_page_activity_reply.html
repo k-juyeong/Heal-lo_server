@@ -14,9 +14,9 @@
       <header id="header">
         <!-- 탑 메뉴 -->
         <div class="header__menu-top">
-          <span class="header__my-menu"><a href="#">로그아웃</a></span>
-          <span class="header__my-menu"><a href="#">마이페이지</a></span>
-          <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
+          <span class="header__my-menu"><a href="">로그아웃</a></span>
+          <span class="header__my-menu"><a href="">마이페이지</a></span>
+          <span class="header__my-menu"><a href="">즐겨찾기</a></span>
         </div>
 
         <!-- 베너 -->
@@ -53,31 +53,27 @@
               <p>마이 페이지</p>
             </div>
             <div class="information">
-              <p><a href="" th:href="@{/members/{id}/edit(id=${session.LOGIN_MEMBER.memno})}">>나의 정보수정</a></p>
+              <p><a href="" th:href="@{/members/{id}/edit(id=${session.LOGIN_MEMBER.memno})}">> 나의 정보수정</a></p>
             </div>
             <div class="activity">
-              <p><a href="" th:href="@{/members/{id}/board(id=${session.LOGIN_MEMBER.memno})}">>나의 활동</a></p>
+              <p><a href="" th:href="@{/members/{id}/board(id=${session.LOGIN_MEMBER.memno})}">> 나의 활동</a></p>
+            </div>
+         </div>
+          <div class="history">
+            <div class="menu">
+              <p class="notice"><a href="" th:href="@{/members/{id}/board(id=${session.LOGIN_MEMBER.memno})}">작성한 게시물</a></p>
+              <p class="coment"><a href="" th:href="@{/members/{id}/reply(id=${session.LOGIN_MEMBER.memno})}">댓글</a></p>
+              <p class="review"><a href="" th:href="@{/members/{id}/review(id=${session.LOGIN_MEMBER.memno})}">리뷰</a></p>
+            </div>
+            <div class="record">
+              <p class="coment">댓글</p>
+            </div>
+            <ul class="substance" th:each="rec : ${list}">
+              <li><a href="" th:href="@{/boards/{id}/detail(id=${rec.bdno})}" th:text="${rec.rpComment}">Lorem, ipsum dolor.</a></li>
+              <li class="substance-dateline" th:text="${{rec.rpCDate}}">2022.08.13</li>
+              <li class="substance-star" th:text="${rec.board.bdtitle}">Lorem ipsum dolor sit amet.</li>
+            </ul>
           </div>
-        </div>
-        <div class="history">
-          <div class="menu">
-            <p class="notice"><a href="" th:href="@{/members/{id}/board(id=${session.LOGIN_MEMBER.memno})}">작성한 게시물</a></p>
-            <p class="coment"><a href="" th:href="@{/members/{id}/reply(id=${session.LOGIN_MEMBER.memno})}">댓글</a></p>
-            <p class="review"><a href="" th:href="@{/members/{id}/review(id=${session.LOGIN_MEMBER.memno})}">리뷰</a></p>
-          </div>
-          <div class="record">
-            <p class="coment">댓글</p>
-          </div>
-          <ul class="substance">
-            <li><a href="">Lorem, ipsum dolor.</a></li>
-            <li class="substance-dateline">2022.08.13</li>
-            <li class="substance-star">Lorem ipsum dolor sit amet.</li>
-          </ul>
-          <ul class="substance">
-            <li><a href="">Lorem, ipsum dolor.</a></li>
-            <li class="substance-dateline">2022.08.13</li>
-            <li class="substance-star">Lorem ipsum dolor sit amet.</li>
-          </ul>
         </div>
       </main>
 
