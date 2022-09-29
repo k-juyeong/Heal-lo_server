@@ -137,7 +137,7 @@ public class MemberController {
     //회원인경우
     Member findedMember = member.get();
 
-    if (findedMember.getMemstatus() == "withdraw"){
+    if (findedMember.getMemstatus().equals("withdraw")){
       bindingResult.reject("LoginForm.login","회원정보가 없습니다");
       return "login/login";
     }
@@ -231,7 +231,7 @@ public class MemberController {
     memberSVC.del(memid);
 
     log.info("memid={}",memid);
-    return "redirect:/";
+    return "redirect:/logout";
   }
 
   //아이디 찾기 화면

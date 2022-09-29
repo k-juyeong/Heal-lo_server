@@ -37,7 +37,7 @@ public class MemberDAOImpl implements  MemberDAO{
   public Long join(Member member) {
     StringBuffer sql = new StringBuffer();
     sql.append(" insert into member ");
-    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,'normal','join',sysdate ,sysdate ) ");
+    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,'normal','JOIN',sysdate ,sysdate ) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -117,7 +117,7 @@ public class MemberDAOImpl implements  MemberDAO{
     StringBuffer sql = new StringBuffer();
 
     sql.append(" update MEMBER ");
-    sql.append("    set memstatus = 'withdraw' ");
+    sql.append("    set memstatus = 'WITHDRAW' ");
     sql.append("  where memid= ? ");
 
     jdbcTemplate.update(sql.toString(), memid);
@@ -240,7 +240,7 @@ public class MemberDAOImpl implements  MemberDAO{
   public List<Reply> findReplyByMemno(Long memno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append(" select reply.RPCOMMENT rpcomment, reply.RPCDATE rpcdate ,BOARD.BDTITLE bdtitle, BOARD.bdno bdno ");
+    sql.append(" select reply.RPCOMMENT rpComment, reply.RPCDATE rpCDate ,BOARD.bdno bdno, BOARD.BDTITLE bdtitle ");
     sql.append("   from MEMBER, BOARD, reply ");
     sql.append("  where MEMBER.MEMNO = BOARD.MEMNO and MEMBER.MEMNO = reply.MEMNO ");
 
@@ -250,10 +250,10 @@ public class MemberDAOImpl implements  MemberDAO{
         Reply reply = new Reply();
         reply.setRpComment(rs.getString(1));
         reply.setRpCDate(rs.getTimestamp(2).toLocalDateTime());
+        reply.setBdno(rs.getLong(3));
 
         Board board = new Board();
-        board.setBdtitle(rs.getString(3));
-        board.setBdno(rs.getLong(4));
+        board.setBdtitle(rs.getString(4));
         reply.setBoard(board);
 
         return reply;

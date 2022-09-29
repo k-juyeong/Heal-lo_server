@@ -93,6 +93,6 @@
 }
 
 .fieldError{
-  border: 1px solid red;
+  font-weight:bold;
   color: red;
 }
