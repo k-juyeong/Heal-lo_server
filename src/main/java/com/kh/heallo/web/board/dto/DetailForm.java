@@ -1,10 +1,14 @@
 package com.kh.heallo.web.board.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DetailForm {
   private String bdcg;
   private Long bdno;
@@ -19,5 +23,7 @@ public class DetailForm {
   @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
   private LocalDateTime bdudate;  //수정일
   private String memnickname; //닉네임
+
+  private String rpComment; // 댓글
 
 }

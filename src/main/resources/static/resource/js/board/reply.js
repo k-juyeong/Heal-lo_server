@@ -1,19 +1,30 @@
 
 // 게시글 번호
-const bdno = document.getElementById('bdno').value;
+const bdno = document.getElementById('bdno').textContent;
 
 // 댓글 수, 댓글 목록 불러오기
 count(bdno);
 all(bdno);
 
+
+// 전역변수
+const form = {
+  rpComment:document.getElementById('rpComment')
+}
+
 // 작성한 댓글 가져오기
-const reply = document.getElementById('rpComment').value;
+function getReply() {
+  const comment = form.rpComment.value;
+
+  return comment;
+}
 
 // 댓글 등록하기
 saveBtn.addEventListener('click', e=>{
-  console.log(reply);
-  console.log(bdno);
-//  save(reply, bdno);
+  const reply = getReply();
+
+  save(reply, bdno);
+  clearTextarea();
 });
 
 // 댓글 수
@@ -70,14 +81,20 @@ function save(reply, bdno){
   fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type':'application/json',
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
     body: JSON.stringify(reply)
   }).then(res=>res.json())
     .then(data=>{
-      console.log(data);
+      console.log(data)
       all(bdno);
     }).catch(err=>console.log(err));
 }
+
 // 본인 댓글이면 수정, 삭제버튼 노출
+
+// textarea 비우기
+function clearTextarea() {
+  form.rpComment.value = '';
+}
