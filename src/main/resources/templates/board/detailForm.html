@@ -8,7 +8,8 @@
     <title>게시판</title>
     <!-- <link rel="stylesheet" href="../../static/resource/css/board/board.css" th:href="@{/resource/css/board/board.css}"> -->
     <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
-    
+    <link rel="stylesheet" href="../../static/resource/css/board/reply.css" th:href="@{/resource/css/board/reply.css}">
+
     <th:block th:replace="${link}"></th:block>
   <style>
     .board-wrap .board-body{
@@ -63,6 +64,7 @@
         </div>
       </aside>
 
+      <div class="board__main">
       <section class="board_write">
         <div class="board_title">
           <h2 class="title__main">자유게시판</h2>
@@ -117,7 +119,6 @@
         </div>
       </section>
 
-<<<<<<< HEAD
 <!--      댓글-->
       <div id="reply">
         <div class="reply__hit">
@@ -154,10 +155,6 @@
         </div>
       </div>
       </div>
-=======
-
->>>>>>> 464db786fbfff9c69b2299aef1ffe1eb0c3591ca
-
     </main>
 
     <!-- footer -->

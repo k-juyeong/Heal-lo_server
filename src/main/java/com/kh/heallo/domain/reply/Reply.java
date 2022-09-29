@@ -16,10 +16,7 @@ public class Reply {
 
   @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
   private LocalDateTime rpUDate;   // RPUDATE	TIMESTAMP(6)
-<<<<<<< HEAD
 
   private String memnickname; //닉네임
-=======
   private Board board;
->>>>>>> 464db786fbfff9c69b2299aef1ffe1eb0c3591ca
 }
