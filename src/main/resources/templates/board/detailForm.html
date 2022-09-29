@@ -118,19 +118,10 @@
 <!--      댓글-->
       <div id="reply">
         <div class="reply__hit">
-          <p>댓글</p><p>수</p>
+          <p>댓글</p><p class="reply__count">수</p>
         </div>
         <div class="reply__main">
           <div class="reply__form">
-            <div class="reply__list">
-              <div class="reply__list nickname">토모</div>
-              <div class="reply__list content">완전 좋아여 사람도 별로 없음</div>
-              <div class="reply__list date">22.07.08</div>
-              <div class="reply__list btngrp">
-                <button class="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button class="delBtn"><i class="fa-solid fa-x"></i></button>
-              </div>
-            </div>
             <div class="reply__list">
               <div class="reply__list nickname">토모</div>
               <div class="reply__list content">완전 좋아여 사람도 별로 없음</div>
@@ -148,15 +139,15 @@
               </div>
             </div>
           </div>
-          <div class="reply__write">
+          <form id="addForm" method="post" class="reply__write">
             <div class="reply__write content">
-              <textarea class="reply__write toolbox" rows="10"></textarea>
+              <textarea id="rpComment" class="reply__write toolbox" rows="10"></textarea>
             </div>
             <div class="reply__write btngrp">
               <button id="saveBtn">등록</button>
               <button id="notSaveBtn">취소</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       </div>
@@ -274,11 +265,6 @@
 
 
   </script>
-
-
-<!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->
-<!--    <script src="../../static/resource/js/template/layout-sub.js" th:src="@{/resource/js/template/layout-sub.js}"></script>-->
-<!--    <th:block th:replace="${script}"></th:block>-->
 
 </body>
 </html>

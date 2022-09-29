@@ -10,7 +10,6 @@ import java.util.Map;
 public class ResponseMsg {
     private Header header;
     private Map<String, Object> data = new HashMap<>();
-    private int count;
 
     @Data
     @AllArgsConstructor
@@ -26,11 +25,6 @@ public class ResponseMsg {
 
     public ResponseMsg setData(String key, Object value) {
         data.put(key, value);
-        return this;
-    }
-
-    public ResponseMsg setData(String key, int count) {
-        data.put(key, count);
         return this;
     }
 
