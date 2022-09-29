@@ -8,7 +8,7 @@ import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.svc.ReviewSVC;
 import com.kh.heallo.domain.uploadfile.FileData;
 import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
-import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.review.ReviewFileValidator;

@@ -2,7 +2,7 @@ package com.kh.heallo.web.interceptor;
 
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
-import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.session.Session;

@@ -2,7 +2,7 @@ package com.kh.heallo.web.reply.controller;
 
 import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.reply.svc.ReplySVC;
-import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.reply.dto.AddForm;
 import com.kh.heallo.web.reply.dto.EditForm;
 import com.kh.heallo.web.response.ResponseMsg;

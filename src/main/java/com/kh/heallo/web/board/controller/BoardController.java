@@ -9,7 +9,7 @@ import com.kh.heallo.web.Code;
 import com.kh.heallo.web.board.dto.DetailForm;
 import com.kh.heallo.web.board.dto.EditForm;
 import com.kh.heallo.web.board.dto.SaveForm;
-import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.session.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

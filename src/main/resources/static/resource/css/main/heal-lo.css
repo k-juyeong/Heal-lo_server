@@ -25,11 +25,11 @@ body {margin: 0;}
 /* header 영역 - gnb */
 #header .header__menu .header__menu-gnb {height: 10vh;}
 #header .header__menu .header__menu-gnb > ul {display: flex; flex: 1; align-items: center; height: 70%; line-height: 3.5vh;}
-#header .header__menu .header__menu-gnb > ul > li {flex: 1; position: relative; padding: 2px 3px; font-size: 20px; font-weight: 500; /*background-color: #eee;*/ color: #000; text-align: center;}
-#header .header__menu .header__menu-gnb > ul > li:hover {cursor: pointer; text-decoration: underline;}
+#header .header__menu .header__menu-gnb > ul > li {flex: 1; position: relative; padding: 4px 3px; font-size: 20px; font-weight: 500; /*background-color: #eee;*/ color: #000; text-align: center;}
+#header .header__menu .header__menu-gnb > ul > li:hover {cursor: pointer; background:#dcdcdc;}
 #header .header__menu .header__menu-gnb > ul > li:hover > ul {display: block; background-color: white; z-index: 100;}
-#header .header__menu .header__menu-gnb > ul > li > ul {display: none; position: absolute; width: 100%; top: 41px; left: 0;}
-#header .header__menu .header__menu-gnb > ul > li > ul > li {padding: 2px 3px; font-size: 16px; line-height: 30px;}
+#header .header__menu .header__menu-gnb > ul > li > ul {display: none; position: absolute; width: 100%; top: 41px; left: 0; }
+#header .header__menu .header__menu-gnb > ul > li > ul > li {padding: 2px 3px; font-size: 16px; line-height: 30px; background:#f9f9f9}
 #header .header__menu .header__menu-gnb > ul > li > ul > li:hover {color: #16a085;}
 
 /* main 영역 1 - 검색바 */

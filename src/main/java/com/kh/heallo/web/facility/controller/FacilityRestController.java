@@ -8,7 +8,7 @@ import com.kh.heallo.domain.facility.FacilityCriteria;
 import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.facility.svc.FacilitySVC;
 import com.kh.heallo.web.facility.dto.AutoCompleteDto;
-import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.facility.dto.FacilitySearchDto;
 import com.kh.heallo.web.session.Session;
