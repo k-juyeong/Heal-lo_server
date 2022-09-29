@@ -65,29 +65,27 @@ public class MemberController {
     Boolean isExistId = memberSVC.dupChkOfMemid(joinForm.getMemid());
     if(isExistId){
       bindingResult.rejectValue("memid","dup.memid", "동일한 아이디가 존재합니다");
-      return "member/join";
     }
 
     //회원전화번호 중복체크
     Boolean isExistTel = memberSVC.dupChkOfMemtel(joinForm.getMemtel());
     if(isExistTel){
       bindingResult.rejectValue("memtel","dup.memtel", "동일한 전화번호가 존재합니다");
-      return "member/join";
     }
 
     //회원이메일 중복체크
     Boolean isExistEmail = memberSVC.dupChkOfMememail(joinForm.getMememail());
     if(isExistEmail){
       bindingResult.rejectValue("mememail","dup.mememail", "동일한 이메일이 존재합니다");
-      return "member/join";
     }
 
     //회원닉네임 중복체크
     Boolean isExistNickname = memberSVC.dupChkOfMemnickname(joinForm.getMemnickname());
     if(isExistNickname){
       bindingResult.rejectValue("memnickname","dup.memnickname", "동일한 닉네임이 존재합니다");
-      return "member/join";
     }
+
+    if (bindingResult.hasErrors()) return "member/join";
 
     Member member = new Member();
     member.setMemid(joinForm.getMemid());
@@ -198,7 +196,7 @@ public class MemberController {
 
   //수정처리
   @PostMapping("/{id}/edit")
-  public String update(@PathVariable("id") Long memno, EditForm editForm, HttpServletRequest request){
+  public String update(@PathVariable("id") Long memno, @ModelAttribute("form") EditForm editForm,BindingResult bindingResult, HttpServletRequest request){
 
     //회원번호 조회
     HttpSession session = request.getSession(false);
@@ -206,6 +204,20 @@ public class MemberController {
       LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
       memno = loginMember.getMemno();
     }
+
+    //회원이메일 중복체크
+    Boolean isExistEmail = memberSVC.dupChkOfMememail(editForm.getMememail());
+    if(isExistEmail){
+      bindingResult.rejectValue("mememail","dup.mememail", "동일한 이메일이 존재합니다");
+    }
+
+    //회원전화번호 중복체크
+    Boolean isExistTel = memberSVC.dupChkOfMemtel(editForm.getMemtel());
+    if(isExistTel){
+      bindingResult.rejectValue("memtel","dup.memtel", "동일한 전화번호가 존재합니다");
+    }
+
+    if (bindingResult.hasErrors()) return "member/my_page";
 
     Member member = new Member();
     member.setMemno(memno);
