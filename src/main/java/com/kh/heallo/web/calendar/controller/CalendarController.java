@@ -6,7 +6,7 @@ import com.kh.heallo.domain.uploadfile.svc.UploadFileSVC;
 import com.kh.heallo.web.calendar.dto.AddForm;
 import com.kh.heallo.web.calendar.dto.DayForm;
 import com.kh.heallo.web.calendar.dto.EditForm;
-import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.session.Session;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

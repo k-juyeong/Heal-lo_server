@@ -8,8 +8,8 @@
 #container .content .bookmark-font .my-bookmark {font-size: 1.5rem; font-weight: 500; margin: 10px;}
 
 #container .content .bookmark-sub-font {display: flex; }
-#container .content .bookmark-sub-font .new {font-size: 1.2rem; font-weight: 300; margin: 10px;}
-#container .content .bookmark-sub-font .grade {font-size: 1.2rem; font-weight: 300; margin: 10px;}
+#container .content .bookmark-sub-font .new {font-size: 1.2rem; font-weight: 300; margin: 10px; cursor:pointer;}
+#container .content .bookmark-sub-font .grade {font-size: 1.2rem; font-weight: 300; margin: 10px; cursor:pointer;}
 
 #container .bookmark {display: flex; padding: 20px; justify-content: space-around; border: 1px solid #f39c12; border-radius: 10px; margin-bottom: 15px;}
 #container .bookmark img {height: 200px; width: 300px;}

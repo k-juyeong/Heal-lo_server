@@ -1,7 +1,7 @@
 package com.kh.heallo.web.bookmark.controller;
 
 import com.kh.heallo.domain.bookmark.svc.BookmarkSVC;
-import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.session.Session;

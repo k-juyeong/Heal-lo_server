@@ -6,7 +6,7 @@ import com.kh.heallo.domain.member.svc.MemberSVC;
 import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.review.Review;
 import com.kh.heallo.web.member.dto.*;
-import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.review.dto.ReviewDto;
 import com.kh.heallo.web.session.Session;
 import com.kh.heallo.web.utility.DtoModifier;

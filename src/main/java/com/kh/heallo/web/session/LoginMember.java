@@ -1,4 +1,4 @@
-package com.kh.heallo.web.member.session;
+package com.kh.heallo.web.session;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

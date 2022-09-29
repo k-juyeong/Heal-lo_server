@@ -2,8 +2,12 @@ package com.kh.heallo.web.reply.controller;
 
 import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.reply.svc.ReplySVC;
+<<<<<<< HEAD
 import com.kh.heallo.web.board.dto.DetailForm;
 import com.kh.heallo.web.member.session.LoginMember;
+=======
+import com.kh.heallo.web.session.LoginMember;
+>>>>>>> 17ff7db8479959a7f317ac6cce27c2756484ab2f
 import com.kh.heallo.web.reply.dto.AddForm;
 import com.kh.heallo.web.reply.dto.EditForm;
 import com.kh.heallo.web.response.ResponseMsg;
