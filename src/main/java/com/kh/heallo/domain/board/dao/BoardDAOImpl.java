@@ -44,6 +44,7 @@ public class BoardDAOImpl implements BoardDAO{
         pstmt.setString(2, board.getBdtitle());
         pstmt.setString(3, board.getBdcontent());
         pstmt.setLong(4, board.getMemno());
+        pstmt.setString(5, board.getMemnickname());
         return pstmt;
       }
     },keyHolder);

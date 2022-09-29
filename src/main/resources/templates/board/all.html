@@ -57,18 +57,18 @@
       </header>
 
       <!-- 메인 컨텐츠 -->
-      <main id="container">
+      <main id="container"  th:data-code="${category}">
         <aside class="title">
           <div class="title__list">
-            <a  th:href="@{/boards/?bdcg=자유게시판}">자유게시판</a>
-            <a  th:href="@{/boards/?bdcg=정보공유}">정보공유</a>
-            <a  th:href="@{/boards/?bdcg=추천글}">추천글</a>
-            <a  th:href="@{/boards/?bdcg=문의하기}">문의하기</a>
+            <a  th:href="@{/boards/?category=BD001}">자유게시판</a>
+            <a  th:href="@{/boards/?category=BD002}">정보공유</a>
+            <a  th:href="@{/boards/?category=BD003}">추천글</a>
+            <a  th:href="@{/boards/?category=BD004}">문의하기</a>
           </div>
         </aside>
 
         <section class="board">
-          <h2 class="board__title">게시판</h2>
+          <h2 class="board__title" th:text="${bdTitle['__${category}__']}?:_">게시판</h2>
           <ul class="board__sort">
             <li><a href="#">최신등록순</a></li>
             <li><a href="#">추천순</a></li>
@@ -88,18 +88,26 @@
               </thead>
               <tbody th:obejct="${form}">
                 <tr th:each="board:${list}">
-                  <td th:text="${board.bdno}"></td>
-                  <td th:text="${board.bdcg}"></td>
-                  <td>
-                    <a
-                      href=""
-                      th:href="@{/boards/{id}/detail(id=${board.bdno})}"
-                      th:text="${board.bdtitle}"
-                    ></a>
+                  <td th:text="${board.bdno}">1</td>
+                  <td th:text="${#strings.isEmpty(category)?
+                    bdTitle[board.bdcg]
+                    :bdTitle['__${category}__']}">자유게시판</td>
+
+<!--                  <td>-->
+<!--                    <a-->
+<!--                      href=""-->
+<!--                      th:href="@{/boards/{id}/detail(id=${board.bdno})}"-->
+<!--                      th:text="${board.bdtitle}"-->
+<!--                    ></a>-->
+<!--                  </td>-->
+
+                  <td><a href=""
+                        th:href="@{/boards/{id}/detail(id=${board.bdno},category=${category})}"
+                        th:text="${board.bdtitle}">제목</a>
                   </td>
-                  <td th:text="${board.memnickname}"></td>
-                  <td th:text="${board.bdview}"></td>
-                  <td>[[${{board.bdcdate}}]]</td>
+                  <td th:text="${board.memnickname}">닉네임</td>
+                  <td th:text="${board.bdview}">5</td>
+                  <td th:text="${#temporals.format(board.bdcdate,'yy/MM/dd HH:dd')}">작성일1</td>
                 </tr>
               </tbody>
             </table>
@@ -141,7 +149,6 @@
 <!--              <i class="fa-solid fa-angle-right"></i>-->
               끝페이지
             </a>
-
           </th:block>
 
 
@@ -155,18 +162,17 @@
               </button>
             </div>
 
-            <fieldset class="board__search">
 
+            <fieldset class="board__search">
               <select name="searchType" id="searchType" th:field="${fc.searchType}">
                 <option th:value="A" selected>전체</option>
                 <option th:value="N">닉네임</option>
                 <option th:value="TC">제목+내용</option>
               </select>
-
               <input type="text" id="keyword" name="keyword" th:field="${fc.keyword}"/>
               <button class="btn btn__search" id="searchBtn">검색</button>
-
             </fieldset>
+
 
           </div>
         </section>

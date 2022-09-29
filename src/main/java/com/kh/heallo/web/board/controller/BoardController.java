@@ -3,10 +3,14 @@ package com.kh.heallo.web.board.controller;
 import com.kh.heallo.domain.board.Board;
 import com.kh.heallo.domain.board.dao.BbsFilterCondition;
 import com.kh.heallo.domain.board.svc.BoardSVC;
+import com.kh.heallo.domain.common.code.CodeDAO;
 import com.kh.heallo.domain.common.paging.FindCriteria;
+import com.kh.heallo.web.Code;
 import com.kh.heallo.web.board.dto.DetailForm;
 import com.kh.heallo.web.board.dto.EditForm;
 import com.kh.heallo.web.board.dto.SaveForm;
+import com.kh.heallo.web.member.session.LoginMember;
+import com.kh.heallo.web.session.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -20,10 +24,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -31,6 +34,7 @@ import java.util.Optional;
 @RequestMapping("/boards")
 public class BoardController {
   private final BoardSVC boardSVC;
+  private final CodeDAO codeDAO;
 
 
 
@@ -38,30 +42,40 @@ public class BoardController {
   @Qualifier("fc10_5") //동일한 타입의 객체가 여러개있을때 빈이름을 명시적으로 지정해서 주입받을때
   private FindCriteria fc;
 
+
+  //게시판 코드,디코드 가져오기
+  @ModelAttribute("classifier")
+  public List<Code> classifier(){
+    return codeDAO.code("BD000");
+  }
+
+  @ModelAttribute("bdTitle")
+  public Map<String,String> bdTitle(){
+    List<Code> codes = codeDAO.code("BD000");
+    Map<String, String> title = new HashMap<>();
+    for(Code code : codes){
+      title.put(code.getCode(),code.getDecode());
+    }
+    return title;
+  }
+
+
   //등록양식
   @GetMapping("/add")
-  public String saveForm( Long memno, Model model,
-                         HttpServletRequest request) {
+  public String saveForm( String memnickname, Model model,
+                         HttpServletRequest request,
+                          @RequestParam(required = false) Optional<String> category ) {
+    String cate = getCategory(category);
 
-//     //로그인 여부
-//    HttpSession session2 = request.getSession(false);
-//    if (session2 != null) {
-//      session2.invalidate();
-//    }
-
-//    //회원번호 조회
-//    HttpSession session = request.getSession(false);
-//    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
-//      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-//      memno = loginMember.getMemno();
-//    }
-//    LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-//    SaveForm saveForm = new SaveForm();
-//    saveForm.setMemno(memno);
-//    saveForm.setMemnickname(loginMember.getMemnickname());
-
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memnickname = loginMember.getMemnickname();
+    }
 
     model.addAttribute("form", new SaveForm());
+    model.addAttribute("category", cate);
 
     return "board/saveForm";
   }
@@ -70,6 +84,7 @@ public class BoardController {
   //등록
   @PostMapping("/add")
   public String add(@Valid @ModelAttribute("form") SaveForm saveForm,
+                    @RequestParam(required = false) Optional<String> category,
                     BindingResult bindingResult,
                     RedirectAttributes redirectAttributes,
                     HttpServletRequest request){
@@ -78,6 +93,8 @@ public class BoardController {
       log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
+
+    String cate = getCategory(category);
 
     //필드검증
     //제목 30글자 이내.
@@ -92,6 +109,7 @@ public class BoardController {
     Long bdno = boardSVC.save(board);
 
     redirectAttributes.addAttribute("id", bdno);
+    redirectAttributes.addAttribute("category",cate);
     return "redirect:/boards/{id}/detail";
   }
 
@@ -101,13 +119,18 @@ public class BoardController {
   //조회
   @GetMapping("/{id}/detail")
   public String findById(@PathVariable("id") Long boardId,
+                         @RequestParam(required = false) Optional<String> category,
                          Model model){
+    String cate = getCategory(category);
+
     Optional<Board> findedBoard = boardSVC.findByBoardId(boardId);
     DetailForm detailForm = new DetailForm();
     if(!findedBoard.isEmpty()) {
       BeanUtils.copyProperties(findedBoard.get(), detailForm);
     }
     model.addAttribute("form", detailForm);
+    model.addAttribute("category", cate);
+
     return "board/detailForm";
   }
 
@@ -116,7 +139,9 @@ public class BoardController {
   //수정양식
   @GetMapping("/{id}/edit")
   public String updateForm(@PathVariable("id") Long boardId,
+                           @RequestParam(required = false) Optional<String> category,
                            Model model) {
+    String cate = getCategory(category);
 
     Optional<Board> findedBoard = boardSVC.findByBoardId(boardId);
     EditForm updateForm = new EditForm();
@@ -124,6 +149,7 @@ public class BoardController {
       BeanUtils.copyProperties(findedBoard.get(), updateForm);
     }
     model.addAttribute("form", updateForm);
+    model.addAttribute("category",cate);
 
     return "board/updateForm";
   }
@@ -136,6 +162,7 @@ public class BoardController {
   @PostMapping("/{id}/edit")
   public String update(@PathVariable("id") Long boardId,
                        @Valid @ModelAttribute("form") EditForm editForm,
+                       @RequestParam(required = false) Optional<String> category,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes){
 
@@ -150,14 +177,16 @@ public class BoardController {
       log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
+    String cate = getCategory(category);
 
     Board board = new Board();
     BeanUtils.copyProperties(editForm, board);
     boardSVC.update(boardId, board);
 
     redirectAttributes.addAttribute("id", boardId);
-    return "redirect:/boards/{id}/detail";
+    redirectAttributes.addAttribute("category", cate);
 
+    return "redirect:/boards/{id}/detail";
   }
 
 
@@ -165,11 +194,13 @@ public class BoardController {
 
   //삭제
   @GetMapping("/{id}/del")
-  public String del(@PathVariable("id") Long boardId) {
+  public String del(@PathVariable("id") Long boardId,
+        @RequestParam(required = false) Optional<String> category) {
 
     boardSVC.deleteByBoardId(boardId);
+    String cate = getCategory(category);
 
-    return "redirect:/boards";  //항시 절대경로로
+    return "redirect:/boards?category="+cate;  //항시 절대경로로
   }
 
 
@@ -184,12 +215,12 @@ public class BoardController {
       @PathVariable(required = false) Optional<Integer> reqPage,
       @PathVariable(required = false) Optional<String> searchType,
       @PathVariable(required = false) Optional<String> keyword,
-      @RequestParam(required = false) Optional<String> bdcg,
+      @RequestParam(required = false) Optional<String> category,
       Model model) {
 
-    log.info("/list 요청됨{},{},{},{}",reqPage,searchType,keyword,bdcg);
+    log.info("/list 요청됨{},{},{},{}",reqPage,searchType,keyword,category);
 
-    String cate = getCategory(bdcg);
+    String cate = getCategory(category);
 
 
     //FindCriteria 값 설정
@@ -199,7 +230,7 @@ public class BoardController {
 
     List<Board> list = null;
     //게시물 목록 전체
-    if(bdcg == null || StringUtils.isEmpty(cate)) {
+    if(category == null || StringUtils.isEmpty(cate)) {
       log.info("1");
       //검색어 있음
       if(searchType.isPresent() && keyword.isPresent()){
@@ -226,7 +257,7 @@ public class BoardController {
       //검색어 있음
       if(searchType.isPresent() && keyword.isPresent()){
         BbsFilterCondition filterCondition = new BbsFilterCondition(
-            bdcg.get(),fc.getRc().getStartRec(), fc.getRc().getEndRec(),
+            category.get(),fc.getRc().getStartRec(), fc.getRc().getEndRec(),
             searchType.get(),
             keyword.get());
         fc.setTotalRec(boardSVC.totalCount(filterCondition));
