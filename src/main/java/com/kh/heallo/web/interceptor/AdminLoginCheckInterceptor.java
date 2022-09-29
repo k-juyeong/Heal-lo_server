@@ -6,15 +6,12 @@ import com.kh.heallo.web.member.session.LoginMember;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.session.Session;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,7 +30,7 @@ public class AdminLoginCheckInterceptor implements HandlerInterceptor {
         LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
         Member member = memberSVC.findById(loginMember.getMemno());
 
-        if (!member.getMemcode().equals("ADMIN")) {
+        if (!member.getMemcode().equals(Member.MEMCODE_ADMIN)) {
 
             if (request.getHeader("Accept").equals(MediaType.APPLICATION_JSON_VALUE)) {
 

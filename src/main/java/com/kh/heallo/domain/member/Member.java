@@ -11,6 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
+  public static final String MEMCODE_NORMAL = "NORMAL";
+  public static final String MEMCODE_ADMIN = "ADMIN";
+  public static final String MEMSTATUS_JOIN = "JOIN";
+  public static final String MEMSTATUS_WITHDRAW = "WITHDRAW";
+
   private Long memno;                   //number(8)
   private String memid;                 //varchar2(40)
   private String mempw;                 //varchar2(20)
