@@ -71,7 +71,7 @@
             <ul class="substance" th:each="rec : ${list}">
               <li><a href="" th:href="@{/boards/list/{id}/detail(id=${rec.bdno})}" th:text="${rec.rpComment}">Lorem, ipsum dolor.</a></li>
               <li class="substance-dateline" th:text="${{rec.rpCDate}}">2022.08.13</li>
-              <li class="substance-star" th:text="${rec.board.bdtitle}">Lorem ipsum dolor sit amet.</li>
+              <li class="substance-star" th:text="|게시글 : ${rec.board.bdtitle}|">Lorem ipsum dolor sit amet.</li>
             </ul>
           </div>
         </div>
