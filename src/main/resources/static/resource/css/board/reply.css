@@ -21,24 +21,26 @@
   height: auto;
   margin: 10px auto;
   background-color: #eee;
+  display: flex;
+  flex-direction: column;
 }
 #reply .reply__main .reply__form .reply__list {
   display: flex;
   margin: 20px;
 }
-#reply .reply__main .reply__form .reply__list .nickname {
+#reply .reply__main .reply__form .reply__list .reply__list.nickname {
+  flex: 1.5;
+
+}
+#reply .reply__main .reply__form .reply__list .reply__list.content {
+  flex: 6;
+
+}
+#reply .reply__main .reply__form .reply__list .reply__list.date {
   flex: 2;
 
 }
-#reply .reply__main .reply__form .reply__list .content {
-  flex: 7;
-
-}
-#reply .reply__main .reply__form .reply__list .date {
-  flex: 2;
-
-}
-#reply .reply__main .reply__form .reply__list .btngrp{
+#reply .reply__main .reply__form .reply__list .reply__list.btngrp{
   flex: 0.5;
   display: flex;
   flex-direction: column;
@@ -49,7 +51,8 @@
   display: flex;
   margin: 0 auto;
 }
-#reply .reply__main .reply__form .reply__edit .toolbox {
+
+#reply .reply__main .reply__form .reply__edit .reply__edit.toolbox {
   flex: 9;
   width: 80%;
   background-color: white;
@@ -59,7 +62,7 @@
   margin-bottom: 10px;
 }
 
-#reply .reply__main .reply__form .reply__edit .btngrp {
+#reply .reply__main .reply__form .reply__edit .reply__edit.btngrp {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -67,7 +70,7 @@
   margin-left: 10px;
   margin-bottom: 10px;
 }
-#reply .reply__main .reply__form .reply__edit .btngrp button {
+#reply .reply__main .reply__form .reply__edit .reply__edit.btngrp button {
   font-size: 12px;
   line-height: 15px;
   width: 50px;

@@ -26,6 +26,7 @@ saveBtn.addEventListener('click', e=>{
   clearTextarea();
 });
 
+
 // 댓글 수
 function count(bdno) {
   const url = `http://localhost:9080/reply/count/${bdno}`;
@@ -58,28 +59,29 @@ function all(bdno){
       res.data.replyList.map(reply=>{
           const date = (reply.rpUDate).substr(0,10);
           let result = '';
-          if (reply.Login == true){
+          const rpno = reply.rpno;
+          // 본인 댓글이면 수정, 삭제버튼 노출
+          if (reply.login == true){
             result =
-                   `<div class="reply__list nickname">${reply.memnickname}</div>
-                    <div class="reply__list content">${reply.rpComment}</div>
-                    <div class="reply__list date">${date}</div>
-                    <div class="reply__list btngrp">
-                      <button class="editBtn" onclick=""><i class="fa-solid fa-pen-to-square"></i></button>
-                      <button class="delBtn"><i class="fa-solid fa-x"></i></button>
-                    </div>`;
+                   `<div class="reply__list">
+                      <div class="reply__list nickname">${reply.memnickname}</div>
+                      <div class="reply__list content">${reply.rpComment}</div>
+                      <div class="reply__list date">${date}</div>
+                      <div class="reply__list btngrp">
+                        <button type="button" id="editIcon" onclick="editEditor(event, ${rpno})"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button type="button" id="delIcon" onclick="del(${rpno})"><i class="fa-solid fa-x"></i></button>
+                      </div>
+                   </div>`;
 
           } else{
             result =
-                   `<div class="reply__list nickname">${reply.memnickname}</div>
-                    <div class="reply__list content">${reply.rpComment}</div>
-                    <div class="reply__list date">${date}</div>`;
+                   `<div class="reply__list">
+                      <div class="reply__list nickname">${reply.memnickname}</div>
+                      <div class="reply__list content">${reply.rpComment}</div>
+                      <div class="reply__list date">${date}</div>
+                   </div>`;
           }
           return result;
-//          const newLine = document.createElement('div')
-//          newLine.classList.add("reply__list");
-//          document.querySelector('#reply .reply__main .reply__form').appendChild(newLine);
-//          newLine.innerHTML = result;
-
       }).join('')
     }).catch(err=>console.log(err));
 }
@@ -101,9 +103,56 @@ function save(reply, bdno){
     }).catch(err=>console.log(err));
 }
 
-// 본인 댓글이면 수정, 삭제버튼 노출
-function chkLogin() {
+// 수정아이콘 클릭 시 수정 에디터 출력
+function editEditor(event, rpno) {
+  console.log(event.target.parentElement.parentElement.parentElement);
+  const ele = event.target.parentElement.parentElement.parentElement;
+  const editor = document.createElement("div");
+  editor.classList.add('reply__edit');
+  editor.innerHTML =
+     `<textarea class="reply__edit toolbox" rows="10"></textarea>
+       <div class="reply__edit btngrp">
+         <button type="button" id="editBtn" onclick="edit(${rpno})">수정</button>
+         <button type="button" id="cancelBtn">취소</button>
+       </div>`;
+  ele.append(editor);
+}
 
+// 수정
+function edit(rpno) {
+    const url = `http://localhost:9080/reply/${rpno}`;
+    fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(reply)
+    }).then(res=>res.json())
+      .then(data=>{
+        console.log(data)
+        all(bdno);
+      }).catch(err=>console.log(err));
+}
+
+// 수정 버튼 클릭 시
+//editBtn.addEventListener('click', e=>{
+//  console.log(e.target.parentElement);
+//})
+
+// 삭제 버튼 클릭 시
+function del(rpno) {
+  const url = `http://localhost:9080/reply/${rpno}`;
+  fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+    },
+  }).then(res=>res.json())
+    .then(data=>{
+      console.log(data);
+      all(bdno);
+    }).catch(err=>console.log(err));
 }
 
 // textarea 비우기

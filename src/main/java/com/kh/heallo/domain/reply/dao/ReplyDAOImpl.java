@@ -44,10 +44,11 @@ public class ReplyDAOImpl implements ReplyDAO {
   public List<Reply> all(Long bdno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("SELECT t1.rpcomment, t1.rpudate, t2.memnickname, t2.memno ");
+    sql.append("SELECT t1.rpcomment, t1.rpudate, t1.rpno, t2.memnickname, t2.memno ");
     sql.append("  FROM reply t1, member t2 ");
     sql.append("WHERE t1.memno = t2.memno ");
     sql.append("  AND t1.bdno = ? ");
+//    sql.append("ORDER BY t1.bdno ASC ");
 
     List<Reply> list = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class), bdno);
     return list;
