@@ -34,13 +34,13 @@ CREATE SEQUENCE BOARD_BDNO_SEQ START WITH 1
 
  --게시판 추가 test
   INSERT INTO BOARD (BDNO, BDCG,BDTITLE,MEMNO,BDCONTENT)
-  VALUES (BOARD_BDNO_SEQ.nextval, '자유게시판','제목1',1,'본문내용입니다.');
+  VALUES (BOARD_BDNO_SEQ.nextval, 'BD001','제목1',1,'본문내용입니다.');
 
   INSERT INTO BOARD (BDNO, BDCG,BDTITLE,MEMNO,BDCONTENT)
-  VALUES (BOARD_BDNO_SEQ.nextval, '자유게시판','제목2',1,'본문내용입니다.');
+  VALUES (BOARD_BDNO_SEQ.nextval, 'BD001','제목2',1,'본문내용입니다.');
 
   INSERT INTO BOARD (BDNO, BDCG,BDTITLE,MEMNO,BDCONTENT)
-  VALUES (BOARD_BDNO_SEQ.nextval, '자유게시판','제목3',1,'본문내용입니다.');
+  VALUES (BOARD_BDNO_SEQ.nextval, 'BD001','제목3',1,'본문내용입니다.');
 
   SELECT * FROM BOARD;
 

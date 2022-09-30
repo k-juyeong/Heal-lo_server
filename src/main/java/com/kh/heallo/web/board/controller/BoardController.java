@@ -214,6 +214,9 @@ public class BoardController {
     boardSVC.deleteByBoardId(boardId);
     String cate = getCategory(category);
 
+
+
+
     return "redirect:/boards/list?category="+cate;  //항시 절대경로로
   }
 
