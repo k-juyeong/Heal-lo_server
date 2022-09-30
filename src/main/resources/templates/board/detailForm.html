@@ -18,7 +18,6 @@
       display:grid;
       grid-template-columns: 100px 300px;
     }
-
     .ck-editor__editable {height: 500px;}
     .ck-content {font-size: 12px;}
   </style>
@@ -71,11 +70,12 @@
 
         <section class="board_write">
         <div class="board_title">
-          <h2 class="title__main">자유게시판</h2>
+          <h2 class="title__main" th:text="${#strings.isEmpty(category)?
+                    bdTitle[board.bdcg]
+                    :bdTitle['__${category}__']}">자유게시판</h2>
         </div>
 
         <div class="board_content">
-
           <div class="writeForm">
             <div class="line">
               <label th:for="bdno">게시글번호</label>
@@ -108,14 +108,16 @@
             <div>
               <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
             </div>
+            <div class="writeBtn_area ">
+              <button type="button" id="updateBtn" class="btn btn__search">수정</button>
+              <button type="button" id="deleteBtn" class="btn btn__search">삭제</button>
+              <button type="button" id="listBtn" class="btn btn__search">목록</button>
+            </div>
+
           </div>
         </div>
 
-        <div class="writeBtn_area ">
-          <button type="button" id="updateBtn" class="btn btn__search">수정</button>
-          <button type="button" id="deleteBtn" class="btn btn__search">삭제</button>
-          <button type="button" id="listBtn" class="btn btn__search">목록</button>
-        </div>
+
       </section>
 
 <!--      댓글-->

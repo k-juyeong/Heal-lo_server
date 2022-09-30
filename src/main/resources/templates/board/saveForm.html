@@ -100,21 +100,22 @@
 
             <div class="line">
               <label>작성자</label>
-<!--              <span th:text="*{memno}"></span>-->
               <span th:text="${session.LOGIN_MEMBER.memnickname}"></span>
             </div>
 
             <div>
               <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}" required></textarea>
-              <div class="fieldError" th:errors="*{bdcontent}"></div>
+              <div class="fieldError" th:if="${#fields.hasErrors('bdcontent')}" th:errors="*{bdcontent}"></div>
+            </div>
+
+            <div class="writeBtn_area">
+              <button type="button" class="btn btn__search" id="saveBtn">등록</button>
             </div>
 
           </form>
         </div>
 
-        <div class="writeBtn_area">
-          <button type="button" class="btn btn__search" id="saveBtn">등록</button>
-        </div>
+
       </section>
     </main>
 
@@ -134,6 +135,7 @@
     </div>
   <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
   <script>
+
     const $saveBtn = document.getElementById('saveBtn');
     $saveBtn.addEventListener('click', evt=>{
       document.getElementById('saveForm').submit();
