@@ -6,17 +6,16 @@ const bdno = document.getElementById('bdno').textContent;
 count(bdno);
 all(bdno);
 
-
 // 전역변수
 const form = {
-  rpComment:document.getElementById('rpComment')
+  reply:document.getElementById('rpComment')
 }
 
 // 작성한 댓글 가져오기
 function getReply() {
-  const comment = form.rpComment.value;
+  const rpComment = form.reply.value;
 
-  return comment;
+  return {rpComment};
 }
 
 // 댓글 등록하기
@@ -54,25 +53,35 @@ function all(bdno){
     }
   }).then(res=>res.json())
     .then(res=>{
-      for(let i in res.data){
-        for(let j in res.data[i]){
-//          console.log(res.data[i][j].memnickname);
-//          console.log(res.data[i][j].rpComment);
-//          const date = (res.data[i][j].rpUDate).substr(0,10);
-//          console.log(date);
-          const date = (res.data[i][j].rpUDate).substr(0,10);
-          const result =
-                 `<div class="reply__list nickname">${res.data[i][j].memnickname}</div>
-                  <div class="reply__list content">${res.data[i][j].rpComment}</div>
-                  <div class="reply__list date">${date}</div>`;
-          const newLine = document.createElement('div')
-          newLine.classList.add("reply__list");
-          document.querySelector('#reply .reply__main .reply__form').appendChild(newLine);
-          newLine.innerHTML = result;
-        }
-      }
-    })
-    .catch(err=>console.log(err));
+      console.log(res.data.replyList);
+      document.querySelector('#reply .reply__main .reply__form').innerHTML =
+      res.data.replyList.map(reply=>{
+          const date = (reply.rpUDate).substr(0,10);
+          let result = '';
+          if (reply.Login == true){
+            result =
+                   `<div class="reply__list nickname">${reply.memnickname}</div>
+                    <div class="reply__list content">${reply.rpComment}</div>
+                    <div class="reply__list date">${date}</div>
+                    <div class="reply__list btngrp">
+                      <button class="editBtn" onclick=""><i class="fa-solid fa-pen-to-square"></i></button>
+                      <button class="delBtn"><i class="fa-solid fa-x"></i></button>
+                    </div>`;
+
+          } else{
+            result =
+                   `<div class="reply__list nickname">${reply.memnickname}</div>
+                    <div class="reply__list content">${reply.rpComment}</div>
+                    <div class="reply__list date">${date}</div>`;
+          }
+          return result;
+//          const newLine = document.createElement('div')
+//          newLine.classList.add("reply__list");
+//          document.querySelector('#reply .reply__main .reply__form').appendChild(newLine);
+//          newLine.innerHTML = result;
+
+      }).join('')
+    }).catch(err=>console.log(err));
 }
 
 // 댓글 등록
@@ -93,8 +102,11 @@ function save(reply, bdno){
 }
 
 // 본인 댓글이면 수정, 삭제버튼 노출
+function chkLogin() {
+
+}
 
 // textarea 비우기
 function clearTextarea() {
-  form.rpComment.value = '';
+  form.reply.value = '';
 }

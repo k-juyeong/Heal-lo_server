@@ -29,6 +29,12 @@ public interface AdminDAO {
    */
   List<Member> memberListById(String memId);
 
+  /**
+   * 회원 계정 삭제
+   * @param memno 회원 번호
+   */
+  void memberDel(Long memno);
+
   // 게시물 - 게시글 목록
   // 게시물 - 게시글 제목 검색
 
@@ -40,13 +46,18 @@ public interface AdminDAO {
   List<Board> boardListByNickname(String nickname);
 
 
-  /**
-   * 게시물 - 게시글 작성자(아이디) 검색
-   * @param memId 아이디
-   * @return
-   */
-  List<Board> boardListById(String memId);
+//  /**
+//   * 게시물 - 게시글 작성자(아이디) 검색
+//   * @param memId 아이디
+//   * @return
+//   */
+//  List<Board> boardListById(String memId);
 
+  /**
+   * 게시글 삭제
+   * @param bdno 게시글 번호
+   */
+  void boardDel(Long bdno);
 
   /**
    * 게시물 - 댓글 목록
@@ -70,13 +81,18 @@ public interface AdminDAO {
   List<Reply> replyListByNickname(String nickname);
 
 
-  /**
-   * 게시물 - 댓글 작성자(아이디) 검색
-   * @param memId 아이디
-   * @return
-   */
-  List<Reply> replyListById(String memId);
+//  /**
+//   * 게시물 - 댓글 작성자(아이디) 검색
+//   * @param memId 아이디
+//   * @return
+//   */
+//  List<Reply> replyListById(String memId);
 
+  /**
+   * 댓글 삭제
+   * @param rpno 댓글 번호
+   */
+  void replyDel(Long rpno);
 
   /**
    * 게시물 - 리뷰 목록
@@ -107,12 +123,18 @@ public interface AdminDAO {
    */
   List<Review> reviewListByNickname(String nickname);
 
+//  /**
+//   * 게시물 - 리뷰 작성자(아이디) 검색
+//   * @param memId 아이디
+//   * @return
+//   */
+//  List<Review> reviewListById(String memId);
+
   /**
-   * 게시물 - 리뷰 작성자(아이디) 검색
-   * @param memId 아이디
-   * @return
+   * 리뷰 삭제
+   * @param rvno 리뷰 번호
    */
-  List<Review> reviewListById(String memId);
+  void reviewDel(Long rvno);
 
   // 게시물 - 문의글 목록
   // 게시물 - 문의글 내용 검색

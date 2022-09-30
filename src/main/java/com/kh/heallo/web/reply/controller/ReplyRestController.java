@@ -2,19 +2,17 @@ package com.kh.heallo.web.reply.controller;
 
 import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.reply.svc.ReplySVC;
-<<<<<<< HEAD
 import com.kh.heallo.web.board.dto.DetailForm;
-import com.kh.heallo.web.member.session.LoginMember;
-=======
-import com.kh.heallo.web.session.LoginMember;
->>>>>>> 17ff7db8479959a7f317ac6cce27c2756484ab2f
 import com.kh.heallo.web.reply.dto.AddForm;
 import com.kh.heallo.web.reply.dto.EditForm;
+import com.kh.heallo.web.reply.dto.ReplyDto;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
+import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.session.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -45,13 +45,29 @@ public class ReplyRestController {
 
   // 댓글 목록 조회
   @GetMapping("/{bdno}")
-  public ResponseEntity<ResponseMsg> all(@PathVariable Long bdno) {
+  public ResponseEntity<ResponseMsg> all(@PathVariable Long bdno, HttpServletRequest request) {
     List<Reply> all = replySVC.all(bdno);
+
+    HttpSession session = request.getSession(false);
+    List<ReplyDto> replyList = new ArrayList<>();
+    if (session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember member = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      Long memno = member.getMemno();
+      replyList = all.stream().map(reply -> {
+        ReplyDto replyDto = new ReplyDto();
+        BeanUtils.copyProperties(reply, replyDto);
+        if (reply.getMemno() == memno) {
+          replyDto.setLogin(true);
+        }
+        return replyDto;
+      }).collect(Collectors.toList());
+
+    }
 
     // Create ResponseEntity
     ResponseMsg responseMsg = new ResponseMsg()
         .createHeader(StatusCode.SUCCESS)
-        .setData("all", all);
+        .setData("replyList", replyList);
     return new ResponseEntity<>(responseMsg, HttpStatus.OK);
   }
 

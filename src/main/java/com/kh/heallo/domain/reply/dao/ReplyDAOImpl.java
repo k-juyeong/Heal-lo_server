@@ -44,7 +44,7 @@ public class ReplyDAOImpl implements ReplyDAO {
   public List<Reply> all(Long bdno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("SELECT t1.rpcomment, t1.rpudate, t2.memnickname ");
+    sql.append("SELECT t1.rpcomment, t1.rpudate, t2.memnickname, t2.memno ");
     sql.append("  FROM reply t1, member t2 ");
     sql.append("WHERE t1.memno = t2.memno ");
     sql.append("  AND t1.bdno = ? ");

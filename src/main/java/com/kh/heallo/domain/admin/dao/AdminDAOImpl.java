@@ -55,26 +55,53 @@ public class AdminDAOImpl implements AdminDAO {
   }
 
   /**
-   * 게시물 - 게시글 작성자(닉네임) 검색
-   * @param nickname 닉네임
+   * 회원 계정 삭제
+   *
+   * @param memno 회원 번호
+   */
+  @Override
+  public void memberDel(Long memno) {
+    String sql = "delete from MEMBER where MEMNO = ? ";
+
+    jdbcTemplate.update(sql, memno);
+  }
+
+  /**
+   * 게시물 - 게시글 작성자(닉네임, 아이디) 검색
+   * @param nickname 닉네임, 아이디
    * @return
    */
   @Override
   public List<Board> boardListByNickname(String nickname) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select MEMNO, MEMID, MEMNICKNAME, MEMCDATE ");
+    sql.append("from MEMBER ");
+    sql.append("where MEMID like ? ");
+    sql.append("   or MEMNICKNAME like ? ");
 
 
     return null;
   }
 
+//  /**
+//   * 게시물 - 게시글 작성자(아이디) 검색
+//   *
+//   * @param memId 아이디
+//   * @return
+//   */
+//  @Override
+//  public List<Board> boardListById(String memId) {
+//    return null;
+//  }
+
   /**
-   * 게시물 - 게시글 작성자(아이디) 검색
+   * 게시글 삭제
    *
-   * @param memId 아이디
-   * @return
+   * @param bdno 게시글 번호
    */
   @Override
-  public List<Board> boardListById(String memId) {
-    return null;
+  public void boardDel(Long bdno) {
+
   }
 
   /**
@@ -109,15 +136,25 @@ public class AdminDAOImpl implements AdminDAO {
     return null;
   }
 
+//  /**
+//   * 게시물 - 댓글 작성자(아이디) 검색
+//   *
+//   * @param memId 아이디
+//   * @return
+//   */
+//  @Override
+//  public List<Reply> replyListById(String memId) {
+//    return null;
+//  }
+
   /**
-   * 게시물 - 댓글 작성자(아이디) 검색
+   * 댓글 삭제
    *
-   * @param memId 아이디
-   * @return
+   * @param rpno 댓글 번호
    */
   @Override
-  public List<Reply> replyListById(String memId) {
-    return null;
+  public void replyDel(Long rpno) {
+
   }
 
   /**
@@ -163,14 +200,26 @@ public class AdminDAOImpl implements AdminDAO {
     return null;
   }
 
+//  /**
+//   * 게시물 - 리뷰 작성자(아이디) 검색
+//   *
+//   * @param memId 아이디
+//   * @return
+//   */
+//  @Override
+//  public List<Review> reviewListById(String memId) {
+//
+//    return null;
+//  }
+
   /**
-   * 게시물 - 리뷰 작성자(아이디) 검색
+   * 리뷰 삭제
    *
-   * @param memId 아이디
-   * @return
+   * @param rvno 리뷰 번호
    */
   @Override
-  public List<Review> reviewListById(String memId) {
-    return null;
+  public void reviewDel(Long rvno) {
+
   }
 }
+
