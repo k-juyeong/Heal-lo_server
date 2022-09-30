@@ -142,9 +142,9 @@ public class BoardDAOImpl implements BoardDAO{
 
     List<Board> boards = jt.query(sql.toString(),
         new BeanPropertyRowMapper<>(Board.class),
-        filterCondition.getCategory(),
         filterCondition.getStartRec(),
-        filterCondition.getEndRec());
+        filterCondition.getEndRec(),
+        filterCondition.getCategory());
 
     return boards;
   }

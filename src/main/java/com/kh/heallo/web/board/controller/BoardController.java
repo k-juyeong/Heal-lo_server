@@ -110,7 +110,13 @@ public class BoardController {
     //필드검증
     //제목 30글자 이내.
     if(saveForm.getBdtitle().length() > 100){
-      bindingResult.rejectValue("bdtitle","board.bdtitle",new Integer[]{30},"제목 글자수 초과");
+      bindingResult.rejectValue("bdtitle","board.bdtitle",new Integer[]{30},"제목오류");
+      log.info("bindingResult={}", bindingResult);
+      return "board/saveForm";
+    }
+
+    if(saveForm.getBdcontent() == null){
+      bindingResult.rejectValue("bdcontent","board.bdcontent",new Integer[]{30},"내용오류");
       log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
@@ -192,6 +198,11 @@ public class BoardController {
       log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
+    if(editForm.getBdcontent() == null){
+      bindingResult.rejectValue("bdcontent","board.bdcontent",new Integer[]{30},"내용오류");
+      log.info("bindingResult={}", bindingResult);
+      return "board/saveForm";
+    }
     String cate = getCategory(category);
 
     Board board = new Board();
@@ -201,7 +212,7 @@ public class BoardController {
     redirectAttributes.addAttribute("id", boardId);
     redirectAttributes.addAttribute("category", cate);
 
-    return "redirect:/boards/list/{id}/detail?";
+    return "redirect:/boards/list/{id}/detail?"+cate;
   }
 
 
@@ -213,6 +224,9 @@ public class BoardController {
 
     boardSVC.deleteByBoardId(boardId);
     String cate = getCategory(category);
+
+
+
 
     return "redirect:/boards/list?category="+cate;  //항시 절대경로로
   }

@@ -110,14 +110,14 @@
             <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
             <div class="fieldError" th:errors="*{bdcontent}"></div>
           </div>
-
+          <div class="board-btngrp writeBtn_area">
+            <button type="button" id="updateBtn" class="btn btn__search">수정</button>
+            <button type="button" id="listBtn" class="btn btn__search">목록</button>
+          </div>
         </form>
       </div>
 
-      <div class="board-btngrp writeBtn_area">
-        <button type="button" id="updateBtn" class="btn btn__search">수정</button>
-        <button type="button" id="listBtn" class="btn btn__search">목록</button>
-      </div>
+
 
     </section>
 

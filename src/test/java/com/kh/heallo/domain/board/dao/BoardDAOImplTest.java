@@ -29,7 +29,7 @@ class BoardDAOImplTest {
 
   @Test
   void findAll2(){
-    List<Board> all = boardDAO.findAll("정보공유", 1, 25);
+    List<Board> all = boardDAO.findAll("BD001", 1, 25);
     for(Board board:all){
       log.info(board.toString());
     }
@@ -37,7 +37,7 @@ class BoardDAOImplTest {
 
   @Test
   void find(){
-    BbsFilterCondition bbsFilterCondition = new BbsFilterCondition("자유게시판",1,10,"TC","본문");
+    BbsFilterCondition bbsFilterCondition = new BbsFilterCondition("BD001",1,10,"TC","본문");
     List<Board> boards = boardDAO.findAll(bbsFilterCondition);
     for(Board board:boards){
       log.info(board.toString());
@@ -47,7 +47,7 @@ class BoardDAOImplTest {
   @Test
   void test(){
 
-    BbsFilterCondition bbsFilterCondition = new BbsFilterCondition("자유게시판",1,10,"TC","본문");
+    BbsFilterCondition bbsFilterCondition = new BbsFilterCondition("BD001",1,10,"TC","본문");
     List<Board> boards = boardDAO.findAll(bbsFilterCondition);
     int i = boardDAO.totalCount(bbsFilterCondition);
     log.info("totalcount={}",i);

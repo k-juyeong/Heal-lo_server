@@ -118,21 +118,21 @@
 
 
 
-#container .board_write .writeBtn_area{
+#container .board_write .board_content .writeForm .writeBtn_area{
   display: flex;
   flex: 1;
   justify-content: flex-end;
   height: 40px;
 }
 
-#container .board_write .writeBtn_area .btn__search {
+#container .board_write .board_content .writeForm .writeBtn_area .btn__search {
   width: 70px;
   margin-left: 2px;
   border-radius: 5px;
   border: none;
   margin-top: 5px;
 }
-#container .board_write .writeBtn_area .btn__search:hover {
+#container .board_write .board_content .writeForm .writeBtn_area .btn__search:hover {
   cursor: pointer;
   background-color: #777;
 }

@@ -107,7 +107,9 @@
                   </td>
                   <td th:text="${board.memnickname}">닉네임</td>
                   <td th:text="${board.bdview}">5</td>
-                  <td th:text="${#temporals.format(board.bdcdate,'yy/MM/dd HH:dd')}">작성일1</td>
+
+                  <td th:text="${#temporals.format(board.bdcdate,'yy/MM/dd HH:mm')}">작성일1</td>
+
                 </tr>
               </tbody>
             </table>

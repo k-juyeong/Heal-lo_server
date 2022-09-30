@@ -11,9 +11,11 @@ public class EditForm {
   private String bdcg;
   private Long no;
   private Long bdno;
-  @NotBlank
+
+  @NotBlank(message="제목을 입력해주세요.")
   private String bdtitle;
-  @NotBlank
+
+  @NotBlank(message="내용을 입력해주세요.")
   private String bdcontent;
   private Long memno;
   private String memnickname; //닉네임
