@@ -52,13 +52,11 @@ public class MemberController {
 
     if(bindingResult.hasErrors()){
       log.info("errors={}",bindingResult);
-      return "member/join";
     }
 
     if(joinForm.getMemid().toLowerCase().trim().length() < 5 ||
             joinForm.getMemid().toUpperCase().trim().length() > 15){
       bindingResult.rejectValue("memid","chk.memid.length", "아이디 규칙을 지켜주세요");
-      return "member/join";
     }
 
     //회원아이디 중복체크
@@ -85,7 +83,9 @@ public class MemberController {
       bindingResult.rejectValue("memnickname","dup.memnickname", "동일한 닉네임이 존재합니다");
     }
 
-    if (bindingResult.hasErrors()) return "member/join";
+    if (bindingResult.hasErrors()){
+      return "member/join";
+    }
 
     Member member = new Member();
     member.setMemid(joinForm.getMemid());
@@ -217,7 +217,9 @@ public class MemberController {
       bindingResult.rejectValue("memtel","dup.memtel", "동일한 전화번호가 존재합니다");
     }
 
-    if (bindingResult.hasErrors()) return "member/my_page";
+    if (bindingResult.hasErrors()){
+      return "member/my_page";
+    }
 
     Member member = new Member();
     member.setMemno(memno);
@@ -243,7 +245,7 @@ public class MemberController {
     memberSVC.del(memid);
 
     log.info("memid={}",memid);
-    return "redirect:/logout";
+    return "redirect:/members/logout";
   }
 
   //아이디 찾기 화면

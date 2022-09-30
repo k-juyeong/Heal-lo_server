@@ -37,7 +37,6 @@ public class BoardController {
   private final CodeDAO codeDAO;
 
 
-
   @Autowired
   @Qualifier("fc10_5") //동일한 타입의 객체가 여러개있을때 빈이름을 명시적으로 지정해서 주입받을때
   private FindCriteria fc;
@@ -67,18 +66,21 @@ public class BoardController {
                           @RequestParam(required = false) Optional<String> category ) {
     String cate = getCategory(category);
 
+    SaveForm form = new SaveForm();
+
     //회원번호 조회
     HttpSession session = request.getSession(false);
     if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
       LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-      memnickname = loginMember.getMemnickname();
+      form.setMemnickname(loginMember.getMemnickname());
+      form.setMemno(loginMember.getMemno());
     }
 
-    model.addAttribute("form", new SaveForm());
+    model.addAttribute("form", form);
     model.addAttribute("category", cate);
-
     return "board/saveForm";
   }
+
 
 
   //등록
@@ -87,7 +89,16 @@ public class BoardController {
                     @RequestParam(required = false) Optional<String> category,
                     BindingResult bindingResult,
                     RedirectAttributes redirectAttributes,
-                    HttpServletRequest request){
+                    HttpServletRequest request,
+                    Long memno){
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memno = loginMember.getMemno();
+    }
+
+
     //기본검증
     if(bindingResult.hasErrors()){
       log.info("bindingResult={}", bindingResult);
@@ -105,19 +116,22 @@ public class BoardController {
     }
 
     Board board = new Board();
+    board.getMemno();
+
     BeanUtils.copyProperties(saveForm, board);
     Long bdno = boardSVC.save(board);
 
     redirectAttributes.addAttribute("id", bdno);
     redirectAttributes.addAttribute("category",cate);
-    return "redirect:/boards/{id}/detail";
+
+    return "redirect:/boards/list/{id}/detail?";
+
   }
 
 
 
-
   //조회
-  @GetMapping("/{id}/detail")
+  @GetMapping("/list/{id}/detail")
   public String findById(@PathVariable("id") Long boardId,
                          @RequestParam(required = false) Optional<String> category,
                          Model model){
@@ -158,6 +172,7 @@ public class BoardController {
 
 
 
+
   //수정
   @PostMapping("/{id}/edit")
   public String update(@PathVariable("id") Long boardId,
@@ -186,9 +201,8 @@ public class BoardController {
     redirectAttributes.addAttribute("id", boardId);
     redirectAttributes.addAttribute("category", cate);
 
-    return "redirect:/boards/{id}/detail";
+    return "redirect:/boards/list/{id}/detail?";
   }
-
 
 
 
@@ -200,17 +214,17 @@ public class BoardController {
     boardSVC.deleteByBoardId(boardId);
     String cate = getCategory(category);
 
-    return "redirect:/boards?category="+cate;  //항시 절대경로로
+    return "redirect:/boards/list?category="+cate;  //항시 절대경로로
   }
 
 
 
 
   //목록
-  @GetMapping({"",
-      "/{reqPage}",
-      "/{reqPage}//",
-      "/{reqPage}/{searchType}/{keyword}"})
+  @GetMapping({"/list",
+      "/list/{reqPage}",
+      "/list/{reqPage}//",
+      "/list/{reqPage}/{searchType}/{keyword}"})
   public String findAll(
       @PathVariable(required = false) Optional<Integer> reqPage,
       @PathVariable(required = false) Optional<String> searchType,
@@ -221,7 +235,6 @@ public class BoardController {
     log.info("/list 요청됨{},{},{},{}",reqPage,searchType,keyword,category);
 
     String cate = getCategory(category);
-
 
     //FindCriteria 값 설정
     fc.getRc().setReqPage(reqPage.orElse(1)); //요청페이지, 요청없으면 1
@@ -283,6 +296,8 @@ public class BoardController {
       BeanUtils.copyProperties(board, new DetailForm());
       list2.add(board);
     });
+    log.info("fc={}",fc);
+
     model.addAttribute("list", list2);
     model.addAttribute("fc",fc);
     model.addAttribute("category", cate);
@@ -294,7 +309,7 @@ public class BoardController {
 
   //쿼리스트링 카테고리 읽기, 없으면 ""반환
   private String getCategory(Optional<String> category) {
-    String cate = category.isPresent()? category.get():"";
+    String cate = category.isPresent()? category.get():"BD001";
     log.info("category={}", cate);
     return cate;
   }

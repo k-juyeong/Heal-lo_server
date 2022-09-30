@@ -8,6 +8,7 @@
       const $searchBtn = document.getElementById('searchBtn');
       const $searchType = document.getElementById('searchType');
 
+
     //검색 버튼 클릭시
     $searchBtn?.addEventListener('click', search_f);
 
@@ -25,6 +26,6 @@
            $keyword.focus();$keyword.select(); //커서이동
            return false;
         }
-        const url = `/boards/1/${$searchType.value}/${$keyword.value}?bdcg=${category}`;
+        const url = `/boards/list/1/${$searchType.value}/${$keyword.value}?category=${container.dataset.code}`;
         location.href = url;
     }

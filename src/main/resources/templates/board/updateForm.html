@@ -74,7 +74,7 @@
 
       <div class="board_content">
 
-        <form id="updateForm" action="" th:action th:method="post" th:object="${form}" class="writeForm" enctype="multipart/form-data">
+        <form id="updateForm" action th:method="post" th:object="${form}" class="writeForm" enctype="multipart/form-data">
           <div th:if="${#fields.hasGlobalErrors()}">
             <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
           </div>
@@ -82,9 +82,9 @@
           <div class="line">
             <label th:for="bdcg">카테고리</label>
             <select name="" id="menu-list" th:field="*{bdcg}">
-              <option value="자유게시판">자유게시판</option>
-              <option value="정보공유">정보공유</option>
-              <option value="문의하기">문의하기</option>
+              <option value="BD001">자유게시판</option>
+              <option value="BD002">정보공유</option>
+              <option value="BD003">문의하기</option>
             </select>
             <div class="fieldError" th:errors="*{bdcg}"></div>
           </div>
@@ -142,15 +142,21 @@
 </div>
 <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
 <script>
+
     //수정완료
     const $updateBtn = document.getElementById('updateBtn');
     $updateBtn.addEventListener('click', evt=>{
-      const frm = document.getElementById('updateForm')
-      const bdno = frm.bdno.value;
-      const url = `/boards/${bdno}/edit`;
-
-      frm.submit();
+      evt.preventDefault();
+      const value = document.getElementById('menu-list').value;
+      updateForm.submit();
     });
+
+
+<!--const updateBtn = document.getElementById('updateBtn');-->
+<!--$saveBtn?.addEventListener("click", e=>{-->
+<!--  editForm.action = `${editForm.action}?category=${category}`;-->
+<!--  editForm.submit();-->
+<!--});-->
 
     //목록
      const $listBtn = document.getElementById('listBtn');

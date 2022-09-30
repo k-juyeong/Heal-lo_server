@@ -28,8 +28,8 @@ body {margin: 0;}
 #header .header__menu .header__menu-gnb > ul > li {flex: 1; position: relative; padding: 4px 3px; font-size: 20px; font-weight: 500; /*background-color: #eee;*/ color: #000; text-align: center;}
 #header .header__menu .header__menu-gnb > ul > li:hover {cursor: pointer; background:#dcdcdc;}
 #header .header__menu .header__menu-gnb > ul > li:hover > ul {display: block; background-color: white; z-index: 100;}
-#header .header__menu .header__menu-gnb > ul > li > ul {display: none; position: absolute; width: 100%; top: 41px; left: 0; }
-#header .header__menu .header__menu-gnb > ul > li > ul > li {padding: 2px 3px; font-size: 16px; line-height: 30px; background:#f9f9f9}
+#header .header__menu .header__menu-gnb > ul > li > ul {display: none; position: absolute; width: 100%; top: 41px; left: 0;}
+#header .header__menu .header__menu-gnb > ul > li > ul > li {padding: 2px 3px; font-size: 16px; line-height: 30px; background:#f9f9f9;}
 #header .header__menu .header__menu-gnb > ul > li > ul > li:hover {color: #16a085;}
 
 /* main 영역 1 - 검색바 */
@@ -87,7 +87,7 @@ body {margin: 0;}
 #container .section2 .bg.bg__box-community {display: flex; width: 80%; height: 37vh; margin: 50px auto;}
 #container .section2 .bg.bg__box-community img {flex: 1; width: 40%; height: 35vh; margin-right: 40px; object-fit: fill;}
 #container .section2 .section2__community {display: flex; flex-direction: column; flex: 1.5; text-align: left;}
-#container .section2 .section2__community .section2__community-title {margin-top: 30px; margin-bottom: 70px;}
+#container .section2 .section2__community .section2__community-title {margin-top: 30px; margin-bottom: 50px;}
 #container .section2 .section2__community .section2__community-title h1 {font-weight: 700; font-size: 42px; line-height: 65px;}
 #container .section2 .section2__community .section2__community-title h3 {font-weight: 400; font-size: 20px; line-height: 30px;}
 #container .section2 .section2__community .section2__community-content {margin-top: 50px; margin-bottom: 50px;}
@@ -209,7 +209,7 @@ body {margin: 0;}
     #container .section2 .section2__community .section2__community-title {margin-top: 30px; margin-bottom: 70px;}
     #container .section2 .section2__community .section2__community-title h1 {font-weight: 700; font-size: 42px; line-height: 65px;}
     #container .section2 .section2__community .section2__community-title h3 {font-weight: 400; font-size: 20px; line-height: 30px;}
-    #container .section2 .section2__community .section2__community-content {margin-top: 50px; margin-bottom: 50px;}
+    #container .section2 .section2__community .section2__community-content {margin-top: 30px; margin-bottom: 50px;}
     #container .section2 .section2__community .section2__community-content p {font-size: 18px; line-height: 28px;}
 
     /* main 영역 2 - 웹사이트 소개 -달력 */
