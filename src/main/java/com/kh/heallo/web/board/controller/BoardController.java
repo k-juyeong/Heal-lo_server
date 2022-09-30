@@ -201,7 +201,7 @@ public class BoardController {
     redirectAttributes.addAttribute("id", boardId);
     redirectAttributes.addAttribute("category", cate);
 
-    return "redirect:/boards/list/{id}/detail?";
+    return "redirect:/boards/list/{id}/detail?"+cate;
   }
 
 

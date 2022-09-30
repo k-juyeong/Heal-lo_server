@@ -73,11 +73,12 @@
         <div class="board_content">
           <form id="saveForm" action="" th:action th:method="post" th:object="${form}" class="writeForm" enctype="multipart/form-data">
 
-            <input type="text" th:field="*{memno}">
+            <input type="hidden" th:field="*{memno}">
 
             <div th:if="${#fields.hasGlobalErrors()}">
               <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
             </div>
+
             <div class="line">
               <label>카테고리</label>
               <select name="" id="menu-list" th:field="*{bdcg}">
@@ -86,25 +87,28 @@
 <!--                </th:block>-->
                 <option value="BD001">자유게시판</option>
                 <option value="BD002">정보공유</option>
-<!--                <option value="정보공유">정보공유</option>-->
-<!--                <option value="문의하기">문의하기</option>-->
+                <option value="BD004">문의하기</option>
               </select>
               <div class="fieldError" th:errors="*{bdcg}"></div>
             </div>
+
             <div class="line">
               <label>제목</label>
-              <input type="text" th:field="*{bdtitle}">
-              <div class="fieldError" th:errors="*{bdtitle}"></div>
+              <input type="text" th:field="*{bdtitle}" required maxlength='35'>
+              <div class="fieldError" th:if="${#fields.hasErrors('bdtitle')}" th:errors="*{bdtitle}"></div>
             </div>
+
             <div class="line">
               <label>작성자</label>
 <!--              <span th:text="*{memno}"></span>-->
               <span th:text="${session.LOGIN_MEMBER.memnickname}"></span>
             </div>
+
             <div>
-              <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
+              <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}" required></textarea>
               <div class="fieldError" th:errors="*{bdcontent}"></div>
             </div>
+
           </form>
         </div>
 
