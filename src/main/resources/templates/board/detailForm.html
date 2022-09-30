@@ -56,7 +56,7 @@
     </header>
       
     <!-- 메인 컨텐츠 -->
-    <main id="container">
+    <main id="container"  th:data-code="${category}">
       <aside class="title">
         <div class="title__list">
           <a  th:href="@{/boards/list/?category=BD001}">자유게시판</a>
@@ -199,7 +199,8 @@
     //목록
      const $listBtn = document.getElementById('listBtn');
      $listBtn.addEventListener('click', evt=>{
-      location.href = '/boards/list?category=';
+      const url = `/boards/list?category=${container.dataset.code}`;
+      location.href = url;
      });
 
 
