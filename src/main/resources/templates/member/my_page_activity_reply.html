@@ -69,7 +69,7 @@
               <p class="coment">댓글</p>
             </div>
             <ul class="substance" th:each="rec : ${list}">
-              <li><a href="" th:href="@{/boards/{id}/detail(id=${rec.bdno})}" th:text="${rec.rpComment}">Lorem, ipsum dolor.</a></li>
+              <li><a href="" th:href="@{/boards/list/{id}/detail(id=${rec.bdno})}" th:text="${rec.rpComment}">Lorem, ipsum dolor.</a></li>
               <li class="substance-dateline" th:text="${{rec.rpCDate}}">2022.08.13</li>
               <li class="substance-star" th:text="${rec.board.bdtitle}">Lorem ipsum dolor sit amet.</li>
             </ul>

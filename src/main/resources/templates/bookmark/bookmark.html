@@ -55,7 +55,7 @@
             <img  th:src="${rec.fcimg}"src="https://cdn.pixabay.com/photo/2016/03/27/23/00/weight-lifting-1284616_960_720.jpg" alt="">
             <ul>
               <div id="flex">
-                <li th:text="${rec.fcname}">Lorem</li>
+                <a href="" th:href="@{/facilities/{fcno}(fcno=${rec.fcno})}"><li th:text="${rec.fcname}">Lorem</li></a>
                 <li th:text="${rec.fcscore}"></li>
               </div>
               <li th:text="${rec.fcaddr}">Lorem ipsum dolor sit amet.</li>
