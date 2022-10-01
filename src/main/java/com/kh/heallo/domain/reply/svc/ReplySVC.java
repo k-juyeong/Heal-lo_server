@@ -45,4 +45,7 @@ public interface ReplySVC {
    * @param rpno 삭제할 댓글 번호
    */
   void delete(Long rpno);
+
+
+  void deleteAll(Long bdno);
 }

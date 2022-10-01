@@ -208,20 +208,16 @@ public class BoardDAOImpl implements BoardDAO{
     sql.append("       bdudate = systimestamp ");
     sql.append(" where bdno = ? ");
 
-
     int affectedRow = jt.update(sql.toString(),
         board.getBdcg(),board.getMemno(), board.getBdtitle(), board.getBdcontent(),BoardId);
     return affectedRow;
   }
 
-
   //삭제
   @Override
-  public int deleteByBoardId(Long boardId) {
+  public int deleteByBoardId(Long BoardId) {
     String sql = "delete from board where bdno = ? ";
-
-    int affectedRow = jt.update(sql.toString(), boardId);
-
+    int affectedRow = jt.update(sql.toString(), BoardId);
     return affectedRow;
   }
 
@@ -234,12 +230,12 @@ public class BoardDAOImpl implements BoardDAO{
     return affectedRow;
   }
 
+
   @Override
   public int totalCount(String bdcg) {
-    String sql = "select count(*) from board where bdcg = ?";
+    String sql = "select count(*) from board where bdcg = ? ";
 
     int affectedRow = jt.queryForObject(sql.toString(),Integer.class, bdcg);
-
 
     return affectedRow;
   }
@@ -286,7 +282,6 @@ public class BoardDAOImpl implements BoardDAO{
         filterCondition.getCategory());
 
     return affectedRow;
-
   }
 
 

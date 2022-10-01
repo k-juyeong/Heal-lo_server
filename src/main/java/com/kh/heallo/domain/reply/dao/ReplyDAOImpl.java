@@ -127,4 +127,11 @@ public class ReplyDAOImpl implements ReplyDAO {
 
     jdbcTemplate.update(sql, rpno);
   }
+
+  @Override
+  public void deleteAll(Long bdno) {
+    String sql = "DELETE FROM REPLY WHERE bdno = ? ";
+    jdbcTemplate.update(sql, bdno);
+  }
+
 }

@@ -5,6 +5,7 @@ import com.kh.heallo.domain.board.dao.BbsFilterCondition;
 import com.kh.heallo.domain.board.svc.BoardSVC;
 import com.kh.heallo.domain.common.code.CodeDAO;
 import com.kh.heallo.domain.common.paging.FindCriteria;
+import com.kh.heallo.domain.reply.svc.ReplySVC;
 import com.kh.heallo.web.Code;
 import com.kh.heallo.web.board.dto.DetailForm;
 import com.kh.heallo.web.board.dto.EditForm;
@@ -35,6 +36,7 @@ import java.util.*;
 public class BoardController {
   private final BoardSVC boardSVC;
   private final CodeDAO codeDAO;
+  private final ReplySVC replySVC;
 
 
   @Autowired
@@ -217,10 +219,9 @@ public class BoardController {
   @GetMapping("/{id}/del")
   public String del(@PathVariable("id") Long boardId,
         @RequestParam(required = false) Optional<String> category) {
-
+    replySVC.deleteAll(boardId);
     boardSVC.deleteByBoardId(boardId);
     String cate = getCategory(category);
-
     return "redirect:/boards/list?category="+cate;  //항시 절대경로로
   }
 
