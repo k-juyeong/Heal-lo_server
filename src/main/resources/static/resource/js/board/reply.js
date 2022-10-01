@@ -63,7 +63,7 @@ function all(bdno){
           // 본인 댓글이면 수정, 삭제버튼 노출
           if (reply.login == true){
             result =
-                   `<div class="reply__list">
+                   `<div class="reply__list all">
                      <div class="reply__list_form">
                         <div class="reply__list nickname">${reply.memnickname}</div>
                         <div class="reply__list content">${reply.rpComment}</div>
@@ -77,10 +77,12 @@ function all(bdno){
 
           } else{
             result =
-                   `<div class="reply__list">
-                      <div class="reply__list nickname">${reply.memnickname}</div>
-                      <div class="reply__list content">${reply.rpComment}</div>
-                      <div class="reply__list date">${date}</div>
+                   `<div class="reply__list all">
+                      <div class="reply__list_form">
+                        <div class="reply__list nickname">${reply.memnickname}</div>
+                        <div class="reply__list content">${reply.rpComment}</div>
+                        <div class="reply__list date">${date}</div>
+                      </div>
                    </div>`;
           }
           return result;
@@ -111,13 +113,13 @@ function save(reply, bdno){
 // 수정아이콘 클릭 시
 // 수정 에디터 출력 없으면 있으면 토글
 function editEditor(event, rpno) {
-  const ele = event.target.parentElement.parentElement.parentElement;
-  const parentEle = ele.parentElement;
-  console.log(parentEle);
-  console.log(parentEle.childElementCount);
+  const parentEle = event.target.closest('.all');
+//  console.log(parentEle);
+//  console.log(parentEle.childElementCount);
 
-  if(parentEle.childElementCount == 2) {
-    console.log(ele.nextElementSibling);
+  if(parentEle.childElementCount >= 2) {
+    const ele = parentEle.firstElementChild;
+//    console.log(ele.nextElementSibling);
     const siblingEle = ele.nextElementSibling;
     siblingEle.remove();
   } else {
@@ -161,11 +163,12 @@ function editChk(event, rpno){
 //  console.log(tar);
 //  console.log(tar.previousElementSibling);
 
+  // 수정된 댓글 내용 가져오기
   function getUpdatedReply() {
     const rpComment = tar.previousElementSibling.value;
-
     return {rpComment};
   }
+
   const reply = getUpdatedReply();
 
   edit(reply, rpno);

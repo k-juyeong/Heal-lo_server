@@ -65,10 +65,10 @@
       </div>
     </aside>
 
-    <div class="board__main">
+    <section class="board_main">
       <form id="detailForm" action="" th:action th:object="${form}">
 
-        <section class="board_write">
+        <div class="board_write">
           <div class="board_title">
             <h2 class="title__main" th:text="${#strings.isEmpty(category)?
                     bdTitle[board.bdcg]
@@ -118,7 +118,7 @@
           </div>
 
 
-        </section>
+        </div>
 
         <!--      댓글-->
         <div id="reply">
@@ -127,21 +127,6 @@
           </div>
           <div class="reply__main">
             <div class="reply__form">
-              <!--            <div class="reply__list">-->
-              <!--              <div class="reply__list nickname">토모</div>-->
-              <!--              <div class="reply__list content">완전 좋아여 사람도 별로 없음</div>-->
-              <!--              <div class="reply__list date">22.07.08</div>-->
-              <!--              <div class="reply__list btngrp">-->
-              <!--                <button class="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>-->
-              <!--                <button class="delBtn"><i class="fa-solid fa-x"></i></button>-->
-                <!--            <div class="reply__edit">-->
-                <!--              <textarea class="reply__edit toolbox" rows="10"></textarea>-->
-                <!--              <div class="reply__edit btngrp">-->
-                <!--                <button id="editBtn">수정</button>-->
-                <!--                <button id="cancelBtn2">취소</button>-->
-                <!--              </div>-->
-                <!--            </div>-->
-              <!--             </div>-->
             </div>
             <div class="reply__write">
               <div class="reply__write content">
@@ -155,7 +140,7 @@
           </div>
         </div>
       </form>
-    </div>
+    </section>
   </main>
 
   <!-- footer -->

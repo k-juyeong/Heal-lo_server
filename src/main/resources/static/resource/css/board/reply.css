@@ -1,6 +1,5 @@
 @charset "utf-8";
 
-/* * { outline: 1px solid red;} */
 #reply {
   width: 100%;
   margin: 0 auto;
@@ -31,6 +30,7 @@
 }
 #reply .reply__main .reply__form .reply__list .reply__list_form {
   display: flex;
+  width: 100%;
 }
 
 #reply .reply__main .reply__form .reply__list .reply__list.nickname {

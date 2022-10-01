@@ -3,7 +3,7 @@ memberAll();
 
 // 회원 전체 목록
 function memberAll(){
-  const url = `http://localhost:9080/admin/manage/memberAll`;
+  const url = `http://localhost:9080/admin/memberAll`;
   fetch(url, {
     method: 'GET',
     headears: {
@@ -11,22 +11,22 @@ function memberAll(){
     }
   }).then(res=>res.json())
     .then(res=>{
-      for(let i in res.data){
-        for(let j in res.data[i]){
-          console.log(res.data[i][j].memno);
-          const result =
-                 `<td>${res.data[i][j].memno}</td>
-                  <td>${res.data[i][j].memid}</td>
-                  <td>${res.data[i][j].memnickname}</td>
-                  <td>${res.data[i][j].memcdate}</td>
-                  <td><button class="btn btn_delete">탈퇴</button></td>`;
-          const newLine = document.createElement('tr')
-          document.querySelector('#container .content .list-table tbody').appendChild(newLine);
-          newLine.innerHTML = result;
-        }
-        }
-      })
-    .catch(err=>console.log(err));
+      console.log(res.data.memberAll);
+      document.querySelector('#container .content .list-table tbody').innerHTML =
+      res.data.memberAll.map(member=>{
+        const memid = member.memid;
+        const memno = member.memno;
+        const result =
+          `<tr>
+            <td>${member.memno}</td>
+            <td>${member.memid}</td>
+            <td>${member.memnickname}</td>
+            <td>${member.memcdate}</td>
+            <td><button class="btn btn_delete" onclick="delMember('${member.memid}')">탈퇴</button></td>
+           </tr>`;
+          return result;
+      }).join('')
+      }).catch(err=>console.log(err));
 }
 
 // 닉네임 검색
@@ -34,6 +34,22 @@ function memberAll(){
 // 아이디 검색
 
 // 탈퇴 버튼 클릭
+function delMember(memid){
+  if(!confirm('회원계정을 삭제하시겠습니까?')) return;
+
+  const url = `http://localhost:9080/admin/member/${memid}`;
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+      },
+    }).then(res=>res.json())
+      .then(data=>{
+        console.log(data);
+        memberAll();
+
+      }).catch(err=>console.log(err));
+}
 
 // 회원 계정 관리 클릭
 function manageMember(){
