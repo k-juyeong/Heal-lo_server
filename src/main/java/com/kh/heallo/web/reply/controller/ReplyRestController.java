@@ -4,7 +4,6 @@ import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.reply.svc.ReplySVC;
 import com.kh.heallo.web.board.dto.DetailForm;
 import com.kh.heallo.web.reply.dto.AddForm;
-import com.kh.heallo.web.reply.dto.EditForm;
 import com.kh.heallo.web.reply.dto.ReplyDto;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
@@ -94,7 +93,6 @@ public class ReplyRestController {
 
     // AddForm -> Reply 로 변환
     Reply reply = new Reply();
-//    BeanUtils.copyProperties(detailForm, reply);
     reply.setRpComment(detailForm.getRpComment());
     replySVC.save(bdno, memno, reply);
 
@@ -133,9 +131,11 @@ public class ReplyRestController {
   // 댓글 수정
   // 본인 댓글이면 수정 삭제 버튼 노출
   @PatchMapping("/{rpno}")
-  public ResponseEntity<ResponseMsg> update(@PathVariable Long rpno, EditForm editForm) {
+  public ResponseEntity<ResponseMsg> update(
+      @PathVariable Long rpno, @RequestBody DetailForm detailForm
+  ) {
     Reply reply = new Reply();
-    reply.setRpComment(editForm.getRpComment());
+    reply.setRpComment(detailForm.getRpComment());
 
     replySVC.update(rpno, reply);
 

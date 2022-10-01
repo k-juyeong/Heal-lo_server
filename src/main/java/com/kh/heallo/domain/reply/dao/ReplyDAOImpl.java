@@ -48,7 +48,7 @@ public class ReplyDAOImpl implements ReplyDAO {
     sql.append("  FROM reply t1, member t2 ");
     sql.append("WHERE t1.memno = t2.memno ");
     sql.append("  AND t1.bdno = ? ");
-//    sql.append("ORDER BY t1.bdno ASC ");
+    sql.append("ORDER BY t1.rpno ASC ");
 
     List<Reply> list = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class), bdno);
     return list;

@@ -63,22 +63,26 @@ function all(bdno){
           // 본인 댓글이면 수정, 삭제버튼 노출
           if (reply.login == true){
             result =
-                   `<div class="reply__list">
-                      <div class="reply__list nickname">${reply.memnickname}</div>
-                      <div class="reply__list content">${reply.rpComment}</div>
-                      <div class="reply__list date">${date}</div>
-                      <div class="reply__list btngrp">
-                        <button type="button" id="editIcon" onclick="editEditor(event, ${rpno})"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button type="button" id="delIcon" onclick="del(${rpno})"><i class="fa-solid fa-x"></i></button>
-                      </div>
+                   `<div class="reply__list all">
+                     <div class="reply__list_form">
+                        <div class="reply__list nickname">${reply.memnickname}</div>
+                        <div class="reply__list content">${reply.rpComment}</div>
+                        <div class="reply__list date">${date}</div>
+                        <div class="reply__list btngrp">
+                          <button type="button" id="editIcon" onclick="editEditor(event, ${rpno})"><i class="fa-solid fa-pen-to-square"></i></button>
+                          <button type="button" id="delIcon" onclick="del(${rpno})"><i class="fa-solid fa-x"></i></button>
+                        </div>
+                     </div>
                    </div>`;
 
           } else{
             result =
-                   `<div class="reply__list">
-                      <div class="reply__list nickname">${reply.memnickname}</div>
-                      <div class="reply__list content">${reply.rpComment}</div>
-                      <div class="reply__list date">${date}</div>
+                   `<div class="reply__list all">
+                      <div class="reply__list_form">
+                        <div class="reply__list nickname">${reply.memnickname}</div>
+                        <div class="reply__list content">${reply.rpComment}</div>
+                        <div class="reply__list date">${date}</div>
+                      </div>
                    </div>`;
           }
           return result;
@@ -100,26 +104,42 @@ function save(reply, bdno){
     .then(data=>{
       console.log(data)
       all(bdno);
+      count(bdno);
     }).catch(err=>console.log(err));
 }
 
-// 수정아이콘 클릭 시 수정 에디터 출력
+
+
+// 수정아이콘 클릭 시
+// 수정 에디터 출력 없으면 있으면 토글
 function editEditor(event, rpno) {
-  console.log(event.target.parentElement.parentElement.parentElement);
-  const ele = event.target.parentElement.parentElement.parentElement;
-  const editor = document.createElement("div");
-  editor.classList.add('reply__edit');
-  editor.innerHTML =
-     `<textarea class="reply__edit toolbox" rows="10"></textarea>
-       <div class="reply__edit btngrp">
-         <button type="button" id="editBtn" onclick="edit(${rpno})">수정</button>
-         <button type="button" id="cancelBtn">취소</button>
-       </div>`;
-  ele.append(editor);
+  const parentEle = event.target.closest('.all');
+//  console.log(parentEle);
+//  console.log(parentEle.childElementCount);
+
+  if(parentEle.childElementCount >= 2) {
+    const ele = parentEle.firstElementChild;
+//    console.log(ele.nextElementSibling);
+    const siblingEle = ele.nextElementSibling;
+    siblingEle.remove();
+  } else {
+    const editor = document.createElement("div");
+    editor.classList.add('reply__edit');
+    editor.innerHTML =
+       `<textarea class="reply__edit toolbox" rows="10"></textarea>
+         <div class="reply__edit btngrp">
+           <button type="button" id="editBtn" onclick="editChk(event, ${rpno})">수정</button>
+           <button type="button" id="cancelBtn" onclick="cancel(event)">취소</button>
+         </div>`;
+    parentEle.append(editor);
+  }
 }
 
 // 수정
-function edit(rpno) {
+function edit(reply, rpno) {
+  console.log('click');
+  console.log(rpno);
+  console.log(reply);
     const url = `http://localhost:9080/reply/${rpno}`;
     fetch(url, {
       method: 'PATCH',
@@ -132,16 +152,40 @@ function edit(rpno) {
       .then(data=>{
         console.log(data)
         all(bdno);
+        count(bdno);
       }).catch(err=>console.log(err));
 }
 
+
 // 수정 버튼 클릭 시
-//editBtn.addEventListener('click', e=>{
-//  console.log(e.target.parentElement);
-//})
+function editChk(event, rpno){
+  const tar = event.target.parentElement;
+//  console.log(tar);
+//  console.log(tar.previousElementSibling);
+
+  // 수정된 댓글 내용 가져오기
+  function getUpdatedReply() {
+    const rpComment = tar.previousElementSibling.value;
+    return {rpComment};
+  }
+
+  const reply = getUpdatedReply();
+
+  edit(reply, rpno);
+}
+
+// 수정 취소 버튼 클릭 시
+function cancel(event) {
+  const btn = event.target.parentElement;
+  const replyEdit = btn.parentElement;
+//  console.log(replyEdit);
+  replyEdit.remove();
+}
 
 // 삭제 버튼 클릭 시
 function del(rpno) {
+  if(!confirm('삭제하시겠습니까?')) return;
+
   const url = `http://localhost:9080/reply/${rpno}`;
   fetch(url, {
     method: 'DELETE',
@@ -152,6 +196,7 @@ function del(rpno) {
     .then(data=>{
       console.log(data);
       all(bdno);
+      count(bdno);
     }).catch(err=>console.log(err));
 }
 
