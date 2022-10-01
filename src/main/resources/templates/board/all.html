@@ -93,23 +93,13 @@
                     bdTitle[board.bdcg]
                     :bdTitle['__${category}__']}">자유게시판</td>
 
-<!--                  <td>-->
-<!--                    <a-->
-<!--                      href=""-->
-<!--                      th:href="@{/boards/{id}/detail(id=${board.bdno})}"-->
-<!--                      th:text="${board.bdtitle}"-->
-<!--                    ></a>-->
-<!--                  </td>-->
-
                   <td><a href=""
                         th:href="@{/boards/list/{id}/detail(id=${board.bdno},category=${category})}"
                         th:text="${board.bdtitle}">제목</a>
                   </td>
                   <td th:text="${board.memnickname}">닉네임</td>
                   <td th:text="${board.bdview}">5</td>
-
-                  <td th:text="${#temporals.format(board.bdcdate,'yy/MM/dd HH:mm')}">작성일1</td>
-
+                  <td th:text="${#temporals.format(board.bdcdate,'yy/MM/dd HH:mm')}">작성일</td>
                 </tr>
               </tbody>
             </table>
@@ -120,7 +110,6 @@
           <th:block th:if="${fc.prev}">
             <a class="bbs-page-item" href=""
                th:href="@{/boards/list/1/{searchType}/{keyword}(searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}">
-<!--              <i class="fa-solid fa-angle-left"></i>-->
               첫페이지
             </a>
             <a class="bbs-page-item" href=""
@@ -148,7 +137,6 @@
             </a>
             <a class="bbs-page-item" href=""
                th:href="@{/boards/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.finalEndPage},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}">
-<!--              <i class="fa-solid fa-angle-right"></i>-->
               끝페이지
             </a>
           </th:block>
@@ -163,8 +151,6 @@
                 글쓰기
               </button>
             </div>
-
-
             <fieldset class="board__search">
               <select name="searchType" id="searchType" th:field="${fc.searchType}">
                 <option th:value="A" selected>전체</option>
@@ -174,8 +160,6 @@
               <input type="text" id="keyword" name="keyword" th:field="${fc.keyword}"/>
               <button class="btn btn__search" id="searchBtn">검색</button>
             </fieldset>
-
-
           </div>
         </section>
       </main>
