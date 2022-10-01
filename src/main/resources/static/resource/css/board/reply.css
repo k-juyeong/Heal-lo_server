@@ -26,8 +26,13 @@
 }
 #reply .reply__main .reply__form .reply__list {
   display: flex;
+  flex-direction: column;
   margin: 20px;
 }
+#reply .reply__main .reply__form .reply__list .reply__list_form {
+  display: flex;
+}
+
 #reply .reply__main .reply__form .reply__list .reply__list.nickname {
   flex: 1.5;
 
@@ -45,14 +50,14 @@
   display: flex;
   flex-direction: column;
 }
-#reply .reply__main .reply__form .reply__edit {
+#reply .reply__main .reply__form .reply__list .reply__edit {
   width: 90%;
   height: 70px;
   display: flex;
   margin: 0 auto;
 }
 
-#reply .reply__main .reply__form .reply__edit .reply__edit.toolbox {
+#reply .reply__main .reply__form .reply__list .reply__edit .reply__edit.toolbox {
   flex: 9;
   width: 80%;
   background-color: white;
