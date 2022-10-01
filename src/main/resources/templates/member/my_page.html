@@ -71,7 +71,10 @@
                 <span id="mememailErr" th:if="${#fields.hasErrors('mememail')}" th:errors="*{mememail}"></span>
 
                 <label class="changePw" for="changePw">비밀번호 변경</label>
-                <input id="changePw" type="text" name="mempw" th:field="${form.mempw}">
+                <input id="changePw" type="text" name="mempw" th:field="${form.mempw}"
+                       th:class="${#fields.hasErrors('mempw')} ? fieldError ">
+
+                <span id="mempwErr" th:if="${#fields.hasErrors('mempw')}" th:errors="*{mempw}"></span>
 
   <!--              <label id="changePwCh" for="changePwCh">비밀번호 변경확인</label>-->
   <!--              <input id="changePwCh" type="text">-->

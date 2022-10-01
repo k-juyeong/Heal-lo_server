@@ -62,13 +62,17 @@
 
             <div class="join__info">
               <label for="pw">*비밀번호 </label>
-              <input id="pw" required maxlength='16' name="mempw" th:field="*{mempw}">
+              <input id="pw" required maxlength='16' name="mempw" th:field="*{mempw}"
+                     th:class="${#fields.hasErrors('mempw')} ? fieldError ">
               <span class="error_next_box" id="pswd1Msg" style="" aria-live="assertive">8~16자의 영문 대 소문자, 숫자를 사용하세요.</span>
             </div>
+              <span id="mempwErr" th:if="${#fields.hasErrors('mempw')}" th:errors="*{mempw}"></span>
             <div class="join__info">
               <label for="pwc">*비밀번호확인 </label>
-              <input id="pwc" required maxlength='16' name="mempwCk" th:field="*{mempwCk}">
+              <input id="pwc" required maxlength='16' name="mempwCk" th:field="*{mempwCk}"
+                     th:class="${#fields.hasErrors('mempwCk')} ? fieldError ">
             </div>
+            <span id="mempwCkErr" th:if="${#fields.hasErrors('mempwCk')}" th:errors="*{mempwCk}"></span>
             <div class="join__info">
               <label for="customer_name">*이름 </label>
               <input id="customer_name" name="memname" required th:field="*{memname}">

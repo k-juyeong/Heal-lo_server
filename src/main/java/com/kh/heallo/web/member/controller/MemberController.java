@@ -54,6 +54,7 @@ public class MemberController {
       log.info("errors={}",bindingResult);
     }
 
+    //회원아이디 길이체크
     if(joinForm.getMemid().toLowerCase().trim().length() < 5 ||
             joinForm.getMemid().toUpperCase().trim().length() > 15){
       bindingResult.rejectValue("memid","chk.memid.length", "아이디 규칙을 지켜주세요");
@@ -63,6 +64,18 @@ public class MemberController {
     Boolean isExistId = memberSVC.dupChkOfMemid(joinForm.getMemid());
     if(isExistId){
       bindingResult.rejectValue("memid","dup.memid", "동일한 아이디가 존재합니다");
+    }
+
+    //회원비밀번호 길이체크
+    if(joinForm.getMempw().toLowerCase().trim().length() < 8 ||
+            joinForm.getMempw().toUpperCase().trim().length() > 16){
+      bindingResult.rejectValue("mempw","dup.mempw", "비밀번호 규칙을 지켜주세요");
+    }
+
+    //회원비밀번호체크 길이체크
+    if(joinForm.getMempwCk().toLowerCase().trim().length() < 8 ||
+            joinForm.getMempwCk().toUpperCase().trim().length() > 16){
+      bindingResult.rejectValue("mempwCk","dup.mempwCk", "비밀번호 규칙을 지켜주세요");
     }
 
     //회원전화번호 중복체크
@@ -214,6 +227,12 @@ public class MemberController {
     Boolean isExistTel = memberSVC.dupChkOfMemtel(editForm.getMemtel());
     if(isExistTel){
       bindingResult.rejectValue("memtel","dup.memtel", "동일한 전화번호가 존재합니다");
+    }
+
+    //회원비밀번호 길이체크
+    if(editForm.getMempw().toLowerCase().trim().length() < 8 ||
+            editForm.getMempw().toUpperCase().trim().length() > 16){
+      bindingResult.rejectValue("mempw","dup.mempw", "비밀번호 규칙을 지켜주세요");
     }
 
     if (bindingResult.hasErrors()){
