@@ -110,6 +110,7 @@ public class BoardSVCImpl implements BoardSVC{
       log.info("없음");
     }
 
+
   }
 
 

@@ -70,12 +70,12 @@
 
 #container .board .board__box{
   /* border: 1px solid gray; */
-  min-height: 500px;
-
+  min-height: 300px;
 }
 #container .board .board__table {
   margin: 0 auto;
   table-layout: fixed;
+  margin-bottom: 20px;
 }
 
 #container .board .board__table th,
@@ -83,6 +83,7 @@
   text-align: center;
   vertical-align: middle;
   padding: 14px 10px;
+  white-space: nowrap;
 }
 #container .board .board__table th{
   /* border: 1px #eaeaea solid; */
@@ -141,6 +142,7 @@
   cursor: pointer;
 }
 
+
 /* 페이징 */
 #container .board .board__page {
   display: flex;
@@ -148,18 +150,23 @@
   margin-top: 40px;
 }
 
-#container .board .board__page a {
-  /* display: flex; */
-  margin: 0 10px;
-}
-#container .board .board__page ol {
+/* #container .board .board__page ol {
   display: flex;
+} */
+
+#container .board .board__page .bbs-page-item {
+  display: flex;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  color: #777;
 }
-#container .board .board__page .page__num {
-  /* display: flex; */
-  margin: 0 10px;
+
+#container .board__page .bbs-page-item:hover{
+  color: #ddd
 }
-#container .board__page .active{
-  background-color:#333;
-  color:white;
+#container .board__page .bbs-page-item.active{
+  color: #16a085;
+  font-weight: bold;
 }

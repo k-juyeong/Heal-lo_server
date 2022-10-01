@@ -94,7 +94,7 @@
 
             <div class="line">
               <label>제목</label>
-              <input type="text" th:field="*{bdtitle}" required maxlength='35'>
+              <input type="text" th:field="*{bdtitle}" required maxlength='100' class="title_write">
               <div class="fieldError" th:if="${#fields.hasErrors('bdtitle')}" th:errors="*{bdtitle}"></div>
             </div>
 

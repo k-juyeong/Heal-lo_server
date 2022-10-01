@@ -65,9 +65,7 @@ public class BoardController {
                          HttpServletRequest request,
                           @RequestParam(required = false) Optional<String> category ) {
     String cate = getCategory(category);
-
     SaveForm form = new SaveForm();
-
     //회원번호 조회
     HttpSession session = request.getSession(false);
     if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
@@ -75,7 +73,6 @@ public class BoardController {
       form.setMemnickname(loginMember.getMemnickname());
       form.setMemno(loginMember.getMemno());
     }
-
     model.addAttribute("form", form);
     model.addAttribute("category", cate);
     return "board/saveForm";
@@ -97,7 +94,6 @@ public class BoardController {
       LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
       memno = loginMember.getMemno();
     }
-
 
     //기본검증
     if(bindingResult.hasErrors()){
@@ -225,9 +221,6 @@ public class BoardController {
     boardSVC.deleteByBoardId(boardId);
     String cate = getCategory(category);
 
-
-
-
     return "redirect:/boards/list?category="+cate;  //항시 절대경로로
   }
 
@@ -247,7 +240,6 @@ public class BoardController {
       Model model) {
 
     log.info("/list 요청됨{},{},{},{}",reqPage,searchType,keyword,category);
-
     String cate = getCategory(category);
 
     //FindCriteria 값 설정

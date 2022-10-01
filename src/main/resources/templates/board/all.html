@@ -95,7 +95,8 @@
 
                   <td><a href=""
                         th:href="@{/boards/list/{id}/detail(id=${board.bdno},category=${category})}"
-                        th:text="${board.bdtitle}">제목</a>
+                        th:text="${board.bdtitle}">제목
+                  </a>
                   </td>
                   <td th:text="${board.memnickname}">닉네임</td>
                   <td th:text="${board.bdview}">5</td>
@@ -104,6 +105,24 @@
               </tbody>
             </table>
           </div>
+
+    <!-- 하단 글쓰기, 검색버튼 -->
+    <div class="board__bottom">
+      <div class="board__btn">
+        <button type="button" class="btn btn__write" id="writeBtn">
+          글쓰기
+        </button>
+      </div>
+      <fieldset class="board__search">
+        <select name="searchType" id="searchType" th:field="${fc.searchType}">
+          <option th:value="A" selected>전체</option>
+          <option th:value="N">닉네임</option>
+          <option th:value="TC">제목+내용</option>
+        </select>
+        <input type="text" id="keyword" name="keyword" th:field="${fc.keyword}"/>
+        <button class="btn btn__search" id="searchBtn">검색</button>
+      </fieldset>
+    </div>
 
           <!-- 페이지네이션` -->
           <div class="board__page">
@@ -140,27 +159,13 @@
               끝페이지
             </a>
           </th:block>
-
-
-
           </div>
-          <!-- 하단 글쓰기, 검색버튼 -->
-          <div class="board__bottom">
-            <div class="board__btn">
-              <button type="button" class="btn btn__write" id="writeBtn">
-                글쓰기
-              </button>
-            </div>
-            <fieldset class="board__search">
-              <select name="searchType" id="searchType" th:field="${fc.searchType}">
-                <option th:value="A" selected>전체</option>
-                <option th:value="N">닉네임</option>
-                <option th:value="TC">제목+내용</option>
-              </select>
-              <input type="text" id="keyword" name="keyword" th:field="${fc.keyword}"/>
-              <button class="btn btn__search" id="searchBtn">검색</button>
-            </fieldset>
-          </div>
+
+
+
+
+      
+
         </section>
       </main>
 

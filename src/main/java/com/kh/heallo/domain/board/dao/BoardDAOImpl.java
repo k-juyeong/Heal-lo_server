@@ -290,7 +290,7 @@ public class BoardDAOImpl implements BoardDAO{
   }
 
 
-
+//조회수
   @Override
   public int increaseViewCount(Long boardId) {
     StringBuffer sql = new StringBuffer();
@@ -302,5 +302,15 @@ public class BoardDAOImpl implements BoardDAO{
     return affectedRows;
   }
 
+  //좋아요
+  @Override
+  public int increaseHitCount(Long boardId) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("update board  ");
+    sql.append("set bdhit = bdhit + 1 ");
+    sql.append("where bdno = ? ");
 
+    int affectedRows = jt.update(sql.toString(), boardId);
+    return affectedRows;
+  }
 }

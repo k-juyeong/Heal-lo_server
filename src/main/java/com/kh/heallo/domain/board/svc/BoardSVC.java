@@ -24,7 +24,7 @@ public interface BoardSVC {
   //게시글조회
   Optional<Board> findByBoardId(Long boardId);
 
-  //상품변경
+  //게시글변경
   void update(Long BoardId, Board board);
   //파일추가
   void update(Long BoardId, Board board,List<MultipartFile> files);
@@ -36,7 +36,7 @@ public interface BoardSVC {
 
 
 
-  //상품삭제
+  //게시글삭제
   void deleteByBoardId(Long boardId);
 
   int totalCount();
