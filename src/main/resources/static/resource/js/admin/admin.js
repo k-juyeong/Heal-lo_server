@@ -14,8 +14,8 @@ function memberAll(){
       console.log(res.data.memberAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.memberAll.map(member=>{
-        const memid = member.memid;
-        const memno = member.memno;
+      // 탈퇴한 회원 제외하기
+
         const result =
           `<tr>
             <td>${member.memno}</td>
@@ -29,9 +29,8 @@ function memberAll(){
       }).catch(err=>console.log(err));
 }
 
-// 닉네임 검색
+// 닉네임,아이디 검색
 
-// 아이디 검색
 
 // 탈퇴 버튼 클릭
 function delMember(memid){

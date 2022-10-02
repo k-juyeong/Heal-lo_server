@@ -1,6 +1,7 @@
 package com.kh.heallo.domain.admin.dao;
 
 import com.kh.heallo.domain.board.Board;
+import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.review.Review;
@@ -33,75 +34,74 @@ public class AdminDAOImpl implements AdminDAO {
     return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Member.class));
   }
 
+  /**
+   * 회원 계정 닉네임, 아이디 검색
+   * @param memInfo 닉네임
+   * @return
+   */
   @Override
-  public List<Member> memberListByNickname(String nickname) {
+  public List<Member> memberListByIdOrNickname(String memInfo) {
     StringBuffer sql = new StringBuffer();
     sql.append("select MEMNO, MEMID, MEMNICKNAME, MEMCDATE ");
     sql.append("  from MEMBER ");
-    sql.append(" where MEMNICKNAME like ? ");
+    sql.append(" where MEMNICKNAME like '%" + memInfo + "%' or ");
+    sql.append("       MEMID like '%" + memInfo + "%' ");
+    sql.append(" order by MEMNO asc ");
 
-
-    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Member.class), nickname);
-  }
-
-  @Override
-  public List<Member> memberListById(String memId) {
-    StringBuffer sql = new StringBuffer();
-    sql.append("select MEMNO, MEMID, MEMNICKNAME, MEMCDATE ");
-    sql.append("  from MEMBER ");
-    sql.append(" where MEMID like ? ");
-
-    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Member.class), memId);
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Member.class), memInfo);
   }
 
   /**
-   * 회원 계정 삭제
+   * 게시글 목록
    *
-   * @param memno 회원 번호
+   * @return
    */
   @Override
-  public void memberDel(Long memno) {
-    String sql = "delete from MEMBER where MEMNO = ? ";
+  public List<Board> boardList() {
+    // 페이징 해야 됨
+    StringBuffer sql = new StringBuffer();
+    sql.append("select t1.BDNO, t1.BDTITLE, t2.MEMNICKNAME, t1.BDCDATE ");
+    sql.append("  from BOARD t1, MEMBER t2 ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append(" order by t1.BDNO asc ");
 
-    jdbcTemplate.update(sql, memno);
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class));
+  }
+
+  /**
+   * 게시물 - 게시글 제목 검색
+   *
+   * @param title 제목
+   * @return
+   */
+  @Override
+  public List<Board> boardListByTitle(String title) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select t1.BDNO, t1.BDTITLE, t2.MEMNICKNAME, t1.BDCDATE ");
+    sql.append("  from BOARD t1, MEMBER t2 ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append("   and t1.TITLE like '%" + title + "%' ");
+    sql.append(" order by t1.BDNO asc ");
+
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class));
   }
 
   /**
    * 게시물 - 게시글 작성자(닉네임, 아이디) 검색
-   * @param nickname 닉네임, 아이디
+   * @param memInfo 닉네임, 아이디
    * @return
    */
   @Override
-  public List<Board> boardListByNickname(String nickname) {
+  public List<Board> boardListByIdOrNickname(String memInfo) {
     StringBuffer sql = new StringBuffer();
-    sql.append("select MEMNO, MEMID, MEMNICKNAME, MEMCDATE ");
-    sql.append("from MEMBER ");
-    sql.append("where MEMID like ? ");
-    sql.append("   or MEMNICKNAME like ? ");
+    sql.append("select t1.BDNO, t1.BDTITLE, t2.MEMNICKNAME, t1.BDCDATE ");
+    sql.append("  from BOARD t1, MEMBER t2 ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append("   and MEMNICKNAME like '%" + memInfo + "%' or ");
+    sql.append("       MEMID like '%" + memInfo + "%' ");
+    sql.append(" order by t1.BDNO asc ");
 
-
-    return null;
-  }
-
-//  /**
-//   * 게시물 - 게시글 작성자(아이디) 검색
-//   *
-//   * @param memId 아이디
-//   * @return
-//   */
-//  @Override
-//  public List<Board> boardListById(String memId) {
-//    return null;
-//  }
-
-  /**
-   * 게시글 삭제
-   *
-   * @param bdno 게시글 번호
-   */
-  @Override
-  public void boardDel(Long bdno) {
-
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class));
   }
 
   /**
@@ -111,7 +111,13 @@ public class AdminDAOImpl implements AdminDAO {
    */
   @Override
   public List<Reply> replyList() {
-    return null;
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT t1.rpno, t1.rpcomment, t2.memnickname, t1.rpcdate ");
+    sql.append("  FROM reply t1, member t2 ");
+    sql.append(" WHERE t1.memno = t2.memno ");
+    sql.append(" ORDER BY t1.rpno ASC ");
+
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class));
   }
 
   /**
@@ -122,39 +128,33 @@ public class AdminDAOImpl implements AdminDAO {
    */
   @Override
   public List<Reply> replyListByContent(String rpContent) {
-    return null;
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT t1.rpno, t1.rpcomment, t2.memnickname, t1.rpcdate ");
+    sql.append("  FROM reply t1, member t2 ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append("   and t1.rpcomment like '%" + rpContent + "%' ");
+    sql.append(" order by t1.rpno asc ");
+
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class));
   }
 
   /**
-   * 게시물 - 댓글 작성자(닉네임) 검색
+   * 게시물 - 댓글 작성자(닉네임,아이디) 검색
    *
-   * @param nickname 닉네임
+   * @param memInfo 닉네임,아이디
    * @return
    */
   @Override
-  public List<Reply> replyListByNickname(String nickname) {
-    return null;
-  }
+  public List<Reply> replyListByIdOrNickname(String memInfo) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT t1.rpno, t1.rpcomment, t2.memnickname, t1.rpcdate ");
+    sql.append("  FROM reply t1, member t2 ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append("   and MEMNICKNAME like '%" + memInfo + "%' or ");
+    sql.append("       MEMID like '%" + memInfo + "%' ");
+    sql.append(" order by t1.rpno asc ");
 
-//  /**
-//   * 게시물 - 댓글 작성자(아이디) 검색
-//   *
-//   * @param memId 아이디
-//   * @return
-//   */
-//  @Override
-//  public List<Reply> replyListById(String memId) {
-//    return null;
-//  }
-
-  /**
-   * 댓글 삭제
-   *
-   * @param rpno 댓글 번호
-   */
-  @Override
-  public void replyDel(Long rpno) {
-
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class));
   }
 
   /**
@@ -164,7 +164,14 @@ public class AdminDAOImpl implements AdminDAO {
    */
   @Override
   public List<Review> reviewList() {
-    return null;
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT t1.rvno, t1.rvcontents, t2.memnickname, t1.fcno ");
+    sql.append("  FROM review t1, member t2, facility t3 ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append("   and t1.fcno = t3.fcno ");
+    sql.append(" order by t1.rvno asc ");
+
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class));
   }
 
   /**
@@ -175,7 +182,15 @@ public class AdminDAOImpl implements AdminDAO {
    */
   @Override
   public List<Review> reviewListByContent(String content) {
-    return null;
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT t1.rvno, t1.rvcontents, t2.memnickname, t1.fcno ");
+    sql.append("  FROM review t1, member t2, facility t3 ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append("   and t1.fcno = t3.fcno ");
+    sql.append("   and t1.rvcontents like '%" + content + "%' ");
+    sql.append(" order by t1.rvno asc ");
+
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class));
   }
 
   /**
@@ -186,39 +201,45 @@ public class AdminDAOImpl implements AdminDAO {
    */
   @Override
   public List<Review> reviewListByFacility(String fcName) {
-    return null;
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT t1.rvno, t1.rvcontents, t2.memnickname, t1.fcno ");
+    sql.append("  FROM review t1, member t2, facility t3 ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append("   and t1.fcno = t3.fcno ");
+    sql.append("   and t3.fcname like '%" + fcName + "%' ");
+    sql.append(" order by t1.rvno asc ");
+
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class));
   }
 
   /**
    * 게시물 - 리뷰 작성자(닉네임) 검색
    *
-   * @param nickname 닉네임
+   * @param memInfo 닉네임
    * @return
    */
   @Override
-  public List<Review> reviewListByNickname(String nickname) {
-    return null;
+  public List<Review> reviewListByIdOrNickname(String memInfo) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT t1.rvno, t1.rvcontents, t2.memnickname, t1.fcno ");
+    sql.append("  FROM review t1, member t2, facility t3 ");
+    sql.append(" where t1.MEMNO = t2.MEMNO ");
+    sql.append("   and t1.fcno = t3.fcno ");
+    sql.append("   and t2.MEMNICKNAME like '%" + memInfo + "%' or ");
+    sql.append("       t2.MEMID like '%" + memInfo + "%' ");
+    sql.append(" order by t1.rvno asc ");
+
+    return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class));
   }
 
-//  /**
-//   * 게시물 - 리뷰 작성자(아이디) 검색
-//   *
-//   * @param memId 아이디
-//   * @return
-//   */
-//  @Override
-//  public List<Review> reviewListById(String memId) {
-//
-//    return null;
-//  }
 
   /**
-   * 리뷰 삭제
+   * 운동시설 정보 수정
    *
-   * @param rvno 리뷰 번호
+   * @param facility 운동시설 정보
    */
   @Override
-  public void reviewDel(Long rvno) {
+  public void updateFacility(Facility facility) {
 
   }
 }

@@ -1,7 +1,11 @@
 package com.kh.heallo.domain.admin.svc;
 
 import com.kh.heallo.domain.admin.dao.AdminDAO;
+import com.kh.heallo.domain.board.Board;
+import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.member.Member;
+import com.kh.heallo.domain.reply.Reply;
+import com.kh.heallo.domain.review.Review;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,13 +28,131 @@ public class AdminSVCImpl implements AdminSVC {
     return adminDAO.memberList();
   }
 
+  /**
+   * 회원 계정 닉네임,아이디 검색
+   * @param memInfo 닉네임,아이디
+   * @return
+   */
   @Override
-  public List<Member> memberListByNickname(String nickname) {
-    return adminDAO.memberListByNickname(nickname);
+  public List<Member> memberListByIdOrNickname(String memInfo) {
+    return adminDAO.memberListByIdOrNickname(memInfo);
   }
 
+  /**
+   * 게시글 목록
+   *
+   * @return
+   */
   @Override
-  public List<Member> memberListById(String memId) {
-    return adminDAO.memberListById(memId);
+  public List<Board> boardList() {
+    return adminDAO.boardList();
+  }
+
+  /**
+   * 게시물 - 게시글 제목 검색
+   *
+   * @param title 제목
+   * @return
+   */
+  @Override
+  public List<Board> boardListByTitle(String title) {
+    return null;
+  }
+
+  /**
+   * 게시물 - 게시글 작성자(닉네임, 아이디) 검색
+   *
+   * @param memInfo 닉네임, 아이디
+   * @return
+   */
+  @Override
+  public List<Board> boardListByIdOrNickname(String memInfo) {
+    return null;
+  }
+
+  /**
+   * 게시물 - 댓글 목록
+   *
+   * @return
+   */
+  @Override
+  public List<Reply> replyList() {
+    return null;
+  }
+
+  /**
+   * 게시물 - 댓글 내용 검색
+   *
+   * @param rpContent 댓글 내용
+   * @return
+   */
+  @Override
+  public List<Reply> replyListByContent(String rpContent) {
+    return null;
+  }
+
+  /**
+   * 게시물 - 댓글 작성자(닉네임,아이디) 검색
+   *
+   * @param memInfo 닉네임,아이디
+   * @return
+   */
+  @Override
+  public List<Reply> replyListByIdOrNickname(String memInfo) {
+    return null;
+  }
+
+
+  /**
+   * 게시물 - 리뷰 목록
+   *
+   * @return
+   */
+  @Override
+  public List<Review> reviewList() {
+    return null;
+  }
+
+  /**
+   * 게시물 - 리뷰 내용 검색
+   *
+   * @param content 리뷰 내용
+   * @return
+   */
+  @Override
+  public List<Review> reviewListByContent(String content) {
+    return null;
+  }
+
+  /**
+   * 게시물 - 리뷰 운동시설 검색
+   *
+   * @param fcName 운동시설
+   * @return
+   */
+  @Override
+  public List<Review> reviewListByFacility(String fcName) {
+    return null;
+  }
+
+  /**
+   * 게시물 - 리뷰 작성자(닉네임,아이디) 검색
+   *
+   * @param memInfo 닉네임,아이디
+   * @return
+   */
+  @Override
+  public List<Review> reviewListByIdOrNickname(String memInfo) {
+    return null;
+  }
+
+  /**
+   * 운동시설 정보 수정
+   *
+   * @param facility 운동시설 정보
+   */
+  @Override
+  public void updateFacility(Facility facility) {
+
   }
 }
