@@ -123,16 +123,16 @@ public class AdminDAOImpl implements AdminDAO {
   /**
    * 게시물 - 댓글 내용 검색
    *
-   * @param rpContent 댓글 내용
+   * @param content 댓글 내용
    * @return
    */
   @Override
-  public List<Reply> replyListByContent(String rpContent) {
+  public List<Reply> replyListByContent(String content) {
     StringBuffer sql = new StringBuffer();
     sql.append("SELECT t1.rpno, t1.rpcomment, t2.memnickname, t1.rpcdate ");
     sql.append("  FROM reply t1, member t2 ");
     sql.append(" where t1.MEMNO = t2.MEMNO ");
-    sql.append("   and t1.rpcomment like '%" + rpContent + "%' ");
+    sql.append("   and t1.rpcomment like '%" + content + "%' ");
     sql.append(" order by t1.rpno asc ");
 
     return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class));
@@ -242,5 +242,11 @@ public class AdminDAOImpl implements AdminDAO {
   public void updateFacility(Facility facility) {
 
   }
+
+  // 게시물 - 문의글 목록
+
+  // 게시물 - 문의글 내용 검색
+  // 게시물 - 문의글 작성자(닉네임,아이디) 검색
+
 }
 

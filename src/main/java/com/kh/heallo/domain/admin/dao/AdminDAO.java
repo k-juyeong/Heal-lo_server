@@ -51,10 +51,10 @@ public interface AdminDAO {
 
   /**
    * 게시물 - 댓글 내용 검색
-   * @param rpContent 댓글 내용
+   * @param content 댓글 내용
    * @return
    */
-  List<Reply> replyListByContent(String rpContent);
+  List<Reply> replyListByContent(String content);
 
 
   /**

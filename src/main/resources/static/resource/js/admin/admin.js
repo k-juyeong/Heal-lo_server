@@ -73,15 +73,15 @@ function manageBoard(){
 // 게시물 - 댓글
 function manageReply(){
   document.querySelector('.th__2').textContent = "댓글 내용";
-//  document.querySelector('.th__3').textContent = "작성자";
-//  document.querySelector('.th__4').textContent = "작성날짜";
+  document.querySelector('.th__3').textContent = "작성자";
+  document.querySelector('.th__4').textContent = "작성날짜";
 }
 
 
 // 게시물 - 리뷰
 function manageReview(){
   document.querySelector('.th__2').textContent = "리뷰 내용";
-//  document.querySelector('.th__3').textContent = "작성자";
+  document.querySelector('.th__3').textContent = "작성자";
   document.querySelector('.th__4').textContent = "운동시설";
 }
 

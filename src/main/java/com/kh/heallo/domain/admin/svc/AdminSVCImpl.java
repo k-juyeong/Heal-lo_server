@@ -56,7 +56,7 @@ public class AdminSVCImpl implements AdminSVC {
    */
   @Override
   public List<Board> boardListByTitle(String title) {
-    return null;
+    return adminDAO.boardListByTitle(title);
   }
 
   /**
@@ -67,7 +67,7 @@ public class AdminSVCImpl implements AdminSVC {
    */
   @Override
   public List<Board> boardListByIdOrNickname(String memInfo) {
-    return null;
+    return adminDAO.boardListByIdOrNickname(memInfo);
   }
 
   /**
@@ -77,18 +77,18 @@ public class AdminSVCImpl implements AdminSVC {
    */
   @Override
   public List<Reply> replyList() {
-    return null;
+    return adminDAO.replyList();
   }
 
   /**
    * 게시물 - 댓글 내용 검색
    *
-   * @param rpContent 댓글 내용
+   * @param content 댓글 내용
    * @return
    */
   @Override
-  public List<Reply> replyListByContent(String rpContent) {
-    return null;
+  public List<Reply> replyListByContent(String content) {
+    return adminDAO.replyListByContent(content);
   }
 
   /**
@@ -99,7 +99,7 @@ public class AdminSVCImpl implements AdminSVC {
    */
   @Override
   public List<Reply> replyListByIdOrNickname(String memInfo) {
-    return null;
+    return adminDAO.replyListByIdOrNickname(memInfo);
   }
 
 
@@ -110,7 +110,7 @@ public class AdminSVCImpl implements AdminSVC {
    */
   @Override
   public List<Review> reviewList() {
-    return null;
+    return adminDAO.reviewList();
   }
 
   /**
@@ -121,7 +121,7 @@ public class AdminSVCImpl implements AdminSVC {
    */
   @Override
   public List<Review> reviewListByContent(String content) {
-    return null;
+    return adminDAO.reviewListByContent(content);
   }
 
   /**
@@ -132,7 +132,7 @@ public class AdminSVCImpl implements AdminSVC {
    */
   @Override
   public List<Review> reviewListByFacility(String fcName) {
-    return null;
+    return adminDAO.reviewListByFacility(fcName);
   }
 
   /**
@@ -143,7 +143,7 @@ public class AdminSVCImpl implements AdminSVC {
    */
   @Override
   public List<Review> reviewListByIdOrNickname(String memInfo) {
-    return null;
+    return adminDAO.reviewListByIdOrNickname(memInfo);
   }
 
   /**
