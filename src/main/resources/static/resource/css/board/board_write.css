@@ -18,9 +18,8 @@
 
 /* 사이드바 */
 #container .title {
-  width: 15%
+  width: 15%;
   flex-shrink: 0;
-  margin-right: 50px;
 }
 
 #container .title .title__list {
@@ -41,15 +40,27 @@
 }
 
 
-
 /* 작성공간 */
 #container .board_main {
   width: 85%;
-  display: flex;
+}
+
+#container .board_main #detailForm{
+  /* outline: 1px solid red; */
+  margin: 0px auto;
+  display:flex;
   flex-direction: column;
+  align-items : center;
+  justify-content : center;
+  justify-self: center;
+  width: 100%;
 }
 #container .board_main .board_write {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items : center;
+  justify-content : center;
 }
 
 #container .board_write .board_title .title__main {
@@ -60,7 +71,7 @@
 
 /* 폼 */
 #container .board_write .board_content{
-  outline: 1px solid black;
+  /* outline: 1px solid black; */
 }
 
 #container .board_write .board_content .writeForm .line{
@@ -113,7 +124,7 @@
   border: 1px solid #D6D6D6;
   border-radius: 4px;
   resize: none;
-  width: 90%;
+  /* width: 90%; */
 }
 #container .board_write .board_content .writeForm .textarea:focus{
   outline: none;
@@ -141,7 +152,7 @@
 }
 
 .ck .ck-editor{
-max-width : 400px;
+max-width : 500px;
 }
 .ck .ck-editor__editable{
 min-height:300px;

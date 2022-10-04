@@ -104,7 +104,7 @@
             </div>
 
             <div>
-              <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}" required></textarea>
+              <textarea class="textarea" name="editor" id="editor" th:field="*{bdcontent}" required></textarea>
               <div class="fieldError" th:if="${#fields.hasErrors('bdcontent')}" th:errors="*{bdcontent}"></div>
             </div>
 
@@ -140,7 +140,6 @@
     $saveBtn.addEventListener('click', evt=>{
       document.getElementById('saveForm').submit();
     });
-
 
   // 에디터 툴
   ClassicEditor
