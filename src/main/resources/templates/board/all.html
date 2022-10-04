@@ -15,8 +15,10 @@
       th:href="@{/resource/css/board/board.css}"
     />
     <th:block th:replace="${link}"></th:block>
-    <script src="../../static/resource/js/board/board.js" th:src="@{/resource/js/board/board.js}"></script>
-
+    <script
+      src="../../static/resource/js/board/board.js"
+      th:src="@{/resource/js/board/board.js}"
+    ></script>
   </head>
 
   <body>
@@ -57,22 +59,19 @@
       </header>
 
       <!-- 메인 컨텐츠 -->
-      <main id="container"  th:data-code="${category}">
+      <main id="container" th:data-code="${category}">
         <aside class="title">
           <div class="title__list">
-            <a  th:href="@{/boards/list/?category=BD001}">자유게시판</a>
-            <a  th:href="@{/boards/list/?category=BD002}">정보공유</a>
-            <a  th:href="@{/boards/list/?category=BD003}">추천글</a>
-            <a  th:href="@{/boards/list/?category=BD004}">문의하기</a>
+            <a th:href="@{/boards/list/?category=BD001}">자유게시판</a>
+            <a th:href="@{/boards/list/?category=BD002}">정보공유</a>
+            <a th:href="@{/boards/list/?category=BD004}">문의하기</a>
           </div>
         </aside>
 
         <section class="board">
-          <h2 class="board__title" th:text="${bdTitle['__${category}__']}?:_">게시판</h2>
-          <ul class="board__sort">
-            <li><a href="#">최신등록순</a></li>
-            <li><a href="#">추천순</a></li>
-          </ul>
+          <h2 class="board__title" th:text="${bdTitle['__${category}__']}?:_">
+            게시판
+          </h2>
           <div class="board__box">
             <table class="board__table">
               <thead>
@@ -89,82 +88,117 @@
               <tbody th:obejct="${form}">
                 <tr th:each="board:${list}">
                   <td th:text="${board.bdno}">1</td>
-                  <td th:text="${#strings.isEmpty(category)?
+                  <td
+                    th:text="${#strings.isEmpty(category)?
                     bdTitle[board.bdcg]
-                    :bdTitle['__${category}__']}">자유게시판</td>
+                    :bdTitle['__${category}__']}"
+                  >
+                    자유게시판
+                  </td>
 
-                  <td><a href=""
-                        th:href="@{/boards/list/{id}/detail(id=${board.bdno},category=${category})}"
-                        th:text="${board.bdtitle}">제목
-                  </a>
+                  <td>
+                    <a
+                      href=""
+                      th:href="@{/boards/list/{id}/detail(id=${board.bdno},category=${category})}"
+                      th:text="${board.bdtitle}"
+                      >제목
+                    </a>
                   </td>
                   <td th:text="${board.memnickname}">닉네임</td>
                   <td th:text="${board.bdview}">5</td>
-                  <td th:text="${#temporals.format(board.bdcdate,'yy/MM/dd HH:mm')}">작성일</td>
+                  <td
+                    th:text="${#temporals.format(board.bdcdate,'yy/MM/dd HH:mm')}"
+                  >
+                    작성일
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-    <!-- 하단 글쓰기, 검색버튼 -->
-    <div class="board__bottom">
-      <div class="board__btn">
-        <button type="button" class="btn btn__write" id="writeBtn">
-          글쓰기
-        </button>
-      </div>
-      <fieldset class="board__search">
-        <select name="searchType" id="searchType" th:field="${fc.searchType}">
-          <option th:value="A" selected>전체</option>
-          <option th:value="N">닉네임</option>
-          <option th:value="TC">제목+내용</option>
-        </select>
-        <input type="text" id="keyword" name="keyword" th:field="${fc.keyword}"/>
-        <button class="btn btn__search" id="searchBtn">검색</button>
-      </fieldset>
-    </div>
 
           <!-- 페이지네이션` -->
           <div class="board__page">
-          <th:block th:if="${fc.prev}">
-            <a class="bbs-page-item" href=""
-               th:href="@{/boards/list/1/{searchType}/{keyword}(searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}">
-              첫페이지
-            </a>
-            <a class="bbs-page-item" href=""
-               th:href="@{/boards/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.startPage-1},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}">
-              <i class="fa-solid fa-angle-left"></i>
-            </a>
-          </th:block>
-
-          <!--페이지표시-->
-          <th:block th:each="pnum : ${#numbers.sequence(fc.startPage,fc.endPage)}">
-            <th:block th:if="${pnum != 0}">
-<!--             <a class="bbs-page-item" th:classappend="${fc.rc.reqPage == pnum} ? 'active'" href="" th:href="@{|/boards/${pnum}|}" th:text="${pnum}">1</a>-->
-              <a class="bbs-page-item" th:classappend="${fc.rc.reqPage == pnum} ? 'active'" href=""
-                 th:href="@{/boards/list/{reqPage}/{searchType}/{keyword}(reqPage=${pnum},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}"
-                 th:text="${pnum}">1</a>
+            <th:block th:if="${fc.prev}">
+              <a
+                class="bbs-page-item"
+                href=""
+                th:href="@{/boards/list/1/{searchType}/{keyword}(searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}"
+              >
+                첫페이지
+              </a>
+              <a
+                class="bbs-page-item"
+                href=""
+                th:href="@{/boards/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.startPage-1},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}"
+              >
+                <i class="fa-solid fa-angle-left"></i>
+              </a>
             </th:block>
-          </th:block>
 
+            <!--페이지표시-->
+            <th:block
+              th:each="pnum : ${#numbers.sequence(fc.startPage,fc.endPage)}"
+            >
+              <th:block th:if="${pnum != 0}">
+                <!--             <a class="bbs-page-item" th:classappend="${fc.rc.reqPage == pnum} ? 'active'" href="" th:href="@{|/boards/${pnum}|}" th:text="${pnum}">1</a>-->
+                <a
+                  class="bbs-page-item"
+                  th:classappend="${fc.rc.reqPage == pnum} ? 'active'"
+                  href=""
+                  th:href="@{/boards/list/{reqPage}/{searchType}/{keyword}(reqPage=${pnum},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}"
+                  th:text="${pnum}"
+                  >1</a
+                >
+              </th:block>
+            </th:block>
 
-          <!--다음페이지정보-->
-          <th:block th:if="${fc.next}">
-            <a class="bbs-page-item" href=""
-               th:href="@{/boards/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.endPage+1},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}">
-              <i class="fa-solid fa-angle-right"></i>
-            </a>
-            <a class="bbs-page-item" href=""
-               th:href="@{/boards/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.finalEndPage},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}">
-              끝페이지
-            </a>
-          </th:block>
+            <!--다음페이지정보-->
+            <th:block th:if="${fc.next}">
+              <a
+                class="bbs-page-item"
+                href=""
+                th:href="@{/boards/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.endPage+1},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}"
+              >
+                <i class="fa-solid fa-angle-right"></i>
+              </a>
+              <a
+                class="bbs-page-item"
+                href=""
+                th:href="@{/boards/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.finalEndPage},searchType=${fc.searchType},keyword=${fc.keyword},category=${param.category})}"
+              >
+                끝페이지
+              </a>
+            </th:block>
           </div>
 
 
-
-
-      
+          <!-- 하단 글쓰기, 검색버튼 -->
+          <div class="board__bottom">
+            <div class="board__btn">
+              <button type="button" class="btn btn__write" id="writeBtn">
+                글쓰기
+              </button>
+            </div>
+            <fieldset class="board__search">
+              <select
+                name="searchType"
+                id="searchType"
+                th:field="${fc.searchType}"
+              >
+                <option th:value="A" selected>전체</option>
+                <option th:value="N">닉네임</option>
+                <option th:value="TC">제목+내용</option>
+              </select>
+              <input
+                type="text"
+                id="keyword"
+                name="keyword"
+                th:field="${fc.keyword}"
+              />
+              <button class="btn btn__search" id="searchBtn">검색</button>
+            </fieldset>
+          </div>
 
         </section>
       </main>
@@ -185,46 +219,45 @@
       </footer>
     </div>
 
+    <!--    <script>-->
+    <!--      const $writeBtn = document.getElementById('writeBtn');-->
+    <!--      const $keyword  = document.getElementById('search_spot');-->
+    <!--      const $searchBtn = document.getElementById('searchBtn');-->
 
-<!--    <script>-->
-<!--      const $writeBtn = document.getElementById('writeBtn');-->
-<!--      const $keyword  = document.getElementById('search_spot');-->
-<!--      const $searchBtn = document.getElementById('searchBtn');-->
+    <!--      $writeBtn?.addEventListener('click', (evt) => {-->
+    <!--        location.href = '/boards/add';-->
+    <!--      });-->
 
-<!--      $writeBtn?.addEventListener('click', (evt) => {-->
-<!--        location.href = '/boards/add';-->
-<!--      });-->
+    <!--    //검색 버튼 클릭시-->
+    <!--    $searchBtn?.addEventListener('click', search_f);-->
 
-<!--    //검색 버튼 클릭시-->
-<!--    $searchBtn?.addEventListener('click', search_f);-->
+    <!--    //키워드 입력필드에 엔터키 눌렀을때 검색-->
+    <!--    $keyword?.addEventListener('keydown', e=>{-->
+    <!--        if(e.key === 'Enter') {-->
+    <!--            search_f(e);-->
+    <!--        }-->
+    <!--    });-->
 
-<!--    //키워드 입력필드에 엔터키 눌렀을때 검색-->
-<!--    $keyword?.addEventListener('keydown', e=>{-->
-<!--        if(e.key === 'Enter') {-->
-<!--            search_f(e);-->
-<!--        }-->
-<!--    });-->
+    <!--    function search_f(e){-->
+    <!--        //검색어입력 유무체크-->
+    <!--        if($keyword.value.trim().length === 0){-->
+    <!--           alert('검색어를 입력하세요');-->
+    <!--           $keyword.focus();$keyword.select(); //커서이동-->
+    <!--           return false;-->
+    <!--        }-->
+    <!--        const url = `/boards/1/${$searchType.value}/${$keyword.value}?bdcg=${category}`;-->
+    <!--        location.href = url;-->
+    <!--    }-->
 
-<!--    function search_f(e){-->
-<!--        //검색어입력 유무체크-->
-<!--        if($keyword.value.trim().length === 0){-->
-<!--           alert('검색어를 입력하세요');-->
-<!--           $keyword.focus();$keyword.select(); //커서이동-->
-<!--           return false;-->
-<!--        }-->
-<!--        const url = `/boards/1/${$searchType.value}/${$keyword.value}?bdcg=${category}`;-->
-<!--        location.href = url;-->
-<!--    }-->
-
-<!--    </script>-->
+    <!--    </script>-->
     <!--    <script-->
     <!--      src="https://kit.fontawesome.com/7ee6b8223a.js"-->
     <!--      crossorigin="anonymous"-->
     <!--    ></script>-->
-<!--        <script-->
-<!--          src="../../static/resource/js/template/layout-sub.js"-->
-<!--          th:src="@{/resource/js/template/layout-sub.js}"-->
-<!--        ></script>-->
+    <!--        <script-->
+    <!--          src="../../static/resource/js/template/layout-sub.js"-->
+    <!--          th:src="@{/resource/js/template/layout-sub.js}"-->
+    <!--        ></script>-->
     <!--    <th:block th:replace="${script}"></th:block>-->
   </body>
 </html>

@@ -1,231 +1,257 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>게시판</title>
-    <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
+    <link
+      rel="stylesheet"
+      href="../../static/resource/css/board/board_write.css"
+      th:href="@{/resource/css/board/board_write.css}"
+    />
     <th:block th:replace="${link}"></th:block>
 
-  <style>
-    .board-wrap .board-body{
-      display:grid;
-      grid-template-columns: 100px 300px;
-    }
-    .fieldError {
-      color:red;
-      font-size:0.8em;
-      font-weight:bold;
-    }
-    .ck-editor__editable {height: 500px;}
-    .ck-content {font-size: 12px;}
-  </style>
-</head>
+    <style>
+      .board-wrap .board-body {
+        display: grid;
+        grid-template-columns: 100px 300px;
+      }
+      .ck-editor__editable {
+        height: 500px;
+      }
+      .ck-content {
+        font-size: 12px;
+      }
+    </style>
+  </head>
 
-<body>
-  <div id="wrapper">
-
-    <!-- 헤더 -->
-    <header id="header">
-      <!-- 탑 메뉴 -->
-      <div class="header__menu-top">
-        <span class="header__my-menu"><a href="#">로그아웃</a></span>
-        <span class="header__my-menu"><a href="#">마이페이지</a></span>
-        <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
-      </div>
-
-      <!-- 베너 -->
-      <div class="header__banner">
-        <!-- 메인 로고 -->
-        <div class="header__main-logo">
-          <a href="#">
-            <h1 class="header__main-title">Heal-lo</h1>
-            <p class="header__sub-title">:Healthy location</p>
-          </a>
+  <body>
+    <div id="wrapper">
+      <!-- 헤더 -->
+      <header id="header">
+        <!-- 탑 메뉴 -->
+        <div class="header__menu-top">
+          <span class="header__my-menu"><a href="#">로그아웃</a></span>
+          <span class="header__my-menu"><a href="#">마이페이지</a></span>
+          <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
         </div>
-        <div class="header__sitemenu" id="siteMenuContain">
-          <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
-          <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
-          <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
-          <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
-          <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
+
+        <!-- 베너 -->
+        <div class="header__banner">
+          <!-- 메인 로고 -->
+          <div class="header__main-logo">
+            <a href="#">
+              <h1 class="header__main-title">Heal-lo</h1>
+              <p class="header__sub-title">:Healthy location</p>
+            </a>
+          </div>
+          <div class="header__sitemenu" id="siteMenuContain">
+            <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div>
+            <!-- 스크립트용 -->
+            <a href="#"
+              ><i class="fa-solid fa-location-dot header__site-icon"></i
+            ></a>
+            <a href="#"
+              ><i class="fa-solid fa-book-open header__site-icon"></i
+            ></a>
+            <a href="#"
+              ><i class="fa-solid fa-calendar-days header__site-icon"></i
+            ></a>
+            <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
+          </div>
         </div>
-      </div>
-    </header>
-      
-    <!-- 메인 컨텐츠 -->
-    <main id="container">
+      </header>
 
-      <aside class="title">
-        <div class="title__list">
-          <a  th:href="@{/boards/list/?category=BD001}">자유게시판</a>
-          <a  th:href="@{/boards/list/?category=BD002}">정보공유</a>
-          <a  th:href="@{/boards/list/?category=BD003}">추천글</a>
-          <a  th:href="@{/boards/list/?category=BD004}">문의하기</a>
-        </div>
-      </aside>
-      <section class="board_write">
-        <div class="board_title">
-          <h2 class="title__main">게시글작성</h2>
-        </div>
-        <div class="board_content">
-          <form id="saveForm" action="" th:action th:method="post" th:object="${form}" class="writeForm" enctype="multipart/form-data">
+      <!-- 메인 컨텐츠 -->
+      <main id="container">
+        <aside class="title">
+          <div class="title__list">
+            <a th:href="@{/boards/list/?category=BD001}">자유게시판</a>
+            <a th:href="@{/boards/list/?category=BD002}">정보공유</a>
+            <a th:href="@{/boards/list/?category=BD004}">문의하기</a>
+          </div>
+        </aside>
 
-            <input type="hidden" th:field="*{memno}">
+        <section class="board_main">
+          <form
+            id="saveForm"
+            action=""
+            th:action
+            th:method="post"
+            th:object="${form}"
+            class="writeArea"
+            enctype="multipart/form-data"
+          >
+            <div class="board_write">
+              <div class="board_title">
+                <h2 class="title__main">게시글작성</h2>
+              </div>
 
-            <div th:if="${#fields.hasGlobalErrors()}">
-              <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
+              <div class="board_content">
+                <div class="writeForm">
+                  <input type="hidden" th:field="*{memno}" />
+
+                  <div th:if="${#fields.hasGlobalErrors()}">
+                    <p
+                      class="fieldError"
+                      th:each="err:${#fields.globalErrors()}"
+                      th:text="${err}"
+                    ></p>
+                  </div>
+
+                  <div class="line">
+                    <label th:for="bdcg">카테고리</label>
+                    <select name="" id="menu-list" th:field="*{bdcg}">
+<!--                                      <th:block th:each="code : ${classifier}">-->
+<!--                                        <option value="" th:value="${code.code}" th:text="${code.decode}">게시판1</option>-->
+<!--                                      </th:block>-->
+                      <option value="BD001">자유게시판</option>
+                      <option value="BD002">정보공유</option>
+                      <option value="BD004">문의하기</option>
+                    </select>
+                  </div>
+                  <div class="line">
+                    <label>제목</label>
+                    <input type="text" th:field="*{bdtitle}" required  maxlength='30'
+                           th:class="${#fields.hasErrors('bdtitle')} ? fieldError" />
+                    <div class="fieldError"  th:if="${#fields.hasErrors('bdtitle')}"
+                      th:errors="*{bdtitle}"></div>
+                  </div>
+
+                  <div class="line">
+                    <label>작성자</label>
+                    <span th:text="${session.LOGIN_MEMBER.memnickname}"></span>
+                  </div>
+
+                  <div>
+                    <textarea class="textarea" name="editor" id="editor" th:field="*{bdcontent}" required
+                              th:class="${#fields.hasErrors('bdcontent')} ? fieldError"></textarea>
+                    <div class="fieldError" th:if="${#fields.hasErrors('bdcontent')}"
+                         th:errors="*{bdcontent}"></div>
+                  </div>
+
+                  <div class="writeBtn_area">
+                    <button type="button" class="btn btn__search" id="saveBtn">
+                      등록
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div class="line">
-              <label>카테고리</label>
-              <select name="" id="menu-list" th:field="*{bdcg}">
-<!--                <th:block th:each="code : ${classifier}">-->
-<!--                  <option value="" th:value="${code.code}" th:text="${code.decode}">게시판1</option>-->
-<!--                </th:block>-->
-                <option value="BD001">자유게시판</option>
-                <option value="BD002">정보공유</option>
-                <option value="BD004">문의하기</option>
-              </select>
-              <div class="fieldError" th:errors="*{bdcg}"></div>
-            </div>
-
-            <div class="line">
-              <label>제목</label>
-              <input type="text" th:field="*{bdtitle}" required maxlength='100' class="title_write">
-              <div class="fieldError" th:if="${#fields.hasErrors('bdtitle')}" th:errors="*{bdtitle}"></div>
-            </div>
-
-            <div class="line">
-              <label>작성자</label>
-              <span th:text="${session.LOGIN_MEMBER.memnickname}"></span>
-            </div>
-
-            <div>
-              <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}" required></textarea>
-              <div class="fieldError" th:if="${#fields.hasErrors('bdcontent')}" th:errors="*{bdcontent}"></div>
-            </div>
-
-            <div class="writeBtn_area">
-              <button type="button" class="btn btn__search" id="saveBtn">등록</button>
-            </div>
-
           </form>
+        </section>
+      </main>
+
+      <!-- footer -->
+      <footer id="footer">
+        <div class="inner">
+          <h2>Heal-lo</h2>
+          <ul>
+            <li>상호명: heal-lo</li>
+            <li>대표: 1팀</li>
+            <li>주소: 울산광역시 남구 신정동</li>
+            <li>이메일: ulsanheallo@naver.com</li>
+            <br />
+            <li>Copyright 2022 헬로. All Rights Reserved.</li>
+          </ul>
         </div>
-
-
-      </section>
-    </main>
-
-    <!-- footer -->
-    <footer id="footer">
-      <div class="inner">
-        <h2>Heal-lo</h2>
-        <ul>
-          <li>상호명: heal-lo</li>
-          <li>대표: 1팀</li>
-          <li>주소: 울산광역시 남구 신정동</li>
-          <li>이메일: ulsanheallo@naver.com</li><br>
-          <li>Copyright 2022 헬로. All Rights Reserved.</li>
-        </ul>
-      </div>
-    </footer>
+      </footer>
     </div>
-  <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
-  <script>
+    <script
+      src="../../static/resource/js/editor/ckeditor.js"
+      th:src="@{/resource/js/editor/ckeditor.js}"
+    ></script>
+    <script>
+      const $saveBtn = document.getElementById('saveBtn');
+      $saveBtn.addEventListener('click', (evt) => {
+        document.getElementById('saveForm').submit();
+      });
 
-    const $saveBtn = document.getElementById('saveBtn');
-    $saveBtn.addEventListener('click', evt=>{
-      document.getElementById('saveForm').submit();
-    });
+      // 에디터 툴
+      ClassicEditor.create(document.querySelector('#editor'), {
+        plugin: ['ListStyle', 'Markdown', 'MediaEmbed', 'MediaEmbedToolbar'],
+        toolbar: {
+          items: [
+            'heading',
+            '|',
+            'underline',
+            'bold',
+            'italic',
+            'link',
+            'bulletedList',
+            'numberedList',
+            'todoList',
+            '|',
+            'outdent',
+            'indent',
+            '|',
+            'imageInsert',
+            'imageUpload',
+            'blockQuote',
+            'insertTable',
+            'mediaEmbed',
+            'markdown',
+            'undo',
+            'redo',
+            '|',
+            'highlight',
+            'fontFamily',
+            'fontColor',
+            'fontBackgroundColor',
+            'fontSize',
+            '|',
+            'htmlEmbed',
+            'specialCharacters',
+          ],
+        },
+        language: 'en',
+        image: {
+          toolbar: [
+            'imageTextAlternative',
+            'imageStyle:full',
+            'imageStyle:side',
+          ],
+        },
+        table: {
+          contentToolbar: [
+            'tableColumn',
+            'tableRow',
+            'mergeTableCells',
+            'tableCellProperties',
+            'tableProperties',
+          ],
+        },
+      })
+        .then((editor) => {
+          window.editor = editor;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    </script>
 
+    <!--  <script>-->
+    <!--  const domainListEl = document.getElementById('menu-list');-->
+    <!--const domainInputEl = document.getElementById('menu-text');-->
 
-  // 에디터 툴
-  ClassicEditor
-		.create( document.querySelector( '#editor' ), {
-		 plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
-			toolbar: {
-				items: [
-					'heading',
-					'|',
-					'underline',
-					'bold',
-					'italic',
-					'link',
-					'bulletedList',
-					'numberedList',
-					'todoList',
-					'|',
-					'outdent',
-					'indent',
-					'|',
-					'imageInsert',
-					'imageUpload',
-					'blockQuote',
-					'insertTable',
-					'mediaEmbed',
-					'markdown',
-					'undo',
-					'redo',
-					'|',
-					'highlight',
-					'fontFamily',
-					'fontColor',
-					'fontBackgroundColor',
-					'fontSize',
-					'|',
-					'htmlEmbed',
-					'specialCharacters'
-				]
-			},
-			language: 'en',
-			image: {
-				toolbar: [
-					'imageTextAlternative',
-					'imageStyle:full',
-					'imageStyle:side'
-				]
-			},
-			table: {
-				contentToolbar: [
-					'tableColumn',
-					'tableRow',
-					'mergeTableCells',
-					'tableCellProperties',
-					'tableProperties'
-				]
-			},
-		})
-		.then( editor => {
+    <!--domainListEl.addEventListener('change', (event) => {-->
+    <!--  if (event.target.value !== "type") {-->
+    <!--    domainInputEl.value = event.target.value-->
+    <!--    domainInputEl.disabled = true-->
+    <!--  } else {-->
+    <!--    domainInputEl.value = ""-->
+    <!--    domainInputEl.disabled = false-->
+    <!--  }-->
+    <!--});-->
+    <!--</script>-->
 
-			window.editor = editor;
-		} )
-		.catch( error => {
-			console.error( error );
-		} );
-
-  </script>
-
-<!--  <script>-->
-<!--  const domainListEl = document.getElementById('menu-list');-->
-<!--const domainInputEl = document.getElementById('menu-text');-->
-
-<!--domainListEl.addEventListener('change', (event) => {-->
-<!--  if (event.target.value !== "type") {-->
-<!--    domainInputEl.value = event.target.value-->
-<!--    domainInputEl.disabled = true-->
-<!--  } else {-->
-<!--    domainInputEl.value = ""-->
-<!--    domainInputEl.disabled = false-->
-<!--  }-->
-<!--});-->
-<!--</script>-->
-
-<!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->
-<!--    <script src="../../static/resource/js/template/layout-sub.js" th:src="@{/resource/js/template/layout-sub.js}"></script>-->
-<!--    <th:block th:replace="${script}"></th:block>-->
-
-</body>
+    <!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->
+    <!--    <script src="../../static/resource/js/template/layout-sub.js" th:src="@{/resource/js/template/layout-sub.js}"></script>-->
+    <!--    <th:block th:replace="${script}"></th:block>-->
+  </body>
 </html>

@@ -42,7 +42,7 @@
       
       <!-- 메인 컨텐츠 -->
       <main id="container">
-        <form action="" th:method="post" th:object="${form}">
+        <form id="form" action="" th:method="post" th:object="${form}">
           <div class="content">
             <div class="text-box">
                 <div class="my-page">
@@ -61,6 +61,7 @@
 
                 <label class="nname" for="nname">닉네임</label>
                 <input id="nname" type="text" name="memnickname" th:field="${form.memnickname}">
+                <span class="nnameCk"></span>
 
                 <label class="id" for="id">아이디</label>
                 <input id="id" type="text" name="memid" th:field="${form.memid}" readonly>

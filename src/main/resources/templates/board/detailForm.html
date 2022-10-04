@@ -1,265 +1,214 @@
 <!DOCTYPE html>
-<html
-    lang="ko" xmlns:th="http://www.thymeleaf.org"
-    th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}"
->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout/base-sub :: layoutSub(~{::title}, ~{::link}, ~{::main#container}, ~{::script})}"
+  th:with="s_memno=${session?.LOGIN_MEMBER?.memno}"
+      th:data-s-memno="${s_memno}">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>게시판</title>
   <!-- <link rel="stylesheet" href="../../static/resource/css/board/board.css" th:href="@{/resource/css/board/board.css}"> -->
-  <link rel="stylesheet" href="../../static/resource/css/board/board_write.css" th:href="@{/resource/css/board/board_write.css}">
-  <link rel="stylesheet" href="../../static/resource/css/board/reply.css" th:href="@{/resource/css/board/reply.css}">
+  <link rel="stylesheet" href="../../static/resource/css/board/board_write.css"
+    th:href="@{/resource/css/board/board_write.css}" />
+  <link rel="stylesheet" href="../../static/resource/css/board/reply.css" th:href="@{/resource/css/board/reply.css}" />
 
   <th:block th:replace="${link}"></th:block>
   <style>
-    .board-wrap .board-body{
-      display:grid;
+    .board-wrap .board-body {
+      display: grid;
       grid-template-columns: 100px 300px;
     }
-    .ck-editor__editable {height: 500px;}
-    .ck-content {font-size: 12px;}
+
+    .ck-editor__editable {
+      height: 500px;
+      width: 500px;
+    }
+
+    .ck-content {
+      font-size: 12px;
+    }
   </style>
 </head>
 
 <body>
-<div id="wrapper">
-
-  <!-- 헤더 -->
-  <header id="header">
-    <!-- 탑 메뉴 -->
-    <div class="header__menu-top">
-      <span class="header__my-menu"><a href="#">로그아웃</a></span>
-      <span class="header__my-menu"><a href="#">마이페이지</a></span>
-      <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
-    </div>
-
-    <!-- 베너 -->
-    <div class="header__banner">
-      <!-- 메인 로고 -->
-      <div class="header__main-logo">
-        <a href="#">
-          <h1 class="header__main-title">Heal-lo</h1>
-          <p class="header__sub-title">:Healthy location</p>
-        </a>
+  <div id="wrapper">
+    <!-- 헤더 -->
+    <header id="header">
+      <!-- 탑 메뉴 -->
+      <div class="header__menu-top">
+        <span class="header__my-menu"><a href="#">로그아웃</a></span>
+        <span class="header__my-menu"><a href="#">마이페이지</a></span>
+        <span class="header__my-menu"><a href="#">즐겨찾기</a></span>
       </div>
-      <div class="header__sitemenu" id="siteMenuContain">
-        <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div> <!-- 스크립트용 -->
-        <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
-        <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
-        <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
-        <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
+
+      <!-- 베너 -->
+      <div class="header__banner">
+        <!-- 메인 로고 -->
+        <div class="header__main-logo">
+          <a href="#">
+            <h1 class="header__main-title">Heal-lo</h1>
+            <p class="header__sub-title">:Healthy location</p>
+          </a>
+        </div>
+        <div class="header__sitemenu" id="siteMenuContain">
+          <div class="header__sitemenu-info" id="sitemenuInfo">게시판</div>
+          <!-- 스크립트용 -->
+          <a href="#"><i class="fa-solid fa-location-dot header__site-icon"></i></a>
+          <a href="#"><i class="fa-solid fa-book-open header__site-icon"></i></a>
+          <a href="#"><i class="fa-solid fa-calendar-days header__site-icon"></i></a>
+          <a href="#"><i class="fa-solid fa-heart header__site-icon"></i></a>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- 메인 컨텐츠 -->
-  <main id="container"  th:data-code="${category}">
-    <aside class="title">
-      <div class="title__list">
-        <a  th:href="@{/boards/list/?category=BD001}">자유게시판</a>
-        <a  th:href="@{/boards/list/?category=BD002}">정보공유</a>
-        <a  th:href="@{/boards/list/?category=BD003}">추천글</a>
-        <a  th:href="@{/boards/list/?category=BD004}">문의하기</a>
-      </div>
-    </aside>
+    <!-- 메인 컨텐츠 -->
+    <main id="container" th:data-code="${category}">
+      <aside class="title">
+        <div class="title__list">
+          <a th:href="@{/boards/list/?category=BD001}">자유게시판</a>
+          <a th:href="@{/boards/list/?category=BD002}">정보공유</a>
+          <a th:href="@{/boards/list/?category=BD004}">문의하기</a>
+        </div>
+      </aside>
 
-    <section class="board_main">
-      <form id="detailForm" action="" th:action th:object="${form}">
-
-        <div class="board_write">
-          <div class="board_title">
-            <h2 class="title__main" th:text="${#strings.isEmpty(category)?
+      <section class="board_main">
+        <form id="detailForm" action="" th:action th:object="${form}" class="writeArea">
+          <div class="board_write">
+            <div class="board_title">
+              <h2 class="title__main" th:text="${#strings.isEmpty(category)?
                     bdTitle[board.bdcg]
-                    :bdTitle['__${category}__']}">자유게시판</h2>
-          </div>
+                    :bdTitle['__${category}__']}">
+                자유게시판
+              </h2>
+            </div>
 
-          <div class="board_content">
-            <div class="writeForm">
-              <div class="line">
-                <label th:for="bdno">게시글번호</label>
-                <span id="bdno" th:text="*{bdno}"th:field="*{bdno}"></span>
-              </div>
-              <div class="line">
-                <label th:for="bdcg">카테고리</label>
-                <span th:text="${bdTitle['__${category}__']}?:_"></span>
-              </div>
-              <div class="line">
-                <label th:for="bdtitle">제목</label>
-                <span th:text="*{bdtitle}"></span>
-              </div>
+            <div class="board_content">
+              <div class="writeForm">
+                <div class="line">
+                  <!-- <input type="hidden" th:text="*{memno}"/> -->
+                  <label th:for="bdno">[No.<span id="bdno" th:text="*{bdno}" th:field="*{bdno}"></span>]</label>
+                  <label for="" th:for="bdcg">[<span th:text="${bdTitle['__${category}__']}?:_"></span>]</label>
+                  <span th:text="*{bdtitle}"></span>
+                </div>
 
-              <div class="line">
-                <label>조회수</label>
-                <span th:text="*{bdview}"></span>
-              </div>
+                <div class="line">
+                    <label for="" th:for="bdcg">[<span th:text= "${bdTitle['__${category}__']}?:_"></span>]</label>
+                      <span th:text="*{bdtitle}"></span>
+                  </div>
 
-              <div class="line">
-                <label  th:for="bdcdate">작성일</label>
-                <span th:text="*{#temporals.format(bdcdate,'yy/MM/dd HH:mm')}"></span>
-              </div>
+                <div class="line line2">
+                  <label th:for="memnickname">[작성자]</label>
+                  <span th:text="*{memnickname}"></span>
+                  <label th:for="bdcdate">[작성일]</label>
+                  <span th:for="bdcdate" th:text="*{#temporals.format(bdcdate,'yy/MM/dd HH:mm')}"></span>
+                  <label>[조회수]</label>
+                  <span th:text="*{bdview}"></span>
+                </div>
 
-              <div class="line">
-                <label th:for="memnickname">작성자</label>
-                <span th:text="*{memnickname}"></span>
-                <input type="hidden" th:text="*{memno}"></span>
-                <!--              <input type="text"  readonly="readonly">-->
-              </div>
-              <div>
-                <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
-              </div>
-              <div><button>좋아요</button></div>
+                <div>
+                  <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
+                </div>
 
-              <div class="writeBtn_area ">
-                <button type="button" id="updateBtn" class="btn btn__search">수정</button>
-                <button type="button" id="deleteBtn" class="btn btn__search">삭제</button>
-                <button type="button" id="listBtn" class="btn btn__search">목록</button>
-              </div>
+                <div class="writeBtn_area">
 
+                  <!-- <th:block th:if="*{memno} eq ${s_memno}"> -->
+                  <button type="button" id="updateBtn" class="btn btn__search">수정</button>
+                  <button type="button" id="deleteBtn" class="btn btn__search">삭제 </button>
+                  <!-- </th:block> -->
+
+                  <button type="button" id="listBtn" class="btn btn__search">목록</button>
+                </div>
+              </div>
             </div>
           </div>
 
-
-        </div>
-
-        <!--      댓글-->
-        <div id="reply">
-          <div class="reply__hit">
-            <p>댓글</p><p class="reply__count">수</p>
-          </div>
-          <div class="reply__main">
-            <div class="reply__form">
+          <!--      댓글-->
+          <div id="reply">
+            <div class="reply__hit">
+              <p>댓글</p>
+              <p class="reply__count">수</p>
             </div>
-            <div class="reply__write">
-              <div class="reply__write content">
-                <textarea id="rpComment" th:field="*{rpComment}" class="reply__write toolbox" rows="10"></textarea>
-              </div>
-              <div class="reply__write btngrp">
-                <button type="button" id="saveBtn">등록</button>
-                <button type="button" id="notSaveBtn">취소</button>
+            <div class="reply__main">
+              <div class="reply__form"></div>
+              <div class="reply__write">
+                <div class="reply__write content">
+                  <textarea id="rpComment" th:field="*{rpComment}" class="reply__write toolbox" rows="10"></textarea>
+                </div>
+                <div class="reply__write btngrp">
+                  <button type="button" id="saveBtn" class="btn">등록</button>
+                  <button type="button" id="notSaveBtn" class="btn">
+                    취소
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </form>
-    </section>
-  </main>
+        </form>
+      </section>
+    </main>
 
-  <!-- footer -->
-  <footer id="footer">
-    <div class="inner">
-      <h2>Heal-lo</h2>
-      <ul>
-        <li>상호명: heal-lo</li>
-        <li>대표: 1팀</li>
-        <li>주소: 울산광역시 남구 신정동</li>
-        <li>이메일: ulsanheallo@naver.com</li><br>
-        <li>Copyright 2022 헬로. All Rights Reserved.</li>
-      </ul>
-    </div>
-  </footer>
-</div>
-<script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
-<script src="../../static/resource/js/board/reply.js" th:src="@{/resource/js/board/reply.js}"></script>
+    <!-- footer -->
+    <footer id="footer">
+      <div class="inner">
+        <h2>Heal-lo</h2>
+        <ul>
+          <li>상호명: heal-lo</li>
+          <li>대표: 1팀</li>
+          <li>주소: 울산광역시 남구 신정동</li>
+          <li>이메일: ulsanheallo@naver.com</li>
+          <br />
+          <li>Copyright 2022 헬로. All Rights Reserved.</li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+  <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
+  <script src="../../static/resource/js/editor/webpack.config.js"
+    th:src="@{/resource/js/editor/webpack.config.js}"></script>
+  <script src="../../static/resource/js/board/reply.js" th:src="@{/resource/js/board/reply.js}"></script>
 
-<script>
-
+  <script>
     //수정이동
     const $updateBtn = document.getElementById('updateBtn');
-    $updateBtn.addEventListener('click', evt=>{
-     if(confirm('수정하시겠습니까?')){
-      const bdno = document.getElementById('bdno').textContent;
-      const url = `/boards/${bdno}/edit`;
-      location.href = url;
-    }
+    $updateBtn.addEventListener('click', (evt) => {
+      if (confirm('수정하시겠습니까?')) {
+        const bdno = document.getElementById('bdno').textContent;
+        const url = `/boards/${bdno}/edit`;
+        location.href = url;
+      }
     });
 
     //삭제
     const $deleteBtn = document.getElementById('deleteBtn');
-    $deleteBtn.addEventListener('click', evt=>{
-      if(confirm('삭제하시겠습니까?')){
-              const bdno = document.getElementById('bdno').textContent;
+    $deleteBtn.addEventListener('click', (evt) => {
+      if (confirm('삭제하시겠습니까?')) {
+        const bdno = document.getElementById('bdno').textContent;
         const url = `/boards/${bdno}/del`;
         location.href = url;
       }
     });
 
     //목록
-     const $listBtn = document.getElementById('listBtn');
-     $listBtn.addEventListener('click', evt=>{
+    const $listBtn = document.getElementById('listBtn');
+    $listBtn.addEventListener('click', (evt) => {
       const url = `/boards/list?category=${container.dataset.code}`;
       location.href = url;
-     });
-
-
+    });
 
     // 에디터 툴
-    ClassicEditor
-      .create( document.querySelector( '#editor' ), {
-      plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
-         toolbar: {
-            items: [
-               'heading',
-               '|',
-               'underline',
-               'bold',
-               'italic',
-               'link',
-               'bulletedList',
-               'numberedList',
-               'todoList',
-               '|',
-               'outdent',
-               'indent',
-               '|',
-               'imageInsert',
-               'imageUpload',
-               'blockQuote',
-               'insertTable',
-               'mediaEmbed',
-               'markdown',
-               'undo',
-               'redo',
-               '|',
-               'highlight',
-               'fontFamily',
-               'fontColor',
-               'fontBackgroundColor',
-               'fontSize',
-               '|',
-               'htmlEmbed',
-               'specialCharacters'
-            ]
-         },
-         language: 'en',
-         image: {
-            toolbar: [
-               'imageTextAlternative',
-               'imageStyle:full',
-               'imageStyle:side'
-            ]
-         },
-         table: {
-            contentToolbar: [
-               'tableColumn',
-               'tableRow',
-               'mergeTableCells',
-               'tableCellProperties',
-               'tableProperties'
-            ]
-         },
+    ClassicEditor.create(document.querySelector('#editor'), {
+      toolbar: [],
+    })
+      .then((editor) => {
+        window.editor = editor;
+        editor.isReadOnly = true; //읽기모드적용
       })
-      .then( editor => {
-         window.editor = editor;
-         editor.isReadOnly = true;  //읽기모드적용
-      } )
-      .catch( error => {
-         console.error( error );
-      } );
-
-
+      .catch((error) => {
+        console.error(error);
+      });
   </script>
-
 </body>
+
 </html>

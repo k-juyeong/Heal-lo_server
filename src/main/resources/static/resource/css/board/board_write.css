@@ -18,9 +18,8 @@
 
 /* 사이드바 */
 #container .title {
-  width: 15%
+  width: 15%;
   flex-shrink: 0;
-  margin-right: 50px;
 }
 
 #container .title .title__list {
@@ -41,64 +40,90 @@
 }
 
 
-
 /* 작성공간 */
 #container .board_main {
   width: 85%;
-  display: flex;
-  flex-direction: column;
 }
-#container .board_main .board_write {
+
+#container .board_main .writeArea{
+  /* outline: 1px solid red; */
+  margin: 0px auto;
+  display:flex;
+  flex-direction: column;
+  align-items : center;
+  justify-content : center;
+  justify-self: center;
   width: 100%;
 }
 
-#container .board_write .board_title .title__main {
+#container .board_main .writeArea .board_write {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items : center;
+  justify-content : center;
+}
+
+#container .board_main .writeArea .board_write .board_title .title__main {
   text-align: center;
   font-size: 28px;
   padding: 30px 0;
 }
 
 /* 폼 */
-#container .board_write .board_content{
-  outline: 1px solid black;
+#container .board_main .writeArea .board_write .board_content{
+  /* outline: 1px solid black; */
 }
 
-#container .board_write .board_content .writeForm .line{
+#container .board_main .writeArea .board_write .board_content .writeForm .line{
   height: 45px;
   display: flex;
   align-items: center;
   font-size:large;
-
+  background-color:#d6d6d6b2
+  padding-left: 15px;
 }
 
-#container .board_write .board_content .writeForm .line label{
+#container .board_main .writeArea .board_write .board_content .writeForm .line label{
   display:inline-block;
   height: 45px;
   line-height: 45px;
-  width: 100px;
-  margin-left: 10px;
+  min-width: 50px;
+  margin-right: 10px;
+  color: #777;
+  font-size: 0.9em;
 }
+#container .board_main .writeArea .board_write .board_content .writeForm .line2 span{
+  margin-right: 20px;
+  font-size: 0.9em;
 
-#container .board_write .board_content .writeForm .line select{
+}
+#container .board_main .writeArea .board_write .board_content .writeForm .line select{
   height: 29px;
   width: 150px;
   font-size: medium;
 }
 
-#container .board_write .board_content .writeForm .line input{
+#container .board_main .writeArea .board_write .board_content .writeForm .line input{
   font-size: medium;
   padding: 2px;
   background-color: #ddd;
   border-radius: 3px;
   border: none;
   height: 25px;
-  width: 70%;
+  width: 65%;
+  color: inherit;
 }
-#container .board_write .board_content .writeForm .line input:focus{
+
+#container .board_main .writeArea .board_write .board_content .writeForm .line input:focus{
   outline: none;
+  color: inherit;
 }
 
-
+#container .board_main .writeArea .board_write .board_content .writeForm .fieldError {
+  color: red;
+  font-size: 0.8em;
+  }
 
 
 
@@ -113,7 +138,7 @@
   border: 1px solid #D6D6D6;
   border-radius: 4px;
   resize: none;
-  width: 90%;
+  /* width: 90%; */
 }
 #container .board_write .board_content .writeForm .textarea:focus{
   outline: none;
@@ -129,13 +154,34 @@
 }
 
 #container .board_write .board_content .writeForm .writeBtn_area .btn__search {
-  width: 70px;
+  width: 60px;
   margin-left: 2px;
   border-radius: 5px;
   border: none;
   margin-top: 5px;
+  height: 30px;
 }
 #container .board_write .board_content .writeForm .writeBtn_area .btn__search:hover {
   cursor: pointer;
   background-color: #777;
 }
+
+.ck .ck-editor{
+  padding: 50px;
+
+}
+
+.ck .ck-editor__editable{
+min-height:300px;
+min-width:800px;
+max-width: 900px;
+overflow: hidden;
+padding: 10px 20px 10px 20px;
+
+}
+
+
+.ck .ck-editor__editable_inline{
+padding: 50px;
+}
+

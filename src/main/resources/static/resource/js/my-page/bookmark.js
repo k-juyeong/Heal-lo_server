@@ -1,9 +1,17 @@
-const $bookmarkBtn = document.querySelectorAll('.bookmarkBtn');
+//const $bookmarkBtn = document.querySelectorAll('.bookmarkBtn');
+//
+//for(let i = 0; i < $bookmarkBtn.length; i++){
+//  $bookmarkBtn[i].addEventListener('click',e=>{
+//    $bookmarkBtn[i].classList.toggle('bookmark-btn-color');
+//  });
+//}
 
-for(let i = 0; i < $bookmarkBtn.length; i++){
-  $bookmarkBtn[i].addEventListener('click',e=>{
-    $bookmarkBtn[i].classList.toggle('bookmark-btn-color');
-  });
+function askDomClean(e){
+    if(confirm("즐겨찾기를 취소하시겠습니까?")){
+        domClean(e);
+    }else{
+        return;
+    }
 }
 
 function domClean(e) {
