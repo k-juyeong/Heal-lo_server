@@ -100,6 +100,12 @@
                     ></p>
                   </div>
 
+                  
+                  <div class="line">
+                    <label th:for="bdno">게시글번호</label>
+                    <span th:text="*{bdno}" th:field="*{bdno}"></span>
+                  </div>
+
                   <div class="line">
                     <label th:for="bdcg">카테고리</label>
                     <select name="" id="menu-list" th:field="*{bdcg}">
@@ -107,25 +113,18 @@
                       <option value="BD002">정보공유</option>
                       <option value="BD004">문의하기</option>
                     </select>
-                    <div class="fieldError" th:errors="*{bdcg}"></div>
-                  </div>
-
-                  <div class="line">
                     <label th:for="bdtitle">제목</label>
                     <input type="text" th:field="*{bdtitle}" />
                     <div class="fieldError" th:errors="*{bdtitle}"></div>
                   </div>
 
                   <div class="line">
-                    <label th:for="memno">작성자</label>
-                    <input type="text" th:field="*{memno}" readonly />
-                    <div class="fieldError" th:errors="*{memno}"></div>
+                    <label th:for="memnickname">작성자</label>
+                    <span th:text="*{memnickname}" th:field="*{memnickname}"></span>
+                    <input type="hidden" th:field="*{memno}" />
                   </div>
 
-                  <div class="line">
-                    <label th:for="bdno">게시글번호</label>
-                    <input type="text" th:field="*{bdno}" readonly />
-                  </div>
+                  
 
                   <div>
                     <textarea

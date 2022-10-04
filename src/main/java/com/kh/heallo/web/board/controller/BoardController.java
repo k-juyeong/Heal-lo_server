@@ -149,6 +149,8 @@ public class BoardController {
     model.addAttribute("form", detailForm);
     model.addAttribute("category", cate);
 
+    log.info("detail={}",detailForm);
+
     return "board/detailForm";
   }
 
@@ -172,11 +174,6 @@ public class BoardController {
     return "board/updateForm";
   }
 
-
-
-
-
-
   //수정
   @PostMapping("/{id}/edit")
   public String update(@PathVariable("id") Long boardId,
@@ -195,13 +192,13 @@ public class BoardController {
     if(editForm.getBdtitle().trim().length() == 0 || editForm.getBdtitle().trim().length() > 30){
       bindingResult.rejectValue("bdtitle","board.bdtitle","30자 이하의 제목을 입력하세요.");
       log.info("bindingResult={}", bindingResult);
-      return "board/saveForm";
+      return "board/updateForm";
     }
 
     if(editForm.getBdcontent().trim().length() == 0){
       bindingResult.rejectValue("bdcontent","board.bdcontent","내용을 입력해주세요.");
       log.info("bindingResult={}", bindingResult);
-      return "board/saveForm";
+      return "board/updateForm";
     }
 
 

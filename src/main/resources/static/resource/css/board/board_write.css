@@ -111,14 +111,19 @@
   border-radius: 3px;
   border: none;
   height: 25px;
-  width: 70%;
+  width: 65%;
+  color: inherit;
 }
 
-#container.board_main .writeArea .board_write .board_content .writeForm .line input:focus{
+#container .board_main .writeArea .board_write .board_content .writeForm .line input:focus{
   outline: none;
+  color: inherit;
 }
 
-
+#container .board_main .writeArea .board_write .board_content .writeForm .fieldError {
+  color: red;
+  font-size: 0.8em;
+  }
 
 
 
