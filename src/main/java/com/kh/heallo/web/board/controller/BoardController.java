@@ -107,29 +107,29 @@ public class BoardController {
 
     //필드검증
     //제목 30글자 이내.
-    if(saveForm.getBdtitle().length() > 100){
-      bindingResult.rejectValue("bdtitle","board.bdtitle",new Integer[]{30},"제목오류");
+    if(saveForm.getBdtitle().trim().length() == 0 || saveForm.getBdtitle().trim().length() > 30){
+      bindingResult.rejectValue("bdtitle","board.bdtitle","30자 이하의 제목을 입력하세요.");
       log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
 
-    if(saveForm.getBdcontent() == null){
-      bindingResult.rejectValue("bdcontent","board.bdcontent",new Integer[]{30},"내용오류");
+    if(saveForm.getBdcontent().trim().length() == 0){
+      bindingResult.rejectValue("bdcontent","board.bdcontent","내용을 입력해주세요.");
       log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
 
     Board board = new Board();
-    board.getMemno();
-
     BeanUtils.copyProperties(saveForm, board);
+    board.setMemno(memno);
+    board.getMemno();
     Long bdno = boardSVC.save(board);
 
     redirectAttributes.addAttribute("id", bdno);
     redirectAttributes.addAttribute("category",cate);
+    log.info("add={}",saveForm);
 
     return "redirect:/boards/list/{id}/detail?";
-
   }
 
 
@@ -189,18 +189,22 @@ public class BoardController {
       log.info("bindingResult={}", bindingResult);
       return "board/updateForm";
     }
+
     //필드검증
     //제목 30글자 이내.
-    if(editForm.getBdtitle().length() > 30){
-      bindingResult.rejectValue("bdtitle","board.bdtitle",new Integer[]{30},"제목 글자수 초과");
+    if(editForm.getBdtitle().trim().length() == 0 || editForm.getBdtitle().trim().length() > 30){
+      bindingResult.rejectValue("bdtitle","board.bdtitle","30자 이하의 제목을 입력하세요.");
       log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
-    if(editForm.getBdcontent() == null){
-      bindingResult.rejectValue("bdcontent","board.bdcontent",new Integer[]{30},"내용오류");
+
+    if(editForm.getBdcontent().trim().length() == 0){
+      bindingResult.rejectValue("bdcontent","board.bdcontent","내용을 입력해주세요.");
       log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
+
+
     String cate = getCategory(category);
 
     Board board = new Board();
@@ -210,7 +214,7 @@ public class BoardController {
     redirectAttributes.addAttribute("id", boardId);
     redirectAttributes.addAttribute("category", cate);
 
-    return "redirect:/boards/list/{id}/detail?"+cate;
+    return "redirect:/boards/list/{id}/detail?";
   }
 
 

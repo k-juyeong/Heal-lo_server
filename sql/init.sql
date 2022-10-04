@@ -30,7 +30,8 @@ insert into code values('RV000','리뷰','',null,'Y',systimestamp,systimestamp);
 insert into code values('BD000','게시판','',null,'Y',systimestamp,systimestamp);
 insert into code values('BD001','자유게시판','','BD000','Y',systimestamp,systimestamp);
 insert into code values('BD002','정보공유','','BD000','Y',systimestamp,systimestamp);
-insert into code values('BD003','문의하기','','BD000','Y',systimestamp,systimestamp);
+insert into code values('BD003','추천글','','BD000','Y',systimestamp,systimestamp);
+insert into code values('BD004','문의하기','','BD000','Y',systimestamp,systimestamp);
 insert into code values('CD000','캘린더','',null,'Y',systimestamp,systimestamp);
 
 

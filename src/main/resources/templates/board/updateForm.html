@@ -72,7 +72,7 @@
           <div class="title__list">
             <a th:href="@{/boards/list/?category=BD001}">자유게시판</a>
             <a th:href="@{/boards/list/?category=BD002}">정보공유</a>
-            <a th:href="@{/boards/list/?category=BD003}">문의하기</a>
+            <a th:href="@{/boards/list/?category=BD004}">문의하기</a>
           </div>
         </aside>
 
@@ -105,7 +105,7 @@
                     <select name="" id="menu-list" th:field="*{bdcg}">
                       <option value="BD001">자유게시판</option>
                       <option value="BD002">정보공유</option>
-                      <option value="BD003">문의하기</option>
+                      <option value="BD004">문의하기</option>
                     </select>
                     <div class="fieldError" th:errors="*{bdcg}"></div>
                   </div>

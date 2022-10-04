@@ -64,7 +64,7 @@
           <div class="title__list">
             <a th:href="@{/boards/list/?category=BD001}">자유게시판</a>
             <a th:href="@{/boards/list/?category=BD002}">정보공유</a>
-            <a th:href="@{/boards/list/?category=BD003}">문의하기</a>
+            <a th:href="@{/boards/list/?category=BD004}">문의하기</a>
           </div>
         </aside>
 
@@ -72,10 +72,6 @@
           <h2 class="board__title" th:text="${bdTitle['__${category}__']}?:_">
             게시판
           </h2>
-          <ul class="board__sort">
-            <li><a href="#">최신등록순</a></li>
-            <li><a href="#">추천순</a></li>
-          </ul>
           <div class="board__box">
             <table class="board__table">
               <thead>
