@@ -21,8 +21,14 @@
             if (data.header.code == '00') {
                 console.log(data);
                 document.getElementById('nname').style.border = '3px solid blue';
+                document.querySelector('.nnameCk').innerHTML = '사용가능한 닉네임입니다';
+                document.querySelector('.nnameCk').classList.remove('nnameCkRed');
+                document.querySelector('.nnameCk').classList.add('nnameCkBlue');
             } else if (data.header.code == '01') {
                 document.getElementById('nname').style.border = '3px solid red';
+                document.querySelector('.nnameCk').innerHTML = '동일한 닉네임이 존재합니다';
+                document.querySelector('.nnameCk').classList.remove('nnameCkBlue');
+                document.querySelector('.nnameCk').classList.add('nnameCkRed');
             } else {
                 throw new Error(data.data);
             }
