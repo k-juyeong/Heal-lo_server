@@ -44,7 +44,7 @@
     <main id="container">
 
 
-      <form class="container" action="" th:method="post" th:object="${form}">
+      <form class="container" id="form" action="" th:method="post" th:object="${form}">
         <div class="join">
 
           <div class="join__name">회원가입</div>
@@ -88,14 +88,14 @@
               <label for="email_address">*이메일 </label>
               <input type="text" id="email_address" name="mememail" placeholder="이메일을 입력해 주세요." th:field="*{mememail}"
                      th:class="${#fields.hasErrors('mememail')} ? fieldError">
-<!--              <input type="button" value="인증번호 전송" class="btn">-->
+              <input type="button" id="confirmMail" value="인증번호 전송" class="btn">
             </div>
             <span id="mememailErr" th:if="${#fields.hasErrors('mememail')}" th:errors="*{mememail}"></span>
-<!--            <div class="join__info">-->
-<!--              <label for="email_check">*인증번호 </label>-->
-<!--              <input type="email" id="email_check">-->
-<!--              <input type="button" value="인증번호 확인" class="btn">-->
-<!--            </div>-->
+            <div class="join__info">
+              <label for="email_check">*인증번호 </label>
+              <input type="email" id="email_check">
+              <input id="codeCkBtn" type="button" value="인증번호 확인" class="btn">
+            </div>
 
             <div class="join__info">
               <label for="mename">*닉네임 </label>
@@ -109,7 +109,7 @@
           
           
           <div class="join__info" id="sign">
-            <input type="submit" class="join__btn" value="가입하기>>">
+            <input id="submitBtn" type="submit" class="join__btn" value="가입하기>>">
           </div>
         </div>
       </form>
