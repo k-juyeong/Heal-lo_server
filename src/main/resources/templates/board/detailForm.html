@@ -82,8 +82,7 @@
           <div class="title__list">
             <a th:href="@{/boards/list/?category=BD001}">자유게시판</a>
             <a th:href="@{/boards/list/?category=BD002}">정보공유</a>
-            <a th:href="@{/boards/list/?category=BD003}">추천글</a>
-            <a th:href="@{/boards/list/?category=BD004}">문의하기</a>
+            <a th:href="@{/boards/list/?category=BD003}">문의하기</a>
           </div>
         </aside>
 
@@ -109,29 +108,16 @@
 
               <div class="board_content">
                 <div class="writeForm">
+
                   <div class="line">
-                    <label th:for="bdno">게시글번호</label>
-                    <span id="bdno" th:text="*{bdno}" th:field="*{bdno}"></span>
-                  </div>
-                  <div class="line">
-                    <label th:for="bdcg">카테고리</label>
-                    <span th:text="${bdTitle['__${category}__']}?:_"></span>
-                  </div>
-                  <div class="line">
-                    <label th:for="bdtitle">제목</label>
-                    <span th:text="*{bdtitle}"></span>
+                    <label th:for="bdno">No.<span id="bdno" th:text="*{bdno}" th:field="*{bdno}"></span></label>
                   </div>
 
                   <div class="line">
-                    <label>조회수</label>
-                    <span th:text="*{bdview}"></span>
-                  </div>
-
-                  <div class="line">
-                    <label th:for="bdcdate">작성일</label>
-                    <span
-                      th:text="*{#temporals.format(bdcdate,'yy/MM/dd HH:mm')}"
-                    ></span>
+                    <label for="" th:text= "${bdTitle['__${category}__']}?:_">
+                      <!-- <p th:text= "${bdTitle['__${category}__']}?:_"></p> -->
+                    </label>
+                      <span th:text="*{bdtitle}"></span>
                   </div>
 
                   <div class="line">
@@ -139,6 +125,21 @@
                     <span th:text="*{memnickname}"></span>
                     <!--                <span type="hidden" th:text="*{memno}"></span>-->
                   </div>
+
+                  <div class="line">
+                    <label th:for="bdcdate">작성일</label>
+                    <span
+                      th:text="*{#temporals.format(bdcdate,'yy/MM/dd HH:mm')}"></span>
+                  </div>
+
+                  <div class="line">
+                    <label>조회수</label>
+                    <span th:text="*{bdview}"></span>
+                  </div>
+
+                  
+
+                 
                   <div>
                     <textarea
                       class="textarea"
@@ -192,12 +193,13 @@
                     ></textarea>
                   </div>
                   <div class="reply__write btngrp">
-                    <button type="button" id="saveBtn">등록</button>
-                    <button type="button" id="notSaveBtn">취소</button>
+                    <button type="button" id="saveBtn" class="btn">등록</button>
+                    <button type="button" id="notSaveBtn" class="btn">취소</button>
                   </div>
                 </div>
               </div>
             </div>
+
           </form>
         </section>
       </main>
