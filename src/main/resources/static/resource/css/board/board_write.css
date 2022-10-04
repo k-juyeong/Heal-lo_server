@@ -139,3 +139,10 @@
   cursor: pointer;
   background-color: #777;
 }
+
+.ck .ck-editor{
+max-width : 400px;
+}
+.ck .ck-editor__editable{
+min-height:300px;
+}
