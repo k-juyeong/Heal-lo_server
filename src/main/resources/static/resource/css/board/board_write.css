@@ -45,7 +45,7 @@
   width: 85%;
 }
 
-#container .board_main #detailForm{
+#container .board_main .writeArea{
   /* outline: 1px solid red; */
   margin: 0px auto;
   display:flex;
@@ -55,6 +55,7 @@
   justify-self: center;
   width: 100%;
 }
+
 #container .board_main .board_write {
   width: 100%;
   display: flex;
@@ -156,4 +157,5 @@ max-width : 500px;
 }
 .ck .ck-editor__editable{
 min-height:300px;
+min-width:800px;
 }
