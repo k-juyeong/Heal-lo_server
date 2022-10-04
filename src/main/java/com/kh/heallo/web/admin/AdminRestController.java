@@ -54,7 +54,6 @@ public class AdminRestController {
             .createHeader(StatusCode.SUCCESS)
             .setData("memberList", memberList);
     return new ResponseEntity<>(responseMsg, HttpStatus.OK);
-
   }
 
   // 회원 계정 삭제
@@ -104,6 +103,7 @@ public class AdminRestController {
             .setData("boardList", boardList);
     return new ResponseEntity<>(responseMsg, HttpStatus.OK);
   }
+
   // 게시물 - 게시글 삭제
   @DeleteMapping("board/{bdno}")
   public ResponseEntity<ResponseMsg> boardDel(@PathVariable Long bdno) {
@@ -222,9 +222,41 @@ public class AdminRestController {
   }
 
   // 게시물 - 문의글 목록
+  @GetMapping("/noticeAll")
+  public ResponseEntity<ResponseMsg> noticeAll() {
+    List<Board> noticeAll = adminSVC.noticeList();
+
+    // Create ResponseEntity
+    ResponseMsg responseMsg = new ResponseMsg()
+        .createHeader(StatusCode.SUCCESS)
+        .setData("noticeAll", noticeAll);
+    return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+  }
+
   // 게시물 - 문의글 제목 검색
+  @GetMapping("/notice/list/{title}")
+  public ResponseEntity<ResponseMsg> noticeByTitle(@PathVariable String title) {
+    List<Board> noticeList = adminSVC.noticeListByTitle(title);
+
+    // Create ResponseEntity
+    ResponseMsg responseMsg = new ResponseMsg()
+        .createHeader(StatusCode.SUCCESS)
+        .setData("noticeList", noticeList);
+    return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+  }
+
   // 게시물 - 문의글 작성자 검색
-  // 게시물 - 문의글 삭제
+  @GetMapping("/notice/{memInfo}")
+  public ResponseEntity<ResponseMsg> noticeByMemInfo(@PathVariable String memInfo) {
+    List<Board> noticeList = adminSVC.noticeListByIdOrNickname(memInfo);
+
+    // Create ResponseEntity
+    ResponseMsg responseMsg = new ResponseMsg()
+        .createHeader(StatusCode.SUCCESS)
+        .setData("noticeList", noticeList);
+    return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+  }
+
 
   // 운동시설 정보 수정
 }

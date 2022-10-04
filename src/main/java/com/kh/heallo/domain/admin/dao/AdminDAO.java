@@ -94,11 +94,25 @@ public interface AdminDAO {
   List<Review> reviewListByIdOrNickname(String memInfo);
 
 
-  // 게시물 - 문의글 목록
+  /**
+   * 문의글 목록
+   * @return
+   */
+  List<Board> noticeList();
 
-  // 게시물 - 문의글 내용 검색
-  // 게시물 - 문의글 작성자(닉네임) 검색
-  // 게시물 - 문의글 작성자(아이디) 검색
+  /**
+   * 게시물 - 문의글 제목 검색
+   * @param title 제목
+   * @return
+   */
+  List<Board> noticeListByTitle(String title);
+
+  /**
+   * 게시물 - 문의글 작성자(닉네임, 아이디) 검색
+   * @param memInfo 닉네임, 아이디
+   * @return
+   */
+  List<Board> noticeListByIdOrNickname(String memInfo);
 
   /**
    * 운동시설 정보 수정

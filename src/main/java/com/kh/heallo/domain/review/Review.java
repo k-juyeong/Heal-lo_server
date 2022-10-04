@@ -1,5 +1,6 @@
 package com.kh.heallo.domain.review;
 
+import com.kh.heallo.domain.facility.Facility;
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.uploadfile.FileData;
 import lombok.AllArgsConstructor;
@@ -24,4 +25,5 @@ public class Review {
     private Long memno;                   //회원번호
     private List<FileData> imageFiles;   //등록이미지들
     private Member member;
+    private Facility facility;
 }

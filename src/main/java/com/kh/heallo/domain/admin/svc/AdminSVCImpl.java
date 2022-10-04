@@ -147,6 +147,38 @@ public class AdminSVCImpl implements AdminSVC {
   }
 
   /**
+   * 문의글 목록
+   *
+   * @return
+   */
+  @Override
+  public List<Board> noticeList() {
+    return adminDAO.noticeList();
+  }
+
+  /**
+   * 게시물 - 문의글 제목 검색
+   *
+   * @param title 제목
+   * @return
+   */
+  @Override
+  public List<Board> noticeListByTitle(String title) {
+    return adminDAO.noticeListByTitle(title);
+  }
+
+  /**
+   * 게시물 - 문의글 작성자(닉네임, 아이디) 검색
+   *
+   * @param memInfo 닉네임, 아이디
+   * @return
+   */
+  @Override
+  public List<Board> noticeListByIdOrNickname(String memInfo) {
+    return adminDAO.noticeListByIdOrNickname(memInfo);
+  }
+
+  /**
    * 운동시설 정보 수정
    *
    * @param facility 운동시설 정보
