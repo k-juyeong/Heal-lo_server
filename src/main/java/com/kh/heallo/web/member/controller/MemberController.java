@@ -217,17 +217,21 @@ public class MemberController {
       memno = loginMember.getMemno();
     }
 
-    //회원이메일 중복체크
-    Boolean isExistEmail = memberSVC.dupChkOfMememail(editForm.getMememail());
-    if(isExistEmail){
-      bindingResult.rejectValue("mememail","dup.mememail", "동일한 이메일이 존재합니다");
-    }
-
-    //회원전화번호 중복체크
-    Boolean isExistTel = memberSVC.dupChkOfMemtel(editForm.getMemtel());
-    if(isExistTel){
-      bindingResult.rejectValue("memtel","dup.memtel", "동일한 전화번호가 존재합니다");
-    }
+//    //회원이메일 중복체크
+//    Boolean isExistEmail = memberSVC.dupChkOfMememail(editForm.getMememail());
+//    if(editForm.getMememail().equals(member.getMememail())){
+//      log.info("이메일 중복 비교={}",editForm.getMememail().equals(member.getMememail()));
+//    }else if(isExistEmail){
+//      bindingResult.rejectValue("mememail","dup.mememail", "동일한 이메일이 존재합니다");
+//    }
+//
+//    //회원전화번호 중복체크
+//    Boolean isExistTel = memberSVC.dupChkOfMemtel(editForm.getMemtel());
+//    if(editForm.getMemtel().equals(member.getMemtel())){
+//      log.info("전화번호 중복 비교={}",editForm.getMemtel().equals(member.getMemtel()));
+//    }else if(isExistTel){
+//      bindingResult.rejectValue("memtel","dup.memtel", "동일한 전화번호가 존재합니다");
+//    }
 
     //회원비밀번호 길이체크
     if(editForm.getMempw().toLowerCase().trim().length() < 8 ||
@@ -247,6 +251,7 @@ public class MemberController {
     member.setMempw(editForm.getMempw());
     member.setMemtel(editForm.getMemtel());
     member.setMemudate(editForm.getMemudate());
+
 
     memberSVC.update(memno,member);
 
