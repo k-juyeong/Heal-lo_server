@@ -76,7 +76,7 @@
             <p class="substance-star" th:text="${rec.rvscore}">3.5</p>
             <div class="button-box" th:id="${rec.rvno}">
               <button id="editBtn"><a id="toEditRv" href="" th:href="@{/reviews/{rvno}/edit(rvno=${rec.rvno})}">수정</a></button>
-              <button id="delBtn" th:onclick="mpDeleteReview(event)">삭제</button>
+              <button id="delBtn" th:onclick="askMpDeleteReview(event)">삭제</button>
             </div>
           </div>
         </div>
