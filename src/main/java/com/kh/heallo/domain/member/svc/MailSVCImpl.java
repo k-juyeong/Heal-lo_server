@@ -23,7 +23,7 @@ public class MailSVCImpl implements MailSVC{
   @Override
   public boolean checkEPw(String pw) {
 
-    return pw == ePw;
+    return pw.equals(ePw);
   }
 
   /**
@@ -57,7 +57,7 @@ public class MailSVCImpl implements MailSVC{
     msgg += "</div>";
     message.setText(msgg, "utf-8","html");  //내용,charset 타입, subtype
     //보내는 사람의 이메일 주소,보내는 사람 이름
-    message.setFrom(new InternetAddress("heallo01@naver.com","헬로"));
+    message.setFrom(new InternetAddress("heallo02@naver.com","헬로"));
 
     return message;
   }

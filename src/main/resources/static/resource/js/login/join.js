@@ -22,7 +22,7 @@
       });
 
       $codeCkBtn.addEventListener('click',e=>{
-        const data = {email : $confirmCode.value}
+        const data = {code : $confirmCode.value}
          fetch(`/email/mailConfirm`, {
                 method: 'POST',        //http method
                 headers: {             //http header
@@ -36,6 +36,7 @@
                     if (jsonData.header.code == '00') {
                         emailCk = true;
                         $confirmCode.style.border = '3px solid blue';
+                        $confirmCode.style.disabled = true;
                     } else if(jsonData.header.code == '01'){
                         emailCk = false;
                         $confirmCode.style.border = '3px solid red';
@@ -49,7 +50,7 @@
       const $submitBtn = document.getElementById('submitBtn');
       $submitBtn.addEventListener('click',e=>{
             e.preventDefault();
-            if(emailCk.check == false){
+            if(emailCk == false){
                 alert("이메일 인증번호를 확인해주세요");
                 return;
             }else{

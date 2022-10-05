@@ -34,6 +34,9 @@ public class MailRestController {
   @PostMapping("/mailConfirm")
   ResponseEntity<ResponseMsg> mailConfirm(@RequestBody Email email) throws Exception{
 
+    log.info("Email {}" , email);
+    log.info("is {}" , mailSVC.checkEPw(email.code));
+
     if (!mailSVC.checkEPw(email.code)) {
       ResponseMsg responseMsg = new ResponseMsg()
               .createHeader(StatusCode.VALIDATION_ERROR);
