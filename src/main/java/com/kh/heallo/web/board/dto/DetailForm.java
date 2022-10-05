@@ -25,5 +25,8 @@ public class DetailForm {
   private String memnickname; //닉네임
 
   private String rpComment; // 댓글
+  private Long rpGroup;            // RPGROUP	NUMBER(8,0)
+  private Long rpDepth;            // RPDEPTH	NUMBER(10,0)
+  private Long rpStep;             // RPSTEP	NUMBER(10,0)
 
 }
