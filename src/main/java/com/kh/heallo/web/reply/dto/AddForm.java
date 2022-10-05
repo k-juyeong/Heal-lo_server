@@ -11,4 +11,8 @@ public class AddForm {
 //  private Long rpGroup;       // RPGROUP	NUMBER(10,0)
 //  private Long rpDepth;       // RPDEPTH	NUMBER(10,0)
   private String rpComment;   // RPCOMMENT	CLOB
+  private Long rpGroup;            // RPGROUP	NUMBER(8,0)
+  private Long rpDepth;            // RPDEPTH	NUMBER(10,0)
+  private Long rpStep;             // RPSTEP	NUMBER(10,0)
+
 }

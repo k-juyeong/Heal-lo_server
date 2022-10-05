@@ -8,6 +8,7 @@
 #container .text-box .my-page p {font-size: 2rem; font-weight: bold; margin-top: 40px; margin-left: 30px; }
 #container .text-box .information p {font-size: 1.3rem; font-weight: 550; margin-top: 40px; margin-left: 30px;}
 #container .text-box .activity p {font-size: 1.3rem; font-weight: 550; margin-top: 40px; margin-left: 30px;}
+#container .text-box .admin p {font-size: 1.3rem; font-weight: 550; margin-top: 40px; margin-left: 30px;}
 
 #container .myInformation {display: flex; flex-direction: column; flex: 1;}
 .myInformation label.name {font-weight: 500; margin-top: 70px; margin-bottom: 15px;}

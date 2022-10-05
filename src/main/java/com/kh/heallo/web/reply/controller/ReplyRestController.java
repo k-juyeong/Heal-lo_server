@@ -3,7 +3,6 @@ package com.kh.heallo.web.reply.controller;
 import com.kh.heallo.domain.reply.Reply;
 import com.kh.heallo.domain.reply.svc.ReplySVC;
 import com.kh.heallo.web.board.dto.DetailForm;
-import com.kh.heallo.web.reply.dto.AddForm;
 import com.kh.heallo.web.reply.dto.ReplyDto;
 import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
@@ -103,10 +102,12 @@ public class ReplyRestController {
   }
 
   // 대댓글 등록
-  @PostMapping("/plus/{bdno}")
+  @PostMapping("plus/{bdno}")
   public ResponseEntity<ResponseMsg> savePlus(
       @PathVariable Long bdno,
-      AddForm addForm,
+//      @PathVariable Long rpGroup,
+//      @PathVariable Long rpDepth,
+      @RequestBody DetailForm detailForm,
       HttpServletRequest request
       ) {
 
@@ -119,7 +120,9 @@ public class ReplyRestController {
     }
 
     Reply reply = new Reply();
-    reply.setRpComment(addForm.getRpComment());
+    reply.setRpComment(detailForm.getRpComment());
+    reply.setRpGroup(detailForm.getRpGroup());
+    reply.setRpDepth(detailForm.getRpDepth());
     replySVC.savePlusReply(bdno, memno, reply);
 
     ResponseMsg responseMsg = new ResponseMsg()
@@ -129,7 +132,6 @@ public class ReplyRestController {
   }
 
   // 댓글 수정
-  // 본인 댓글이면 수정 삭제 버튼 노출
   @PatchMapping("/{rpno}")
   public ResponseEntity<ResponseMsg> update(
       @PathVariable Long rpno, @RequestBody DetailForm detailForm

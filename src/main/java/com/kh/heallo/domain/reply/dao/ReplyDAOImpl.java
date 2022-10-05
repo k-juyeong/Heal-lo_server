@@ -63,8 +63,8 @@ public class ReplyDAOImpl implements ReplyDAO {
   @Override
   public Long save(Long bdno, Long memno, Reply reply) {
     StringBuffer sql = new StringBuffer();
-    sql.append("INSERT INTO REPLY ");
-    sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, ?, ?, ?) ");
+    sql.append("INSERT INTO REPLY (rpno, bdno, rpgroup, rpdepth, rpstep, rpstatus, memno, rpcomment ) ");
+    sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, ?, REPLY_RPNO_SEQ.currval, 0, 0, 'POST', ?, ? ) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -73,6 +73,9 @@ public class ReplyDAOImpl implements ReplyDAO {
       public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
         PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"rpno"});
         pstmt.setLong(1, bdno);
+//        pstmt.setLong(2, reply.getRpGroup());
+//        pstmt.setLong(3, reply.getRpDepth());
+//        pstmt.setLong(4, reply.getRpStep());
         pstmt.setLong(2, memno);
         pstmt.setString(3, reply.getRpComment());
         return pstmt;
@@ -90,13 +93,32 @@ public class ReplyDAOImpl implements ReplyDAO {
   // 부모댓글, 들여쓰기 번호 받기
   @Override
   public Long savePlusReply(Long bdno, Long memno, Reply reply) {
+//    StringBuffer sql = new StringBuffer();
+//    sql.append("INSERT INTO REPLY ");
+//    sql.append("     VALUES (REPLY_RPNO_SEQ.NEXTVAL, ? ,1(부모댓글),1(들여쓰기), ?, '대댓글', SYSDATE, SYSDATE) ");
+
     StringBuffer sql = new StringBuffer();
-    sql.append("INSERT INTO REPLY ");
-    sql.append("     VALUES (REPLY_RPNO_SEQ.NEXTVAL, ? ,1(부모댓글),1(들여쓰기), ?, '대댓글', SYSDATE, SYSDATE) ");
+    sql.append("INSERT INTO REPLY (rpno, bdno, rpgroup, rpdepth, rpstep, rpstatus, memno, rpcomment ) ");
+    sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, ?, ?, ?, 0, 'POST', ?, ? ) ");
 
+    KeyHolder keyHolder = new GeneratedKeyHolder();
 
+    jdbcTemplate.update(new PreparedStatementCreator() {
+      @Override
+      public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+        PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"rpno"});
+        pstmt.setLong(1, bdno);
+        pstmt.setLong(2, reply.getRpGroup());
+        pstmt.setLong(3, reply.getRpDepth());
+//        pstmt.setLong(4, reply.getRpStep());
+        pstmt.setLong(4, memno);
+        pstmt.setString(5, reply.getRpComment());
+        return pstmt;
+      }
+    }, keyHolder);
 
-    return null;
+    return Long.valueOf(keyHolder.getKeys().get("rpno").toString());
+
   }
 
   /**

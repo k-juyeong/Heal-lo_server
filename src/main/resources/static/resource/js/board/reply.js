@@ -61,17 +61,25 @@ function all(bdno){
           let result = '';
           const rpno = reply.rpno;
           // 본인 댓글이면 수정, 삭제버튼 노출
+          // 댓글인지 대댓글인지 확인
           if (reply.login == true){
             result =
                    `<div class="reply__list all">
                      <div class="reply__list_form">
-                        <div class="reply__list nickname">${reply.memnickname}</div>
-                        <div class="reply__list content">${reply.rpComment}</div>
-                        <div class="reply__list date">${date}</div>
-                        <div class="reply__list btngrp">
-                          <button type="button" id="editIcon" onclick="editEditor(event, ${rpno})"><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button type="button" id="delIcon" onclick="del(${rpno})"><i class="fa-solid fa-x"></i></button>
+                      <div class="reply__list">
+                        <div class="writer">
+                          <div class="reply__list nickname">${reply.memnickname}</div>
+                          <div class="reply__list btngrp">
+                            <button type="button" id="editIcon" onclick="editEditor(event, ${rpno})"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button type="button" id="delIcon" onclick="del(${rpno})"><i class="fa-solid fa-x"></i></button>
+                          </div>
                         </div>
+                        <div class="reply__list content">${reply.rpComment}</div>
+                      </div>
+                      <div class="reply__reReply">
+                        <div class="date">${date}</div>
+                        <div class="reReply depth1" onclick="reReplyEditor(${rpno})">답글쓰기</div>
+                      </div>
                      </div>
                    </div>`;
 
@@ -79,9 +87,16 @@ function all(bdno){
             result =
                    `<div class="reply__list all">
                       <div class="reply__list_form">
-                        <div class="reply__list nickname">${reply.memnickname}</div>
-                        <div class="reply__list content">${reply.rpComment}</div>
-                        <div class="reply__list date">${date}</div>
+                        <div class="reply__list">
+                          <div class="writer">
+                            <div class="reply__list nickname">${reply.memnickname}</div>
+                          </div>
+                          <div class="reply__list content">${reply.rpComment}</div>
+                        </div>
+                        <div class="reply__reReply">
+                          <div class="date">${date}</div>
+                          <div class="reReply depth1" onclick="reReplyEditor(${rpno})">답글쓰기</div>
+                        </div>
                       </div>
                    </div>`;
           }
@@ -198,6 +213,77 @@ function del(rpno) {
       all(bdno);
       count(bdno);
     }).catch(err=>console.log(err));
+}
+
+// ** 대댓글 **
+// 답글쓰기 클릭 시 답글 창 출력
+function reReplyEditor(rpno) {
+  const parentEle = event.target.closest('.reply__list_form');
+  if(parentEle.childElementCount >= 3) {
+    const ele = parentEle.lastElementChild;
+    ele.remove();
+  } else {
+    const editor = document.createElement("div");
+    editor.classList.add('reply__reReply_form');
+    editor.innerHTML =
+       `<textarea class="reply__reReply toolbox" rows="10"></textarea>
+         <div class="reply__reReply btngrp">
+           <button type="button" id="saveReBtn" onclick="toSaveReReply(event, ${rpno})">등록</button>
+           <button type="button" id="cancelReBtn" onclick="cancelReReply(event)">취소</button>
+         </div>`;
+    parentEle.append(editor);
+  }
+}
+// 대댓글 등록 클릭 시
+function toSaveReReply(event, rpno) {
+  // 부모댓글 번호 받아오기
+  const rpGroup = rpno;
+
+  // 내용 받아오기
+  const tar = event.target.parentElement;
+
+  // 들여쓰기 수준 받아오기
+  const form = event.target.closest('.reply__reReply_form');
+  const siblingEle = form.previousElementSibling;
+  const ele = siblingEle.lastElementChild;
+  const rpDepth = ele.classList[1].substr(5,1);
+  console.log(rpDepth);
+
+  function getReReply() {
+      const rpComment = tar.previousElementSibling.value;
+
+      return {rpComment, rpGroup, rpDepth};
+  }
+  const reReply = getReReply();
+  console.log(reReply);
+
+  saveReReply(reReply, bdno);
+}
+
+// 대댓글 취소
+function cancelReReply(event) {
+  const btn = event.target.parentElement;
+  const reReply = btn.parentElement;
+//  console.log(replyEdit);
+  reReply.remove();
+}
+
+// 대댓글 등록
+function saveReReply(reReply, bdno) {
+    const url = `http://localhost:9080/reply/plus/${bdno}`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(reReply)
+    }).then(res=>res.json())
+      .then(data=>{
+        console.log(data)
+        all(bdno);
+        count(bdno);
+      }).catch(err=>console.log(err));
 }
 
 // textarea 비우기
