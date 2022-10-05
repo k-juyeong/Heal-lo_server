@@ -37,4 +37,4 @@ alter table member add constraint memstatus_ck check(memstatus in ('join','withd
 create sequence member_memno_seq;
 
 insert into member values (member_memno_seq.nextval ,'naim1' ,'heallo1234' ,'010-1234-5678' ,'닉네임'
-                            ,'heallo123@naver.com' ,'테스트' ,'normal','join' ,sysdate ,sysdate );
+                            ,'heallo123@naver.com' ,'테스트' ,'NORMAL','JOIN' ,sysdate ,sysdate );

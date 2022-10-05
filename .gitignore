@@ -34,5 +34,4 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
-.vscode/
-src/main/java/com/kh/heallo/web/MailConfig.java
+.vscode/MailConfig.java
