@@ -200,9 +200,9 @@ public class MemberController {
 
     log.info("memno={}",memno);
     log.info("editForm={}",editForm);
-
+    log.info("findedMember.getMemcode={}",findedMember.getMemcode());
     model.addAttribute("form",editForm);
-
+    model.addAttribute("status",findedMember.getMemcode());
     return "member/my_page";
   }
 

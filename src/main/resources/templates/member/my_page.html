@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>마이 페이지</title>
   <link rel="stylesheet" href="../../static/resource/css/my_page.css" th:href="@{/resource/css/my-page/my_page.css}">
 </head>
 <body>
@@ -44,7 +44,7 @@
       <main id="container">
         <form id="form" action="" th:method="post" th:object="${form}">
           <div class="content">
-            <div class="text-box">
+            <div class="text-box" th:replace="~{/layout/my-page :: ${status} == NORMAL ? normalMenu : adminMenu}">
                 <div class="my-page">
                     <p>마이 페이지</p>
                 </div>
@@ -53,6 +53,9 @@
                 </div>
                 <div class="activity">
                     <p><a href="" th:href="@{/members/{id}/board(id=${form.memno})}">> 나의 활동</a></p>
+                </div>
+                <div class="admin">
+                    <p><a href="" th:href="@{/admin}">> 회원관리</a></p>
                 </div>
             </div>
             <div class="myInformation">

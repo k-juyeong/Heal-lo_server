@@ -36,7 +36,7 @@
                     if (jsonData.header.code == '00') {
                         emailCk = true;
                         $confirmCode.style.border = '3px solid blue';
-                        $confirmCode.style.disabled = true;
+                        $confirmCode.disabled = true;
                     } else if(jsonData.header.code == '01'){
                         emailCk = false;
                         $confirmCode.style.border = '3px solid red';

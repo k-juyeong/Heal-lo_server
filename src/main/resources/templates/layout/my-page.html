@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Title</title>
+</head>
+<body>
+<!--일반 회원-->
+      <div class="text-box" th:fragment="normalMenu">
+        <div class="my-page">
+          <p>마이 페이지</p>
+        </div>
+        <div class="information">
+          <p><a href="" th:href="@{/members/{id}/edit(id=${form.memno})}">> 나의 정보수정</a></p>
+        </div>
+        <div class="activity">
+          <p><a href="" th:href="@{/members/{id}/board(id=${form.memno})}">> 나의 활동</a></p>
+        </div>
+      </div>
+
+<!--관리자-->
+      <div class="text-box" th:fragment="adminMenu">
+        <div class="my-page">
+          <p>마이 페이지</p>
+        </div>
+        <div class="information">
+          <p><a href="" th:href="@{/members/{id}/edit(id=${form.memno})}">> 나의 정보수정</a></p>
+        </div>
+        <div class="activity">
+          <p><a href="" th:href="@{/members/{id}/board(id=${form.memno})}">> 나의 활동</a></p>
+        </div>
+        <div class="admin">
+          <p><a href="" th:href="@{/admin}">> 회원관리</a></p>
+        </div>
+      </div>
+</body>
+</html>

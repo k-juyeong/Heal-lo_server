@@ -24,7 +24,7 @@ a:hover {color: inherit;}
 .category-title {display: inline-block; text-align: center; align-self: start;width: 120px;margin: 0 auto;padding: 4px 0;}
 .category-title p {padding: 8px;}
 .category-title .label-sub {font-size: 10px;color: red;}
-.btn-search {position: absolute;top: 0;right: 50%; left: 50%;padding: 6px; width: 150px; font-size: 18px;border: 1px solid black; transform: translate(-50%, 0);z-index: 1}
+.btn-search {position: absolute;top: 0;right: 50%; left: 50%;padding: 6px; width: 150px; font-size: 18px; background-color: var(--color-main-header); color: black; border: 1px solid black; transform: translate(-50%, 0);z-index: 1}
 
 /* 검색 결과 목록 */
 
