@@ -33,7 +33,7 @@ public class MemberDAOImplTest {
     member.setMemcode("normal");
 
     Long joinedMember = memberDAO.join(member);
-    Member findedMember = memberDAO.findById(joinedMember);
+    Member findedMember = memberDAO.findBymemno(joinedMember);
 //    log.info("findedMember={}",findedMember);
   }
 
@@ -42,7 +42,7 @@ public class MemberDAOImplTest {
   @Order(2)
   void findById(){
     Long memno = 41L;
-    Member findedMember = memberDAO.findById(memno);
+    Member findedMember = memberDAO.findBymemno(memno);
 
     Assertions.assertThat(findedMember.getMemno()).isEqualTo(41);
     Assertions.assertThat(findedMember.getMemid()).isEqualTo("naim");
@@ -70,7 +70,7 @@ public class MemberDAOImplTest {
     memberDAO.update(Long.valueOf(memid), member);
     Long memno = 2L;
     memberDAO.update(memno, member);
-    Member findedMember = memberDAO.findById(memno);
+    Member findedMember = memberDAO.findBymemno(memno);
     Assertions.assertThat(findedMember.getMemname()).isEqualTo("테스트1");
     Assertions.assertThat(findedMember.getMemnickname()).isEqualTo("테슷트1");
     Assertions.assertThat(findedMember.getMememail()).isEqualTo("test1@test.com");
@@ -86,7 +86,7 @@ public class MemberDAOImplTest {
 
     memberDAO.del(memId);
     Long memno = 24L;
-    Member findedMember = memberDAO.findById(memno);
+    Member findedMember = memberDAO.findBymemno(memno);
     Assertions.assertThat(findedMember).isNull();
   }
 

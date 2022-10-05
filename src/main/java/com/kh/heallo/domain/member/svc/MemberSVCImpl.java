@@ -37,8 +37,19 @@ public class MemberSVCImpl implements MemberSVC{
    * @return 회원정보
    */
   @Override
-  public Member findById(Long memno) {
-    return memberDAO.findById(memno);
+  public Member findBymemno(Long memno) {
+    return memberDAO.findBymemno(memno);
+  }
+
+  /**
+   * 조회 BY 회원번호
+   *
+   * @param id 회원아이디
+   * @return 회원정보
+   */
+  @Override
+  public Member findById(String id) {
+    return memberDAO.findById(id);
   }
 
   /**

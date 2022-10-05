@@ -23,7 +23,14 @@ public interface MemberSVC {
    * @param memno 회원번호
    * @return  회원정보
    */
-  Member findById(Long memno);
+  Member findBymemno(Long memno);
+
+  /**
+   * 조회 BY 회원번호
+   * @param id 회원아이디
+   * @return  회원정보
+   */
+  Member findById(String id);
 
   /**
    * 수정
