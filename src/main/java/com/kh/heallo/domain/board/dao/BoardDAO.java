@@ -36,6 +36,8 @@ public interface BoardDAO {
 
 //조회수 증가
   int increaseViewCount(Long boardId);
-int increaseHitCount(Long boardId);
+
+  //좋아요 수
+//int increaseHitCount(Long boardId);
 
 }

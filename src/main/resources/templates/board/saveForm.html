@@ -106,7 +106,7 @@
 
                   <div class="line">
                     <label th:for="bdcg">카테고리</label>
-                    <select name="" id="menu-list" th:field="*{bdcg}">
+                    <select name="" id="menu-list" th:field="*{bdcg}" th:value="${category}">
 <!--                                      <th:block th:each="code : ${classifier}">-->
 <!--                                        <option value="" th:value="${code.code}" th:text="${code.decode}">게시판1</option>-->
 <!--                                      </th:block>-->

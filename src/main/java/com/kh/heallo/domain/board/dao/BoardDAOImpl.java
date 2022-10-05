@@ -121,11 +121,11 @@ public class BoardDAOImpl implements BoardDAO{
     sql.append("            FROM (SELECT t1.*, t2.memnickname ");
     sql.append("                    FROM board t1, member t2  ");
     sql.append("                   where t1.memno = t2.memno ");
-    sql.append("                ORDER BY t1.bdno desc) A) B  ");
+    sql.append("                     and t1.bdcg = ? ");
+    sql.append("                ORDER BY t1.bdno desc) A ) ");
     sql.append("  WHERE no between ? and ? ");
-    sql.append("  and B.bdcg = ? ");
 
-    List<Board> boards = jt.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class), startRec, endRec, bdcg);
+    List<Board> boards = jt.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class), bdcg, startRec, endRec );
     return boards;
   }
 
@@ -139,9 +139,7 @@ public class BoardDAOImpl implements BoardDAO{
     sql.append("            FROM (SELECT t1.*, t2.memnickname ");
     sql.append("                    FROM board t1, member t2  ");
     sql.append("                   where t1.memno = t2.memno ");
-    sql.append("                ORDER BY t1.bdno desc) A) B  ");
-    sql.append("  WHERE no between ? and ? ");
-    sql.append("  and B.bdcg = ? ");
+    sql.append("                     and t1.bdcg = ? ");
 
     if(!StringUtils.isEmpty(filterCondition.getCategory()) ||
         !StringUtils.isEmpty(filterCondition.getSearchType()) ||
@@ -150,27 +148,28 @@ public class BoardDAOImpl implements BoardDAO{
     }
     switch (filterCondition.getSearchType()){
       case "A": //전체
-        sql.append("   (B.bdtitle like '%"+filterCondition.getKeyword()+ "%' or ");
-        sql.append("    B.bdcontent like '%"+filterCondition.getKeyword() + "%' or ");
-        sql.append("    B.memnickname like '%"+filterCondition.getKeyword()+ "%' ) ");
+        sql.append("   (t1.bdtitle like '%"+filterCondition.getKeyword()+ "%' or ");
+        sql.append("    t1.bdcontent like '%"+filterCondition.getKeyword() + "%' or ");
+        sql.append("    t2.memnickname like '%"+filterCondition.getKeyword()+ "%' ) ");
         break;
       case "N": //닉네임
-        sql.append("    B.memnickname like '%"+filterCondition.getKeyword() +"%'  ");
+        sql.append("    t2.memnickname like '%"+filterCondition.getKeyword() +"%'  ");
         break;
       case "TC": //제목, 내용
-        sql.append("   (B.bdtitle like '%"+filterCondition.getKeyword() +"%' or ");
-        sql.append("    B.bdcontent like '%"+ filterCondition.getKeyword() + "%' ) ");
+        sql.append("   (t1.bdtitle like '%"+filterCondition.getKeyword() +"%' or ");
+        sql.append("    t1.bdcontent like '%"+ filterCondition.getKeyword() + "%' ) ");
         break;
       default:
     }
 
-    sql.append(" order by no asc ");
+    sql.append(" ORDER BY t1.bdno desc ) A ) ");
+    sql.append(" WHERE no between ? and ? ");
 
     List<Board> boards = jt.query(sql.toString(),
         new BeanPropertyRowMapper<>(Board.class),
+        filterCondition.getCategory(),
         filterCondition.getStartRec(),
-        filterCondition.getEndRec(),
-        filterCondition.getCategory());
+        filterCondition.getEndRec());
 
     return boards;
   }
@@ -245,14 +244,12 @@ public class BoardDAOImpl implements BoardDAO{
   @Override
   public int totalCount(BbsFilterCondition filterCondition) {
     StringBuffer sql = new StringBuffer();
-    sql.append("  select count(no) ");
-    sql.append(" from ( ");
-    sql.append("     select rownum no, t1.bdno, t1.bdcg, t1.bdtitle, t1.memno, t1.bdcontent, t1.bdcdate, t1.bdview, t2.memnickname ");
-    sql.append("       from board t1, member t2 ");
-    sql.append("      where t1.memno=t2.memno ");
-    sql.append("      order by t1.bdno desc)t3 ");
-    sql.append(" where no between ? and ? ");
-    sql.append("      and t3.bdcg = ? ");
+    sql.append(" SELECT count(*) ");
+    sql.append("   FROM (SELECT  ROWNUM AS no, A.* ");
+    sql.append("            FROM (SELECT t1.*, t2.memnickname ");
+    sql.append("                    FROM board t1, member t2  ");
+    sql.append("                   where t1.memno = t2.memno ");
+    sql.append("                     and t1.bdcg = ? ");
 
     if(!StringUtils.isEmpty(filterCondition.getCategory()) ||
         !StringUtils.isEmpty(filterCondition.getSearchType()) ||
@@ -262,24 +259,26 @@ public class BoardDAOImpl implements BoardDAO{
 
     switch (filterCondition.getSearchType()){
       case "A": //전체
-        sql.append("   (t3.bdtitle like '%"+filterCondition.getKeyword()+ "%' or ");
-        sql.append("    t3.bdcontent like '%"+filterCondition.getKeyword() + "%' or ");
-        sql.append("    t3.memnickname like '%"+filterCondition.getKeyword()+ "%' ) ");
+        sql.append("   (t1.bdtitle like '%"+filterCondition.getKeyword()+ "%' or ");
+        sql.append("    t1.bdcontent like '%"+filterCondition.getKeyword() + "%' or ");
+        sql.append("    t2.memnickname like '%"+filterCondition.getKeyword()+ "%' ) ");
         break;
       case "N": //닉네임
-        sql.append("    t3.memnickname like '%"+filterCondition.getKeyword() +"%'  ");
+        sql.append("    t2.memnickname like '%"+filterCondition.getKeyword() +"%'  ");
         break;
       case "TC": //제목, 내용
-        sql.append("   (t3.bdtitle like '%"+filterCondition.getKeyword() +"%' or ");
-        sql.append("    t3.bdcontent like '%"+ filterCondition.getKeyword() + "%' ) ");
+        sql.append("   (t1.bdtitle like '%"+filterCondition.getKeyword() +"%' or ");
+        sql.append("    t1.bdcontent like '%"+ filterCondition.getKeyword() + "%' ) ");
         break;
       default:
     }
+    sql.append(" ORDER BY t1.bdno desc ) A ) ");
+    sql.append(" WHERE no between ? and ? ");
 
     int affectedRow = jt.queryForObject(sql.toString(),Integer.class,
+        filterCondition.getCategory(),
         filterCondition.getStartRec(),
-        filterCondition.getEndRec(),
-        filterCondition.getCategory());
+        filterCondition.getEndRec());
 
     return affectedRow;
   }
@@ -298,14 +297,14 @@ public class BoardDAOImpl implements BoardDAO{
   }
 
   //좋아요
-  @Override
-  public int increaseHitCount(Long boardId) {
-    StringBuffer sql = new StringBuffer();
-    sql.append("update board  ");
-    sql.append("set bdhit = bdhit + 1 ");
-    sql.append("where bdno = ? ");
-
-    int affectedRows = jt.update(sql.toString(), boardId);
-    return affectedRows;
-  }
+//  @Override
+//  public int increaseHitCount(Long boardId) {
+//    StringBuffer sql = new StringBuffer();
+//    sql.append("update board  ");
+//    sql.append("set bdhit = bdhit + 1 ");
+//    sql.append("where bdno = ? ");
+//
+//    int affectedRows = jt.update(sql.toString(), boardId);
+//    return affectedRows;
+//  }
 }
