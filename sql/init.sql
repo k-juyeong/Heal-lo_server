@@ -204,11 +204,13 @@ alter table uploadfile add constraint uploadfile_ufsname_uk unique (ufsname);
 -- 댓글테이블
 CREATE TABLE REPLY (
                        RPNO        NUMBER(8),
-                       BDNO 		    NUMBER(8),
+                       BDNO 		   NUMBER(8),
                        RPGROUP     NUMBER(10),
                        RPDEPTH     NUMBER(10),
+                       RPSTEP      NUMBER(10),
+                       RPSTATUS    VARCHAR2(15),
                        MEMNO       NUMBER(8),
-                       RPCOMMENT 	CLOB,
+                       RPCOMMENT 	 CLOB,
                        RPCDATE     timestamp default systimestamp,
                        RPUDATE     timestamp default systimestamp
 );
@@ -228,3 +230,4 @@ ALTER TABLE REPLY MODIFY MEMNO CONSTRAINT REPLY_MEMNO_NN NOT NULL;
 ALTER TABLE REPLY MODIFY RPCOMMENT CONSTRAINT REPLY_RPCOMMENT_NN NOT NULL;
 ALTER TABLE REPLY MODIFY RPCDATE CONSTRAINT BOARD_RPCDATE_NN NOT NULL;
 ALTER TABLE REPLY MODIFY RPUDATE CONSTRAINT BOARD_RPUDATE_NN NOT NULL;
+ALTER TABLE REPLY ADD CONSTRAINT RPSTATUS_CK CHECK(RPSTATUS IN ('POST', 'DELETED'));

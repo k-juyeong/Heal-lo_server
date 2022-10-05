@@ -44,7 +44,7 @@ public class ReplyDAOImpl implements ReplyDAO {
   public List<Reply> all(Long bdno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("SELECT t1.rpcomment, t1.rpudate, t1.rpno, t2.memnickname, t2.memno ");
+    sql.append("SELECT t1.rpcomment, t1.rpudate, t1.rpno, t2.memnickname, t2.memno, t1.rpgroup, t1.rpdepth, t1.rpstep, t1.rpstatus ");
     sql.append("  FROM reply t1, member t2 ");
     sql.append("WHERE t1.memno = t2.memno ");
     sql.append("  AND t1.bdno = ? ");
@@ -63,7 +63,7 @@ public class ReplyDAOImpl implements ReplyDAO {
   @Override
   public Long save(Long bdno, Long memno, Reply reply) {
     StringBuffer sql = new StringBuffer();
-    sql.append("INSERT INTO REPLY(RPNO, BDNO,MEMNO,RPCOMMENT) ");
+    sql.append("INSERT INTO REPLY ");
     sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, ?, ?, ?) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();

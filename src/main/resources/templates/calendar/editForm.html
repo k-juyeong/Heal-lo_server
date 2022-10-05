@@ -40,18 +40,20 @@
   </header>
   <!--메인 컨텐츠-->
   <main id="container">
-    <form id="editForm" method="post" th:object="${form}">
-      <div class="selected__date">
-        <div class="rdate" th:text="${rdate}"></div>
-      </div>
+    <div class="editForm_main">
+      <form id="editForm" method="post" th:object="${form}">
+        <div class="selected__date">
+          <div class="rdate" th:text="${rdate}"></div>
+        </div>
 
-      <div class="content">
-        <textarea rows="30" id="editor" name="cdContent" th:text="*{cdContent}"></textarea>
+        <div class="content">
+          <textarea rows="30" id="editor" name="cdContent" th:text="*{cdContent}"></textarea>
+        </div>
+      </form>
+      <div class="btngrp">
+        <button type="button" id="editBtn">수정</button>
+        <button type="button" id="cancelBtn">취소</button>
       </div>
-    </form>
-    <div class="btngrp">
-      <button type="button" id="editBtn">수정</button>
-      <button type="button" id="cancelBtn">취소</button>
     </div>
   </main>
   <!-- footer -->

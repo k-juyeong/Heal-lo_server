@@ -40,26 +40,28 @@
   </header>
   <!--메인 컨텐츠-->
   <main id="container">
-    <form id="dayForm" th:object="${form}">
-      <div class="top">
-        <div class="selected__date" th:text="*{{cdRDate}}"></div>
-        <div><button type="button" id="calBtn">캘린더</button></div>
-      </div>
-      <div class="dates">
-        <div class="written">
-          <div>작성일</div><div class="written__date" th:text="*{{cdCDate}}"></div>
+    <div class="dayForm_main">
+      <form id="dayForm" th:object="${form}">
+        <div class="top">
+          <div class="selected__date" th:text="*{{cdRDate}}"></div>
+          <div><button type="button" id="calBtn">캘린더</button></div>
         </div>
-        <div class="update">
-          <div>수정일</div><div class="update__date" th:text="*{{cdCDate}}"></div>
+        <div class="dates">
+          <div class="written">
+            <div>작성일</div><div class="written__date" th:text="*{{cdCDate}}"></div>
+          </div>
+          <div class="update">
+            <div>수정일</div><div class="update__date" th:text="*{{cdCDate}}"></div>
+          </div>
         </div>
+        <textarea id="editor" class="content" th:field="*{cdContent}" readonly>
+          운동기록 내용
+        </textarea>
+      </form>
+      <div class="btngrp">
+        <button type="button" id="editBtn">수정</button>
+        <button type="button" id="delBtn">삭제</button>
       </div>
-      <textarea id="editor" class="content" th:field="*{cdContent}" readonly>
-        운동기록 내용
-      </textarea>
-    </form>
-    <div class="btngrp">
-      <button type="button" id="editBtn">수정</button>
-      <button type="button" id="delBtn">삭제</button>
     </div>
   </main>
   <!-- footer -->
@@ -96,69 +98,19 @@
       const url = `/calendar/${rdate}/del`;
       location.href = url;
     });
+
     // 에디터 툴
     ClassicEditor
 		.create( document.querySelector( '#editor' ), {
-		 plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
-			toolbar: {
-				items: [
-					'heading',
-					'|',
-					'underline',
-					'bold',
-					'italic',
-					'link',
-					'bulletedList',
-					'numberedList',
-					'todoList',
-					'|',
-					'outdent',
-					'indent',
-					'|',
-					'imageInsert',
-					'imageUpload',
-					'blockQuote',
-					'insertTable',
-					'mediaEmbed',
-					'markdown',
-					'undo',
-					'redo',
-					'|',
-					'highlight',
-					'fontFamily',
-					'fontColor',
-					'fontBackgroundColor',
-					'fontSize',
-					'|',
-					'htmlEmbed',
-					'specialCharacters'
-				]
-			},
-			language: 'en',
-			image: {
-				toolbar: [
-					'imageTextAlternative',
-					'imageStyle:full',
-					'imageStyle:side'
-				]
-			},
-			table: {
-				contentToolbar: [
-					'tableColumn',
-					'tableRow',
-					'mergeTableCells',
-					'tableCellProperties',
-					'tableProperties'
-				]
-			},
+			toolbar: [],
 		})
-		.then( editor => {
+		.then( (editor) => {
 			window.editor = editor;
 			editor.isReadOnly = true;  //읽기모드적용
-		} )
-		.catch( error => {
+		})
+		.catch( (error) => {
 			console.error( error );
-		} );
+		});
 
 </script>
 </body>
