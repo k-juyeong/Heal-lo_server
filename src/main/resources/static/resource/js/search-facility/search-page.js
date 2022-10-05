@@ -189,7 +189,15 @@ function initDefaultCategory() {
 //지도 생성
 function createMap() {
   const mapOptions = {
-    zoom: 8,
+    zoom: 13,
+    minZoom: 7,
+    zoomControl: true, //줌 컨트롤의 표시 여부
+    zoomControlOptions: { //줌 컨트롤의 옵션
+      position: naver.maps.Position.TOP_RIGHT
+    },
+    mapTypeControl: true,
+    logoControl: false,
+    disableKineticPan: false
   };
   const map = new naver.maps.Map('map', mapOptions);
   return new MapUtile(map);
