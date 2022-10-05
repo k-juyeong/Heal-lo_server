@@ -19,15 +19,30 @@ public class MailRestController {
   private final MailSVC mailSVC;
 
   //이메일 인증
-  @PostMapping("/mailConfirm")
-  ResponseEntity<ResponseMsg> mailConfirm(@RequestBody Email email) throws Exception{
+  @PostMapping("/send")
+  ResponseEntity<ResponseMsg> send(@RequestBody Email email) throws Exception{
 
     String code = mailSVC.sendSimpleMessage(email.getEmail());
     log.info("인증코드 : " + code);
 
     ResponseMsg responseMsg = new ResponseMsg()
-            .createHeader(StatusCode.SUCCESS)
-            .setData("code", code);
+            .createHeader(StatusCode.SUCCESS);
+
+    return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+  }
+
+  @PostMapping("/mailConfirm")
+  ResponseEntity<ResponseMsg> mailConfirm(@RequestBody Email email) throws Exception{
+
+    if (!mailSVC.checkEPw(email.code)) {
+      ResponseMsg responseMsg = new ResponseMsg()
+              .createHeader(StatusCode.VALIDATION_ERROR);
+
+      return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+    }
+
+    ResponseMsg responseMsg = new ResponseMsg()
+            .createHeader(StatusCode.SUCCESS);
 
     return new ResponseEntity<>(responseMsg, HttpStatus.OK);
   }
@@ -35,6 +50,7 @@ public class MailRestController {
   @Data
   static class Email {
     private String email;
+    private String code;
   }
 
 }

@@ -20,6 +20,12 @@ public class MailSVCImpl implements MailSVC{
 
   private String ePw; //인증번호
 
+  @Override
+  public boolean checkEPw(String pw) {
+
+    return pw == ePw;
+  }
+
   /**
    * 메일 내용 작성
    *
