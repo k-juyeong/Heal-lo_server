@@ -1,20 +1,26 @@
 @charset "utf-8";
 
+
 /* * {
     outline: 1px solid red;
-} */
+}*/
 #container {
     width: 80%;
-    height: 1000px;
+    height: auto;
     margin: 6% auto;
 }
-#container #addForm {
+#container .addForm_main {
     width: 90%;
-    height: 650px;
     margin: 10px auto;
     display: flex;
     flex-direction: column;
 }
+/* #container #addForm {
+    width: 90%;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+} */
 #container #addForm .selected__date {
     margin-top: 15px;
     margin-bottom: 20px;
@@ -37,14 +43,14 @@
 }
 
 #container #addForm textarea {
-    width: 100%;
+    width: 90%;
     height: 550px;
     outline: none;
     resize: none;
     scroll-behavior: auto;
 }
 #container .btngrp {
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: end;
@@ -52,3 +58,29 @@
 #container .btngrp button {
     margin-left: 8px;
 }
+
+/* 에디터 */
+.ck .ck-editor{
+  padding: 50px;
+  min-height:300px;
+  min-width:800px;
+  max-width: 900px;
+  overflow: hidden;
+  padding: 10px 20px 10px 20px;
+}
+
+.ck .ck-editor__editable{
+  min-height: 300px;
+  max-height: 1000px;
+      scroll-behavior: auto;
+  /* min-width:800px;
+  max-width: 900px; */
+  overflow: hidden;
+  padding: 10px 20px 10px 20px;
+}
+
+
+.ck .ck-editor__editable_inline{
+  padding: 50px;
+}
+

@@ -45,16 +45,18 @@
 
   <!--메인 컨텐츠-->
   <main id="container">
-    <form id="addForm" method="post" th:object="${form}" enctype="multipart/form-data">
-      <div class="selected__date">
-        <input type="date" th:value="${cdRDate}" name="cdRDate">
-      </div>
+    <div class="addForm_main">
+      <form id="addForm" method="post" th:object="${form}" enctype="multipart/form-data">
+        <div class="selected__date">
+          <input type="date" th:value="${cdRDate}" name="cdRDate">
+        </div>
 
-      <textarea rows="30" id="editor" th:field="*{cdContent}"></textarea>
-    </form>
-    <div class="btngrp">
-      <button type="button" id="addBtn">저장</button>
-      <button type="button" id="cancelBtn">취소</button>
+        <textarea rows="30" id="editor" th:field="*{cdContent}"></textarea>
+      </form>
+      <div class="btngrp">
+        <button type="button" id="addBtn">저장</button>
+        <button type="button" id="cancelBtn">취소</button>
+      </div>
     </div>
   </main>
   <!-- footer -->

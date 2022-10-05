@@ -5,37 +5,37 @@
 } */
 #container {
     width: 80%;
-    height: 1000px;
+    height: auto;
     margin: 6% auto;
 }
-#container #addForm {
+#container .editForm_main {
     width: 90%;
-    height: 650px;
     margin: 10px auto;
     display: flex;
     flex-direction: column;
 }
-#container #addForm .selected__date {
-    margin-bottom: 5px;
+#container #editForm .selected__date {
+    margin-top: 15px;
+    margin-bottom: 20px;
 }
-#container #addForm .editor {
+#container #editForm .editor {
     display: flex;
     height: 40px;
 }
-#container #addForm .editor .font__size {
+#container #editForm .editor .font__size {
     flex: 1;
 }
-#container #addForm .editor .font__family {
+#container #editForm .editor .font__family {
     flex: 1;
 }
-#container #addForm .editor .font__weight {
+#container #editForm .editor .font__weight {
     flex: 1;
 }
-#container #addForm .editor .add__img {
+#container #editForm .editor .add__img {
     flex: 1;
 }
 
-#container #addForm textarea {
+#container #editForm textarea {
     width: 100%;
     height: 550px;
     outline: none;
@@ -50,4 +50,29 @@
 }
 #container .btngrp button {
     margin-left: 8px;
+}
+
+/* 에디터 */
+.ck .ck-editor{
+  padding: 50px;
+  min-height:300px;
+  min-width:800px;
+  max-width: 900px;
+  overflow: hidden;
+  padding: 10px 20px 10px 20px;
+}
+
+.ck .ck-editor__editable{
+  min-height: 300px;
+  max-height: 1000px;
+  scroll-behavior: auto;
+  /* min-width:800px;
+  max-width: 900px; */
+  overflow: hidden;
+  padding: 10px 20px 10px 20px;
+}
+
+
+.ck .ck-editor__editable_inline{
+  padding: 50px;
 }

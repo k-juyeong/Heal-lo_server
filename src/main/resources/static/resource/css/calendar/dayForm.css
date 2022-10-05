@@ -5,12 +5,11 @@
 } */
 #container {
     width: 80%;
-    height: 800px;
+    height: auto;
     margin: 6% auto;
 }
-#container #dayForm {
+#container .dayForm_main {
     width: 90%;
-    height: 700px;
     margin: 10px auto;
     display: flex;
     flex-direction: column;

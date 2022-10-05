@@ -622,7 +622,7 @@ function delReview(rvno){
 // ** 게시물 - 문의글 관리 **
 
 // 게시물 - 문의글
-function manageBoard(){
+function manageNotice(){
   document.querySelector('.th__2').textContent = "제목";
   document.querySelector('.th__3').textContent = "작성자";
   document.querySelector('.th__4').textContent = "작성날짜";
