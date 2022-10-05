@@ -20,6 +20,12 @@ public class MailSVCImpl implements MailSVC{
 
   private String ePw; //인증번호
 
+  @Override
+  public boolean checkEPw(String pw) {
+
+    return pw.equals(ePw);
+  }
+
   /**
    * 메일 내용 작성
    *
@@ -51,7 +57,7 @@ public class MailSVCImpl implements MailSVC{
     msgg += "</div>";
     message.setText(msgg, "utf-8","html");  //내용,charset 타입, subtype
     //보내는 사람의 이메일 주소,보내는 사람 이름
-    message.setFrom(new InternetAddress("heallo01@naver.com","헬로"));
+    message.setFrom(new InternetAddress("heallo02@naver.com","헬로"));
 
     return message;
   }

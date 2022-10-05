@@ -5,6 +5,9 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 
 public interface MailSVC {
+
+  boolean checkEPw(String pw);
+
   /**
    * 메일 내용 작성
    * @param to

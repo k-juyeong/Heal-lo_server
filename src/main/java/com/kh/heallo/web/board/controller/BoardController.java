@@ -104,6 +104,7 @@ public class BoardController {
     }
 
     String cate = getCategory(category);
+    log.info("카테고리는={}",cate);
 
     //필드검증
     //제목 30글자 이내.
@@ -181,12 +182,10 @@ public class BoardController {
                        @RequestParam(required = false) Optional<String> category,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes){
-
     if (bindingResult.hasErrors()) {
       log.info("bindingResult={}", bindingResult);
       return "board/updateForm";
     }
-
     //필드검증
     //제목 30글자 이내.
     if(editForm.getBdtitle().trim().length() == 0 || editForm.getBdtitle().trim().length() > 30){
@@ -194,13 +193,12 @@ public class BoardController {
       log.info("bindingResult={}", bindingResult);
       return "board/updateForm";
     }
-
+    //내용 빈칸 오류
     if(editForm.getBdcontent().trim().length() == 0){
       bindingResult.rejectValue("bdcontent","board.bdcontent","내용을 입력해주세요.");
       log.info("bindingResult={}", bindingResult);
       return "board/updateForm";
     }
-
 
     String cate = getCategory(category);
 
@@ -296,8 +294,6 @@ public class BoardController {
       }
     }
 
-
-
     List<Board> list2 = new ArrayList<>();
     list.stream().forEach(board->{
       log.info("red={}",board);
@@ -312,8 +308,6 @@ public class BoardController {
 
     return "board/all";
   }
-
-
 
   //쿼리스트링 카테고리 읽기, 없으면 ""반환
   private String getCategory(Optional<String> category) {
