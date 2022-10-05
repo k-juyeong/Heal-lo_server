@@ -59,7 +59,6 @@ public class ReplyDAOImpl implements ReplyDAO {
    * @param reply 등록할 댓글
    * @return 댓글 번호
    */
-  // 게시글 번호 받기
   @Override
   public Long save(Long bdno, Long memno, Reply reply) {
     StringBuffer sql = new StringBuffer();
@@ -90,13 +89,8 @@ public class ReplyDAOImpl implements ReplyDAO {
    * @param reply 등록할 대댓글
    * @return 댓글 번호
    */
-  // 부모댓글, 들여쓰기 번호 받기
   @Override
   public Long savePlusReply(Long bdno, Long memno, Reply reply) {
-//    StringBuffer sql = new StringBuffer();
-//    sql.append("INSERT INTO REPLY ");
-//    sql.append("     VALUES (REPLY_RPNO_SEQ.NEXTVAL, ? ,1(부모댓글),1(들여쓰기), ?, '대댓글', SYSDATE, SYSDATE) ");
-
     StringBuffer sql = new StringBuffer();
     sql.append("INSERT INTO REPLY (rpno, bdno, rpgroup, rpdepth, rpstep, rpstatus, memno, rpcomment ) ");
     sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, ?, ?, ?, 0, 'POST', ?, ? ) ");
@@ -145,9 +139,15 @@ public class ReplyDAOImpl implements ReplyDAO {
    */
   @Override
   public void delete(Long rpno) {
-    String sql = "DELETE FROM REPLY WHERE RPNO = ? ";
+//    String sql = "DELETE FROM REPLY WHERE RPNO = ? ";
+    // 답글 있는 댓글 삭제
+    StringBuffer sql = new StringBuffer();
 
-    jdbcTemplate.update(sql, rpno);
+    sql.append("UPDATE REPLY ");
+    sql.append("   SET RPSTATUS = 'DELETED' ");
+    sql.append(" WHERE RPNO = ? ");
+
+    jdbcTemplate.update(sql.toString(), rpno);
   }
 
   @Override
@@ -156,4 +156,37 @@ public class ReplyDAOImpl implements ReplyDAO {
     jdbcTemplate.update(sql, bdno);
   }
 
+  /**
+   * 대댓글의 경우 step을 한단계 더함
+   * @param rpno 해당 대댓글 번호
+   */
+  @Override
+  public void reReplyStep(Long rpno) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append("UPDATE REPLY ");
+    sql.append("SET RPSTEP = (RPSTEP) + 1 ");
+    sql.append("WHERE RPNO = ? ");
+
+    jdbcTemplate.update(sql.toString(), rpno);
+  }
+
+  /**
+   * 대댓글의 대댓글 경우 그 이후 rpStep 번호 수정 (+1)
+   * @param rpGroup 부모댓글
+   * @param rpDepth 들여쓰기 정도
+   * @param rpno 대댓글 번호 (rpDepth 사용)
+   */
+  @Override
+  public void updatedStep(Long rpGroup,Long rpDepth, Long rpno) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append("UPDATE REPLY ");
+    sql.append("   SET RPSTEP = RPSTEP + 1 ");
+    sql.append(" WHERE RPGROUP = ? ");
+    sql.append("   AND RPDEPTH BETWEEN 1 AND ? ");
+    sql.append("   AND RPNO >= ? ");
+
+    jdbcTemplate.update(sql.toString(), rpDepth, rpDepth, rpno);
+  }
 }

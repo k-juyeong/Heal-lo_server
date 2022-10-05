@@ -60,46 +60,48 @@ function all(bdno){
           const date = (reply.rpUDate).substr(0,10);
           let result = '';
           const rpno = reply.rpno;
-          // 본인 댓글이면 수정, 삭제버튼 노출
+          // 삭제된 댓글 제외하고 노출
+          if (reply.rpStatus === 'POST') {
           // 댓글인지 대댓글인지 확인
-          if (reply.login == true){
-            result =
-                   `<div class="reply__list all">
-                     <div class="reply__list_form">
-                      <div class="reply__list">
-                        <div class="writer">
-                          <div class="reply__list nickname">${reply.memnickname}</div>
-                          <div class="reply__list btngrp">
-                            <button type="button" id="editIcon" onclick="editEditor(event, ${rpno})"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" id="delIcon" onclick="del(${rpno})"><i class="fa-solid fa-x"></i></button>
+          // 본인 댓글이면 수정, 삭제버튼 노출
+              if (reply.login === true){
+                result =
+                       `<div class="reply__list all">
+                         <div class="reply__list_form">
+                          <div class="reply__list">
+                            <div class="writer">
+                              <div class="reply__list nickname">${reply.memnickname}</div>
+                              <div class="reply__list btngrp">
+                                <button type="button" id="editIcon" onclick="editEditor(event, ${rpno})"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button type="button" id="delIcon" onclick="del(${rpno})"><i class="fa-solid fa-x"></i></button>
+                              </div>
+                            </div>
+                            <div class="reply__list content">${reply.rpComment}</div>
                           </div>
-                        </div>
-                        <div class="reply__list content">${reply.rpComment}</div>
-                      </div>
-                      <div class="reply__reReply">
-                        <div class="date">${date}</div>
-                        <div class="reReply depth1" onclick="reReplyEditor(${rpno})">답글쓰기</div>
-                      </div>
-                     </div>
-                   </div>`;
+                          <div class="reply__reReply">
+                            <div class="date">${date}</div>
+                            <div class="reReply depth1" onclick="reReplyEditor(${rpno})">답글쓰기</div>
+                          </div>
+                         </div>
+                       </div>`;
 
-          } else{
-            result =
-                   `<div class="reply__list all">
-                      <div class="reply__list_form">
-                        <div class="reply__list">
-                          <div class="writer">
-                            <div class="reply__list nickname">${reply.memnickname}</div>
+              } else{
+                result =
+                       `<div class="reply__list all">
+                          <div class="reply__list_form">
+                            <div class="reply__list">
+                              <div class="writer">
+                                <div class="reply__list nickname">${reply.memnickname}</div>
+                              </div>
+                              <div class="reply__list content">${reply.rpComment}</div>
+                            </div>
+                            <div class="reply__reReply">
+                              <div class="date">${date}</div>
+                              <div class="reReply depth1" onclick="reReplyEditor(${rpno})">답글쓰기</div>
+                            </div>
                           </div>
-                          <div class="reply__list content">${reply.rpComment}</div>
-                        </div>
-                        <div class="reply__reReply">
-                          <div class="date">${date}</div>
-                          <div class="reReply depth1" onclick="reReplyEditor(${rpno})">답글쓰기</div>
-                        </div>
-                      </div>
-                   </div>`;
-          }
+                       </div>`;
+          }}
           return result;
       }).join('')
     }).catch(err=>console.log(err));
