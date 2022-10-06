@@ -63,7 +63,7 @@ alter table member modify memudate constraint member_memudate_nn NOT NULL;
 alter table member add constraint memid_uk unique (memid);
 alter table member add constraint memnickname_uk unique (memnickname);
 alter table member add constraint mememail_uk unique (mememail);
-alter table member add constraint memcode_ck check(memcode in ('NORMAL','ADMIN', 'SNS');
+alter table member add constraint memcode_ck check(memcode in ('NORMAL','ADMIN', 'SNS'));
 alter table member add constraint memstatus_ck check(memstatus in ('JOIN','WITHDRAW'));
 
 -- 회원 시퀀스

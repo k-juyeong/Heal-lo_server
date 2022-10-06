@@ -263,7 +263,12 @@ public class MemberController {
   //삭제(탈퇴)
   @GetMapping("/{id}/del")
   public String delete(@PathVariable("id") String memid) {
+    Member member = memberSVC.findById(memid);
     memberSVC.del(memid);
+    if (member.getMemcode().equals(Member.MEMCODE_SNS)) {
+
+      return "redirect:https://nid.naver.com/internalToken/view/tokenList/pc/ko";
+    }
 
     log.info("memid={}",memid);
     return "redirect:/members/logout";

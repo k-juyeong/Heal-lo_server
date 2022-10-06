@@ -36,5 +36,89 @@
           <p><a href="" th:href="@{/admin}">> 회원관리</a></p>
         </div>
       </div>
+
+      <!--sns On-->
+      <div class="myInformation" th:fragment="snsOn">
+        <label class="name" for="name">이름</label>
+        <input id="name" type="text" name="memname" th:field="${form.memname}">
+
+        <label class="nname" for="nname">닉네임</label>
+        <input id="nname" type="text" name="memnickname" th:field="${form.memnickname}">
+        <span class="nnameCk"></span>
+
+        <label class="id" for="id" style="display:none">아이디</label>
+        <input id="id" type="text" name="memid" th:field="${form.memid}" readonly style="display:none">
+
+        <label class="email" for="email">이메일</label>
+        <input id="email" type="text" name="mememail" th:field="${form.mememail}"
+               th:class="${#fields.hasErrors('mememail')} ? fieldError" readonly>
+        <span id="mememailErr" th:if="${#fields.hasErrors('mememail')}" th:errors="*{mememail}"></span>
+
+        <label class="changePw" for="changePw" style="display:none">비밀번호 변경</label>
+        <input id="changePw" type="text" name="mempw" th:field="${form.mempw}"
+               th:class="${#fields.hasErrors('mempw')} ? fieldError " style="display:none">
+
+        <span id="mempwErr" th:if="${#fields.hasErrors('mempw')}" th:errors="*{mempw}"></span>
+
+        <!--              <label id="changePwCh" for="changePwCh">비밀번호 변경확인</label>-->
+        <!--              <input id="changePwCh" type="text">-->
+
+        <label class="phoneNb" for="phoneNb">휴대전화 번호</label>
+        <input id="phoneNb" type="text" name="memtel" th:field="${form.memtel}"
+               th:class="${#fields.hasErrors('memtel')} ? fieldError">
+        <span id="memtelErr" th:if="${#fields.hasErrors('memtel')}" th:errors="*{memtel}"></span>
+
+        <div class="btn">
+          <button id="btnChange">수정완료</button>
+          <button id="btnOut" type="button">탈퇴</button>
+        </div>
+      </div>
+      <!--sns On-->
+      <div id="none" th:fragment="testSnsOn">
+        <button type="button" id="btnCheck">중복확인</button>
+        <p class="change-pw-warning" style="display:none">대/소영문자, 숫자조합 20자 이하</p>
+      </div>
+
+      <!--sns off-->
+      <div class="myInformation" th:fragment="snsOff">
+        <label class="name" for="name">이름</label>
+        <input id="name" type="text" name="memname" th:field="${form.memname}">
+
+        <label class="nname" for="nname">닉네임</label>
+        <input id="nname" type="text" name="memnickname" th:field="${form.memnickname}">
+        <span class="nnameCk"></span>
+
+        <label class="id" for="id">아이디</label>
+        <input id="id" type="text" name="memid" th:field="${form.memid}" readonly>
+
+        <label class="email" for="email">이메일</label>
+        <input id="email" type="text" name="mememail" th:field="${form.mememail}"
+               th:class="${#fields.hasErrors('mememail')} ? fieldError">
+        <span id="mememailErr" th:if="${#fields.hasErrors('mememail')}" th:errors="*{mememail}"></span>
+
+        <label class="changePw" for="changePw">비밀번호 변경</label>
+        <input id="changePw" type="text" name="mempw" th:field="${form.mempw}"
+               th:class="${#fields.hasErrors('mempw')} ? fieldError ">
+
+        <span id="mempwErr" th:if="${#fields.hasErrors('mempw')}" th:errors="*{mempw}"></span>
+
+        <!--              <label id="changePwCh" for="changePwCh">비밀번호 변경확인</label>-->
+        <!--              <input id="changePwCh" type="text">-->
+
+        <label class="phoneNb" for="phoneNb">휴대전화 번호</label>
+        <input id="phoneNb" type="text" name="memtel" th:field="${form.memtel}"
+               th:class="${#fields.hasErrors('memtel')} ? fieldError">
+        <span id="memtelErr" th:if="${#fields.hasErrors('memtel')}" th:errors="*{memtel}"></span>
+
+        <div class="btn">
+          <button id="btnChange">수정완료</button>
+          <button id="btnOut" type="button">탈퇴</button>
+        </div>
+      </div>
+      <!--sns off-->
+      <div id="none" th:fragment="testSnsOff">
+        <button type="button" id="btnCheck">중복확인</button>
+        <p class="change-pw-warning">대/소영문자, 숫자조합 20자 이하</p>
+      </div>
 </body>
 </html>
