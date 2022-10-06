@@ -4,6 +4,7 @@ import com.kh.heallo.domain.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +27,11 @@ public class Member {
   private String memname;               //varchar2(12)
   private String memcode;               //varchar2(15)
   private String memstatus;             //varchar2(15)
+
+  @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
   private LocalDateTime memcdate;       //date
+
+  @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
   private LocalDateTime memudate;       //date
   private Review review;
 }

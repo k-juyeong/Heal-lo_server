@@ -42,7 +42,7 @@ public class ReplyRestController {
   }
 
   // 댓글 목록 조회
-  @GetMapping("/{bdno}")
+  @GetMapping("/{bdno}/list")
   public ResponseEntity<ResponseMsg> all(@PathVariable Long bdno, HttpServletRequest request) {
     List<Reply> all = replySVC.all(bdno);
 

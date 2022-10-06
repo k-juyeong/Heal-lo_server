@@ -46,7 +46,7 @@ function count(bdno) {
 
 // 댓글 목록
 function all(bdno){
-  const url = `http://localhost:9080/reply/${bdno}`;
+  const url = `http://localhost:9080/reply/${bdno}/list`;
   fetch(url, {
     method: 'GET',
     headers: {

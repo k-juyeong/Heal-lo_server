@@ -78,6 +78,8 @@ function memberAll(){
       res.data.memberAll.map(member=>{
       // 탈퇴한 회원 제외하기, sns 계정 회원 제외하기
         let result = '';
+        // 날짜 포맷 변경
+        const memcdate = member.memcdate.substr(0,10);
 //        if (member.memstatus === 'JOIN' && member.memcode === 'SNS')
         if (member.memstatus === 'JOIN') {
           result =
@@ -85,7 +87,7 @@ function memberAll(){
               <td>${member.memno}</td>
               <td>${member.memid}</td>
               <td>${member.memnickname}</td>
-              <td>${member.memcdate}</td>
+              <td>${memcdate}</td>
               <td><button class="btn btn_delete" onclick="delMember('${member.memid}')">탈퇴</button></td>
              </tr>`;
         }
@@ -195,15 +197,18 @@ function memberByMemInfo(memInfo){
       console.log(res.data.memberList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.memberList.map(member=>{
-      // 탈퇴한 회원 제외하기
+      // 탈퇴한 회원 제외하기, sns 계정 회원 제외하기
         let result = '';
+        // 날짜 포맷 변경
+        const memcdate = member.memcdate.substr(0,10);
+//        if (member.memstatus === 'JOIN' && member.memcode === 'SNS')
         if (member.memstatus == 'JOIN') {
           result =
             `<tr>
               <td>${member.memno}</td>
               <td>${member.memid}</td>
               <td>${member.memnickname}</td>
-              <td>${member.memcdate}</td>
+              <td>${memcdate}</td>
               <td><button class="btn btn_delete" onclick="delMember('${member.memid}')">탈퇴</button></td>
              </tr>`;
         }
@@ -226,7 +231,6 @@ function delMember(memid){
       .then(data=>{
         console.log(data);
         memberAll();
-
       }).catch(err=>console.log(err));
 }
 
