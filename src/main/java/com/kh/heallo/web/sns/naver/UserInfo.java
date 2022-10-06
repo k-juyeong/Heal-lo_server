@@ -1,4 +1,4 @@
-package com.kh.heallo.web.snsjoin.naver;
+package com.kh.heallo.web.sns.naver;
 
 import lombok.Data;
 

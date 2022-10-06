@@ -44,7 +44,7 @@
       <main id="container">
         <form id="form" action="" th:method="post" th:object="${form}">
           <div class="content">
-            <div class="text-box" th:replace="~{/layout/my-page :: ${status} == NORMAL ? normalMenu : adminMenu}">
+            <div class="text-box" th:replace="~{/layout/my-page :: ${status} == ADMIN ? adminMenu : normalMenu }">
                 <div class="my-page">
                     <p>마이 페이지</p>
                 </div>
