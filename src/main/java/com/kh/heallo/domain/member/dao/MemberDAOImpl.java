@@ -23,7 +23,7 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class MemberDAOImpl implements  MemberDAO{
+public class MemberDAOImpl implements MemberDAO{
 
   private final JdbcTemplate jdbcTemplate;
 
@@ -37,7 +37,7 @@ public class MemberDAOImpl implements  MemberDAO{
   public Long join(Member member) {
     StringBuffer sql = new StringBuffer();
     sql.append(" insert into member ");
-    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,'NORMAL','JOIN',sysdate ,sysdate ) ");
+    sql.append(" values (member_memno_seq.nextval ,? ,? ,? ,? ,? ,? ,? ,'JOIN',sysdate ,sysdate ) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -49,6 +49,7 @@ public class MemberDAOImpl implements  MemberDAO{
       preparedStatement.setString(4, member.getMemnickname());
       preparedStatement.setString(5, member.getMememail());
       preparedStatement.setString(6, member.getMemname());
+      preparedStatement.setString(7, member.getMemcode());
 
       return preparedStatement;
     }, keyHolder);
@@ -105,6 +106,29 @@ public class MemberDAOImpl implements  MemberDAO{
   }
 
   /**
+   * 조회 BY ID
+   *
+   * @param email 아이디
+   * @return 회원정보
+   */
+  @Override
+  public Member findByEmail(String email) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append("select * ");
+    sql.append("  from member ");
+    sql.append(" where mememail= ? ");
+
+    Member findedMember = null;
+    try{
+      findedMember = jdbcTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Member.class), email);
+    }catch (DataAccessException e) {
+      log.info("찾고자하는 회원이 없습니다={}", email);
+    }
+    return findedMember;
+  }
+
+  /**
    * 수정
    * @param memno  아이디
    * @param member 수정할 정보
@@ -128,6 +152,20 @@ public class MemberDAOImpl implements  MemberDAO{
 
     jdbcTemplate.update(sql.toString(), member.getMemname(), member.getMemnickname(),
             member.getMememail(), member.getMempw(), member.getMemtel(), memno);
+  }
+
+  @Override
+  public void updateStatus(Long memno, Member member) {
+    StringBuffer sql = new StringBuffer();
+
+    log.info("memno={}",memno);
+    log.info("member={}",member);
+
+    sql.append(" update member ");
+    sql.append("   set memstatus = ? ");
+    sql.append(" where memno = ? ");
+
+    jdbcTemplate.update(sql.toString(),member.getMemstatus(),memno);
   }
 
   /**

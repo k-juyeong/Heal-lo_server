@@ -26,11 +26,18 @@ public interface MemberDAO {
   Member findBymemno(Long memno);
 
   /**
-   * 조회 BY SNS_ID
-   * @param id SNS 아이디
+   * 조회 BY ID
+   * @param id 아이디
    * @return  회원정보
    */
   Member findById(String id);
+
+  /**
+   * 조회 BY SNS_ID
+   * @param email 아이디
+   * @return  회원정보
+   */
+  Member findByEmail(String email);
 
   /**
    * 수정
@@ -39,6 +46,7 @@ public interface MemberDAO {
    * @return  수정건수
    */
   void update(Long memno, Member member);
+  void updateStatus(Long memno, Member member);
 
   /**
    * 탈퇴

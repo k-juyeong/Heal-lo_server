@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Member {
   public static final String MEMCODE_NORMAL = "NORMAL";
+  public static final String MEMCODE_SNS = "SNS";
   public static final String MEMCODE_ADMIN = "ADMIN";
   public static final String MEMSTATUS_JOIN = "JOIN";
   public static final String MEMSTATUS_WITHDRAW = "WITHDRAW";
