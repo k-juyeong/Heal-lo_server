@@ -56,21 +56,12 @@ public class BoardDAOImpl implements BoardDAO{
   @Override
   public List<Board> findAll() {
     StringBuffer sql = new StringBuffer();
-//    sql.append("  select no, t3.bdno, t3.bdcg, t3.bdtitle, t3.memno, t3.bdcontent, t3.bdcdate,t3.bdview, t3.memnickname ");
-//    sql.append(" from ( ");
-//    sql.append("     select rownum no, t1.bdno, t1.bdcg, t1.bdtitle, t1.memno, t1.bdcontent, t1.bdcdate, t1.bdview, t2.memnickname ");
-//    sql.append("       from board t1, member t2 ");
-//    sql.append("      where t1.memno=t2.memno ");
-//    sql.append("      order by t1.bdno desc)t3 ");
-//    sql.append(" order by no asc ");
-
     sql.append(" SELECT * ");
     sql.append("   FROM (SELECT  ROWNUM AS no, A.* ");
     sql.append("            FROM (SELECT t1.*, t2.memnickname ");
     sql.append("                    FROM board t1, member t2  ");
     sql.append("                   where t1.memno = t2.memno ");
     sql.append("                ORDER BY t1.bdno desc) A) ");
-
 
     List<Board> boards = jt.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class));
     return boards;
@@ -80,15 +71,6 @@ public class BoardDAOImpl implements BoardDAO{
   @Override
   public List<Board> findAll(int startRec, int endRec) {
     StringBuffer sql = new StringBuffer();
-//    sql.append("  select no, t3.bdno, t3.bdcg, t3.bdtitle, t3.memno, t3.bdcontent, t3.bdcdate, t3.bdview, t3.memnickname ");
-//    sql.append(" from ( ");
-//    sql.append("     select rownum no, t1.bdno, t1.bdcg, t1.bdtitle, t1.memno, t1.bdcontent, t1.bdcdate, t1.bdview, t2.memnickname ");
-//    sql.append("       from board t1, member t2 ");
-//    sql.append("      where t1.memno=t2.memno ");
-//    sql.append("      order by t1.bdno desc)t3 ");
-//    sql.append(" where no between ? and ? ");
-//    sql.append(" order by no asc ");
-
     sql.append(" SELECT * ");
     sql.append("   FROM (SELECT  ROWNUM AS no, A.* ");
     sql.append("            FROM (SELECT t1.*, t2.memnickname ");
@@ -96,7 +78,6 @@ public class BoardDAOImpl implements BoardDAO{
     sql.append("                   where t1.memno = t2.memno ");
     sql.append("                ORDER BY t1.bdno desc) A) ");
     sql.append("  WHERE no between ? and ? ");
-
 
     List<Board> boards = jt.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class), startRec, endRec);
     return boards;
@@ -273,13 +254,9 @@ public class BoardDAOImpl implements BoardDAO{
       default:
     }
     sql.append(" ORDER BY t1.bdno desc ) A ) ");
-    sql.append(" WHERE no between ? and ? ");
 
     int affectedRow = jt.queryForObject(sql.toString(),Integer.class,
-        filterCondition.getCategory(),
-        filterCondition.getStartRec(),
-        filterCondition.getEndRec());
-
+        filterCondition.getCategory());
     return affectedRow;
   }
 
