@@ -68,7 +68,7 @@
                th:class="${#fields.hasErrors('memtel')} ? fieldError">
         <span id="memtelErr" th:if="${#fields.hasErrors('memtel')}" th:errors="*{memtel}"></span>
 
-        <div class="btn">
+        <div class="btn" style="margin-top: 200px;">
           <button id="btnChange">수정완료</button>
           <button id="btnOut" type="button">탈퇴</button>
         </div>
