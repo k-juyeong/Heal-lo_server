@@ -107,6 +107,7 @@ public class MemberController {
     member.setMemnickname(joinForm.getMemnickname());
     member.setMememail(joinForm.getMememail());
     member.setMemname(joinForm.getMemname());
+    member.setMemcode(Member.MEMCODE_NORMAL);
 
     memberSVC.join(member);
 
@@ -167,7 +168,6 @@ public class MemberController {
   //로그아웃
   @GetMapping("logout")
   public String logout(HttpServletRequest request){
-    //request.getSession(false) : 세션정보가 있으면 가져오고 없으면 세션을 만들지 않음
     HttpSession session = request.getSession(false);
     if(session != null){
       session.invalidate();
@@ -263,8 +263,12 @@ public class MemberController {
   //삭제(탈퇴)
   @GetMapping("/{id}/del")
   public String delete(@PathVariable("id") String memid) {
-
+    Member member = memberSVC.findById(memid);
     memberSVC.del(memid);
+    if (member.getMemcode().equals(Member.MEMCODE_SNS)) {
+
+      return "redirect:https://nid.naver.com/internalToken/view/tokenList/pc/ko";
+    }
 
     log.info("memid={}",memid);
     return "redirect:/members/logout";

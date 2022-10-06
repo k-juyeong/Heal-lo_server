@@ -44,7 +44,7 @@
       <main id="container">
         <form id="form" action="" th:method="post" th:object="${form}">
           <div class="content">
-            <div class="text-box" th:replace="~{/layout/my-page :: ${status} == NORMAL ? normalMenu : adminMenu}">
+            <div class="text-box" th:replace="~{/layout/my-page :: ${status} == ADMIN ? adminMenu : normalMenu }">
                 <div class="my-page">
                     <p>마이 페이지</p>
                 </div>
@@ -58,7 +58,7 @@
                     <p><a href="" th:href="@{/admin}">> 회원관리</a></p>
                 </div>
             </div>
-            <div class="myInformation">
+            <div class="myInformation" th:replace="~{/layout/my-page :: ${status} == SNS ? snsOn : snsOff}">
                 <label class="name" for="name">이름</label>
                 <input id="name" type="text" name="memname" th:field="${form.memname}">
 
@@ -93,7 +93,7 @@
                   <button id="btnOut" type="button">탈퇴</button>
                 </div>
             </div>
-            <div id="none">
+            <div id="none" th:replace="~{/layout/my-page :: ${status} == SNS ? testSnsOn : testSnsOff}">
               <button type="button" id="btnCheck">중복확인</button>
               <p class="change-pw-warning">대/소영문자, 숫자조합 20자 이하</p>
             </div>

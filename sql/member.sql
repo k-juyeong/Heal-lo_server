@@ -27,7 +27,6 @@ alter table member modify memname constraint member_memname_nn NOT NULL;
 alter table member modify memcdate constraint member_memcdate_nn NOT NULL;
 alter table member modify memudate constraint member_memudate_nn NOT NULL;
 alter table member add constraint memid_uk unique (memid);
-alter table member add constraint memtel_uk unique (memtel);
 alter table member add constraint memnickname_uk unique (memnickname);
 alter table member add constraint mememail_uk unique (mememail);
 alter table member add constraint memcode_ck check(memcode in ('normal','admin'));
