@@ -1,5 +1,6 @@
 @charset "utf-8";
 
+/* * {outline: 1px solid red;}*/
 #reply {
   width: 100%;
   margin: 0 auto;
@@ -7,18 +8,16 @@
 #reply .reply__hit {
   display: flex;
   margin-top: 10px;
-
 }
 #reply .reply__main {
   width: 100%;
   height: auto;
-
 }
 
 #reply .reply__main .reply__form {
   width: 100%;
   height: auto;
-  margin: 10px auto;
+  margin: 0 auto;
   background-color: #eee;
   /* display: flex;
   flex-direction: column; */
@@ -32,7 +31,7 @@
   display: flex;
   flex-direction: column;
   /* width: 100%; */
-  margin: 30px 10px;
+  margin: 15px 10px;
 }
 #reply .reply__main .reply__form .reply__list.all .reply__list_form .reply__list {
   display: flex;
@@ -59,6 +58,8 @@
 #reply .reply__main .reply__form .reply__list .btngrp button {
   width: 30px;
 }
+
+
 #reply .reply__main .reply__form .reply__list_form .reply__reReply {
   display: flex;
   justify-content: flex-start;
@@ -76,15 +77,12 @@
 
 /* #reply .reply__main .reply__form .reply__list .reply__list.nickname {
   flex: 1.5;
-
 }
 #reply .reply__main .reply__form .reply__list .reply__list.content {
   flex: 6;
-
 }
 #reply .reply__main .reply__form .reply__list .reply__list.date {
   flex: 2;
-
 }
 #reply .reply__main .reply__form .reply__list .reply__list.btngrp{
   flex: 0.5;
@@ -92,7 +90,7 @@
   flex-direction: column;
 } */
 
-/* 대댓글 창*/
+/* 대댓글 등록창*/
 #reply .reply__main .reply__form .reply__list.all .reply__reReply_form {
   width: 80%;
   height: 70px;
@@ -125,6 +123,12 @@
   color: white;
   border: none;
 }
+
+/* 대댓글 들여쓰기*/
+#reply .reply__main .reply__form .reply__list.all.depth1 {
+  margin-left: 100px;
+}
+
 
 /* 수정창 */
 #reply .reply__main .reply__form .reply__list .reply__edit {

@@ -1,12 +1,13 @@
 package com.kh.heallo.web.member.controller;
+
 import com.kh.heallo.domain.member.Member;
 import com.kh.heallo.domain.member.svc.MemberSVC;
+import com.kh.heallo.web.response.ResponseMsg;
+import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.session.Session;
 import com.kh.heallo.web.sns.naver.NaverLoginDTO;
 import com.kh.heallo.web.sns.naver.NaverLoginUtile;
-import com.kh.heallo.web.response.ResponseMsg;
-import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.sns.naver.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

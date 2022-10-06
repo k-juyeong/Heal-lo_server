@@ -85,7 +85,6 @@ public class BoardController {
   //등록
   @PostMapping("/add")
   public String add(@Valid @ModelAttribute("form") SaveForm saveForm,
-                    @RequestParam(required = false) Optional<String> category,
                     BindingResult bindingResult,
                     RedirectAttributes redirectAttributes,
                     HttpServletRequest request,
@@ -103,8 +102,6 @@ public class BoardController {
       return "board/saveForm";
     }
 
-    String cate = getCategory(category);
-    log.info("카테고리는={}",cate);
 
     //필드검증
     //제목 30글자 이내.
@@ -127,11 +124,13 @@ public class BoardController {
     Long bdno = boardSVC.save(board);
 
     redirectAttributes.addAttribute("id", bdno);
-    redirectAttributes.addAttribute("category",cate);
+//    redirectAttributes.addAttribute("category",cate);
     log.info("add={}",saveForm);
 
-    return "redirect:/boards/list/{id}/detail?";
+    return "redirect:/boards/list/{id}/detail?category="+saveForm.getBdcg();
   }
+
+
 
 
 
@@ -141,15 +140,13 @@ public class BoardController {
                          @RequestParam(required = false) Optional<String> category,
                          Model model){
     String cate = getCategory(category);
-
     Optional<Board> findedBoard = boardSVC.findByBoardId(boardId);
     DetailForm detailForm = new DetailForm();
     if(!findedBoard.isEmpty()) {
       BeanUtils.copyProperties(findedBoard.get(), detailForm);
     }
     model.addAttribute("form", detailForm);
-    model.addAttribute("category", cate);
-
+    model.addAttribute("category",cate);
     log.info("detail={}",detailForm);
 
     return "board/detailForm";
@@ -179,7 +176,6 @@ public class BoardController {
   @PostMapping("/{id}/edit")
   public String update(@PathVariable("id") Long boardId,
                        @Valid @ModelAttribute("form") EditForm editForm,
-                       @RequestParam(required = false) Optional<String> category,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes){
     if (bindingResult.hasErrors()) {
@@ -200,31 +196,30 @@ public class BoardController {
       return "board/updateForm";
     }
 
-    String cate = getCategory(category);
-
     Board board = new Board();
     BeanUtils.copyProperties(editForm, board);
     boardSVC.update(boardId, board);
 
     redirectAttributes.addAttribute("id", boardId);
-    redirectAttributes.addAttribute("category", cate);
 
-    return "redirect:/boards/list/{id}/detail?";
+    return "redirect:/boards/list/{id}/detail?category="+editForm.getBdcg();
   }
-
 
 
   //삭제
   @GetMapping("/{id}/del")
   public String del(@PathVariable("id") Long boardId,
-        @RequestParam(required = false) Optional<String> category) {
+                    Model model) {
+    Optional<Board> findedBoard = boardSVC.findByBoardId(boardId);
+    DetailForm detailForm = new DetailForm();
+    if(!findedBoard.isEmpty()) {
+      BeanUtils.copyProperties(findedBoard.get(), detailForm);
+    }
+    model.addAttribute("form", detailForm);
     replySVC.deleteAll(boardId);
     boardSVC.deleteByBoardId(boardId);
-    String cate = getCategory(category);
-    return "redirect:/boards/list?category="+cate;  //항시 절대경로로
+    return "redirect:/boards/list?category="+detailForm.getBdcg();  //항시 절대경로로
   }
-
-
 
 
   //목록
@@ -239,7 +234,7 @@ public class BoardController {
       @RequestParam(required = false) Optional<String> category,
       Model model) {
 
-    log.info("/list 요청됨{},{},{},{}",reqPage,searchType,keyword,category);
+    log.info("/목록list 요청됨{},{},{},{}",reqPage,searchType,keyword,category);
     String cate = getCategory(category);
 
     //FindCriteria 값 설정
@@ -280,6 +275,7 @@ public class BoardController {
             searchType.get(),
             keyword.get());
         fc.setTotalRec(boardSVC.totalCount(filterCondition));
+        log.info("totalCnt={}",fc.getTotalRec());
         fc.setSearchType(searchType.get());
         fc.setKeyword(keyword.get());
         list = boardSVC.findAll(filterCondition);
@@ -293,6 +289,8 @@ public class BoardController {
         log.info("size={}", list.size());
       }
     }
+
+
 
     List<Board> list2 = new ArrayList<>();
     list.stream().forEach(board->{

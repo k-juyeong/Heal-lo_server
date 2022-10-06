@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>btn</title>
+</head>
+
+<body>
+<div class="writeBtn_area"  th:fragment="sameMemno">
+<!--  <button type="button" id="updateBtn" class="btn btn__search" ><a-->
+<!--      href="" th:href="@{/boards/*{bdno}/edit}"></a>수정</button>-->
+<!--  <button type="button" id="deleteBtn" class="btn btn__search" ><a-->
+<!--      href="" th:href="@{/boards/*{bdno}/del}"></a>삭제 </button>-->
+
+
+  <button type="button" id="updateBtn" class="btn btn__search updatebtn">수정</button>
+  <button type="button" id="deleteBtn" class="btn btn__search deletebtn">삭제 </button>
+  <button type="button" id="listBtn" class="btn btn__search listbtn"  th:onclick="|location.href='@{/boards/list?(category=*{bdcg})}'|">목록</button>
+
+</div>
+
+<div class="writeBtn_area"  th:fragment="diffMemno">
+<!--  <button type="button" id="listBtn2" class="btn btn__search listbtn">목록</button>-->
+  <button type="button" id="listBtn2" class="btn btn__search listbtn" th:onclick="|location.href='@{/boards/list?(category=*{bdcg})}'|">
+  목록</button>
+</div>
+</body>
+</html>

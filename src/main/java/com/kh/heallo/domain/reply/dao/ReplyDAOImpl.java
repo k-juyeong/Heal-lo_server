@@ -44,11 +44,14 @@ public class ReplyDAOImpl implements ReplyDAO {
   public List<Reply> all(Long bdno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("SELECT t1.rpcomment, t1.rpudate, t1.rpno, t2.memnickname, t2.memno, t1.rpgroup, t1.rpdepth, t1.rpstep, t1.rpstatus ");
-    sql.append("  FROM reply t1, member t2 ");
-    sql.append("WHERE t1.memno = t2.memno ");
-    sql.append("  AND t1.bdno = ? ");
-    sql.append("ORDER BY t1.rpno ASC ");
+    sql.append("select t1.memnickname, t2.* ");
+    sql.append("    from member t1, (select t1.rpno, bdno, memno, t1.rpgroup, rpdepth, rpstep, rpstatus, rpcomment, rpudate ");
+    sql.append("                       from reply t1 left outer join (select rpno, rpgroup ");
+    sql.append("                                                        from reply ");
+    sql.append("                                                    group by rpgroup, rpno ");
+    sql.append("                                                    order by rpgroup, rpno asc) t2 on t1.rpno = t2.rpno) t2 ");
+    sql.append(" where t1.memno = t2.memno ");
+    sql.append("   and t2.bdno = ? ");
 
     List<Reply> list = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class), bdno);
     return list;
@@ -93,7 +96,7 @@ public class ReplyDAOImpl implements ReplyDAO {
   public Long savePlusReply(Long bdno, Long memno, Reply reply) {
     StringBuffer sql = new StringBuffer();
     sql.append("INSERT INTO REPLY (rpno, bdno, rpgroup, rpdepth, rpstep, rpstatus, memno, rpcomment ) ");
-    sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, ?, ?, ?, 0, 'POST', ?, ? ) ");
+    sql.append("     VALUES (REPLY_RPNO_SEQ.nextval, ?, ?, ?, 1, 'POST', ?, ? ) ");
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -139,8 +142,18 @@ public class ReplyDAOImpl implements ReplyDAO {
    */
   @Override
   public void delete(Long rpno) {
-//    String sql = "DELETE FROM REPLY WHERE RPNO = ? ";
-    // 답글 있는 댓글 삭제
+    String sql = "DELETE FROM REPLY WHERE RPNO = ? ";
+
+    jdbcTemplate.update(sql, rpno);
+  }
+
+  /**
+   * 대댓글이 있는 경우 상태만 변경
+   *
+   * @param rpno 삭제할 댓글 번호
+   */
+  @Override
+  public void deleteState(Long rpno) {
     StringBuffer sql = new StringBuffer();
 
     sql.append("UPDATE REPLY ");
@@ -150,6 +163,10 @@ public class ReplyDAOImpl implements ReplyDAO {
     jdbcTemplate.update(sql.toString(), rpno);
   }
 
+  /**
+   * 게시글 삭제할 경우 해당 게시글의 모든 댓글 삭제
+   * @param bdno
+   */
   @Override
   public void deleteAll(Long bdno) {
     String sql = "DELETE FROM REPLY WHERE bdno = ? ";
@@ -165,7 +182,7 @@ public class ReplyDAOImpl implements ReplyDAO {
     StringBuffer sql = new StringBuffer();
 
     sql.append("UPDATE REPLY ");
-    sql.append("SET RPSTEP = (RPSTEP) + 1 ");
+    sql.append("SET RPSTEP = RPSTEP + 1 ");
     sql.append("WHERE RPNO = ? ");
 
     jdbcTemplate.update(sql.toString(), rpno);

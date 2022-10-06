@@ -15,18 +15,13 @@
       th:href="@{/resource/css/board/board_write.css}"
     />
     <th:block th:replace="${link}"></th:block>
-
     <style>
       .board-wrap .board-body {
         display: grid;
         grid-template-columns: 100px 300px;
       }
-      .ck-editor__editable {
-        height: 500px;
-      }
-      .ck-content {
-        font-size: 12px;
-      }
+      .ck-editor__editable { height: 500px; }
+      .ck-content { font-size: 13px; }
     </style>
   </head>
 
@@ -86,6 +81,7 @@
             th:object="${form}"
             class="writeArea"
             enctype="multipart/form-data"
+            th:data-code="${category}"
           >
             <div class="board_write">
               <div class="board_title">
@@ -104,9 +100,9 @@
                     ></p>
                   </div>
 
-                  <div class="line">
+                  <div class="line" th:data-code="${category}">
                     <label th:for="bdcg">카테고리</label>
-                    <select name="" id="menu-list" th:field="*{bdcg}" th:value="${category}">
+                    <select name="" id="menu-list" th:field="*{bdcg}">
 <!--                                      <th:block th:each="code : ${classifier}">-->
 <!--                                        <option value="" th:value="${code.code}" th:text="${code.decode}">게시판1</option>-->
 <!--                                      </th:block>-->

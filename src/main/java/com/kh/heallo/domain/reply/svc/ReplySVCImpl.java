@@ -76,7 +76,17 @@ public class ReplySVCImpl implements ReplySVC{
   }
 
   /**
-   * 댓글 삭제
+   * 대댓글이 있는 경우 상태만 변경
+   *
+   * @param rpno 삭제할 댓글 번호
+   */
+  @Override
+  public void deleteState(Long rpno) {
+    replyDAO.deleteState(rpno);
+  }
+
+  /**
+   * 대댓글이 없는 경우 댓글 삭제
    *
    * @param rpno 삭제할 댓글 번호
    */

@@ -86,29 +86,18 @@
                 </tr>
               </thead>
               <tbody th:obejct="${form}">
-                <tr th:each="board:${list}">
+                <tr th:each="board:${list}" >
                   <td th:text="${board.bdno}">1</td>
                   <td
                     th:text="${#strings.isEmpty(category)?
                     bdTitle[board.bdcg]
-                    :bdTitle['__${category}__']}"
-                  >
-                    자유게시판
-                  </td>
-
-                  <td>
-                    <a
-                      href=""
+                    :bdTitle['__${category}__']}" >자유게시판 </td>
+                  <td><a href=""
                       th:href="@{/boards/list/{id}/detail(id=${board.bdno},category=${category})}"
-                      th:text="${board.bdtitle}"
-                      >제목
-                    </a>
-                  </td>
+                      th:text="${board.bdtitle}">제목</a></td>
                   <td th:text="${board.memnickname}">닉네임</td>
                   <td th:text="${board.bdview}">5</td>
-                  <td
-                    th:text="${#temporals.format(board.bdcdate,'yy/MM/dd HH:mm')}"
-                  >
+                  <td th:text="${#temporals.format(board.bdcdate,'yy/MM/dd HH:mm')}">
                     작성일
                   </td>
                 </tr>

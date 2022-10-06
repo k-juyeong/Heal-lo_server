@@ -42,7 +42,13 @@ public interface ReplyDAO {
   void update(Long rpno, Reply reply);
 
   /**
-   * 댓글 삭제
+   * 대댓글이 있는 경우 상태만 변경
+   * @param rpno 삭제할 댓글 번호
+   */
+  void deleteState(Long rpno);
+
+  /**
+   * 대댓글이 없는 경우 댓글 삭제
    * @param rpno 삭제할 댓글 번호
    */
   void delete(Long rpno);
