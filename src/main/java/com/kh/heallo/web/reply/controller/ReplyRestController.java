@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,22 +44,24 @@ public class ReplyRestController {
   @GetMapping("/{bdno}/list")
   public ResponseEntity<ResponseMsg> all(@PathVariable Long bdno, HttpServletRequest request) {
     List<Reply> all = replySVC.all(bdno);
-
     HttpSession session = request.getSession(false);
-    List<ReplyDto> replyList = new ArrayList<>();
+    Long memno = null;
     if (session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
       LoginMember member = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-      Long memno = member.getMemno();
-      replyList = all.stream().map(reply -> {
+      memno = member.getMemno();
+    }
+    Long finalMemno = memno;
+
+    List<ReplyDto> replyList = all.stream().map(reply -> {
         ReplyDto replyDto = new ReplyDto();
-        BeanUtils.copyProperties(reply, replyDto);
-        if (reply.getMemno() == memno) {
+        if(reply.getMemno() == finalMemno) {
           replyDto.setLogin(true);
         }
-        return replyDto;
-      }).collect(Collectors.toList());
 
-    }
+      BeanUtils.copyProperties(reply, replyDto);
+      return replyDto;
+    }).collect(Collectors.toList());
+
 
     // Create ResponseEntity
     ResponseMsg responseMsg = new ResponseMsg()
@@ -77,10 +78,16 @@ public class ReplyRestController {
       BindingResult bindingResult,
       HttpServletRequest request
   ) {
+    ResponseEntity<ResponseMsg> response = (ResponseEntity<ResponseMsg>) request.getAttribute(Session.NOT_LOGIN.name());
+    if( response != null) {
+      return response;
+    }
+
     // 검증
     if (bindingResult.hasErrors()) {
       log.info("bindingResult={}", bindingResult);
     }
+
     log.info("detailForm={}", detailForm.getRpComment());
     // 회원번호 찾기
     Long memno = 0L;

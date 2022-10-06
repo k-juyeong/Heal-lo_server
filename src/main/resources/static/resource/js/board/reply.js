@@ -197,6 +197,10 @@ function save(reply, bdno){
     body: JSON.stringify(reply)
   }).then(res=>res.json())
     .then(data=>{
+      if(data.header.code === '03') {
+        if(!confirm('로그인하시겠습니까?')) return;
+        location.href=`/members/login?requestURI=${window.location.pathname}`;
+      }
       console.log(data)
       all(bdno);
       count(bdno);
