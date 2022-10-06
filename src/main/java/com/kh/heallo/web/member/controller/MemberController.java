@@ -345,10 +345,13 @@ public class MemberController {
       list.add(board1);
     });
 
+    Member findedMember = memberSVC.findBymemno(memno);
+
     log.info("list={}",list);
 
     model.addAttribute("form",editForm);
     model.addAttribute("list",list);
+    model.addAttribute("status",findedMember.getMemcode());
     return "member/my_page_activity_board";
   }
 
@@ -376,10 +379,13 @@ public class MemberController {
       list.add(reply1);
     });
 
+    Member findedMember = memberSVC.findBymemno(memno);
+
     log.info("list={}",list);
 
     model.addAttribute("form",editForm);
     model.addAttribute("list",list);
+    model.addAttribute("status",findedMember.getMemcode());
     return "member/my_page_activity_reply";
   }
 
@@ -417,10 +423,13 @@ public class MemberController {
       list.add(review1);
     });
 
+    Member findedMember = memberSVC.findBymemno(memno);
+
     log.info("list={}",reviewDtoList);
 
     model.addAttribute("form",editForm);
     model.addAttribute("list", reviewDtoList);
+    model.addAttribute("status",findedMember.getMemcode());
     return "member/my_page_activity_review";
   }
 
