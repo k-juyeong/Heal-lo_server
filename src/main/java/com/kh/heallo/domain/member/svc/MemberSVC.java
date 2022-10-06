@@ -33,12 +33,21 @@ public interface MemberSVC {
   Member findById(String id);
 
   /**
+   * 조회 BY 회원번호
+   * @param email 회원이메일
+   * @return  회원정보
+   */
+  Member findByEmail(String email);
+
+  /**
    * 수정
    * @param memno  아이디
    * @param member 수정할 정보
    * @return  수정건수
    */
   void update(Long memno, Member member);
+  void updateStatus(Long memno, Member member);
+
 
   /**
    * 탈퇴

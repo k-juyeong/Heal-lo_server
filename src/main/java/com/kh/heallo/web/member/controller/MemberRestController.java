@@ -6,9 +6,17 @@ import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.session.Session;
+<<<<<<< HEAD
 import com.kh.heallo.web.snsjoin.naver.NaverLoginDTO;
 import com.kh.heallo.web.snsjoin.naver.NaverLoginUtile;
 import com.kh.heallo.web.snsjoin.naver.UserInfo;
+=======
+import com.kh.heallo.web.sns.naver.NaverLoginDTO;
+import com.kh.heallo.web.sns.naver.NaverLoginUtile;
+import com.kh.heallo.web.response.ResponseMsg;
+import com.kh.heallo.web.response.StatusCode;
+import com.kh.heallo.web.sns.naver.UserInfo;
+>>>>>>> 608d9d36fd021859d53594d279f34c4ca83976cb
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/members")
@@ -58,26 +67,37 @@ public class MemberRestController {
     // access_token를 사용하여 사용자의 프로필 조회
     final UserInfo userInfo = naverLoginUtile.requestUserInfo(naverLoginDTO);
 
-    // 계정이 저장되있지 않다면 저장
-    Member findedMember = memberSVC.findById(userInfo.getId());
+    Member member = new Member();
+    member.setMemid(userInfo.getId().substring(0,10));
+    member.setMempw("@@@@");
+    member.setMemtel(userInfo.getMobile());
+    member.setMemnickname(userInfo.getNickname());
+    member.setMememail(userInfo.getEmail());
+    member.setMemname(userInfo.getName());
+    member.setMemcode(Member.MEMCODE_SNS);
+
+    //해당 이메일이 첫 가입인 경우
+    Member findedMember = memberSVC.findByEmail(userInfo.getEmail());
+    LoginMember loginMember;
     if (findedMember == null) {
-      Member member = new Member();
-      member.setMemid(userInfo.getId());
-      member.setMempw("");
-      member.setMemtel(userInfo.getMobile());
-      member.setMemnickname(userInfo.getNickname());
-      member.setMememail(userInfo.getEmail());
-      member.setMemname(userInfo.getName());
+
+      //유저 닉네임 랜덤 부여
+      while (true) {
+        member.setMemnickname("user" + UUID.randomUUID().toString().substring(0, 5));
+        if (!memberSVC.dupChkOfMemnickname(member.getMemnickname())) break;
+      }
 
       Long memno = memberSVC.join(member);
       member.setMemno(memno);
-      findedMember = member;
+
+      loginMember = new LoginMember(memno, member.getMemnickname());
+    } else {
+
+      loginMember = new LoginMember(findedMember.getMemno(), findedMember.getMemnickname());
+      findedMember.setMemstatus(Member.MEMSTATUS_JOIN);
+      memberSVC.updateStatus(findedMember.getMemno(), findedMember);
     }
 
-    //세션에 회원정보 저장
-    LoginMember loginMember = new LoginMember(findedMember.getMemno(), findedMember.getMemnickname());
-
-    //request.getSession(false) : 세션정보가 있으면 가져오고 없으면 세션을 만듦
     HttpSession session = request.getSession(true);
     session.setAttribute(Session.LOGIN_MEMBER.name(), loginMember);
 

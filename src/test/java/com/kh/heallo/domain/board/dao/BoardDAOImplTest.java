@@ -47,7 +47,7 @@ class BoardDAOImplTest {
   @Test
   void test(){
 
-    BbsFilterCondition bbsFilterCondition = new BbsFilterCondition("BD001",1,10,"TC","본문");
+    BbsFilterCondition bbsFilterCondition = new BbsFilterCondition("BD001",1,100,"A","닉네임1");
     List<Board> boards = boardDAO.findAll(bbsFilterCondition);
     int i = boardDAO.totalCount(bbsFilterCondition);
     log.info("totalcount={}",i);

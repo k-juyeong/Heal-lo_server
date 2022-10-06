@@ -143,8 +143,8 @@
                     >
                       수정
                     </button>
-                    <button type="button" id="listBtn" class="btn btn__search">
-                      목록
+                    <button type="button" id="listBtn" class="btn btn__search"  onclick="history.back()">
+                      취소
                     </button>
                   </div>
                 </div>
@@ -189,10 +189,11 @@
       <!--});-->
 
       //목록
-      const $listBtn = document.getElementById('listBtn');
-      $listBtn.addEventListener('click', (evt) => {
-        location.href = '/boards';
-      });
+<!--      const $listBtn = document.getElementById('listBtn');-->
+<!--      $listBtn.addEventListener('click', (evt) => {-->
+<!--      const url = `/boards/list?category=${bdcg}`;-->
+<!--      location.href = url;-->
+<!--      });-->
 
       // 에디터 툴
       ClassicEditor.create(document.querySelector('#editor'), {

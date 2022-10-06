@@ -53,6 +53,18 @@ public class MemberSVCImpl implements MemberSVC{
   }
 
   /**
+   * 조회 BY 회원번호
+   *
+   * @param email 회원이메일
+   * @return 회원정보
+   */
+  @Override
+  public Member findByEmail(String email) {
+    return memberDAO.findByEmail(email);
+  }
+
+
+  /**
    * 수정
    *
    * @param memno  아이디
@@ -62,6 +74,11 @@ public class MemberSVCImpl implements MemberSVC{
   @Override
   public void update(Long memno, Member member) {
     memberDAO.update(memno,member);
+  }
+
+  @Override
+  public void updateStatus(Long memno, Member member) {
+    memberDAO.updateStatus(memno,member);
   }
 
   /**
