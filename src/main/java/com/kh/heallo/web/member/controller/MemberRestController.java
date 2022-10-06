@@ -6,17 +6,9 @@ import com.kh.heallo.web.response.ResponseMsg;
 import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.session.LoginMember;
 import com.kh.heallo.web.session.Session;
-<<<<<<< HEAD
-import com.kh.heallo.web.snsjoin.naver.NaverLoginDTO;
-import com.kh.heallo.web.snsjoin.naver.NaverLoginUtile;
-import com.kh.heallo.web.snsjoin.naver.UserInfo;
-=======
 import com.kh.heallo.web.sns.naver.NaverLoginDTO;
 import com.kh.heallo.web.sns.naver.NaverLoginUtile;
-import com.kh.heallo.web.response.ResponseMsg;
-import com.kh.heallo.web.response.StatusCode;
 import com.kh.heallo.web.sns.naver.UserInfo;
->>>>>>> 608d9d36fd021859d53594d279f34c4ca83976cb
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
