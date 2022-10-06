@@ -76,9 +76,10 @@ function memberAll(){
       console.log(res.data.memberAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.memberAll.map(member=>{
-      // 탈퇴한 회원 제외하기
+      // 탈퇴한 회원 제외하기, sns 계정 회원 제외하기
         let result = '';
-        if (member.memstatus == 'JOIN') {
+//        if (member.memstatus === 'JOIN' && member.memcode === 'SNS')
+        if (member.memstatus === 'JOIN') {
           result =
             `<tr>
               <td>${member.memno}</td>

@@ -158,4 +158,16 @@ public class ReplyRestController {
     return new ResponseEntity<>(responseMsg, HttpStatus.OK);
   }
 
+  // 대댓글 존재 시 상태 변경
+  @GetMapping("/status/{rpno}")
+  public ResponseEntity<ResponseMsg> delState(
+      @PathVariable Long rpno
+  ) {
+    replySVC.deleteState(rpno);
+
+    ResponseMsg responseMsg = new ResponseMsg()
+        .createHeader(StatusCode.SUCCESS);
+
+    return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+  }
 }
