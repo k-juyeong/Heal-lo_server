@@ -38,7 +38,7 @@ insert into code values('CD000','캘린더','',null,'Y',systimestamp,systimestam
 -- 회원
 create table member (
                         memno          number(8),
-                        memid          varchar2(40),
+                        memid          varchar2(100),
                         mempw          varchar2(20),
                         memtel         varchar2(13),
                         memnickname    varchar2(30),
@@ -53,7 +53,7 @@ create table member (
 -- 제약조건
 alter table member add constraint member_memno_pk primary key (memno);
 alter table member modify memid constraint member_memid_nn NOT NULL;
-alter table member modify mempw constraint member_mempw_nn NOT NULL;
+-- alter table member modify mempw constraint member_mempw_nn NOT NULL;
 alter table member modify memtel constraint member_memtel_nn NOT NULL;
 alter table member modify memnickname constraint member_memnickname_nn NOT NULL;
 alter table member modify mememail constraint member_mememail_nn NOT NULL;

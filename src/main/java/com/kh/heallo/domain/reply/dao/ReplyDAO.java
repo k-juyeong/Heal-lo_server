@@ -48,4 +48,16 @@ public interface ReplyDAO {
   void delete(Long rpno);
 
   void deleteAll(Long bdno);
+
+  /**
+   * 대댓글의 경우 step을 한단계 더함
+   * @param rpno 해당 대댓글 번호
+   */
+  void reReplyStep(Long rpno);
+
+  /**
+   * 대댓글의 대댓글 경우 그 이후 rpStep 번호 수정 (+1)
+   * @param rpno 대댓글 번호 (rpDepth 사용)
+   */
+  void updatedStep(Long rpGroup,Long rpDepth, Long rpno);
 }

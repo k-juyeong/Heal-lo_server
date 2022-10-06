@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 public class MemberController {
 
   private final MemberSVC memberSVC;
-
   private final DtoModifier dtoModifier;
 
   //회원가입
@@ -187,7 +186,7 @@ public class MemberController {
       memno = loginMember.getMemno();
     }
 
-    Member findedMember = memberSVC.findById(memno);
+    Member findedMember = memberSVC.findBymemno(memno);
 
     EditForm editForm = new EditForm();
     editForm.setMemno(memno);
@@ -200,9 +199,9 @@ public class MemberController {
 
     log.info("memno={}",memno);
     log.info("editForm={}",editForm);
-
+    log.info("findedMember.getMemcode={}",findedMember.getMemcode());
     model.addAttribute("form",editForm);
-
+    model.addAttribute("status",findedMember.getMemcode());
     return "member/my_page";
   }
 
@@ -219,16 +218,16 @@ public class MemberController {
 
     //회원이메일 중복체크
     Boolean isExistEmail = memberSVC.dupChkOfMememail(editForm.getMememail());
-    if(editForm.getMememail().equals(memberSVC.findById(memno).getMememail())){
-      log.info("이메일 중복 비교={}",editForm.getMememail().equals(memberSVC.findById(memno).getMememail()));
+    if(editForm.getMememail().equals(memberSVC.findBymemno(memno).getMememail())){
+      log.info("이메일 중복 비교={}",editForm.getMememail().equals(memberSVC.findBymemno(memno).getMememail()));
     }else if(isExistEmail){
       bindingResult.rejectValue("mememail","dup.mememail", "동일한 이메일이 존재합니다");
     }
 
     //회원전화번호 중복체크
     Boolean isExistTel = memberSVC.dupChkOfMemtel(editForm.getMemtel());
-    if(editForm.getMemtel().equals(memberSVC.findById(memno).getMemtel())){
-      log.info("전화번호 중복 비교={}",editForm.getMemtel().equals(memberSVC.findById(memno).getMemtel()));
+    if(editForm.getMemtel().equals(memberSVC.findBymemno(memno).getMemtel())){
+      log.info("전화번호 중복 비교={}",editForm.getMemtel().equals(memberSVC.findBymemno(memno).getMemtel()));
     }else if(isExistTel){
       bindingResult.rejectValue("memtel","dup.memtel", "동일한 전화번호가 존재합니다");
     }

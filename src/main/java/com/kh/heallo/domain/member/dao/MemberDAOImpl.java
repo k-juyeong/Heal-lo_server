@@ -65,7 +65,7 @@ public class MemberDAOImpl implements  MemberDAO{
    * @return  회원정보
    */
   @Override
-  public Member findById(Long memno) {
+  public Member findBymemno(Long memno) {
     StringBuffer sql = new StringBuffer();
 
     sql.append("select * ");
@@ -77,6 +77,29 @@ public class MemberDAOImpl implements  MemberDAO{
       findedMember = jdbcTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Member.class), memno);
     }catch (DataAccessException e) {
       log.info("찾고자하는 회원이 없습니다={}", memno);
+    }
+    return findedMember;
+  }
+
+  /**
+   * 조회 BY ID
+   *
+   * @param id 아이디
+   * @return 회원정보
+   */
+  @Override
+  public Member findById(String id) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append("select * ");
+    sql.append("  from member ");
+    sql.append(" where memid= ? ");
+
+    Member findedMember = null;
+    try{
+      findedMember = jdbcTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(Member.class), id);
+    }catch (DataAccessException e) {
+      log.info("찾고자하는 회원이 없습니다={}", id);
     }
     return findedMember;
   }

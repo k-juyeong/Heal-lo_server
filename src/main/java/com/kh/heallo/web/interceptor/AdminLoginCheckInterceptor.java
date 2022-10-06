@@ -28,7 +28,7 @@ public class AdminLoginCheckInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession(false);
         LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
-        Member member = memberSVC.findById(loginMember.getMemno());
+        Member member = memberSVC.findBymemno(loginMember.getMemno());
 
         if (!member.getMemcode().equals(Member.MEMCODE_ADMIN)) {
 

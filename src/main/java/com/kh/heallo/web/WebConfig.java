@@ -26,6 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
         whiteList.add("/error");
         whiteList.add("/members/join");
         whiteList.add("/members/login");
+        whiteList.add("/members/naver-callback/redirect");
+        whiteList.add("/members/naver-join");
         whiteList.add("/facilities/**");
         whiteList.add("/reviews/*/list");
         whiteList.add("/reviews/*/new-images");
@@ -35,7 +37,6 @@ public class WebConfig implements WebMvcConfigurer {
         whiteList.add("/boards/list/**");
         whiteList.add("/boards/list/**");
         whiteList.add("/email/**");
-
 
         //로그인체크 인터셉터
         registry.addInterceptor(loginCheckInterceptor)

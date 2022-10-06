@@ -68,3 +68,19 @@ UPDATE REPLY
 -- 댓글 삭제
 DELETE FROM REPLY
 WHERE RPNO = 1 AND MEMNO = 1;
+
+UPDATE REPLY
+   SET RPSTATUS = 'DELETED'
+ WHERE RPNO = 1;
+
+-- 대댓글의 경우 step을 한단계 더함
+UPDATE REPLY
+   SET RPSTEP = (RPSTEP) + 1 -- 이전 대댓글의 rpStep에 +1
+ WHERE RPGROUP = 2  -- 같은 부모댓글
+   AND RPNO = 1;   -- 해당 대댓글
+
+-- 대댓글의 대댓글 경우 그 이후 rpStep 번호 수정 (+1)
+UPDATE REPLY
+   SET RPSTEP = RPSTEP + 1
+ WHERE RPGROUP = 2  -- 같은 부모댓글
+   AND RPNO >= 1;   -- 댓글
