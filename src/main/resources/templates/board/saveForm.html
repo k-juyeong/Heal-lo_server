@@ -86,6 +86,7 @@
             th:object="${form}"
             class="writeArea"
             enctype="multipart/form-data"
+            th:data-code="${category}"
           >
             <div class="board_write">
               <div class="board_title">
@@ -106,7 +107,7 @@
 
                   <div class="line">
                     <label th:for="bdcg">카테고리</label>
-                    <select name="" id="menu-list" th:field="*{bdcg}" th:value="${category}">
+                    <select name="" id="menu-list" th:field="*{bdcg}">
 <!--                                      <th:block th:each="code : ${classifier}">-->
 <!--                                        <option value="" th:value="${code.code}" th:text="${code.decode}">게시판1</option>-->
 <!--                                      </th:block>-->
