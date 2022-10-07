@@ -2,12 +2,13 @@
 
 /* * {outline: 1px solid red;}*/
 #reply {
-  width: 100%;
+  width: 871px;
   margin: 0 auto;
 }
 #reply .reply__hit {
   display: flex;
   margin-top: 10px;
+  margin-bottom:10px;
 }
 #reply .reply__main {
   width: 100%;

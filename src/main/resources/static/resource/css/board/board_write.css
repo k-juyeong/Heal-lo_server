@@ -126,25 +126,33 @@
   }
 
 
-
-
-
-
 #container .board_write .board_content .writeForm .textarea {
   /* overflow: auto; */
-  height: 400px;
+  height: 300px;
   font-size: 15px;
-  padding: 10px;
+  padding: 30px;
   border: 1px solid #D6D6D6;
   border-radius: 4px;
   resize: none;
   /* width: 90%; */
 }
-#container .board_write .board_content .writeForm .textarea:focus{
-  outline: none;
+
+.ck .ck-editor__editable{
+min-height:300px;
+width:850px;
+overflow: hidden;
+padding: 10px 20px 10px 20px;
+
+}
+
+.ck .ck-editor__editable_inline{
+padding: 50px;
 }
 
 
+#container .board_write .board_content .writeForm .textarea:focus{
+  outline: none;
+}
 
 #container .board_write .board_content .writeForm .writeBtn_area{
   display: flex;
@@ -161,27 +169,27 @@
   margin-top: 5px;
   height: 30px;
 }
+
+ .btn__search {
+  width: 60px;
+  margin-left: 2px;
+  border-radius: 5px;
+  border: none;
+  margin-top: 5px;
+  height: 30px;
+}
+
 #container .board_write .board_content .writeForm .writeBtn_area .btn__search:hover {
   cursor: pointer;
   background-color: #777;
 }
+.btn__search:hover {
+  cursor: pointer;
+  background-color: #777;
+}
+
 
 .ck .ck-editor{
   padding: 50px;
-
-}
-
-.ck .ck-editor__editable{
-min-height:300px;
-min-width:800px;
-max-width: 900px;
-overflow: hidden;
-padding: 10px 20px 10px 20px;
-
-}
-
-
-.ck .ck-editor__editable_inline{
-padding: 50px;
 }
 
