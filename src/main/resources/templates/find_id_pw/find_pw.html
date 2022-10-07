@@ -62,7 +62,7 @@
 
               <div class="container__pw">
               <div th:if="${#fields.hasGlobalErrors()}">
-                  <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
+                  <p id="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
               </div>
                 <label id="pwIdFont" for="pwId">아이디</label>
                 <input id="pwId" type="text" name="memid">
