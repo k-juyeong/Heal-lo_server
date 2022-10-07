@@ -164,6 +164,17 @@ public class ReplyDAOImpl implements ReplyDAO {
   }
 
   /**
+   * 'DELETED' 상태의 댓글의 대댓글이 모두 삭제된 경우
+   * 해당 댓글도 삭제
+   *
+   * @param rpno 삭제할 댓글 번호
+   */
+  @Override
+  public void deleteFinally(Long rpno) {
+
+  }
+
+  /**
    * 게시글 삭제할 경우 해당 게시글의 모든 댓글 삭제
    * @param bdno
    */
