@@ -84,3 +84,12 @@ UPDATE REPLY
    SET RPSTEP = RPSTEP + 1
  WHERE RPGROUP = 2  -- 같은 부모댓글
    AND RPNO >= 1;   -- 댓글
+
+-- 'DELETED'의 상태의 댓글의 대댓글이 모두 삭제된 경우
+-- 해당 댓글도 삭제
+DELETE FROM REPLY
+      WHERE RPNO = 1
+        AND RPSTATUS = 'DELETED';
+
+SELECT COUNT(RPGROUP)
+  FROM REPLY;

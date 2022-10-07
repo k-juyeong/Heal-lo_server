@@ -79,7 +79,14 @@ public interface MemberDAO {
    * @param mememail 이메일
    * @return
    */
-  Member findPw(String memid,String memname, String mememail);
+  Member findPwCheck(String memid,String memname, String mememail);
+
+  /**
+   * 비밀번호 재설정
+   * @param memno
+   * @param pw
+   */
+  void updatePw(Long memno, String pw);
 
   /**
    * 로그인 계정 작성 게시글 조회

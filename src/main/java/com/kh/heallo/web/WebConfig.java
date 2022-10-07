@@ -34,6 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
         whiteList.add("/images/*/*");
         whiteList.add("/members/find_id/**");
         whiteList.add("/members/find_pw/**");
+        whiteList.add("/members/complete");
         whiteList.add("/boards/list/**");
         whiteList.add("/email/**");
         whiteList.add("/reply/*/list");

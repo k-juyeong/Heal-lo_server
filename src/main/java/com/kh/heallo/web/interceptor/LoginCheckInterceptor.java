@@ -41,7 +41,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
                         .createHeader(StatusCode.NOT_LOGIN_ERROR);
 
                 request.setAttribute(Session.NOT_LOGIN.name(), new ResponseEntity<>(responseMsg,HttpStatus.BAD_REQUEST));
-
             //현재 페이지주소를 쿼리파라미터로 넘기고 로그인 페이지로 redirect
             } else {
                 response.sendRedirect("/members/login" + "?requestURI=" + request.getRequestURI().toString());

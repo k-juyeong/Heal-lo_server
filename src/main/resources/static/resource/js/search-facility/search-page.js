@@ -25,6 +25,7 @@ let currentPage = 1;          //  현재 페이지
 let selectedCgLocaSave = {level1 : '', level2 : ''};
 let selectedTypeCgSave = ''; 
 let searchedTextSave = '';
+let pagingRequestPram = '';
 
 //네이버 지도 생성
 const mapUtil = createMap();
@@ -128,9 +129,6 @@ $openList.addEventListener('click',() => {
 // 검색버튼 클릭이벤트
 document.querySelector('.btn-search').addEventListener('click', () => {
 
-  //검색 가능상태 체크
-  if(!checkIsPossible()) return;
-
   //임계상태 변경
   requstStatus = false;
 
@@ -138,6 +136,8 @@ document.querySelector('.btn-search').addEventListener('click', () => {
   const requestPram = createRequestPram();
 
   //검색
+  pagingRequestPram = requestPram;
+  currentPage = 1;
   search(requestPram)
 });
 
@@ -159,14 +159,16 @@ document.querySelector('.my-location').addEventListener('click', () => {
 document.querySelector('.text-input__body').addEventListener('submit',(e) => {
   e.preventDefault();
 
-  //검색 가능상태 체크
-  if(!checkIsPossible()) return;
-
   //임계상태 변경
   requstStatus = false;
 
+  //요청 파라미터 생성
+  const requestPram = createRequestPram();
+
   //검색
-  search();
+  pagingRequestPram = requestPram;
+  currentPage = 1;
+  search(requestPram);
 })
 
 //초기 카테고리 상태
@@ -365,19 +367,6 @@ function createList(itemData) {
   return listWrap;
 }
 
-//검색 가능상태 체크
-function checkIsPossible() {
-  const isPossible = selectedCgLocaSave.level1 != '' && selectedTypeCgSave != '';
-  if(!requstStatus) {
-    alert("검색어를 조회하고 있습니다");
-    return;
-  } else if (!isPossible) {
-    alert("카테고리를 선택해주세요");
-    return;
-  }
-  return true;
-}
-
 //검색 요청 파라미터 생성
 function createRequestPram() {
   let locationValue = '';
@@ -401,8 +390,7 @@ function createDefault(msg) {
 }
 
 //검색
-function search() {
-  const requestPram = createRequestPram()
+function search(requestPram) {
   const queryPram = `?fcaddr=${requestPram.loca}&fctype=${requestPram.type}&fcname=${requestPram.text}&pageNo=${requestPram.pageNo}`;
 
   fetch('/facilities/list' + queryPram, {
@@ -492,7 +480,8 @@ function createPagination(pageInfo) {
     //이전버튼 클릭 이벤트
     link.addEventListener('click', e => {
       currentPage = pageInfo.startPage - pageInfo.page_COUNT_PER_PAGE;
-      search();
+      pagingRequestPram.pageNo = currentPage
+      search(pagingRequestPram);
     })
   }
 
@@ -513,9 +502,10 @@ function createPagination(pageInfo) {
 
       //현재 페이지 저장
       currentPage = parseInt(target.textContent);
+      pagingRequestPram.pageNo = currentPage
 
       //검색
-      search();
+      search(pagingRequestPram);
     });
   }
 
@@ -529,7 +519,8 @@ function createPagination(pageInfo) {
     //다음버튼 클릭 이벤트
     link.addEventListener('click', e => {
       currentPage = pageInfo.endPage + 1;
-      search();
+      pagingRequestPram.pageNo = currentPage
+      search(pagingRequestPram);
     })
   }
 
