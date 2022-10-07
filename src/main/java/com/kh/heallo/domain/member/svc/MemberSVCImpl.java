@@ -125,8 +125,19 @@ public class MemberSVCImpl implements MemberSVC{
    * @return
    */
   @Override
-  public Member findPw(String memid, String memname, String mememail) {
-    return memberDAO.findPw(memid,memname,mememail);
+  public Member findPwCheck(String memid, String memname, String mememail) {
+    return memberDAO.findPwCheck(memid,memname,mememail);
+  }
+
+  /**
+   * 비밀번호 재설정
+   *
+   * @param memno
+   * @param pw
+   */
+  @Override
+  public void updatePw(Long memno, String pw) {
+    memberDAO.updatePw(memno,pw);
   }
 
   /**

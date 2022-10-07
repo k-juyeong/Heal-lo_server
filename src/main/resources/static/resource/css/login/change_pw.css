@@ -60,3 +60,22 @@
     font-size: 1rem;
     font-weight: 300;
   }
+
+  #mempwErr {
+    text-align: start; font-size:0.8em; font-weight:bold; color:red; margin-bottom: 20px;
+  }
+
+  .fieldError{
+    border: 1px solid red;
+    color: red;
+  }
+  .fieldSuccess{
+    border: 1px solid blue;
+    color: blue;
+  }
+
+  .errmsg {
+    font-size:0.8em;
+    font-weight:bold;
+    color:red;
+  }

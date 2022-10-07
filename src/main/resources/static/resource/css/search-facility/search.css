@@ -76,7 +76,7 @@ a:hover {color: inherit;}
 .marker {position: absolute; display: flex; align-items: center; justify-content: flex-end; flex-direction: column; margin: 0px; padding: 0px; max-width: none; max-height: none;-webkit-user-select: none; width: 300px; height: 40px; left: 0px; top: 0px; border: 0px solid transparent; font-size: 16px; cursor: url(http://static.naver.net/maps/mantle/1x/openhand.cur), default}
 .marker-info {padding: 3px; font-size: 12px; color: white; background-color: #16a085; border: 1px solid black; cursor: pointer; }
 .facility-location-marker {color: var(--color-main-header);}
-.my-location-marker {color: var(--color-others-header);}
+.my-location-marker {color: #ff0087;}
 
 /* 별점 */
 .rating-score {width:65px;margin: 0 auto;text-align: center; font-size: 12px; pointer-events: none}
