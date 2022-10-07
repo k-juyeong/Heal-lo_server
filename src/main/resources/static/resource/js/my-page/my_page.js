@@ -9,7 +9,12 @@
     const $nnameCk = document.querySelector('.nnameCk');
     const $btnChange = document.getElementById('btnChange');
     const $form = document.getElementById('form');
+<<<<<<< HEAD
     const $phoneNb = document.getElementById('phoneNb');
+=======
+    const $changePw = document.getElementById('changePw');
+    const $changePwCh = document.getElementById('changePwCh');
+>>>>>>> f957e88bf96440ec20d16a186d4b91021c82dfc4
     let dupNick = false;
 
   $phoneNb.addEventListener('input',(e) => {
@@ -33,12 +38,28 @@
 
     $btnChange.addEventListener('click',e=>{
         e.preventDefault();
+        const pw1 = $changePw.value.trim('');
+        const pw2 = $changePwCh.value.trim('');
         if(dupNick == false){
             alert("닉네임 중복확인을 해주세요");
             return;
-        }else{
-            $form.submit();
         }
+        if(pw1 == ''){
+            alert('비밀번호를 입력해주세요!');
+            return;
+        }
+
+        if(pw2 == ''){
+            alert('비밀번호를 재입력해주세요!');
+            return;
+        }
+
+        if (pw1 != pw2) {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+        $form.submit();
+
     });
   //중복확인 버튼 클릭
   btnCheck.addEventListener('click',e=>{

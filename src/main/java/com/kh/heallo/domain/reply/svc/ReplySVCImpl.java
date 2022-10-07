@@ -93,6 +93,8 @@ public class ReplySVCImpl implements ReplySVC{
   @Override
   public void delete(Long rpno) {
     replyDAO.delete(rpno);
+    replyDAO.deleteFinally();
+
   }
 
   @Override

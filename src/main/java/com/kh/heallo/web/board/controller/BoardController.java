@@ -220,13 +220,19 @@ public class BoardController {
       "/list/{reqPage}//",
       "/list/{reqPage}/{searchType}/{keyword}"})
   public String findAll(
+      HttpServletRequest httpServletRequest,
       @PathVariable(required = false) Optional<Integer> reqPage,
       @PathVariable(required = false) Optional<String> searchType,
       @PathVariable(required = false) Optional<String> keyword,
       @RequestParam(required = false) Optional<String> category,
       Model model) {
+    HttpSession session = httpServletRequest.getSession(false);
+
+    if(session != null)
+    log.info("LoginMember {}",(LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name()));
 
     String cate = getCategory(category);
+
 
     //FindCriteria 값 설정
     fc.getRc().setReqPage(reqPage.orElse(1)); //요청페이지, 요청없으면 1

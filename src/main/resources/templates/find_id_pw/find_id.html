@@ -49,7 +49,7 @@
 
               <div class="container__id">
                   <div th:if="${#fields.hasGlobalErrors()}">
-                      <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
+                      <p id="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
                   </div>
                 <label id="idNameFont" for="idName">이름</label>
                 <input id="idName" type="text" name="memname">

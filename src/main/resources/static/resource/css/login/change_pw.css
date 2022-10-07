@@ -62,7 +62,7 @@
   }
 
   #mempwErr {
-    text-align: start; font-size:0.8em; font-weight:bold; color:red;
+    text-align: start; font-size:0.8em; font-weight:bold; color:red; margin-bottom: 20px;
   }
 
   .fieldError{

@@ -11,25 +11,21 @@
   <link rel="stylesheet" href="../../static/resource/css/board/board_write.css"
     th:href="@{/resource/css/board/board_write.css}" />
   <link rel="stylesheet" href="../../static/resource/css/board/reply.css" th:href="@{/resource/css/board/reply.css}" />
-  <script
-      src="../../static/resource/js/board/board.js"
-      th:src="@{/resource/js/board/board.js}"
-  ></script>
+  <script src="../../static/resource/js/board/board.js" th:src="@{/resource/js/board/board.js}"></script>
+
+  <script th:src="@{/resource/js/common/common.js}"></script>
+  <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
+
   <th:block th:replace="${link}"></th:block>
   <style>
-    .board-wrap .board-body {
-      display: grid;
-      grid-template-columns: 100px 300px;
-    }
+<!--    .board-wrap .board-body {-->
+<!--      display: grid;-->
+<!--      grid-template-columns: 100px 300px;-->
+<!--    }-->
 
-    .ck-editor__editable {
-      height: 500px;
-      width: 500px;
-    }
-
-    .ck-content {
-      font-size: 12px;
-    }
+ .ck.ck-editor__top {
+  display: none;
+}
   </style>
 </head>
 
@@ -98,7 +94,13 @@
                 <div class="line line2">
                   <label th:for="memnickname">[작성자]</label>
                   <span th:text="*{memnickname}"></span>
-                  <span th:text="*{memno}"></span>
+                  <input type="hidden" th:field="*{memno}"/>
+<<<<<<< HEAD
+                  <span th:text="*{memnickname}"></span>           
+                  <input type="hidden" th:field="*{memno}"/>
+=======
+
+>>>>>>> e2d3013169a4b541af8a8ac7af9a9ee33230bed0
                   <label th:for="bdcdate">[작성일]</label>
                   <span th:for="bdcdate" th:text="*{#temporals.format(bdcdate,'yy/MM/dd HH:mm')}"></span>
                   <label>[조회수]</label>
@@ -106,7 +108,7 @@
                 </div>
 
                 <div>
-                  <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}"></textarea>
+                  <textarea class="textarea" name="" id="editor" th:field="*{bdcontent}" style="display:none"></textarea>
                 </div>
 
                 <div class="writeBtn_area" th:replace="~{layout/board-btn:: ${session?.LOGIN_MEMBER?.memno} == *{memno} ? sameMemno : diffMemno}">
@@ -134,8 +136,8 @@
                   <textarea id="rpComment" th:field="*{rpComment}" class="reply__write toolbox" rows="10"></textarea>
                 </div>
                 <div class="reply__write btngrp">
-                  <button type="button" id="saveBtn" class="btn">등록</button>
-                  <button type="button" id="notSaveBtn" class="btn">
+                  <button type="button" id="saveBtn" class="btn btn__search">등록</button>
+                  <button type="button" id="notSaveBtn" class="btn btn__search">
                     취소
                   </button>
                 </div>
@@ -165,36 +167,9 @@
   <script src="../../static/resource/js/editor/webpack.config.js"
     th:src="@{/resource/js/editor/webpack.config.js}"></script>
   <script src="../../static/resource/js/board/reply.js" th:src="@{/resource/js/board/reply.js}"></script>
-
   <script>
-    //수정이동
-<!--    const $updateBtn = document.getElementById('updateBtn');-->
-<!--    $updateBtn.addEventListener('click', (evt) => {-->
-<!--      if (confirm('수정하시겠습니까?')) {-->
-<!--        const bdno = document.getElementById('bdno').textContent;-->
-<!--        const url = `/boards/${bdno}/edit`;-->
-<!--        location.href = url;-->
-<!--      }-->
-<!--    });-->
-
-<!--    //삭제-->
-<!--    const $deleteBtn = document.getElementById('deleteBtn');-->
-<!--    $deleteBtn.addEventListener('click', (evt) => {-->
-<!--      if (confirm('삭제하시겠습니까?')) {-->
-<!--        const bdno = document.getElementById('bdno').textContent;-->
-<!--        const url = `/boards/${bdno}/del`;-->
-<!--        location.href = url;-->
-<!--      }-->
-<!--    });-->
-
-<!--    //목록-->
-<!--    const $listBtn = document.getElementById('listBtn');-->
-<!--    $listBtn.addEventListener('click', (evt) => {-->
-<!--      const url = `/boards/list?category=${container.dataset.code}`;-->
-<!--      location.href = url;-->
-<!--    });-->
-
-
+<!--      //textArea => ck_editor 대체-->
+<!--    createCkEditor(document.querySelector( '#editor',false));-->
 
     // 에디터 툴
     ClassicEditor.create(document.querySelector('#editor'), {
@@ -207,6 +182,7 @@
       .catch((error) => {
         console.error(error);
       });
+
   </script>
 </body>
 

@@ -182,7 +182,6 @@ function all(bdno){
 
        return reResult;
     }
-
 }
 
 // 댓글 등록
@@ -304,9 +303,6 @@ function del(event, rpno) {
       }
     }
   }
-
-
-
 
   // 삭제
   function delReply(rpno) {

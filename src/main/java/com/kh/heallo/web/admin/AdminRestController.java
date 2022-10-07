@@ -107,6 +107,7 @@ public class AdminRestController {
   // 게시물 - 게시글 삭제
   @DeleteMapping("board/{bdno}")
   public ResponseEntity<ResponseMsg> boardDel(@PathVariable Long bdno) {
+    replySVC.deleteAll(bdno);
     boardSVC.deleteByBoardId(bdno);
 
     // Create ResponseEntity
