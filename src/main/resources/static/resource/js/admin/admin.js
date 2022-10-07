@@ -80,8 +80,8 @@ function memberAll(){
         let result = '';
         // 날짜 포맷 변경
         const memcdate = member.memcdate.substr(0,10);
-//        if (member.memstatus === 'JOIN' && member.memcode === 'SNS')
-        if (member.memstatus === 'JOIN') {
+        if (member.memstatus === 'JOIN' && member.memcode != 'SNS') {
+        //        if (member.memstatus == 'JOIN') {
           result =
             `<tr>
               <td>${member.memno}</td>
@@ -132,6 +132,7 @@ function search() {
         clearInput();
         break;
       case "notice":
+        searchNotice(input);
         clearInput();
         break;
       default:
@@ -182,6 +183,15 @@ function search() {
 
   // 게시물 - 문의글 제목
   // 게시물 - 문의글 작성자
+  function searchNotice(input) {
+    const type = document.querySelector('.searchType');
+    const selectedType = type.options[type.selectedIndex].text;
+    if (selectedType === '제목') {
+      noticeByTitle(input);
+    } else if (selectedType === '작성자') {
+      noticeByMemInfo(input);
+    }
+  }
 }
 
 // 회원 닉네임,아이디 검색 시 회원 목록
@@ -201,8 +211,8 @@ function memberByMemInfo(memInfo){
         let result = '';
         // 날짜 포맷 변경
         const memcdate = member.memcdate.substr(0,10);
-//        if (member.memstatus === 'JOIN' && member.memcode === 'SNS')
-        if (member.memstatus == 'JOIN') {
+        if (member.memstatus === 'JOIN' && member.memcode != 'SNS') {
+//        if (member.memstatus == 'JOIN') {
           result =
             `<tr>
               <td>${member.memno}</td>
@@ -279,12 +289,14 @@ function boardAll(){
       console.log(res.data.boardAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.boardAll.map(board=>{
+        const date = board.bdcdate.replace("T"," ");
+        const fullDate = date.substr(0,16);
         const result =
           `<tr>
             <td>${board.bdno}</td>
             <td><a href="/boards/list/${board.bdno}/detail">${board.bdtitle}</a></td>
             <td>${board.memnickname}</td>
-            <td>${board.bdcdate}</td>
+            <td>${fullDate}</td>
             <td><button class="btn btn_delete" onclick="delBoard(${board.bdno})">삭제</button></td>
            </tr>`;
           return result;
@@ -305,12 +317,14 @@ function boardByTitle(title){
       console.log(res.data.boardList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.boardList.map(board=>{
+        const date = board.bdcdate.replace("T"," ");
+        const fullDate = date.substr(0,16);
         const result =
           `<tr>
             <td>${board.bdno}</td>
             <td><a href="/boards/list/${board.bdno}/detail">${board.bdtitle}</a></td>
             <td>${board.memnickname}</td>
-            <td>${board.bdcdate}</td>
+            <td>${fullDate}</td>
             <td><button class="btn btn_delete" onclick="delBoard(${board.bdno})">삭제</button></td>
            </tr>`;
           return result;
@@ -331,12 +345,14 @@ function boardByMemInfo(memInfo){
       console.log(res.data.boardList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.boardList.map(board=>{
+        const date = board.bdcdate.replace("T"," ");
+        const fullDate = date.substr(0,16);
         const result =
           `<tr>
             <td>${board.bdno}</td>
             <td><a href="/boards/list/${board.bdno}/detail">${board.bdtitle}</a></td>
             <td>${board.memnickname}</td>
-            <td>${board.bdcdate}</td>
+            <td>${fullDate}</td>
             <td><button class="btn btn_delete" onclick="delBoard(${board.bdno})">삭제</button></td>
            </tr>`;
           return result;
@@ -398,12 +414,14 @@ function replyAll(){
       console.log(res.data.replyAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.replyAll.map(reply=>{
+        const date = reply.rpCDate.replace("T"," ");
+        const fullDate = date.substr(0,16);
         const result =
           `<tr>
             <td>${reply.rpno}</td>
             <td><a href="/boards/list/${reply.bdno}/detail">${reply.rpComment}</a></td>
             <td>${reply.memnickname}</td>
-            <td>${reply.rpCDate}</td>
+            <td>${fullDate}</td>
             <td><button class="btn btn_delete" onclick="delReply(${reply.rpno})">삭제</button></td>
            </tr>`;
           return result;
@@ -424,12 +442,14 @@ function replyByContent(content){
       console.log(res.data.replyList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.replyList.map(reply=>{
+        const date = reply.rpCDate.replace("T"," ");
+        const fullDate = date.substr(0,16);
         const result =
           `<tr>
             <td>${reply.rpno}</td>
             <td><a href="/boards/list/${reply.bdno}/detail">${reply.rpComment}</a></td>
             <td>${reply.memnickname}</td>
-            <td>${reply.rpCDate}</td>
+            <td>${fullDate}</td>
             <td><button class="btn btn_delete" onclick="delReply(${reply.rpno})">삭제</button></td>
            </tr>`;
           return result;
@@ -450,12 +470,14 @@ function replyByMemInfo(memInfo){
       console.log(res.data.replyList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.replyList.map(reply=>{
+        const date = reply.rpCDate.replace("T"," ");
+        const fullDate = date.substr(0,16);
         const result =
           `<tr>
             <td>${reply.rpno}</td>
             <td><a href="/boards/list/${reply.bdno}/detail">${reply.rpComment}</a></td>
             <td>${reply.memnickname}</td>
-            <td>${reply.rpCDate}</td>
+            <td>${fullDate}</td>
             <td><button class="btn btn_delete" onclick="delReply(${reply.rpno})">삭제</button></td>
            </tr>`;
           return result;
@@ -661,12 +683,14 @@ function noticeAll(){
       console.log(res.data.noticeAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.noticeAll.map(notice=>{
+        const date = notice.bdcdate.replace("T"," ");
+        const fullDate = date.substr(0,16);
         const result =
           `<tr>
             <td>${notice.bdno}</td>
             <td><a href="/boards/list/${notice.bdno}/detail">${notice.bdtitle}</a></td>
             <td>${notice.memnickname}</td>
-            <td>${notice.bdcdate}</td>
+            <td>${fullDate}</td>
             <td><button class="btn btn_delete" onclick="delNotice(${notice.bdno})">삭제</button></td>
            </tr>`;
           return result;
@@ -687,12 +711,14 @@ function noticeByTitle(title){
       console.log(res.data.noticeList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.noticeList.map(notice=>{
+        const date = notice.bdcdate.replace("T"," ");
+        const fullDate = date.substr(0,16);
         const result =
           `<tr>
             <td>${notice.bdno}</td>
             <td><a href="/boards/list/${notice.bdno}/detail">${notice.bdtitle}</a></td>
             <td>${notice.memnickname}</td>
-            <td>${notice.bdcdate}</td>
+            <td>${fullDate}</td>
             <td><button class="btn btn_delete" onclick="delNotice(${notice.bdno})">삭제</button></td>
            </tr>`;
           return result;
@@ -713,12 +739,14 @@ function noticeByMemInfo(memInfo){
       console.log(res.data.noticeList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.noticeList.map(notice=>{
+        const date = notice.bdcdate.replace("T"," ");
+        const fullDate = date.substr(0,16);
         const result =
           `<tr>
             <td>${notice.bdno}</td>
             <td><a href="/boards/list/${notice.bdno}/detail">${notice.bdtitle}</a></td>
             <td>${notice.memnickname}</td>
-            <td>${notice.bdcdate}</td>
+            <td>${fullDate}</td>
             <td><button class="btn btn_delete" onclick="delNotice(${notice.bdno})">삭제</button></td>
            </tr>`;
           return result;
