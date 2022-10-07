@@ -24,3 +24,5 @@
 #container #pwEmail {margin-top: 10px; margin-left: 10px; margin-right: 200px; padding: 10px 2px; border-radius: 10px; border: 1px solid #444;}
 #container #pw .button {display: flex;justify-content:  flex-end; width: 720px;}
 #container #pw .button button {width: 80px; font-size: 16px; background-color: #16a085; color: white;}
+
+.fieldError{font-weight:bold; font-size: 12px; color: red;}

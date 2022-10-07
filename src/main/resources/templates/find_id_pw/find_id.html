@@ -48,6 +48,9 @@
               <p class="container__title1">아이디 찾기</p>
 
               <div class="container__id">
+                  <div th:if="${#fields.hasGlobalErrors()}">
+                      <p class="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
+                  </div>
                 <label id="idNameFont" for="idName">이름</label>
                 <input id="idName" type="text" name="memname">
                 <label id="idEmailFont" for="idEmail">이메일</label>
