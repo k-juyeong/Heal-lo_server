@@ -25,6 +25,8 @@
       .ck-editor__editable { height: 500px; }
       .ck-content { font-size: 13px; }
     </style>
+    <script th:src="@{/resource/js/common/common.js}"></script>
+    <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
   </head>
   <body>
     <div id="wrapper">
@@ -159,77 +161,14 @@
         </div>
       </footer>
     </div>
-
-
-    <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
-
     <script>
       const $saveBtn = document.getElementById('saveBtn');
       $saveBtn.addEventListener('click', (evt) => {
         document.getElementById('saveForm').submit();
       });
 
-      // 에디터 툴
-      ClassicEditor.create(document.querySelector('#editor'), {
-        plugin: ['ListStyle', 'Markdown', 'MediaEmbed', 'MediaEmbedToolbar'],
-        toolbar: {
-          items: [
-            'heading',
-            '|',
-            'underline',
-            'bold',
-            'italic',
-            'link',
-            'bulletedList',
-            'numberedList',
-            'todoList',
-            '|',
-            'outdent',
-            'indent',
-            '|',
-            'imageInsert',
-            'imageUpload',
-            'blockQuote',
-            'insertTable',
-            'mediaEmbed',
-            'markdown',
-            'undo',
-            'redo',
-            '|',
-            'highlight',
-            'fontFamily',
-            'fontColor',
-            'fontBackgroundColor',
-            'fontSize',
-            '|',
-            'htmlEmbed',
-            'specialCharacters',
-          ],
-        },
-        language: 'ko',
-        image: {
-          toolbar: [
-            'imageTextAlternative',
-            'imageStyle:full',
-            'imageStyle:side',
-          ],
-        },
-        table: {
-          contentToolbar: [
-            'tableColumn',
-            'tableRow',
-            'mergeTableCells',
-            'tableCellProperties',
-            'tableProperties',
-          ],
-        },
-      })
-        .then((editor) => {
-          window.editor = editor;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+ createCkEditor(document.querySelector( '#editor',false));
+
     </script>
 
     <!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->

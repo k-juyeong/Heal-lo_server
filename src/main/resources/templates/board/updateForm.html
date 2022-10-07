@@ -9,11 +9,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>게시판</title>
-    <link
-      rel="stylesheet"
-      href="../../static/resource/css/board/board_write.css"
-      th:href="@{/resource/css/board/board_write.css}"
-    />
+    <link rel="stylesheet"href="../../static/resource/css/board/board_write.css"
+      th:href="@{/resource/css/board/board_write.css}"/>
+    <script th:src="@{/resource/js/common/common.js}"></script>
+    <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
     <th:block th:replace="${link}"></th:block>
 
     <style>
@@ -169,10 +168,6 @@
         </div>
       </footer>
     </div>
-    <script
-      src="../../static/resource/js/editor/ckeditor.js"
-      th:src="@{/resource/js/editor/ckeditor.js}"
-    ></script>
     <script>
       //수정완료
       const $updateBtn = document.getElementById('updateBtn');
@@ -181,81 +176,10 @@
         const value = document.getElementById('menu-list').value;
         updateForm.submit();
       });
+    //textArea => ck_editor 대체
+    createCkEditor(document.querySelector( '#editor',false));
 
-      <!--const updateBtn = document.getElementById('updateBtn');-->
-      <!--$saveBtn?.addEventListener("click", e=>{-->
-      <!--  editForm.action = `${editForm.action}?category=${category}`;-->
-      <!--  editForm.submit();-->
-      <!--});-->
 
-      //목록
-<!--      const $listBtn = document.getElementById('listBtn');-->
-<!--      $listBtn.addEventListener('click', (evt) => {-->
-<!--      const url = `/boards/list?category=${bdcg}`;-->
-<!--      location.href = url;-->
-<!--      });-->
-
-      // 에디터 툴
-      ClassicEditor.create(document.querySelector('#editor'), {
-        plugin: ['ListStyle', 'Markdown', 'MediaEmbed', 'MediaEmbedToolbar'],
-        toolbar: {
-          items: [
-            'heading',
-            '|',
-            'underline',
-            'bold',
-            'italic',
-            'link',
-            'bulletedList',
-            'numberedList',
-            'todoList',
-            '|',
-            'outdent',
-            'indent',
-            '|',
-            'imageInsert',
-            'imageUpload',
-            'blockQuote',
-            'insertTable',
-            'mediaEmbed',
-            'markdown',
-            'undo',
-            'redo',
-            '|',
-            'highlight',
-            'fontFamily',
-            'fontColor',
-            'fontBackgroundColor',
-            'fontSize',
-            '|',
-            'htmlEmbed',
-            'specialCharacters',
-          ],
-        },
-        language: 'en',
-        image: {
-          toolbar: [
-            'imageTextAlternative',
-            'imageStyle:full',
-            'imageStyle:side',
-          ],
-        },
-        table: {
-          contentToolbar: [
-            'tableColumn',
-            'tableRow',
-            'mergeTableCells',
-            'tableCellProperties',
-            'tableProperties',
-          ],
-        },
-      })
-        .then((editor) => {
-          window.editor = editor;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
     </script>
 
     <!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->
