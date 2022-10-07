@@ -9,11 +9,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>게시판</title>
+
     <link
       rel="stylesheet"
       href="../../static/resource/css/board/board_write.css"
       th:href="@{/resource/css/board/board_write.css}"
     />
+
     <th:block th:replace="${link}"></th:block>
     <style>
       .board-wrap .board-body {
@@ -24,7 +26,6 @@
       .ck-content { font-size: 13px; }
     </style>
   </head>
-
   <body>
     <div id="wrapper">
       <!-- 헤더 -->
@@ -123,10 +124,10 @@
                     <label>작성자</label>
                     <span th:text="${session.LOGIN_MEMBER.memnickname}"></span>
                   </div>
-
                   <div>
-                    <textarea class="textarea" name="editor" id="editor" th:field="*{bdcontent}" required
+                    <textarea class="textarea" name="editor" id="editor" th:field="*{bdcontent}" required style="display:none"
                               th:class="${#fields.hasErrors('bdcontent')} ? fieldError"></textarea>
+
                     <div class="fieldError" th:if="${#fields.hasErrors('bdcontent')}"
                          th:errors="*{bdcontent}"></div>
                   </div>
@@ -158,10 +159,10 @@
         </div>
       </footer>
     </div>
-    <script
-      src="../../static/resource/js/editor/ckeditor.js"
-      th:src="@{/resource/js/editor/ckeditor.js}"
-    ></script>
+
+
+    <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
+
     <script>
       const $saveBtn = document.getElementById('saveBtn');
       $saveBtn.addEventListener('click', (evt) => {
@@ -205,7 +206,7 @@
             'specialCharacters',
           ],
         },
-        language: 'en',
+        language: 'ko',
         image: {
           toolbar: [
             'imageTextAlternative',
@@ -230,21 +231,6 @@
           console.error(error);
         });
     </script>
-
-    <!--  <script>-->
-    <!--  const domainListEl = document.getElementById('menu-list');-->
-    <!--const domainInputEl = document.getElementById('menu-text');-->
-
-    <!--domainListEl.addEventListener('change', (event) => {-->
-    <!--  if (event.target.value !== "type") {-->
-    <!--    domainInputEl.value = event.target.value-->
-    <!--    domainInputEl.disabled = true-->
-    <!--  } else {-->
-    <!--    domainInputEl.value = ""-->
-    <!--    domainInputEl.disabled = false-->
-    <!--  }-->
-    <!--});-->
-    <!--</script>-->
 
     <!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->
     <!--    <script src="../../static/resource/js/template/layout-sub.js" th:src="@{/resource/js/template/layout-sub.js}"></script>-->
