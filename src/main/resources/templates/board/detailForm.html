@@ -100,15 +100,11 @@
                 </div>
                 <div class="line line2">
                   <label th:for="memnickname">[작성자]</label>
-<<<<<<< HEAD
                   <span th:text="*{memnickname}"></span>
 
                   <input type="hidden" th:field="*{memno}"/>
-
-=======
                   <span th:text="*{memnickname}"></span>           
                   <input type="hidden" th:field="*{memno}"/>
->>>>>>> 80065110ae41e74ec796b0141e8d4719a5bae03e
                   <label th:for="bdcdate">[작성일]</label>
                   <span th:for="bdcdate" th:text="*{#temporals.format(bdcdate,'yy/MM/dd HH:mm')}"></span>
                   <label>[조회수]</label>
