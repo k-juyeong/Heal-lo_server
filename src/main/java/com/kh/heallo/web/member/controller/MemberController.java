@@ -251,7 +251,6 @@ public class MemberController {
     member.setMemtel(editForm.getMemtel());
     member.setMemudate(editForm.getMemudate());
 
-
     memberSVC.update(memno,member);
 
     log.info("editForm={}",editForm);
@@ -276,48 +275,93 @@ public class MemberController {
 
   //아이디 찾기 화면
   @GetMapping("/find_id")
-  public String findIdPWForm(){
+  public String findIdPWForm(Model model){
 
+    model.addAttribute("form", new FindIdForm());
     return "find_id_pw/find_id";
   }
 
   //아이디 찾기 처리
   @PostMapping("/find_id")
-  public String findIdPW(@ModelAttribute("form") FindIdForm findIdForm, Model model){
+  public String findIdPW(@ModelAttribute("form") FindIdForm findIdForm, BindingResult bindingResult,  Model model) {
 
     FindIdForm findId = new FindIdForm();
     findId.setMemname(findIdForm.getMemname());
     findId.setMememail(findIdForm.getMememail());
 
-    Member id = memberSVC.findId(findId.getMemname(), findId.getMememail());
-    findId.setMemid(id.getMemid());
+    Member member = memberSVC.findId(findId.getMemname(), findId.getMememail());
+    findId.setMemid(member.getMemid());
 
-    log.info("findId={}", findId);
-    model.addAttribute("form", findId);
-    return "find_id_pw/success_find_id";
+    //멤버 code 검증
+    if (member.getMemid() != null) {
+      Member member2 = memberSVC.findById(member.getMemid());
+      if (member2.getMemcode().equals(Member.MEMCODE_SNS)) {
+        bindingResult.reject("not.support","해당 이메일은 sns로그인을 이용해주세요");
+
+        return "find_id_pw/find_id";
+      }
+    }
+
+      log.info("findId={}", findId);
+      model.addAttribute("form", findId);
+      return "find_id_pw/success_find_id";
+
   }
 
-  //비밀번호
+  //비밀번호 재설정
   @GetMapping("/find_pw")
-  public String findIdPWForm2(){
+  public String findIdPWForm2(Model model){
 
+    model.addAttribute("form",new FindIdForm());
     return "find_id_pw/find_pw";
   }
 
   @PostMapping("/find_pw")
-  public String findPw(@ModelAttribute("form")FindPwForm findPwForm, Model model){
+  public String findPw(@ModelAttribute("form")FindPwForm findPwForm, BindingResult bindingResult, Model model){
 
     FindPwForm findPw = new FindPwForm();
     findPw.setMemid(findPwForm.getMemid());
     findPw.setMemname(findPwForm.getMemname());
     findPw.setMememail(findPwForm.getMememail());
 
-    Member pw = memberSVC.findPw(findPw.getMemid(), findPw.getMemname(), findPw.getMememail());
-    findPw.setMempw(pw.getMempw());
+    Member findedMember = memberSVC.findPwCheck(findPw.getMemid(), findPw.getMemname(), findPw.getMememail());
 
-    log.info("findPw={}", findPw);
-    model.addAttribute("form", findPw);
-    return "find_id_pw/success_find_pw";
+    //멤버 code 검증
+    if (findedMember.getMemno() != null) {
+      Member member2 = memberSVC.findBymemno(findedMember.getMemno());
+      if (member2.getMemcode().equals(Member.MEMCODE_SNS)) {
+        bindingResult.reject("not.support","해당 이메일은 sns로그인을 이용해주세요");
+
+        return "find_id_pw/find_pw";
+      }
+    }
+
+    model.addAttribute("memno", findedMember.getMemno());
+    return "find_id_pw/change_pw";
+  }
+
+  @PostMapping("/find_pw/{memno}")
+  public String updatePw(@PathVariable("memno") Long memno, @ModelAttribute("form") FindPwForm findPwForm , BindingResult bindingResult){
+
+    //회원비밀번호 길이체크
+    if(findPwForm.getMempw().toLowerCase().trim().length() < 8 ||
+            findPwForm.getMempw().toUpperCase().trim().length() > 16){
+      bindingResult.rejectValue("mempw","dup.mempw", "비밀번호 규칙을 지켜주세요");
+    }
+
+    if (bindingResult.hasErrors()){
+      return "find_id_pw/change_pw";
+    }
+
+    memberSVC.updatePw(memno,findPwForm.getMempw());
+    return "redirect:/members/complete";
+  }
+
+  //비밀번호 재설정 완료 페이지
+  @GetMapping("/complete")
+  public String completeView(){
+
+    return "find_id_pw/success_change_pw";
   }
 
   //마이페이지 활동 (게시글) 활동 이동 시 첫 페이지

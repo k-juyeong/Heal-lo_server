@@ -79,7 +79,7 @@
             </div>
             <div class="join__info">
               <label for="phone_number">*전화번호 </label>
-              <input type="tel" id="phone_number" name="memtel" placeholder="-를 제외하고 입력해 주세요." th:field="*{memtel}"
+              <input type="tel" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" id="phone_number" name="memtel" placeholder="-를 제외하고 입력해 주세요." th:field="*{memtel}"
                      th:class="${#fields.hasErrors('memtel')} ? fieldError">
             </div>
             <span id="memtelErr" th:if="${#fields.hasErrors('memtel')}" th:errors="*{memtel}"></span>

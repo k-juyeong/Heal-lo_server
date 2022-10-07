@@ -50,12 +50,14 @@
       <main id="container">
         <div id="changePwContainer">
           <div class="none"></div>
-          <div id="changePwContent">
+          <form id="changePwContent" th:action="@{/members/find_pw/{memno}(memno=${memno})}" th:object="${form}" method="post">
             <p id="changePwFont">비밀번호 재설정</p>
-            <input type="text" id="changePw" placeholder="새로운 비밀번호" />
+            <input type="text" name="mempw" id="changePw" placeholder="새로운 비밀번호" th:class="${#fields.hasErrors('mempw')} ? fieldError "/>
+            <span id="mempwErr" th:if="${#fields.hasErrors('mempw')}" th:errors="*{mempw}"></span>
             <input type="text" id="changePwR" placeholder="비밀번호 재입력" />
-            <button type="submit" id="btn">완료</button>
-          </div>
+
+            <button type="button" id="btn">완료</button>
+          </form>
           <div class="none">
             <div id="changeWarning">
               <p class="change-warning-font">주의하세요!</p>

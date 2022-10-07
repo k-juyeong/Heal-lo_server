@@ -182,7 +182,6 @@ function all(bdno){
 
        return reResult;
     }
-
 }
 
 // 댓글 등록

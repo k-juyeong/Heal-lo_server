@@ -14,6 +14,9 @@
     display: flex;
     flex-direction: column;
 }
+#container #dayForm {
+  margin-top: 25px;
+}
 #container #dayForm .top {
     display: flex;
     justify-content: space-between;
@@ -25,6 +28,14 @@
 #container #dayForm .top button {
     background-color: #16a085;
     color: white;
+    border: none;
+    width: 70px;
+    height: 40px;
+    font-size: 15px;
+    border-radius: 5px;
+}
+#container #dayForm .top button:hover {
+    cursor: pointer;
 }
 #container #dayForm .dates {
     margin-bottom: 20px;
@@ -45,14 +56,13 @@
     padding-bottom: 20px;
     border-bottom: 0.5px solid #ddd;
 }
-#container #dayForm .content {
-    width: 100%;
+#container #dayForm .ck-blurred {
     height: 650px;
     scroll-behavior: auto;
 }
 #container .btngrp {
     width: 90%;
-    margin: 0 auto;
+    margin: 15px auto;
     display: flex;
     justify-content: end;
 }

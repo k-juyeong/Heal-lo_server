@@ -250,14 +250,14 @@ public class MemberDAOImpl implements MemberDAO{
    * @return
    */
   @Override
-  public Member findPw(String memid, String memname, String mememail) {
+  public Member findPwCheck(String memid, String memname, String mememail) {
     StringBuffer sql = new StringBuffer();
 
     log.info(memid);
     log.info(memname);
     log.info(mememail);
 
-    sql.append(" select mempw ");
+    sql.append(" select memno ");
     sql.append("  from member ");
     sql.append(" where memid = ? ");
     sql.append("   and memname = ? ");
@@ -270,6 +270,23 @@ public class MemberDAOImpl implements MemberDAO{
       log.info("찾고자하는 회원이 없습니다={}",memid, memname,mememail);
     }
     return findPw;
+  }
+
+
+  /**
+   * 비밀번호 재설정
+   * @param memno
+   * @param pw
+   */
+  @Override
+  public void updatePw(Long memno, String pw) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append(" update member ");
+    sql.append("   set mempw = ? ");
+    sql.append(" where memno = ? ");
+
+    jdbcTemplate.update(sql.toString(), pw, memno);
   }
 
   /**
@@ -399,6 +416,6 @@ public class MemberDAOImpl implements MemberDAO{
     String sql = "select count(memnickname) from member where memnickname = ? ";
 
     Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, memnickname);
-    return rowCount == 1 ? true : false;
+    return rowCount > 1 ? true : false;
   }
 }
