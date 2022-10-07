@@ -11,24 +11,16 @@
   <link rel="stylesheet" href="../../static/resource/css/board/board_write.css"
     th:href="@{/resource/css/board/board_write.css}" />
   <link rel="stylesheet" href="../../static/resource/css/board/reply.css" th:href="@{/resource/css/board/reply.css}" />
-  <script
-      src="../../static/resource/js/board/board.js"
-      th:src="@{/resource/js/board/board.js}"
-  ></script>
+  <script src="../../static/resource/js/board/board.js" th:src="@{/resource/js/board/board.js}"></script>
+
+  <script th:src="@{/resource/js/common/common.js}"></script>
+  <script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
+
   <th:block th:replace="${link}"></th:block>
   <style>
     .board-wrap .board-body {
       display: grid;
       grid-template-columns: 100px 300px;
-    }
-
-    .ck-editor__editable {
-      height: 500px;
-      width: 500px;
-    }
-
-    .ck-content {
-      font-size: 12px;
     }
  .ck.ck-editor__top {
   display: none;
@@ -101,10 +93,13 @@
                 <div class="line line2">
                   <label th:for="memnickname">[작성자]</label>
                   <span th:text="*{memnickname}"></span>
-
                   <input type="hidden" th:field="*{memno}"/>
+<<<<<<< HEAD
                   <span th:text="*{memnickname}"></span>           
                   <input type="hidden" th:field="*{memno}"/>
+=======
+
+>>>>>>> e2d3013169a4b541af8a8ac7af9a9ee33230bed0
                   <label th:for="bdcdate">[작성일]</label>
                   <span th:for="bdcdate" th:text="*{#temporals.format(bdcdate,'yy/MM/dd HH:mm')}"></span>
                   <label>[조회수]</label>
@@ -171,8 +166,10 @@
   <script src="../../static/resource/js/editor/webpack.config.js"
     th:src="@{/resource/js/editor/webpack.config.js}"></script>
   <script src="../../static/resource/js/board/reply.js" th:src="@{/resource/js/board/reply.js}"></script>
-
   <script>
+<!--      //textArea => ck_editor 대체-->
+<!--    createCkEditor(document.querySelector( '#editor',false));-->
+
     // 에디터 툴
     ClassicEditor.create(document.querySelector('#editor'), {
       toolbar: [],
@@ -184,6 +181,7 @@
       .catch((error) => {
         console.error(error);
       });
+
   </script>
 </body>
 

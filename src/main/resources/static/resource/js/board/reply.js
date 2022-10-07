@@ -304,9 +304,6 @@ function del(event, rpno) {
     }
   }
 
-
-
-
   // 삭제
   function delReply(rpno) {
     const url = `http://localhost:9080/reply/${rpno}`;
