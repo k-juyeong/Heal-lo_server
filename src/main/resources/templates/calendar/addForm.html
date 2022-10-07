@@ -83,7 +83,13 @@
 
   // 저장
     addBtn.addEventListener('click', e=>{
+      const value = document.querySelector('.ck-content').textContent;
+      const chkBlank = value.replace(/(\s*)/g, "");
+      if (chkBlank === '') {
+        alert('내용을 입력해주세요!');
+      } else {
         document.getElementById('addForm').submit();
+      }
     });
 
  // 취소

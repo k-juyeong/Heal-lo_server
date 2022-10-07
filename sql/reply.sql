@@ -88,8 +88,8 @@ UPDATE REPLY
 -- 'DELETED'의 상태의 댓글의 대댓글이 모두 삭제된 경우
 -- 해당 댓글도 삭제
 DELETE FROM REPLY
-      WHERE RPNO = 1
-        AND RPSTATUS = 'DELETED';
-
-SELECT COUNT(RPGROUP)
-  FROM REPLY;
+      WHERE RPSTATUS = 'DELETED'
+        AND RPGROUP IN (SELECT RPGROUP
+                          FROM REPLY
+                        GROUP BY RPGROUP
+                        HAVING COUNT(RPGROUP) = 1);
