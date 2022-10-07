@@ -21,8 +21,13 @@ function getReply() {
 // 댓글 등록하기
 saveBtn.addEventListener('click', e=>{
   const reply = getReply();
-
-  save(reply, bdno);
+  const chkBlank = (reply.rpComment).replace(/(\s*)/g, "");
+  if (chkBlank === '') {
+    console.log('blank!!!');
+    alert('내용을 입력해주세요!');
+  } else {
+    save(reply, bdno);
+  }
   clearTextarea();
 });
 
@@ -212,12 +217,9 @@ function save(reply, bdno){
 // 수정 에디터 출력 없으면 있으면 토글
 function editEditor(event, rpno) {
   const parentEle = event.target.closest('.all');
-//  console.log(parentEle);
-//  console.log(parentEle.childElementCount);
 
   if(parentEle.childElementCount >= 2) {
     const ele = parentEle.firstElementChild;
-//    console.log(ele.nextElementSibling);
     const siblingEle = ele.nextElementSibling;
     siblingEle.remove();
   } else {
@@ -258,8 +260,6 @@ function edit(reply, rpno) {
 // 수정 버튼 클릭 시
 function editChk(event, rpno){
   const tar = event.target.parentElement;
-//  console.log(tar);
-//  console.log(tar.previousElementSibling);
 
   // 수정된 댓글 내용 가져오기
   function getUpdatedReply() {
@@ -276,7 +276,6 @@ function editChk(event, rpno){
 function cancel(event) {
   const btn = event.target.parentElement;
   const replyEdit = btn.parentElement;
-//  console.log(replyEdit);
   replyEdit.remove();
 }
 
@@ -378,16 +377,18 @@ function toSaveReReply(event, rpno) {
       return {rpComment, rpGroup, rpDepth};
   }
   const reReply = getReReply();
-//  console.log(reReply);
-
-  saveReReply(reReply, bdno);
+  const chkBlank = (reReply.rpComment).replace(/(\s*)/g, "");
+  if (chkBlank === '') {
+    alert('내용을 입력해주세요!');
+  } else {
+    saveReReply(reReply, bdno);
+  }
 }
 
 // 대댓글 취소
 function cancelReReply(event) {
   const btn = event.target.parentElement;
   const reReply = btn.parentElement;
-//  console.log(replyEdit);
   reReply.remove();
 }
 

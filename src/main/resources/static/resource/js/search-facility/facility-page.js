@@ -185,7 +185,7 @@ function getReviewList() {
         .then(response => response.json())
         .then(jsonData => {
             const $resultCount = document.querySelector('.review-cnt')
-
+            console.log(jsonData);
             //기존노드 삭제
             $reviewLists.innerHTML = '';
 
