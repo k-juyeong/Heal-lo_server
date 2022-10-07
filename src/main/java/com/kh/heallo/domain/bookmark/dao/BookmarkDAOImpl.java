@@ -103,15 +103,15 @@ public class BookmarkDAOImpl implements BookmarkDAO{
      * @return
      */
     @Override
-    public List<Facility> bookmarkPageList(String order) {
+    public List<Facility> bookmarkPageList(String order,Long memno) {
         StringBuffer sql = new StringBuffer();
 
         sql.append(" select FACILITY.FCNO fcno, FACILITY.FCIMG fcimg,FACILITY.FCADDR fcaddr, FACILITY.FCTEL fctel, FACILITY.FCSCORE fcscore, FACILITY.FCNAME fcname ");
-        sql.append("   from BOOKMARK, FACILITY, MEMBER ");
-        sql.append("  where BOOKMARK.FCNO=FACILITY.FCNO and BOOKMARK.memno = MEMBER.memno ");
+        sql.append("   from BOOKMARK, FACILITY ");
+        sql.append("  where BOOKMARK.FCNO=FACILITY.FCNO and BOOKMARK.memno = ? ");
         sql.append("  order by " + order + " ");
 
-        List<Facility> bookmarks = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Facility.class));
+        List<Facility> bookmarks = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Facility.class),memno);
 
         return bookmarks;
     }

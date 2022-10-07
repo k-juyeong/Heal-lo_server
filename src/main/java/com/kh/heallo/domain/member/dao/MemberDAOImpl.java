@@ -302,8 +302,9 @@ public class MemberDAOImpl implements MemberDAO{
     sql.append(" select board.BDNO bdno, board.BDTITLE bdtitle, board.BDCDATE bdcdate, board.BDVIEW bdview ");
     sql.append("   from member, board ");
     sql.append("  where member.MEMNO = board.MEMNO ");
+    sql.append("  and board.MEMNO = ? ");
 
-    List<Board> boards = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class));
+    List<Board> boards = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Board.class), memno);
 
     return boards;
   }
@@ -321,6 +322,7 @@ public class MemberDAOImpl implements MemberDAO{
     sql.append(" select reply.RPCOMMENT rpComment, reply.RPCDATE rpCDate ,BOARD.bdno bdno, BOARD.BDTITLE bdtitle ");
     sql.append("   from MEMBER, BOARD, reply ");
     sql.append("  where MEMBER.MEMNO = BOARD.MEMNO and MEMBER.MEMNO = reply.MEMNO ");
+    sql.append("  and reply.MEMNO = ? ");
 
     List<Reply> replies = jdbcTemplate.query(sql.toString(), new RowMapper<Reply>() {
       @Override
@@ -336,7 +338,7 @@ public class MemberDAOImpl implements MemberDAO{
 
         return reply;
       }
-    });
+    }, memno);
 
     return replies;
   }
@@ -354,8 +356,9 @@ public class MemberDAOImpl implements MemberDAO{
     sql.append(" select  member.MEMNO memno, review.RVNO rvno, review.RVCONTENTS rvcontents, review.RVCDATE rvcdate, review.RVSCORE  rvscore, review.FCNO fcno  ");
     sql.append("   from  member, review ");
     sql.append("  where  member.MEMNO = review.MEMNO ");
+    sql.append("  and review.MEMNO = ? ");
 
-    List<Review> reviews = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class));
+    List<Review> reviews = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Review.class), memno);
 
     return reviews;
   }

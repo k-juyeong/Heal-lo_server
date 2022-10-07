@@ -63,7 +63,7 @@ class BookmarkDAOImplTest {
     @Order(4)
     void bookmarkPageList(){
 
-        List<Facility> bookmarks = bookmarkDAO.bookmarkPageList(OrderBy.FC_NAME_ASC.name());
+        List<Facility> bookmarks = bookmarkDAO.bookmarkPageList(OrderBy.FC_NAME_ASC.name(), saveBookmark.getMemno());
 
         log.info("즐겨찾기:{}",bookmarks.size());
 

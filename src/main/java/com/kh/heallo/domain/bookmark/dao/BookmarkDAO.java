@@ -43,5 +43,5 @@ public interface BookmarkDAO {
      * 즐겨찾기 페이지 리스트
      * @return
      */
-    List<Facility> bookmarkPageList(String order);
+    List<Facility> bookmarkPageList(String order, Long memno);
 }

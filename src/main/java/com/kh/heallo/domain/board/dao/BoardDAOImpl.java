@@ -145,8 +145,6 @@ public class BoardDAOImpl implements BoardDAO{
     return boards;
   }
 
-
-
   //조회
   @Override
   public Optional<Board> findByBoardId(Long boardId) {
@@ -154,7 +152,6 @@ public class BoardDAOImpl implements BoardDAO{
     sql.append("select B.bdno, B.bdcg, B.bdtitle, B.bdcdate, B.bdudate, B.bdcontent,B.memno, B.bdview, M.memnickname ");
     sql.append("  from board B, member M ");
     sql.append(" where M.memno=B.memno and B.bdno= ? ");
-
     try {
       Board board = jt.queryForObject(
           sql.toString(),
@@ -177,12 +174,10 @@ public class BoardDAOImpl implements BoardDAO{
     sql.append("       bdcontent = ?, ");
     sql.append("       bdudate = systimestamp ");
     sql.append(" where bdno = ? ");
-
     int affectedRow = jt.update(sql.toString(),
         board.getBdcg(),board.getMemno(), board.getBdtitle(), board.getBdcontent(),BoardId);
     return affectedRow;
   }
-
   //삭제
   @Override
   public int deleteByBoardId(Long BoardId) {
@@ -194,23 +189,16 @@ public class BoardDAOImpl implements BoardDAO{
   @Override
   public int totalCount() {
     String sql = "select count(*) from board";
-
     int affectedRow = jt.queryForObject(sql.toString(),Integer.class);
-
     return affectedRow;
   }
-
 
   @Override
   public int totalCount(String bdcg) {
     String sql = "select count(*) from board where bdcg = ? ";
-
     int affectedRow = jt.queryForObject(sql.toString(),Integer.class, bdcg);
-
     return affectedRow;
   }
-
-
 
   @Override
   public int totalCount(BbsFilterCondition filterCondition) {
