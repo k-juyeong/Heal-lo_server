@@ -14,6 +14,16 @@ public class NaverLoginUtile {
     private String state;
     private String responseType;
 
+    private String currentURI;
+
+    public String getCurrentURI() {
+        return currentURI;
+    }
+
+    public void setCurrentURI(String currentURI) {
+        this.currentURI = currentURI;
+    }
+
     public String createURL() {
         this.state = "NAVER_TEST";
         this.clientId = "QwysbK9EuYMOrg33Mipw";

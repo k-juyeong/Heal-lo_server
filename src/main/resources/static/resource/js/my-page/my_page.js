@@ -9,9 +9,32 @@
     const $nnameCk = document.querySelector('.nnameCk');
     const $btnChange = document.getElementById('btnChange');
     const $form = document.getElementById('form');
+<<<<<<< HEAD
+    const $phoneNb = document.getElementById('phoneNb');
+=======
     const $changePw = document.getElementById('changePw');
     const $changePwCh = document.getElementById('changePwCh');
+>>>>>>> f957e88bf96440ec20d16a186d4b91021c82dfc4
     let dupNick = false;
+
+  $phoneNb.addEventListener('input',(e) => {
+      const length = e.target.value.length;
+
+      if (e.inputType == "deleteContentBackward") {
+          if (length == 4 || length == 9) {
+              e.target.value = e.target.value.slice(0, e.target.value.length - 1);
+          }
+      } else {
+          if (length == 4 || length == 9) {
+              const lastIn = e.target.value.slice(e.target.value.length - 1, e.target.value.length)
+              e.target.value = e.target.value.slice(0, e.target.value.length - 1) + '-' + lastIn;
+          }
+
+          if (length == 3 || length == 8) {
+              e.target.value += '-';
+          }
+      }
+  })
 
     $btnChange.addEventListener('click',e=>{
         e.preventDefault();

@@ -37,15 +37,11 @@ public class BookmarkController {
     List<Facility> bookmarks = bookmarkSVC.bookmarkPageList(order);
     List<Facility> list = new ArrayList<>();
 
-    log.info("bookmarks={}",bookmarks);
-
     bookmarks.stream().forEach(bookmark -> {
       Facility bookmark1 = new Facility();
       BeanUtils.copyProperties(bookmark,bookmark1);
       list.add(bookmark1);
     });
-
-    log.info("list={}",list);
 
     model.addAttribute("list",list);
 

@@ -98,7 +98,6 @@ public class BoardController {
 
     //기본검증
     if(bindingResult.hasErrors()){
-      log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
 
@@ -107,13 +106,11 @@ public class BoardController {
     //제목 30글자 이내.
     if(saveForm.getBdtitle().trim().length() == 0 || saveForm.getBdtitle().trim().length() > 30){
       bindingResult.rejectValue("bdtitle","board.bdtitle","30자 이하의 제목을 입력하세요.");
-      log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
 
     if(saveForm.getBdcontent().trim().length() == 0){
       bindingResult.rejectValue("bdcontent","board.bdcontent","내용을 입력해주세요.");
-      log.info("bindingResult={}", bindingResult);
       return "board/saveForm";
     }
 
@@ -125,7 +122,6 @@ public class BoardController {
 
     redirectAttributes.addAttribute("id", bdno);
 //    redirectAttributes.addAttribute("category",cate);
-    log.info("add={}",saveForm);
 
     return "redirect:/boards/list/{id}/detail?category="+saveForm.getBdcg();
   }
@@ -147,7 +143,6 @@ public class BoardController {
     }
     model.addAttribute("form", detailForm);
     model.addAttribute("category",cate);
-    log.info("detail={}",detailForm);
 
     return "board/detailForm";
   }
@@ -179,20 +174,17 @@ public class BoardController {
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes){
     if (bindingResult.hasErrors()) {
-      log.info("bindingResult={}", bindingResult);
       return "board/updateForm";
     }
     //필드검증
     //제목 30글자 이내.
     if(editForm.getBdtitle().trim().length() == 0 || editForm.getBdtitle().trim().length() > 30){
       bindingResult.rejectValue("bdtitle","board.bdtitle","30자 이하의 제목을 입력하세요.");
-      log.info("bindingResult={}", bindingResult);
       return "board/updateForm";
     }
     //내용 빈칸 오류
     if(editForm.getBdcontent().trim().length() == 0){
       bindingResult.rejectValue("bdcontent","board.bdcontent","내용을 입력해주세요.");
-      log.info("bindingResult={}", bindingResult);
       return "board/updateForm";
     }
 
@@ -228,14 +220,19 @@ public class BoardController {
       "/list/{reqPage}//",
       "/list/{reqPage}/{searchType}/{keyword}"})
   public String findAll(
+      HttpServletRequest httpServletRequest,
       @PathVariable(required = false) Optional<Integer> reqPage,
       @PathVariable(required = false) Optional<String> searchType,
       @PathVariable(required = false) Optional<String> keyword,
       @RequestParam(required = false) Optional<String> category,
       Model model) {
+    HttpSession session = httpServletRequest.getSession(false);
 
-    log.info("/목록list 요청됨{},{},{},{}",reqPage,searchType,keyword,category);
+    if(session != null)
+    log.info("LoginMember {}",(LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name()));
+
     String cate = getCategory(category);
+
 
     //FindCriteria 값 설정
     fc.getRc().setReqPage(reqPage.orElse(1)); //요청페이지, 요청없으면 1
@@ -245,7 +242,6 @@ public class BoardController {
     List<Board> list = null;
     //게시물 목록 전체
     if(category == null || StringUtils.isEmpty(cate)) {
-      log.info("1");
       //검색어 있음
       if(searchType.isPresent() && keyword.isPresent()){
         BbsFilterCondition filterCondition = new BbsFilterCondition(
@@ -256,10 +252,8 @@ public class BoardController {
         fc.setSearchType(searchType.get());
         fc.setKeyword(keyword.get());
         list = boardSVC.findAll(filterCondition);
-        log.info("2");
         //검색어 없음
       }else {
-        log.info("3");
         //총레코드수
         fc.setTotalRec(boardSVC.totalCount());
         list = boardSVC.findAll(fc.getRc().getStartRec(), fc.getRc().getEndRec());
@@ -267,7 +261,6 @@ public class BoardController {
 
       //카테고리별 목록
     }else{
-      log.info("4");
       //검색어 있음
       if(searchType.isPresent() && keyword.isPresent()){
         BbsFilterCondition filterCondition = new BbsFilterCondition(
@@ -275,18 +268,13 @@ public class BoardController {
             searchType.get(),
             keyword.get());
         fc.setTotalRec(boardSVC.totalCount(filterCondition));
-        log.info("totalCnt={}",fc.getTotalRec());
         fc.setSearchType(searchType.get());
         fc.setKeyword(keyword.get());
         list = boardSVC.findAll(filterCondition);
-        log.info("5");
         //검색어 없음
       }else {
-        log.info("6");
         fc.setTotalRec(boardSVC.totalCount(cate));
-        log.info("{}-{}-{}-{}-{}",cate, fc.getRc().getStartRec(), fc.getRc().getEndRec());
         list = boardSVC.findAll(cate, fc.getRc().getStartRec(), fc.getRc().getEndRec());
-        log.info("size={}", list.size());
       }
     }
 
@@ -294,11 +282,9 @@ public class BoardController {
 
     List<Board> list2 = new ArrayList<>();
     list.stream().forEach(board->{
-      log.info("red={}",board);
       BeanUtils.copyProperties(board, new DetailForm());
       list2.add(board);
     });
-    log.info("fc={}",fc);
 
     model.addAttribute("list", list2);
     model.addAttribute("fc",fc);
@@ -310,7 +296,6 @@ public class BoardController {
   //쿼리스트링 카테고리 읽기, 없으면 ""반환
   private String getCategory(Optional<String> category) {
     String cate = category.isPresent()? category.get():"BD001";
-    log.info("category={}", cate);
     return cate;
   }
 

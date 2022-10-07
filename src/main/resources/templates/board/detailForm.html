@@ -18,10 +18,11 @@
 
   <th:block th:replace="${link}"></th:block>
   <style>
-    .board-wrap .board-body {
-      display: grid;
-      grid-template-columns: 100px 300px;
-    }
+<!--    .board-wrap .board-body {-->
+<!--      display: grid;-->
+<!--      grid-template-columns: 100px 300px;-->
+<!--    }-->
+
  .ck.ck-editor__top {
   display: none;
 }
@@ -94,7 +95,12 @@
                   <label th:for="memnickname">[작성자]</label>
                   <span th:text="*{memnickname}"></span>
                   <input type="hidden" th:field="*{memno}"/>
+<<<<<<< HEAD
+                  <span th:text="*{memnickname}"></span>           
+                  <input type="hidden" th:field="*{memno}"/>
+=======
 
+>>>>>>> e2d3013169a4b541af8a8ac7af9a9ee33230bed0
                   <label th:for="bdcdate">[작성일]</label>
                   <span th:for="bdcdate" th:text="*{#temporals.format(bdcdate,'yy/MM/dd HH:mm')}"></span>
                   <label>[조회수]</label>

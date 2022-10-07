@@ -23,7 +23,6 @@ public class MailRestController {
   ResponseEntity<ResponseMsg> send(@RequestBody Email email) throws Exception{
 
     String code = mailSVC.sendSimpleMessage(email.getEmail());
-    log.info("인증코드 : " + code);
 
     ResponseMsg responseMsg = new ResponseMsg()
             .createHeader(StatusCode.SUCCESS);
@@ -33,9 +32,6 @@ public class MailRestController {
 
   @PostMapping("/mailConfirm")
   ResponseEntity<ResponseMsg> mailConfirm(@RequestBody Email email) throws Exception{
-
-    log.info("Email {}" , email);
-    log.info("is {}" , mailSVC.checkEPw(email.code));
 
     if (!mailSVC.checkEPw(email.code)) {
       ResponseMsg responseMsg = new ResponseMsg()

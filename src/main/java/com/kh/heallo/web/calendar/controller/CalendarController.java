@@ -76,7 +76,6 @@ public class CalendarController {
   ) throws IOException {
     // 기본 검증
     if (bindingResult.hasErrors()) {
-      log.info("bindingResult={}", bindingResult);
       return "calendar/addForm";
     }
 
