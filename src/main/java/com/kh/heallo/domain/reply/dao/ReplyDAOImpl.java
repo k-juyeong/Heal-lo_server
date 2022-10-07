@@ -167,11 +167,18 @@ public class ReplyDAOImpl implements ReplyDAO {
    * 'DELETED' 상태의 댓글의 대댓글이 모두 삭제된 경우
    * 해당 댓글도 삭제
    *
-   * @param rpno 삭제할 댓글 번호
    */
   @Override
-  public void deleteFinally(Long rpno) {
+  public void deleteFinally() {
+    StringBuffer sql = new StringBuffer();
+    sql.append("DELETE FROM REPLY ");
+    sql.append("WHERE RPSTATUS = 'DELETED' ");
+    sql.append("AND RPGROUP IN (SELECT RPGROUP ");
+    sql.append("                  FROM REPLY ");
+    sql.append("              GROUP BY RPGROUP ");
+    sql.append("                HAVING COUNT(RPGROUP) = 1) ");
 
+    jdbcTemplate.update(sql.toString());
   }
 
   /**
