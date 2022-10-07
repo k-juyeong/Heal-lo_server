@@ -57,7 +57,7 @@ public class BookmarkSVCImpl implements BookmarkSVC{
      * @return
      */
     @Override
-    public List<Facility> bookmarkPageList(String order) {
-        return bookmarkDAO.bookmarkPageList(order);
+    public List<Facility> bookmarkPageList(String order,Long memno) {
+        return bookmarkDAO.bookmarkPageList(order,memno);
     }
 }
