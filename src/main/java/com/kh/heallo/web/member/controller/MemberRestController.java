@@ -37,8 +37,9 @@ public class MemberRestController {
 
   //네이버 인증 요청
   @GetMapping("/naver-join")
-  public ResponseEntity<ResponseMsg> naverJoin() {
+  public ResponseEntity<ResponseMsg> naverJoin(@RequestParam(value = "requestURI") String requestURI, HttpServletRequest request) {
     String url = naverLoginUtile.createURL();
+    naverLoginUtile.setCurrentURI(requestURI);
 
     ResponseMsg responseMsg = new ResponseMsg()
             .createHeader(StatusCode.SUCCESS)
@@ -51,8 +52,6 @@ public class MemberRestController {
   @GetMapping("/naver-callback/redirect")
   public ResponseEntity<?> naverLogin(HttpServletRequest request, HttpServerResponse response, @RequestParam Map<String, String> resValue) {
 
-    log.info("resValue {}", resValue);
-
     // code 를 받아오면 code 를 사용하여 access_token를 발급받는다.
     final NaverLoginDTO naverLoginDTO = naverLoginUtile.accessToken(resValue, "authorization_code");
 
@@ -61,7 +60,7 @@ public class MemberRestController {
 
     Member member = new Member();
     member.setMemid(userInfo.getId().substring(0,10));
-    member.setMempw("@@@@");
+    member.setMempw(userInfo.getId().substring(0,10) + "!");
     member.setMemtel(userInfo.getMobile());
     member.setMemnickname(userInfo.getNickname());
     member.setMememail(userInfo.getEmail());
@@ -94,7 +93,7 @@ public class MemberRestController {
     session.setAttribute(Session.LOGIN_MEMBER.name(), loginMember);
 
     HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(URI.create("/"));
+    headers.setLocation(URI.create(naverLoginUtile.getCurrentURI()));
     return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
   }
 

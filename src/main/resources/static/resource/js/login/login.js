@@ -30,7 +30,8 @@ const $joinBtn = document.getElementById('joinBtn');
 
   document.getElementById('naver').addEventListener('click', e => {
     e.preventDefault();
-    fetch('/members/naver-join', {
+    const searchPrams = new URLSearchParams(location.search);
+    fetch(`/members/naver-join?requestURI=${searchPrams.get("requestURI")}`, {
       method: `GET`,
       headers: {
         'Accept': 'application/json'

@@ -1,21 +1,29 @@
-//const domainListEl = document.getElementById('domain-list');
-//const domainInputEl = document.getElementById('domain-txt');
-//
-//domainListEl.addEventListener('change', (event) => {
-//  if (event.target.value !== "type") {
-//    domainInputEl.value = event.target.value
-//    domainInputEl.disabled = true
-//  } else {
-//    domainInputEl.value = ""
-//    domainInputEl.disabled = false
-//  }
-//});
 
       let emailCk = false;
       const $confirmCode = document.getElementById('email_check');
       const $form = document.getElementById('form');
       const $confirmMail = document.getElementById('confirmMail');
       const $codeCkBtn = document.getElementById('codeCkBtn');
+      const $phoneNumber = document.getElementById('phone_number');
+
+      $phoneNumber.addEventListener('input',(e) => {
+          const length = e.target.value.length;
+
+          if (e.inputType == "deleteContentBackward") {
+               if (length == 4 || length == 9) {
+                   e.target.value = e.target.value.slice(0, e.target.value.length - 1);
+               }
+          } else {
+              if (length == 4 || length == 9) {
+                  const lastIn = e.target.value.slice(e.target.value.length - 1, e.target.value.length)
+                  e.target.value = e.target.value.slice(0, e.target.value.length - 1) + '-' + lastIn;
+              }
+
+              if (length == 3 || length == 8) {
+                  e.target.value += '-';
+              }
+          }
+      })
 
       $confirmMail.addEventListener('click',e=>{
         mailCk(e);

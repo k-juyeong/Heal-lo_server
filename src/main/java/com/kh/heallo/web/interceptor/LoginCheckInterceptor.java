@@ -25,8 +25,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
         LoginMember loginMember = null;
 
-        log.info("request {}",request.getRequestURI());
-
         if (session != null) {
             loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
         }

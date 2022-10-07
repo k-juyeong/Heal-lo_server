@@ -85,10 +85,8 @@ public class ReplyRestController {
 
     // 검증
     if (bindingResult.hasErrors()) {
-      log.info("bindingResult={}", bindingResult);
     }
 
-    log.info("detailForm={}", detailForm.getRpComment());
     // 회원번호 찾기
     Long memno = 0L;
     HttpSession session = request.getSession(false);

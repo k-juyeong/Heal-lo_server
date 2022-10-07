@@ -82,9 +82,9 @@
 
   <!--              <label id="changePwCh" for="changePwCh">비밀번호 변경확인</label>-->
   <!--              <input id="changePwCh" type="text">-->
-
+ c
                 <label class="phoneNb" for="phoneNb">휴대전화 번호</label>
-                <input id="phoneNb" type="text" name="memtel" th:field="${form.memtel}"
+                <input id="phoneNb" type="tel" maxlength="13" name="memtel" th:field="${form.memtel}"
                        th:class="${#fields.hasErrors('memtel')} ? fieldError">
                 <span id="memtelErr" th:if="${#fields.hasErrors('memtel')}" th:errors="*{memtel}"></span>
 

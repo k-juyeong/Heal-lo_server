@@ -47,10 +47,8 @@ public class MemberController {
   public String join(@Valid @ModelAttribute("form")
                      JoinForm joinForm,
                      BindingResult bindingResult){
-    log.info("joinForm={}",joinForm);
 
     if(bindingResult.hasErrors()){
-      log.info("errors={}",bindingResult);
     }
 
     //회원아이디 길이체크
@@ -126,16 +124,13 @@ public class MemberController {
   public String login(@Valid @ModelAttribute("form")LoginForm loginForm,
                       BindingResult bindingResult,
                       HttpServletRequest request,
-                      @RequestParam(value = "requestURI",required = false,defaultValue = "/") String requestURI
+                      @RequestParam(value = "requestURI") String requestURI
   ){
 
     //기본 검증
     if (bindingResult.hasErrors()){
-      log.info("bindingResult={}",bindingResult);
       return "login/login";
     }
-
-    log.info("member, {} " , loginForm);
 
     //회원유무
     Optional<Member> member = memberSVC.login(loginForm.getMemid(), loginForm.getMempw());
@@ -197,9 +192,6 @@ public class MemberController {
     editForm.setMememail(findedMember.getMememail());
     editForm.setMemname(findedMember.getMemname());
 
-    log.info("memno={}",memno);
-    log.info("editForm={}",editForm);
-    log.info("findedMember.getMemcode={}",findedMember.getMemcode());
     model.addAttribute("form",editForm);
     model.addAttribute("status",findedMember.getMemcode());
     return "member/my_page";
@@ -219,7 +211,6 @@ public class MemberController {
     //회원이메일 중복체크
     Boolean isExistEmail = memberSVC.dupChkOfMememail(editForm.getMememail());
     if(editForm.getMememail().equals(memberSVC.findBymemno(memno).getMememail())){
-      log.info("이메일 중복 비교={}",editForm.getMememail().equals(memberSVC.findBymemno(memno).getMememail()));
     }else if(isExistEmail){
       bindingResult.rejectValue("mememail","dup.mememail", "동일한 이메일이 존재합니다");
     }
@@ -227,7 +218,6 @@ public class MemberController {
     //회원전화번호 중복체크
     Boolean isExistTel = memberSVC.dupChkOfMemtel(editForm.getMemtel());
     if(editForm.getMemtel().equals(memberSVC.findBymemno(memno).getMemtel())){
-      log.info("전화번호 중복 비교={}",editForm.getMemtel().equals(memberSVC.findBymemno(memno).getMemtel()));
     }else if(isExistTel){
       bindingResult.rejectValue("memtel","dup.memtel", "동일한 전화번호가 존재합니다");
     }
@@ -253,9 +243,6 @@ public class MemberController {
 
     memberSVC.update(memno,member);
 
-    log.info("editForm={}",editForm);
-    log.info("member={}",member);
-
     return "redirect:/members/"+memno+"/edit";
   }
 
@@ -269,7 +256,6 @@ public class MemberController {
       return "redirect:https://nid.naver.com/internalToken/view/tokenList/pc/ko";
     }
 
-    log.info("memid={}",memid);
     return "redirect:/members/logout";
   }
 
@@ -302,7 +288,6 @@ public class MemberController {
       }
     }
 
-      log.info("findId={}", findId);
       model.addAttribute("form", findId);
       return "find_id_pw/success_find_id";
 
@@ -381,8 +366,6 @@ public class MemberController {
     List<Board> boards = memberSVC.findBoardByMemno(memno);
     List<Board> list = new ArrayList<>();
 
-    log.info("boards={}",boards);
-
     boards.stream().forEach(board -> {
       Board board1 = new Board();
       BeanUtils.copyProperties(board,board1);
@@ -390,8 +373,6 @@ public class MemberController {
     });
 
     Member findedMember = memberSVC.findBymemno(memno);
-
-    log.info("list={}",list);
 
     model.addAttribute("form",editForm);
     model.addAttribute("list",list);
@@ -415,8 +396,6 @@ public class MemberController {
     List<Reply> replies = memberSVC.findReplyByMemno(memno);
     List<Reply> list = new ArrayList<>();
 
-    log.info("replies={}",replies);
-
     replies.stream().forEach(reply -> {
       Reply reply1 = new Reply();
       BeanUtils.copyProperties(reply,reply1);
@@ -424,8 +403,6 @@ public class MemberController {
     });
 
     Member findedMember = memberSVC.findBymemno(memno);
-
-    log.info("list={}",list);
 
     model.addAttribute("form",editForm);
     model.addAttribute("list",list);
@@ -450,8 +427,6 @@ public class MemberController {
     List<Review> reviews = memberSVC.findReviewByMemno(memno,rvno);
     List<Review> list = new ArrayList<>();
 
-    log.info("reviews={}",reviews);
-
     List<ReviewDto> reviewDtoList = reviews.stream().map(review -> {
       ReviewDto reviewDto = new ReviewDto();
       BeanUtils.copyProperties(review, reviewDto);
@@ -461,15 +436,12 @@ public class MemberController {
 
 
     reviews.stream().forEach(review->{
-      log.info("review={}",review);
       Review review1 = new Review();
       BeanUtils.copyProperties(review,review1);
       list.add(review1);
     });
 
     Member findedMember = memberSVC.findBymemno(memno);
-
-    log.info("list={}",reviewDtoList);
 
     model.addAttribute("form",editForm);
     model.addAttribute("list", reviewDtoList);

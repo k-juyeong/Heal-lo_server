@@ -41,7 +41,6 @@ public class CalendarRestController {
       LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
       memno = loginMember.getMemno();
     }
-    log.info("memno={}", memno);
     List<Calendar> monthly = calendarSVC.monthly(year, month, memno);
 
     // Create ResponseEntity
