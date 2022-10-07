@@ -1,187 +1,38 @@
 @charset "utf-8";
 /* 공통 */
 /** {outline: 1px solid red;}*/
-.btn {
-  background-color: #16a085;
-  color: white;
-  text-align: center;
-  border-radius: 5px;
-  border: none;
-  padding: 0;
-}
-#container {
-  display: flex;
-  height: auto;
-  border-top: 3px solid #777;
-  padding: 10px 10px 50px 10px;
-}
+.btn { background-color: #16a085; color: white; text-align: center; border-radius: 5px; border: none; padding: 0; }
+#container { display: flex; height: auto; border-top: 3px solid #777; padding: 10px 10px 50px 10px; }
 
 /* 사이드바 */
-#container .title {
-  width: 15%;
-  flex-shrink: 0;
-}
-
-#container .title .title__list {
-  display: flex;
-  flex-direction: column;
-  margin-top: 40px;
-}
-
-#container .title .title__list a {
-  border-bottom: 1px solid #ddd;
-  margin-right: auto;
-  padding: 30px 0 10px 0;
-  font-size: 20px;
-  transition: all 0.4s;
-}
-#container .title .title__list a:hover {
-  font-size: 26px;
-}
-
+#container .title { width: 15%; flex-shrink: 0; }
+#container .title .title__list { display: flex; flex-direction: column; margin-top: 40px; }
+#container .title .title__list a { border-bottom: 1px solid #ddd; margin-right: auto; padding: 30px 0 10px 0; font-size: 20px; transition: all 0.4s; }
+#container .title .title__list a:hover { font-size: 26px; }
 
 /* 작성공간 */
-#container .board_main {
-  width: 85%;
-}
-
-#container .board_main .writeArea{
-  /* outline: 1px solid red; */
-  margin: 0px auto;
-  display:flex;
-  flex-direction: column;
-  align-items : center;
-  justify-content : center;
-  justify-self: center;
-  width: 100%;
-}
-
-#container .board_main .writeArea .board_write {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items : center;
-  justify-content : center;
-}
-
-#container .board_main .writeArea .board_write .board_title .title__main {
-  text-align: center;
-  font-size: 28px;
-  padding: 30px 0;
-}
+#container .board_main { width: 85%; }
+#container .board_main .writeArea{ /* outline: 1px solid red; */ margin: 0px auto; display:flex; flex-direction: column; align-items : center; justify-content : center; justify-self: center; width: 100%; }
+#container .board_main .writeArea .board_write { width: 100%; display: flex; flex-direction: column; align-items : center; justify-content : center; }
+#container .board_main .writeArea .board_write .board_title .title__main { text-align: center; font-size: 28px; padding: 30px 0; }
 
 /* 폼 */
-#container .board_main .writeArea .board_write .board_content{
-  /* outline: 1px solid black; */
-}
-
-#container .board_main .writeArea .board_write .board_content .writeForm .line{
-  height: 45px;
-  display: flex;
-  align-items: center;
-  font-size:large;
-  background-color:#d6d6d6b2
-  padding-left: 15px;
-}
-
-#container .board_main .writeArea .board_write .board_content .writeForm .line label{
-  display:inline-block;
-  height: 45px;
-  line-height: 45px;
-  min-width: 50px;
-  margin-right: 10px;
-  color: #777;
-  font-size: 0.9em;
-}
-#container .board_main .writeArea .board_write .board_content .writeForm .line2 span{
-  margin-right: 20px;
-  font-size: 0.9em;
-
-}
-#container .board_main .writeArea .board_write .board_content .writeForm .line select{
-  height: 29px;
-  width: 150px;
-  font-size: medium;
-}
-
-#container .board_main .writeArea .board_write .board_content .writeForm .line input{
-  font-size: medium;
-  padding: 2px;
-  background-color: #ddd;
-  border-radius: 3px;
-  border: none;
-  height: 25px;
-  width: 65%;
-  color: inherit;
-}
-
-#container .board_main .writeArea .board_write .board_content .writeForm .line input:focus{
-  outline: none;
-  color: inherit;
-}
-
-#container .board_main .writeArea .board_write .board_content .writeForm .fieldError {
-  color: red;
-  font-size: 0.8em;
-  }
-
-
-
-
-
-
-#container .board_write .board_content .writeForm .textarea {
-  /* overflow: auto; */
-  height: 400px;
-  font-size: 15px;
-  padding: 10px;
-  border: 1px solid #D6D6D6;
-  border-radius: 4px;
-  resize: none;
-  /* width: 90%; */
-}
-#container .board_write .board_content .writeForm .textarea:focus{
-  outline: none;
-}
-
-
-
-#container .board_write .board_content .writeForm .writeBtn_area{
-  display: flex;
-  flex: 1;
-  justify-content: flex-end;
-  height: 40px;
-}
-
-#container .board_write .board_content .writeForm .writeBtn_area .btn__search {
-  width: 60px;
-  margin-left: 2px;
-  border-radius: 5px;
-  border: none;
-  margin-top: 5px;
-  height: 30px;
-}
-#container .board_write .board_content .writeForm .writeBtn_area .btn__search:hover {
-  cursor: pointer;
-  background-color: #777;
-}
-
-.ck .ck-editor{
-  padding: 50px;
-
-}
-
-.ck .ck-editor__editable{
-min-height:300px;
-min-width:800px;
-max-width: 900px;
-overflow: hidden;
-padding: 10px 20px 10px 20px;
-
-}
-
-
-.ck .ck-editor__editable_inline{
-padding: 50px;
-}
-
+#container .board_main .writeArea .board_write .board_content .writeForm .line{ height: 45px; display: flex; align-items: center; font-size:large; background-color:#d6d6d6b2; padding-left: 15px; }
+#container .board_main .writeArea .board_write .board_content .writeForm .line label{ display:inline-block; height: 45px; line-height: 45px; min-width: 50px; margin-right: 10px; color: #777; font-size: 0.9em; }
+#container .board_main .writeArea .board_write .board_content .writeForm .line select{ height: 30px;}
+#container .board_main .writeArea .board_write .board_content .writeForm .line #bdtitle{ background-color: white; margin-left: 10px;}
+#container .board_main .writeArea .board_write .board_content .writeForm .line2 span{ margin-right:20px; font-size: 0.9em; }s
+#container .board_main .writeArea .board_write .board_content .writeForm .line select{ height: 29px; width: 150px; font-size: medium; }
+#container .board_main .writeArea .board_write .board_content .writeForm .line input{ font-size: medium; padding: 2px; background-color: #ddd; border-radius: 3px; border: none; height: 25px; width: 65%; color: inherit; }
+#container .board_main .writeArea .board_write .board_content .writeForm .line input:focus{ outline: none; color: inherit; }
+#container .board_main .writeArea .board_write .board_content .writeForm .fieldError { color: red; font-size: 0.8em; }
+#container .board_write .board_content .writeForm .textarea { /* overflow: auto; */ height: 300px; font-size: 15px; padding: 30px; border: 1px solid #D6D6D6; border-radius: 4px; resize: none; /* width: 90%; */ }
+.ck .ck-editor__editable{ min-height:300px; width:850px; overflow: hidden; padding: 10px 20px 10px 20px; }
+.ck .ck-editor__editable_inline{ padding: 50px; }
+#container .board_write .board_content .writeForm .textarea:focus{ outline: none; }
+#container .board_write .board_content .writeForm .writeBtn_area{ display: flex; flex: 1; justify-content: flex-end; height: 40px; }
+#container .board_write .board_content .writeForm .writeBtn_area .btn__search { width: 60px; margin-left: 2px; border-radius: 5px; border: none; margin-top: 5px; height: 30px; }
+.btn__search { width: 60px; margin-left: 2px; border-radius: 5px; border: none; margin-top: 5px; height: 30px; }
+#container .board_write .board_content .writeForm .writeBtn_area .btn__search:hover { cursor: pointer; background-color: #777; }
+.btn__search:hover { cursor: pointer; background-color: #777; }
+.ck .ck-editor{ padding: 50px; }
