@@ -19,7 +19,9 @@
 /* 폼 */
 #container .board_main .writeArea .board_write .board_content .writeForm .line{ height: 45px; display: flex; align-items: center; font-size:large; background-color:#d6d6d6b2; padding-left: 15px; }
 #container .board_main .writeArea .board_write .board_content .writeForm .line label{ display:inline-block; height: 45px; line-height: 45px; min-width: 50px; margin-right: 10px; color: #777; font-size: 0.9em; }
-#container .board_main .writeArea .board_write .board_content .writeForm .line2 span{ margin-right: 20px; font-size: 0.9em; }
+#container .board_main .writeArea .board_write .board_content .writeForm .line select{ height: 30px;}
+#container .board_main .writeArea .board_write .board_content .writeForm .line #bdtitle{ background-color: white; margin-left: 10px;}
+#container .board_main .writeArea .board_write .board_content .writeForm .line2 span{ margin-right:20px; font-size: 0.9em; }s
 #container .board_main .writeArea .board_write .board_content .writeForm .line select{ height: 29px; width: 150px; font-size: medium; }
 #container .board_main .writeArea .board_write .board_content .writeForm .line input{ font-size: medium; padding: 2px; background-color: #ddd; border-radius: 3px; border: none; height: 25px; width: 65%; color: inherit; }
 #container .board_main .writeArea .board_write .board_content .writeForm .line input:focus{ outline: none; color: inherit; }
