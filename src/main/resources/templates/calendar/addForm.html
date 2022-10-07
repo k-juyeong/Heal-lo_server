@@ -51,7 +51,7 @@
           <input type="date" th:value="${cdRDate}" name="cdRDate">
         </div>
 
-        <textarea rows="30" id="editor" th:field="*{cdContent}"></textarea>
+        <textarea rows="30" id="editor" th:field="*{cdContent}" style="display:none"></textarea>
       </form>
       <div class="btngrp">
         <button type="button" id="addBtn">저장</button>
@@ -73,7 +73,11 @@
     </div>
   </footer>
 </div>
-<script src="../../static/resource/js/editor/ckeditor.js" th:src="@{/resource/js/editor/ckeditor.js}"></script>
+<script
+    src="../../static/resource/js/editor/ckeditor.js"
+    th:src="@{/resource/js/editor/ckeditor.js}"
+></script>
+
 <script>
   // 저장
     addBtn.addEventListener('click', e=>{
@@ -86,6 +90,7 @@
     });
 
   // 에디터 툴
+
   ClassicEditor
 		.create( document.querySelector( '#editor' ), {
 		 plugin:['ListStyle','Markdown','MediaEmbed','MediaEmbedToolbar'],
@@ -93,13 +98,11 @@
 				items: [
 					'heading',
 					'|',
-					'underline',
 					'bold',
 					'italic',
 					'link',
 					'bulletedList',
 					'numberedList',
-					'todoList',
 					'|',
 					'outdent',
 					'indent',
