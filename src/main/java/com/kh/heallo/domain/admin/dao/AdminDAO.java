@@ -11,6 +11,12 @@ import java.util.List;
 public interface AdminDAO {
 
   /**
+   * 회원 계정 수
+   * @return 회원 계정 수
+   */
+  Integer memberCount();
+
+  /**
    * 회원 계정 목록
    * @return
    */
@@ -22,6 +28,12 @@ public interface AdminDAO {
    * @return
    */
   List<Member> memberListByIdOrNickname(String memInfo);
+
+  /**
+   * 전체 게시글 수
+   * @return 전체 게시글 수
+   */
+  Integer boardCount();
 
   /**
    * 게시글 목록
@@ -42,6 +54,12 @@ public interface AdminDAO {
    * @return
    */
   List<Board> boardListByIdOrNickname(String memInfo);
+
+  /**
+   * 댓글 수
+   * @return 댓글 수
+   */
+  Integer replyCount();
 
   /**
    * 게시물 - 댓글 목록
@@ -65,11 +83,16 @@ public interface AdminDAO {
   List<Reply> replyListByIdOrNickname(String memInfo);
 
   /**
+   * 리뷰 수
+   * @return 리뷰 수
+   */
+  Integer reviewCount();
+
+  /**
    * 게시물 - 리뷰 목록
    * @return
    */
   List<Review> reviewList();
-
 
   /**
    * 게시물 - 리뷰 내용 검색
@@ -93,6 +116,11 @@ public interface AdminDAO {
    */
   List<Review> reviewListByIdOrNickname(String memInfo);
 
+  /**
+   * 문의글 수
+   * @return 문의글 수
+   */
+  Integer noticeCount();
 
   /**
    * 문의글 목록

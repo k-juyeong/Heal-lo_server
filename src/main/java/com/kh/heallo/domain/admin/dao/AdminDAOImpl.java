@@ -20,8 +20,24 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class AdminDAOImpl implements AdminDAO {
-
   private final JdbcTemplate jdbcTemplate;
+
+  /**
+   * 회원 계정 수
+   *
+   * @return 회원 계정 수
+   */
+  @Override
+  public Integer memberCount() {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select count(*) ");
+    sql.append("  from member ");
+    sql.append(" where memcode = 'NORMAL' ");
+    sql.append("   and memstatus = 'JOIN' ");
+
+    return jdbcTemplate.queryForObject(sql.toString(), Integer.class);
+  }
+
   /**
    * 회원 계정 목록
    * @return
@@ -52,6 +68,18 @@ public class AdminDAOImpl implements AdminDAO {
     sql.append(" order by MEMNO asc ");
 
     return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Member.class));
+  }
+
+  /**
+   * 전체 게시글 수
+   *
+   * @return 전체 게시글 수
+   */
+  @Override
+  public Integer boardCount() {
+    String sql = "select count(*) from board ";
+
+    return jdbcTemplate.queryForObject(sql, Integer.class);
   }
 
   /**
@@ -108,6 +136,21 @@ public class AdminDAOImpl implements AdminDAO {
   }
 
   /**
+   * 댓글 수
+   *
+   * @return 댓글 수
+   */
+  @Override
+  public Integer replyCount() {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select count(*) ");
+    sql.append("  from reply ");
+    sql.append(" where rpstatus = 'POST' ");
+
+    return jdbcTemplate.queryForObject(sql.toString(), Integer.class);
+  }
+
+  /**
    * 게시물 - 댓글 목록
    *
    * @return
@@ -158,6 +201,18 @@ public class AdminDAOImpl implements AdminDAO {
     sql.append(" order by t1.rpno asc ");
 
     return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(Reply.class));
+  }
+
+  /**
+   * 리뷰 수
+   *
+   * @return 리뷰 수
+   */
+  @Override
+  public Integer reviewCount() {
+    String sql = "select count(*) from review ";
+
+    return jdbcTemplate.queryForObject(sql, Integer.class);
   }
 
   /**
@@ -313,6 +368,21 @@ public class AdminDAOImpl implements AdminDAO {
     });
 
     return reviewList;
+  }
+
+  /**
+   * 문의글 수
+   *
+   * @return 문의글 수
+   */
+  @Override
+  public Integer noticeCount() {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select count(*) ");
+    sql.append("  from board ");
+    sql.append(" where bdcg = BD004; ");
+
+    return jdbcTemplate.queryForObject(sql.toString(), Integer.class);
   }
 
   /**

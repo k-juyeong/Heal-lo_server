@@ -1,3 +1,9 @@
+-- 회원 계정 수
+select count(*)
+  from member
+ where memcode = 'NORMAL'
+   and memstatus = 'JOIN';
+
 --회원 계정 조회(1회) - 닉네임, 아이디
 select MEMNO, MEMID, MEMNICKNAME, MEMCDATE
   from MEMBER
@@ -13,6 +19,10 @@ order by MEMNO asc;
 delete from MEMBER
        where MEMNO = '1';
 
+-- 게시글 수
+select count(*)
+  from board;
+
 -- 게시글 조회(1회) - 제목, 닉네임
 select BDNO, BDTITLE, MEMNICKNAME, BDCDATE
   from BOARD t1, MEMBER t2
@@ -23,6 +33,11 @@ select BDNO, BDTITLE, MEMNICKNAME, BDCDATE
   from BOARD t1, MEMBER t2
 where t1.MEMNO = t2.MEMNO
     and t2.MEMNICKNAME like %닉네임% ;
+
+-- 댓글 수
+select count(*)
+  from reply
+ where rpstatus = 'POST';
 
 -- 댓글 조회(1회) - 댓글 내용, 닉네임
 select RPNO, RPCONTENT, MEMNICKNAME, RPCDATE
@@ -41,6 +56,11 @@ select RPNO, RPCONTENT, MEMNICKNAME, RPCDATE
 where t1.MEMNO = t2.MEMNO
 order by RPNO asc;
 
+-- 문의글 수
+select count(*)
+  from board
+ where bdcg = BD004;
+
 -- 문의글 조회(1회) - 제목, 닉네임
 select BDNO, BDTITLE, MEMNICKNAME, BDCDATE
   from BOARD t1, MEMBER t2
@@ -57,6 +77,10 @@ where t1.MEMNO = t2.MEMNO
 -- 답글 등록
 insert into REPLY
      values (REPLY_RPNO_SEQ.NEXTVAL, 4, REPLY_RPNO_SEQ.NEXTVAL, 0, '관리자 회원번호', '문의에 대한 답변', SYSDATE, SYSDATE);
+
+-- 리뷰 수
+select count(*)
+  from review;
 
 -- 리뷰 조회(1회) - 리뷰내용, 닉네임, 운동시설
  select RVNO, RVCONTENT, MEMNICKNAME, FCNAME
