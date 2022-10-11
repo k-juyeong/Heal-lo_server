@@ -418,6 +418,6 @@ public class MemberDAOImpl implements MemberDAO{
     String sql = "select count(memnickname) from member where memnickname = ? ";
 
     Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, memnickname);
-    return rowCount > 1 ? true : false;
+    return rowCount == 1 ? true : false;
   }
 }

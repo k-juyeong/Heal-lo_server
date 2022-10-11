@@ -98,10 +98,18 @@ public class MemberRestController {
   }
 
   @GetMapping("/nickname-check")
-  public ResponseEntity<ResponseMsg> nickCk(@RequestParam("nickname") String nickname){
+  public ResponseEntity<ResponseMsg> nickCk(HttpServletRequest request,@RequestParam("nickname") String nickname){
+    //회원번호 조회
+    HttpSession session = request.getSession(false);
+    String memnickname = "";
+    if(session != null && session.getAttribute(Session.LOGIN_MEMBER.name()) != null) {
+      LoginMember loginMember = (LoginMember) session.getAttribute(Session.LOGIN_MEMBER.name());
+      memnickname = memberSVC.findBymemno(loginMember.getMemno()).getMemnickname();
+    }
+
     Boolean chk = memberSVC.dupChkOfMemnickname(nickname);
     ResponseMsg responseMsg = new ResponseMsg();
-    if (chk) {
+    if (chk && !nickname.equals(memnickname)) {
       responseMsg.createHeader(StatusCode.VALIDATION_ERROR);
 
       return new ResponseEntity<>(responseMsg, HttpStatus.BAD_REQUEST);
