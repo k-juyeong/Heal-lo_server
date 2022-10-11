@@ -40,6 +40,6 @@
 
 /* 페이징 */
 #container .board .board__page { display: flex; justify-content: center; margin-top: 40px; }
-#container .board .board__page .bbs-page-item { display: flex; padding: 0; width: 30px; height: 30px; line-height: 30px; color: #777; }
+#container .board .board__page .bbs-page-item { display: flex; padding: 0; width: 30px; height: 30px;  color: #777; }
 #container .board__page .bbs-page-item:hover{ color: #ddd }
 #container .board__page .bbs-page-item.active{ color: #16a085; font-weight: bold; }
