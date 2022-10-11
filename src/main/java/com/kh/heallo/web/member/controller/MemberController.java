@@ -275,10 +275,10 @@ public class MemberController {
     findId.setMemname(findIdForm.getMemname());
     findId.setMememail(findIdForm.getMememail());
 
-    if (bindingResult.hasErrors()){
-
-      return "find_id_pw/find_id";
-    }
+//    if (bindingResult.hasErrors()){
+//
+//      return "find_id_pw/find_id";
+//    }
 
     Member member = memberSVC.findId(findId.getMemname(), findId.getMememail());
     findId.setMemid(member.getMemid());
@@ -293,11 +293,11 @@ public class MemberController {
       }
     }
 
-    if (member == null){
-      bindingResult.reject("memberNotFound","입력한 정보로 아이디를 조회할 수 없습니다");
-
-      return "find_id_pw/find_id";
-    }
+//    if (member == null){
+//      bindingResult.reject("memberNotFound","입력한 정보로 아이디를 조회할 수 없습니다");
+//
+//      return "find_id_pw/find_id";
+//    }
 
       model.addAttribute("form", findId);
       return "find_id_pw/success_find_id";
@@ -320,10 +320,10 @@ public class MemberController {
     findPw.setMemname(findPwForm.getMemname());
     findPw.setMememail(findPwForm.getMememail());
 
-    if (bindingResult.hasErrors()){
-
-      return "find_id_pw/find_pw";
-    }
+//    if (bindingResult.hasErrors()){
+//
+//      return "find_id_pw/find_pw";
+//    }
 
     Member findedMember = memberSVC.findPwCheck(findPw.getMemid(), findPw.getMemname(), findPw.getMememail());
 
@@ -337,11 +337,11 @@ public class MemberController {
       }
     }
 
-    if (findedMember == null){
-      bindingResult.reject("memberNotFound","입력한 정보로 아이디를 조회할 수 없습니다");
-
-      return "find_id_pw/find_pw";
-    }
+//    if (findedMember == null){
+//      bindingResult.reject("memberNotFound","입력한 정보로 아이디를 조회할 수 없습니다");
+//
+//      return "find_id_pw/find_pw";
+//    }
 
     model.addAttribute("memno", findedMember.getMemno());
     return "find_id_pw/change_pw";

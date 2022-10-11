@@ -18,6 +18,5 @@ public class FindPwForm {
   private String memname;      //varchar2(12)
   @NotEmpty(message = "이메일을 입력해주세요")
   private String mememail;     //varchar2(30)
-  @NotEmpty(message = "아이디,이름,이메일을 입력해주세요")
   private String mempw;
 }

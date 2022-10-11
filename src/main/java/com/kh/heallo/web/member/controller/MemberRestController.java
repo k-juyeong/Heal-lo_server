@@ -54,7 +54,7 @@ public class MemberRestController {
 
     HttpHeaders headers = new HttpHeaders();
 
-    if (resValue.get("error").equals("access_denied")) {
+    if (resValue.get("error") != null && resValue.get("error").equals("access_denied")) {
 
       headers.setLocation(URI.create("/members/login"));
     } else {
