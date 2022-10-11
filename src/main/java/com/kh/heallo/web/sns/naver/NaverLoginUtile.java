@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Component
@@ -23,11 +24,11 @@ public class NaverLoginUtile {
     public void setCurrentURI(String currentURI) {
         this.currentURI = currentURI;
     }
-
-    public String createURL() {
+    public String createURL(HttpServletRequest request) {
         this.state = "NAVER_TEST";
         this.clientId = "QwysbK9EuYMOrg33Mipw";
         this.responseType = "code";
+        String domain = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 
         String URL = UriComponentsBuilder
                 .fromUriString("https://nid.naver.com")
@@ -35,7 +36,7 @@ public class NaverLoginUtile {
                 .queryParam("response_type", responseType)
                 .queryParam("client_id", this.clientId)
                 .queryParam("state", this.state)
-                .queryParam("redirect_uri", "http://localhost:9080/members/naver-callback/redirect")
+                .queryParam("redirect_uri", domain + "/members/naver-callback/redirect")
                 .build()
                 .encode()
                 .toUriString();

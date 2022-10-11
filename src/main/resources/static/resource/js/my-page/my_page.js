@@ -9,12 +9,9 @@
     const $nnameCk = document.querySelector('.nnameCk');
     const $btnChange = document.getElementById('btnChange');
     const $form = document.getElementById('form');
-<<<<<<< HEAD
     const $phoneNb = document.getElementById('phoneNb');
-=======
     const $changePw = document.getElementById('changePw');
     const $changePwCh = document.getElementById('changePwCh');
->>>>>>> f957e88bf96440ec20d16a186d4b91021c82dfc4
     let dupNick = false;
 
   $phoneNb.addEventListener('input',(e) => {

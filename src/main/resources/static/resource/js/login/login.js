@@ -42,6 +42,19 @@ const $joinBtn = document.getElementById('joinBtn');
         .catch(err => console.log(err));
   });
 
+  const $findIdBtn = document.getElementById('findIdBtn');
+  $findIdBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.location.href = '/members/find_id';
+  });
+
+  const $findPwBtn = document.getElementById('findPwBtn');
+  $findPwBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.location.href = '/members/find_pw';
+  });
+
+
 
 
 

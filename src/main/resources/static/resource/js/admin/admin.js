@@ -65,7 +65,7 @@ function changeOptionForMember() {
 
 // 회원 전체 목록
 function memberAll(){
-  const url = `http://localhost:9080/admin/memberAll`;
+  const url = `/admin/memberAll`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -196,7 +196,7 @@ function search() {
 
 // 회원 닉네임,아이디 검색 시 회원 목록
 function memberByMemInfo(memInfo){
-  const url = `http://localhost:9080/admin/member/${memInfo}`;
+  const url = `/admin/member/${memInfo}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -231,7 +231,7 @@ function memberByMemInfo(memInfo){
 function delMember(memid){
   if(!confirm('회원계정을 삭제하시겠습니까?')) return;
 
-  const url = `http://localhost:9080/admin/member/${memid}`;
+  const url = `/admin/member/${memid}`;
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -278,7 +278,7 @@ function changeOptionsForBoard() {
 
 // 게시물 - 전체 게시글 목록
 function boardAll(){
-  const url = `http://localhost:9080/admin/boardAll`;
+  const url = `/admin/boardAll`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -306,7 +306,7 @@ function boardAll(){
 
 // 게시물 - 게시글 제목 검색
 function boardByTitle(title){
-  const url = `http://localhost:9080/admin/board/list/${title}`;
+  const url = `/admin/board/list/${title}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -334,7 +334,7 @@ function boardByTitle(title){
 
 // 게시물 - 게시글 작성자 검색
 function boardByMemInfo(memInfo){
-  const url = `http://localhost:9080/admin/board/${memInfo}`;
+  const url = `/admin/board/${memInfo}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -364,7 +364,7 @@ function boardByMemInfo(memInfo){
 function delBoard(bdno){
   if(!confirm('해당 게시글을 삭제하시겠습니까?')) return;
 
-  const url = `http://localhost:9080/admin/board/${bdno}`;
+  const url = `/admin/board/${bdno}`;
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -403,7 +403,7 @@ function changeOptionsForReply() {
 
 // 게시물 - 댓글 전체 목록
 function replyAll(){
-  const url = `http://localhost:9080/admin/replyAll`;
+  const url = `/admin/replyAll`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -431,7 +431,7 @@ function replyAll(){
 
 // 게시물 - 댓글 내용 검색
 function replyByContent(content){
-  const url = `http://localhost:9080/admin/reply/list/${content}`;
+  const url = `/admin/reply/list/${content}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -459,7 +459,7 @@ function replyByContent(content){
 
 // 게시물 - 댓글 작성자 검색
 function replyByMemInfo(memInfo){
-  const url = `http://localhost:9080/admin/reply/${memInfo}`;
+  const url = `/admin/reply/${memInfo}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -489,7 +489,7 @@ function replyByMemInfo(memInfo){
 function delReply(rpno){
   if(!confirm('해당 게시글을 삭제하시겠습니까?')) return;
 
-  const url = `http://localhost:9080/admin/reply/${rpno}`;
+  const url = `/admin/reply/${rpno}`;
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -527,7 +527,7 @@ function changeOptionsForReview() {
 
 // 게시물 - 리뷰 전체 목록
 function reviewAll(){
-  const url = `http://localhost:9080/admin/reviewAll`;
+  const url = `/admin/reviewAll`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -553,7 +553,7 @@ function reviewAll(){
 
 // 게시물 - 리뷰 내용 검색
 function reviewByContent(content){
-  const url = `http://localhost:9080/admin/review/list/${content}`;
+  const url = `/admin/review/list/${content}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -579,7 +579,7 @@ function reviewByContent(content){
 
 // 게시물 - 리뷰 운동시설 검색
 function reviewByFcName(fcName){
-  const url = `http://localhost:9080/admin/review/search/${fcName}`;
+  const url = `/admin/review/search/${fcName}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -605,7 +605,7 @@ function reviewByFcName(fcName){
 
 // 게시물 - 리뷰 작성자 검색
 function reviewByMemInfo(memInfo){
-  const url = `http://localhost:9080/admin/review/${memInfo}`;
+  const url = `/admin/review/${memInfo}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -633,7 +633,7 @@ function reviewByMemInfo(memInfo){
 function delReview(rvno){
   if(!confirm('해당 리뷰를 삭제하시겠습니까?')) return;
 
-  const url = `http://localhost:9080/admin/review/${rvno}`;
+  const url = `/admin/review/${rvno}`;
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -672,7 +672,7 @@ function changeOptionsForBoard() {
 
 // 게시물 - 문의글 목록
 function noticeAll(){
-  const url = `http://localhost:9080/admin/noticeAll`;
+  const url = `/admin/noticeAll`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -700,7 +700,7 @@ function noticeAll(){
 
 // 게시물 - 문의글 제목 검색
 function noticeByTitle(title){
-  const url = `http://localhost:9080/admin/notice/list/${title}`;
+  const url = `/admin/notice/list/${title}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -728,7 +728,7 @@ function noticeByTitle(title){
 
 // 게시물 - 문의글 작성자 검색
 function noticeByMemInfo(memInfo){
-  const url = `http://localhost:9080/admin/notice/${memInfo}`;
+  const url = `/admin/notice/${memInfo}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -758,7 +758,7 @@ function noticeByMemInfo(memInfo){
 function delNotice(bdno){
   if(!confirm('해당 문의글을 삭제하시겠습니까?')) return;
 
-  const url = `http://localhost:9080/admin/board/${bdno}`;
+  const url = `/admin/board/${bdno}`;
     fetch(url, {
       method: 'DELETE',
       headers: {

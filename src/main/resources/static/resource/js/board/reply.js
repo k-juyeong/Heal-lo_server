@@ -34,7 +34,7 @@ saveBtn.addEventListener('click', e=>{
 
 // 댓글 수
 function count(bdno) {
-  const url = `http://localhost:9080/reply/count/${bdno}`;
+  const url = `/reply/count/${bdno}`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -51,7 +51,7 @@ function count(bdno) {
 
 // 댓글 목록
 function all(bdno){
-  const url = `http://localhost:9080/reply/${bdno}/list`;
+  const url = `/reply/${bdno}/list`;
   fetch(url, {
     method: 'GET',
     headers: {
@@ -191,7 +191,7 @@ function all(bdno){
 
 // 댓글 등록
 function save(reply, bdno){
-  const url = `http://localhost:9080/reply/${bdno}`;
+  const url = `/reply/${bdno}`;
   fetch(url, {
     method: 'POST',
     headers: {
@@ -240,7 +240,7 @@ function edit(reply, rpno) {
   console.log('click');
   console.log(rpno);
   console.log(reply);
-    const url = `http://localhost:9080/reply/${rpno}`;
+    const url = `/reply/${rpno}`;
     fetch(url, {
       method: 'PATCH',
       headers: {
@@ -305,7 +305,7 @@ function del(event, rpno) {
 
   // 삭제
   function delReply(rpno) {
-    const url = `http://localhost:9080/reply/${rpno}`;
+    const url = `/reply/${rpno}`;
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -321,7 +321,7 @@ function del(event, rpno) {
 
   // 대댓글 있어서 상태 변경만
   function delState(rpno) {
-        const url = `http://localhost:9080/reply/status/${rpno}`;
+        const url = `/reply/status/${rpno}`;
         fetch(url, {
           method: 'GET',
           headers: {
@@ -394,7 +394,7 @@ function cancelReReply(event) {
 
 // 대댓글 등록
 function saveReReply(reReply, bdno) {
-    const url = `http://localhost:9080/reply/plus/${bdno}`;
+    const url = `/reply/plus/${bdno}`;
     fetch(url, {
       method: 'POST',
       headers: {

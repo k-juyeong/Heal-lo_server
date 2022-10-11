@@ -38,7 +38,7 @@ public class MemberRestController {
   //네이버 인증 요청
   @GetMapping("/naver-join")
   public ResponseEntity<ResponseMsg> naverJoin(@RequestParam(value = "requestURI") String requestURI, HttpServletRequest request) {
-    String url = naverLoginUtile.createURL();
+    String url = naverLoginUtile.createURL(request);
     naverLoginUtile.setCurrentURI(requestURI);
 
     ResponseMsg responseMsg = new ResponseMsg()
