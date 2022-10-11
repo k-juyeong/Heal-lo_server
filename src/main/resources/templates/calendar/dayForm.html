@@ -54,7 +54,7 @@
             <div>수정일</div><div class="update__date" th:text="*{{cdCDate}}"></div>
           </div>
         </div>
-        <textarea id="editor" class="content" th:field="*{cdContent}" readonly>
+        <textarea id="editor" class="content" th:field="*{cdContent}" style="display:none" readonly>
           운동기록 내용
         </textarea>
       </form>

@@ -31,6 +31,10 @@ saveBtn.addEventListener('click', e=>{
   clearTextarea();
 });
 
+// 취소 버튼 클릭 시 내용 클리어
+notSaveBtn.addEventListener('click', e=>{
+  clearTextarea();
+})
 
 // 댓글 수
 function count(bdno) {

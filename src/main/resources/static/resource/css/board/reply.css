@@ -19,20 +19,21 @@ width:100%;
   width: 100%;
   height: auto;
   margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
   background-color: #eee;
-  /* display: flex;
-  flex-direction: column; */
 }
+
 #reply .reply__main .reply__form .reply__list.all {
   display: flex;
   flex-direction: column;
-  margin: 20px;
+  margin: 10px 50px;
 }
+
 #reply .reply__main .reply__form .reply__list.all .reply__list_form {
   display: flex;
   flex-direction: column;
-  /* width: 100%; */
-  margin: 15px 10px;
+  margin: 10px 10px;
 }
 #reply .reply__main .reply__form .reply__list.all .reply__list_form .reply__list {
   display: flex;
@@ -55,6 +56,7 @@ width:100%;
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 #reply .reply__main .reply__form .reply__list .btngrp button {
   width: 30px;
@@ -75,21 +77,6 @@ width:100%;
 #reply .reply__main .reply__form .reply__list_form .reply__reReply .date, .reReply {
   font-size: 12px;
 }
-
-/* #reply .reply__main .reply__form .reply__list .reply__list.nickname {
-  flex: 1.5;
-}
-#reply .reply__main .reply__form .reply__list .reply__list.content {
-  flex: 6;
-}
-#reply .reply__main .reply__form .reply__list .reply__list.date {
-  flex: 2;
-}
-#reply .reply__main .reply__form .reply__list .reply__list.btngrp{
-  flex: 0.5;
-  display: flex;
-  flex-direction: column;
-} */
 
 /* 대댓글 등록창*/
 #reply .reply__main .reply__form .reply__list.all .reply__reReply_form {
@@ -165,10 +152,13 @@ width:100%;
   color: white;
   border: none;
 }
+
+/* 등록창 */
 #reply .reply__main .reply__write {
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
 }
 #reply .reply__main .reply__write .content {
   width: 99%;
@@ -180,6 +170,7 @@ width:100%;
   margin: 0 auto;
   resize: none;
   border: 2px solid #eee;
+  outline: none;
 }
 #reply .reply__main .reply__write .btngrp {
   display: flex;

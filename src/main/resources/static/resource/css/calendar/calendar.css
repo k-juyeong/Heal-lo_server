@@ -15,7 +15,7 @@
 #container .calendar .calendar__nav .calendar__move-month .calendar__go-next::after {border-right: 5px solid #16a085; transform: rotate(45deg);}
 
 /* 달력 메인 */
-#container .calendar .calendar__main {flex: 8; display: flex; flex-direction: column; width: 80%; height: 750px; margin-top: 20px; text-align: center;}
+#container .calendar .calendar__main {flex: 8; display: flex; flex-direction: column; width: 70%; height: 750px; margin-top: 20px; text-align: center;}
 #container .calendar .calendar__main .calendar__days {flex: 0.4; display: flex; background-color: #ddd;}
 #container .calendar .calendar__main .calendar__days .calendar__day:nth-child(7n+1), #container .calendar .calendar__main .calendar__dates .calendar__date:nth-child(7n+1) {color: #D13E3E;}
 #container .calendar .calendar__main .calendar__days .calendar__day {flex: 1; margin: auto auto; font-size: 25px;}
@@ -24,6 +24,6 @@
 #container .calendar .calendar__main .calendar__dates .calendar__prevDate, .calendar__date, .calendar__nextDate {width: calc(100%/7); padding-top: 10px; font-size: 18px; background-color: #eee;}
 #container .calendar .calendar__main .calendar__dates .calendar__date {cursor: pointer;}
 #container .calendar .calendar__main .calendar__dates .calendar__date.today {position: relative; color: #FFF; z-index: 100;}
-#container .calendar .calendar__main .calendar__dates .calendar__date.today::before {display: block; position: absolute; top: 20px; left: 50%; width: 30px; height: 30px; border-radius: 50%; background-color: #16a085; z-index: -1; transform: translate(-50%,-50%); content: '';}
-#container .calendar .calendar__main .calendar__dates .existContent {position: relative; z-index: 100;}
-#container .calendar .calendar__main .calendar__dates .existContent::before {display: block; position: absolute; left: 15%; width: 70%; height: 60%; z-index: -1; background-color: #D1E4D7; content: '';}
+#container .calendar .calendar__main .calendar__dates .calendar__date.today::after {display: block; position: absolute; top: 20px; left: 50%; width: 30px; height: 30px; border-radius: 50%; background-color: #16a085; z-index: -1; transform: translate(-50%,-50%); content: '';}
+#container .calendar .calendar__main .calendar__dates .existContent {position: relative; z-index: 50;}
+#container .calendar .calendar__main .calendar__dates .existContent::before {display: block; position: absolute; left: 15%; width: 70%; height: 80%; z-index: -1; background-color: #D1E4D7; content: '';}
