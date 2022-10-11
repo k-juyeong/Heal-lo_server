@@ -24,6 +24,7 @@ public class NaverLoginUtile {
     public void setCurrentURI(String currentURI) {
         this.currentURI = currentURI;
     }
+
     public String createURL(HttpServletRequest request) {
         this.state = "NAVER_TEST";
         this.clientId = "QwysbK9EuYMOrg33Mipw";
@@ -40,7 +41,6 @@ public class NaverLoginUtile {
                 .build()
                 .encode()
                 .toUriString();
-
 
         return URL;
     }

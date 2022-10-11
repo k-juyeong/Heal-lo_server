@@ -52,48 +52,56 @@ public class MemberRestController {
   @GetMapping("/naver-callback/redirect")
   public ResponseEntity<?> naverLogin(HttpServletRequest request, HttpServerResponse response, @RequestParam Map<String, String> resValue) {
 
-    // code 를 받아오면 code 를 사용하여 access_token를 발급받는다.
-    final NaverLoginDTO naverLoginDTO = naverLoginUtile.accessToken(resValue, "authorization_code");
+    HttpHeaders headers = new HttpHeaders();
 
-    // access_token를 사용하여 사용자의 프로필 조회
-    final UserInfo userInfo = naverLoginUtile.requestUserInfo(naverLoginDTO);
+    if (resValue.get("error").equals("access_denied")) {
 
-    Member member = new Member();
-    member.setMemid(userInfo.getId().substring(0,10));
-    member.setMempw(userInfo.getId().substring(0,10) + "!");
-    member.setMemtel(userInfo.getMobile());
-    member.setMemnickname(userInfo.getNickname());
-    member.setMememail(userInfo.getEmail());
-    member.setMemname(userInfo.getName());
-    member.setMemcode(Member.MEMCODE_SNS);
-
-    //해당 이메일이 첫 가입인 경우
-    Member findedMember = memberSVC.findByEmail(userInfo.getEmail());
-    LoginMember loginMember;
-    if (findedMember == null) {
-
-      //유저 닉네임 랜덤 부여
-      while (true) {
-        member.setMemnickname("user" + UUID.randomUUID().toString().substring(0, 5));
-        if (!memberSVC.dupChkOfMemnickname(member.getMemnickname())) break;
-      }
-
-      Long memno = memberSVC.join(member);
-      member.setMemno(memno);
-
-      loginMember = new LoginMember(memno, member.getMemnickname());
+      headers.setLocation(URI.create("/members/login"));
     } else {
 
-      loginMember = new LoginMember(findedMember.getMemno(), findedMember.getMemnickname());
-      findedMember.setMemstatus(Member.MEMSTATUS_JOIN);
-      memberSVC.updateStatus(findedMember.getMemno(), findedMember);
+      // code 를 받아오면 code 를 사용하여 access_token를 발급받는다.
+      final NaverLoginDTO naverLoginDTO = naverLoginUtile.accessToken(resValue, "authorization_code");
+
+      // access_token를 사용하여 사용자의 프로필 조회
+      final UserInfo userInfo = naverLoginUtile.requestUserInfo(naverLoginDTO);
+
+      Member member = new Member();
+      member.setMemid(userInfo.getId().substring(0,10));
+      member.setMempw(userInfo.getId().substring(0,10) + "!");
+      member.setMemtel(userInfo.getMobile());
+      member.setMemnickname(userInfo.getNickname());
+      member.setMememail(userInfo.getEmail());
+      member.setMemname(userInfo.getName());
+      member.setMemcode(Member.MEMCODE_SNS);
+
+      //해당 이메일이 첫 가입인 경우
+      Member findedMember = memberSVC.findByEmail(userInfo.getEmail());
+      LoginMember loginMember;
+      if (findedMember == null) {
+
+        //유저 닉네임 랜덤 부여
+        while (true) {
+          member.setMemnickname("user" + UUID.randomUUID().toString().substring(0, 5));
+          if (!memberSVC.dupChkOfMemnickname(member.getMemnickname())) break;
+        }
+
+        Long memno = memberSVC.join(member);
+        member.setMemno(memno);
+
+        loginMember = new LoginMember(memno, member.getMemnickname());
+      } else {
+
+        loginMember = new LoginMember(findedMember.getMemno(), findedMember.getMemnickname());
+        findedMember.setMemstatus(Member.MEMSTATUS_JOIN);
+        memberSVC.updateStatus(findedMember.getMemno(), findedMember);
+      }
+
+      HttpSession session = request.getSession(true);
+      session.setAttribute(Session.LOGIN_MEMBER.name(), loginMember);
+
+      headers.setLocation(URI.create(naverLoginUtile.getCurrentURI()));
     }
 
-    HttpSession session = request.getSession(true);
-    session.setAttribute(Session.LOGIN_MEMBER.name(), loginMember);
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(URI.create(naverLoginUtile.getCurrentURI()));
     return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
   }
 
