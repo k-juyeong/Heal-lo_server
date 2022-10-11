@@ -124,7 +124,7 @@ public class MemberController {
   public String login(@Valid @ModelAttribute("form")LoginForm loginForm,
                       BindingResult bindingResult,
                       HttpServletRequest request,
-                      @RequestParam(value = "requestURI") String requestURI
+                      @RequestParam(value = "requestURI", defaultValue = "/") String requestURI
   ){
 
     //기본 검증
