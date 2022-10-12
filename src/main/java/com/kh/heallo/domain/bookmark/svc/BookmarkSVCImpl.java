@@ -53,8 +53,9 @@ public class BookmarkSVCImpl implements BookmarkSVC{
 
     /**
      * 즐겨찾기 페이지 리스트
-     *
-     * @return
+     * @param order 정렬 순서
+     * @param memno 회원번호
+     * @return  즐겨찾기 리스트
      */
     @Override
     public List<Facility> bookmarkPageList(String order,Long memno) {
