@@ -1,5 +1,7 @@
 package com.kh.heallo.domain.review.svc;
 
+import com.kh.heallo.domain.facility.dao.FacilityDAO;
+import com.kh.heallo.domain.facility.svc.FacilitySVC;
 import com.kh.heallo.domain.uploadfile.AttachCode;
 import com.kh.heallo.domain.uploadfile.FileData;
 import com.kh.heallo.domain.review.ReviewCriteria;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class ReviewSVCImpl implements ReviewSVC{
 
     private final ReviewDAO reviewDAO;
+    private final FacilitySVC facilitySVC;
     private final UploadFileSVC uploadFileSVC;
 
 
@@ -87,6 +90,9 @@ public class ReviewSVCImpl implements ReviewSVC{
         //리뷰 추가
         Long rvno = reviewDAO.add(review);
 
+        //운동시설 평균평점 수정
+        facilitySVC.updateToScore(review.getFcno());
+
         return rvno;
     }
 
@@ -98,6 +104,9 @@ public class ReviewSVCImpl implements ReviewSVC{
 
         //파일 업로드
         uploadFileSVC.fileUpload(AttachCode.RV_CODE, rvno, files);
+
+        //운동시설 평균평점 수정
+        facilitySVC.updateToScore(review.getFcno());
 
         return rvno;
     }
@@ -113,6 +122,9 @@ public class ReviewSVCImpl implements ReviewSVC{
         //리뷰 수정
         Integer resultCount = reviewDAO.update(review);
 
+        //운동시설 평균평점 수정
+        facilitySVC.updateToScore(review.getFcno());
+
         return resultCount;
     }
 
@@ -125,6 +137,9 @@ public class ReviewSVCImpl implements ReviewSVC{
         //파일 업로드
         uploadFileSVC.fileUpload(AttachCode.RV_CODE, review.getRvno() ,files);
 
+        //운동시설 평균평점 수정
+        facilitySVC.updateToScore(review.getFcno());
+
         return resultCount;
     }
 
@@ -136,6 +151,9 @@ public class ReviewSVCImpl implements ReviewSVC{
 
         //파일 삭제
         uploadFileSVC.delete(ufnoArr);
+
+        //운동시설 평균평점 수정
+        facilitySVC.updateToScore(review.getFcno());
 
         return resultCount;
     }
@@ -152,6 +170,9 @@ public class ReviewSVCImpl implements ReviewSVC{
         //파일 삭제
         uploadFileSVC.delete(ufnoArr);
 
+        //운동시설 평균평점 수정
+        facilitySVC.updateToScore(review.getFcno());
+
         return resultCount;
     }
 
@@ -162,7 +183,7 @@ public class ReviewSVCImpl implements ReviewSVC{
      * @return 결과 수
      */
     @Override
-    public Integer delete(Long rvno) {
+    public Integer delete(Long rvno, Long fcno) {
 
         //리뷰의 이미지파일 조회
         List<FileData> fileDataList = uploadFileSVC.findImages(AttachCode.RV_CODE, rvno);
@@ -178,6 +199,9 @@ public class ReviewSVCImpl implements ReviewSVC{
 
             uploadFileSVC.delete(ufArray);
         }
+
+        //운동시설 평균평점 수정
+        facilitySVC.updateToScore(fcno);
 
         return resultCount;
     }

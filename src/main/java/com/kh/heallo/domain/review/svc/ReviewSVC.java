@@ -53,8 +53,8 @@ public interface ReviewSVC {
 
     /**
      * 리뷰삭제
-     * @param rvno
+     * @param rvno, fcno
      * @return 결과 수
      */
-    Integer delete(Long rvno);
+    Integer delete(Long rvno, Long fcno);
 }
