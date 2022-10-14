@@ -70,8 +70,8 @@
         })
           .then(res=>res.json())
           .then(data => {
-            if (data.header.code == '00') {
                 console.log(data);
+            if (data.header.code == '00') {
                 document.getElementById('nname').style.border = '3px solid blue';
                 $nnameCk.innerHTML = '사용가능한 닉네임입니다';
                 $nnameCk.classList.remove('nnameCkRed');
@@ -82,6 +82,7 @@
                 $nnameCk.innerHTML = '동일한 닉네임이 존재합니다';
                 $nnameCk.classList.remove('nnameCkBlue');
                 $nnameCk.classList.add('nnameCkRed');
+                dupNick = false;
             } else {
                 throw new Error(data.data);
             }

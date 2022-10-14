@@ -1,12 +1,10 @@
 package com.kh.heallo.domain.review.svc;
 
-import com.kh.heallo.domain.review.ReviewCriteria;
 import com.kh.heallo.domain.review.Review;
+import com.kh.heallo.domain.review.ReviewCriteria;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface ReviewSVC {
 
@@ -53,8 +51,8 @@ public interface ReviewSVC {
 
     /**
      * 리뷰삭제
-     * @param rvno
+     * @param rvno, fcno
      * @return 결과 수
      */
-    Integer delete(Long rvno);
+    Integer delete(Long rvno, Long fcno);
 }

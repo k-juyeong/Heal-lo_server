@@ -26,3 +26,23 @@ p {font-size: 2rem; font-weight: 500;}
 #container #pw .button button {width: 80px; font-size: 16px; background-color: #16a085; color: white;}
 
 #fieldError{font-weight:bold; font-size: 18px; color: red; text-align: center;}
+
+#memidErr {text-align: start; font-size:0.8em; font-weight:bold; color:red; margin-bottom:20px;}
+#mempwErr {text-align: start; font-size:0.8em; font-weight:bold; color:red; margin-bottom:20px;}
+#memnameErr {text-align: start; font-size:0.8em; font-weight:bold; color:red; margin-bottom:20px;}
+#mememailErr {text-align: start; font-size:0.8em; font-weight:bold; color:red; margin-bottom:20px;}
+
+.fieldError{
+  border: 1px solid red;
+  color: red;
+}
+.fieldSuccess{
+  border: 1px solid blue;
+  color: blue;
+}
+
+.errmsg {
+  font-size:0.8em;
+  font-weight:bold;
+  color:red;
+}

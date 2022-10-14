@@ -164,9 +164,6 @@ public class ReviewRestController {
             reviewSVC.add(review);
         }
 
-        //운동시설 평점 수정
-        facilitySVC.updateToScore(fcno);
-
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
                 .createHeader(StatusCode.SUCCESS)
@@ -212,6 +209,7 @@ public class ReviewRestController {
 
         //리뷰등록
         Review review = dtoModifier.getReviewByEditReviewForm(editReviewForm);
+        review.setFcno(reviewSVC.findByRvno(rvno).getFcno());
         Long[] deleteImages = editReviewForm.getDeleteImages();
 
         if (multipartFiles != null && deleteImages != null) {
@@ -227,9 +225,6 @@ public class ReviewRestController {
             reviewSVC.update(review);
 
         }
-
-        //운동시설 평점 수정
-        facilitySVC.updateToScore(reviewSVC.findByRvno(rvno).getFcno());
 
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()
@@ -252,10 +247,7 @@ public class ReviewRestController {
 
         //리뷰 삭제
         Long fcno = reviewSVC.findByRvno(rvno).getFcno();
-        Integer resultCount = reviewSVC.delete(rvno);
-
-        //운동시설 평점 수정
-        facilitySVC.updateToScore(fcno);
+        Integer resultCount = reviewSVC.delete(rvno,fcno);
 
         //Create ResponseEntity
         ResponseMsg responseMsg = new ResponseMsg()

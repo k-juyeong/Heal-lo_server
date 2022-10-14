@@ -319,10 +319,9 @@ public class MemberDAOImpl implements MemberDAO{
   public List<Reply> findReplyByMemno(Long memno) {
     StringBuffer sql = new StringBuffer();
 
-    sql.append(" select reply.RPCOMMENT rpComment, reply.RPCDATE rpCDate ,BOARD.bdno bdno, BOARD.BDTITLE bdtitle ");
-    sql.append("   from MEMBER, BOARD, reply ");
-    sql.append("  where MEMBER.MEMNO = BOARD.MEMNO and MEMBER.MEMNO = reply.MEMNO ");
-    sql.append("  and reply.MEMNO = ? ");
+    sql.append("select reply.RPCOMMENT rpComment, reply.RPCDATE rpCDate ,BOARD.bdno bdno, BOARD.BDTITLE bdtitle ");
+    sql.append("from BOARD, reply ");
+    sql.append("where BOARD.bdno = reply.bdno and reply.MEMNO = ? ");
 
     List<Reply> replies = jdbcTemplate.query(sql.toString(), new RowMapper<Reply>() {
       @Override
@@ -419,6 +418,6 @@ public class MemberDAOImpl implements MemberDAO{
     String sql = "select count(memnickname) from member where memnickname = ? ";
 
     Integer rowCount = jdbcTemplate.queryForObject(sql, Integer.class, memnickname);
-    return rowCount > 1 ? true : false;
+    return rowCount == 1 ? true : false;
   }
 }

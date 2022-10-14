@@ -52,9 +52,11 @@
                       <p id="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
                   </div>
                 <label id="idNameFont" for="idName">이름</label>
-                <input id="idName" type="text" name="memname">
+                <input id="idName" type="text" name="memname" th:class="${#fields.hasErrors('memname')} ? fieldError ">
+                <span id="memnameErr" th:if="${#fields.hasErrors('memname')}" th:errors="*{memname}"></span>
                 <label id="idEmailFont" for="idEmail">이메일</label>
-                <input id="idEmail" type="text" name="mememail">
+                <input id="idEmail" type="text" name="mememail" th:class="${#fields.hasErrors('mememail')} ? fieldError ">
+                <span id="mememailErr" th:if="${#fields.hasErrors('mememail')}" th:errors="*{mememail}"></span>
               </div>
               <div class="button">
                 <button id="idBtn">완료</button>

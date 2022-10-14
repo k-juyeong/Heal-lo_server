@@ -65,11 +65,14 @@
                   <p id="fieldError" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
               </div>
                 <label id="pwIdFont" for="pwId">아이디</label>
-                <input id="pwId" type="text" name="memid">
+                <input id="pwId" type="text" name="memid" th:class="${#fields.hasErrors('memid')} ? fieldError ">
+                <span id="memidErr" th:if="${#fields.hasErrors('memid')}" th:errors="*{memid}"></span>
                 <label id="pwNameFont" for="pwName">이름</label>
-                <input id="pwName" type="text" name="memname">
+                <input id="pwName" type="text" name="memname" th:class="${#fields.hasErrors('memname')} ? fieldError ">
+                <span id="memnameErr" th:if="${#fields.hasErrors('memname')}" th:errors="*{memname}"></span>
                 <label id="pwEmailFont" for="pwEmail">이메일</label>
-                <input id="pwEmail" type="text" name="mememail">
+                <input id="pwEmail" type="text" name="mememail" th:class="${#fields.hasErrors('mememail')} ? fieldError ">
+                <span id="mememailErr" th:if="${#fields.hasErrors('mememail')}" th:errors="*{mememail}"></span>
               </div>
               <div class="button">
                 <button id="pwBtn">완료</button>

@@ -96,19 +96,14 @@
                   <input type="hidden" th:field="*{memno}" />
 
                   <div th:if="${#fields.hasGlobalErrors()}">
-                    <p
-                      class="fieldError"
+                    <p class="fieldError"
                       th:each="err:${#fields.globalErrors()}"
-                      th:text="${err}"
-                    ></p>
+                      th:text="${err}"></p>
                   </div>
 
                   <div class="line" th:data-code="${category}">
                     <label th:for="bdcg">카테고리</label>
                     <select name="" id="menu-list" th:field="*{bdcg}">
-<!--                                      <th:block th:each="code : ${classifier}">-->
-<!--                                        <option value="" th:value="${code.code}" th:text="${code.decode}">게시판1</option>-->
-<!--                                      </th:block>-->
                       <option value="BD001">자유게시판</option>
                       <option value="BD002">정보공유</option>
                       <option value="BD004">문의하기</option>
@@ -123,8 +118,7 @@
                   </div>
 
                   <div class="line">
-                    <label>작성자</label>
-                    <span th:text="${session.LOGIN_MEMBER.memnickname}"></span>
+                    <label>작성자</label><span th:text="${session.LOGIN_MEMBER.memnickname}"></span>
                   </div>
                   <div>
                     <textarea class="textarea" name="editor" id="editor" th:field="*{bdcontent}" required style="display:none"
@@ -170,7 +164,6 @@
  createCkEditor(document.querySelector( '#editor',false));
 
     </script>
-
     <!--    <script src="https://kit.fontawesome.com/7ee6b8223a.js" crossorigin="anonymous"></script>-->
     <!--    <script src="../../static/resource/js/template/layout-sub.js" th:src="@{/resource/js/template/layout-sub.js}"></script>-->
     <!--    <th:block th:replace="${script}"></th:block>-->
