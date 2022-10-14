@@ -75,9 +75,6 @@ public class ReplyDAOImpl implements ReplyDAO {
       public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
         PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"rpno"});
         pstmt.setLong(1, bdno);
-//        pstmt.setLong(2, reply.getRpGroup());
-//        pstmt.setLong(3, reply.getRpDepth());
-//        pstmt.setLong(4, reply.getRpStep());
         pstmt.setLong(2, memno);
         pstmt.setString(3, reply.getRpComment());
         return pstmt;
@@ -107,7 +104,6 @@ public class ReplyDAOImpl implements ReplyDAO {
         pstmt.setLong(1, bdno);
         pstmt.setLong(2, reply.getRpGroup());
         pstmt.setLong(3, reply.getRpDepth());
-//        pstmt.setLong(4, reply.getRpStep());
         pstmt.setLong(4, memno);
         pstmt.setString(5, reply.getRpComment());
         return pstmt;

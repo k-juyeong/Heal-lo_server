@@ -27,30 +27,21 @@ class AdminDAOImplTest {
     List<Member> memberAll = adminDAO.memberList();
 
     log.info("memberAll={}", memberAll.size());
+    memberAll.stream().forEach(member -> {
+      log.info(member.getMemnickname());
+    });
   }
 
   @Test
   @DisplayName("회원 계정 검색")
   void memberListByIdOrNickname() {
-    Member member = new Member();
-    member.setMemid("member1");
-    member.setMempw("12345678");
-    member.setMemtel("010-1234-5678");
-    member.setMemnickname("테스터1");
-    member.setMememail("test1@test.com");
-    member.setMemname("테스터");
-    member.setMemcode("normal");
-    member.setMemcode("JOIN");
 
-    memberDAO.join(member);
-
-    List<Member> members = adminDAO.memberListByIdOrNickname("테");
+    List<Member> members = adminDAO.memberListByIdOrNickname("빡");
     log.info("members={}", members.size());
 
-//    members.stream().map(member1 -> {
-//      log.info("member={}", member1);
-//      return 0;
-//    });
+    members.stream().forEach(member1 -> {
+      log.info("member={}", member1);
+    });
   }
 
   @Test
@@ -60,10 +51,9 @@ class AdminDAOImplTest {
 
     log.info("boardAll={}", boardAll.size());
 
-//    boardAll.stream().map(board -> {
-//      log.info("board={}", board);
-//      return 0;
-//    });
+    boardAll.stream().forEach(board -> {
+      log.info("board={}", board.getBdtitle());
+    });
   }
 
   @Test
@@ -74,23 +64,23 @@ class AdminDAOImplTest {
 
     log.info("boardList={}", boardList.size());
 
-//    boardList.stream().forEach(board -> {
-//      log.info("board={}", board);
-//    });
+    boardList.stream().forEach(board -> {
+      log.info("board={}", board);
+    });
   }
 
   @Test
   @DisplayName("전체 게시글 작성자 조회")
   void boardListByIdOrNickname() {
-    String user = "테스터";
+    String user = "득근";
 
     List<Board> boardList = adminDAO.boardListByIdOrNickname(user);
 
     log.info("boardList={}", boardList.size());
 
-//    boardList.stream().forEach(board -> {
-//      log.info("board={}", board);
-//    });
+    boardList.stream().forEach(board -> {
+      log.info("board={}", board.getBdtitle());
+    });
   }
 
   @Test
@@ -100,37 +90,37 @@ class AdminDAOImplTest {
 
     log.info("replyAll={}", replyAll.size());
 
-//    replyAll.stream().forEach(reply -> {
-//      log.info("reply={}", reply);
-//    });
+    replyAll.stream().forEach(reply -> {
+      log.info("reply={}", reply.getRpComment());
+    });
   }
 
   @Test
   @DisplayName("댓글 내용 조회")
   void replyListByContent() {
-    String content = "시설";
+    String content = "진짜";
 
     List<Reply> replyList = adminDAO.replyListByContent(content);
 
     log.info("reply={}", replyList.size());
 
-//    replyList.stream().forEach(reply -> {
-//      log.info("reply={}", reply);
-//    });
+    replyList.stream().forEach(reply -> {
+      log.info("reply={}", reply.getRpComment());
+    });
   }
 
   @Test
   @DisplayName("댓글 작성자 조회")
   void replyListByIdOrNickname() {
-    String user = "테스터";
+    String user = "로니";
 
     List<Reply> replyList = adminDAO.replyListByIdOrNickname(user);
 
     log.info("replyList={}", replyList.size());
 
-//    replyList.stream().forEach(reply -> {
-//      log.info("reply={}", reply);
-//    });
+    replyList.stream().forEach(reply -> {
+      log.info("reply={}", reply.getRpComment());
+    });
   }
 
   @Test
@@ -140,9 +130,9 @@ class AdminDAOImplTest {
 
     log.info("reviewAll={}", reviewAll.size());
 
-//    reviewAll.stream().forEach(review -> {
-//      log.info("review={}", review);
-//    });
+    reviewAll.stream().forEach(review -> {
+      log.info("review={}", review.getRvcontents());
+    });
   }
 
   @Test
@@ -153,35 +143,35 @@ class AdminDAOImplTest {
     List<Review> reviewList = adminDAO.reviewListByContent(content);
     log.info("reviewList={}", reviewList.size());
 
-//    reviewList.stream().forEach(review -> {
-//      log.info("review={}", review);
-//    });
+    reviewList.stream().forEach(review -> {
+      log.info("review={}", review.getRvcontents());
+    });
   }
 
   @Test
   @DisplayName("리뷰 운동시설 조회")
   void reviewListByFacility() {
-    String fcName = "헬스";
+    String fcName = "메트로";
 
     List<Review> reviewList = adminDAO.reviewListByFacility(fcName);
     log.info("reviewList={}", reviewList.size());
 
-//    reviewList.stream().forEach(review -> {
-//      log.info("review={}", review);
-//    });
+    reviewList.stream().forEach(review -> {
+      log.info("review={}", review.getRvcontents());
+    });
   }
 
   @Test
   @DisplayName("리뷰 작성자 조회")
   void reviewListByIdOrNickname() {
-    String user = "테스터";
+    String user = "헐크";
 
     List<Review> reviewList = adminDAO.reviewListByIdOrNickname(user);
     log.info("reviewList={}", reviewList.size());
 
-//    reviewList.stream().forEach(review -> {
-//      log.info("review={}", review);
-//    });
+    reviewList.stream().forEach(review -> {
+      log.info("review={}", review.getRvcontents());
+    });
   }
 
   @Test
@@ -191,35 +181,35 @@ class AdminDAOImplTest {
 
     log.info("noticeAll={}", noticeAll.size());
 
-//    noticeAll.stream().forEach(notice -> {
-//      log.info("notice={}", notice);
-//    });
+    noticeAll.stream().forEach(notice -> {
+      log.info("notice={}", notice.getBdtitle());
+    });
   }
 
   @Test
   @DisplayName("목록 제목 조회")
   void noticeListByTitle() {
-    String title = "문의글";
+    String title = "문의";
 
     List<Board> noticeList = adminDAO.noticeListByTitle(title);
     log.info("noticeList={}", noticeList.size());
 
-//    noticeList.stream().forEach(notice -> {
-//      log.info("notice={}", notice);
-//    });
+    noticeList.stream().forEach(notice -> {
+      log.info("notice={}", notice.getBdtitle());
+    });
   }
 
   @Test
   @DisplayName("목록 작성자 조회")
   void noticeListByIdOrNickname() {
-    String user = "테스터";
+    String user = "로니";
 
     List<Board> noticeList = adminDAO.noticeListByIdOrNickname(user);
     log.info("noticeList={}", noticeList.size());
 
-//    noticeList.stream().forEach(notice -> {
-//      log.info("notice={}", notice);
-//    });
+    noticeList.stream().forEach(notice -> {
+      log.info("notice={}", notice.getBdtitle());
+    });
   }
 
 }

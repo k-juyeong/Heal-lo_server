@@ -1,6 +1,29 @@
 manageMember();
 memberAll();
 
+// 카테고리 클릭 시 폰트 스타일 적용
+function changeStyle(cate) {
+  const memberTitle = document.querySelector('.menu-lists .member');
+  const postTitle = document.querySelector('.post');
+
+  switch(cate) {
+    case "member":
+      memberTitle.style.fontSize = '25px';
+      memberTitle.style.fontWeight = '500';
+      postTitle.style.fontSize = '20px';
+      postTitle.style.fontWeight = '400';
+      break;
+    case "post":
+      memberTitle.style.fontSize = '20px';
+      memberTitle.style.fontWeight = '400';
+      postTitle.style.fontSize = '25px';
+      postTitle.style.fontWeight = '500';
+      break;
+    default:
+      break;
+  }
+}
+
 // ** 회원 계정 관리 **
 // 계정 or 게시물 관리 선택 시 구분
 function changeCategory(cate) {
@@ -37,7 +60,7 @@ function changeCategory(cate) {
             break;
         }
   }
-  console.log(menu);
+//  console.log(menu);
 }
 
 // 회원 계정 관리 클릭
@@ -48,6 +71,7 @@ function manageMember(){
   document.querySelector('.th__4').textContent = "가입날짜";
   const member = "member";
   changeCategory(member);
+  changeStyle(member);
   memberAll();
   changeOptionForMember();
 }
@@ -73,7 +97,7 @@ function memberAll(){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.memberAll);
+//      console.log(res.data.memberAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.memberAll.map(member=>{
       // 탈퇴한 회원 제외하기, sns 계정 회원 제외하기
@@ -112,7 +136,7 @@ function search() {
   const input = getInput();
 
   const menu = document.querySelector('.menu-lists').classList[1];
-  console.log(menu);
+//  console.log(menu);
   switch(menu) {
       // 회원 닉네임, 아이디
       case "member":
@@ -139,8 +163,6 @@ function search() {
         clearInput();
         break;
     }
-
-
 
   // 게시물 - 게시글 제목
   // 게시물 - 게시글 작성자
@@ -204,7 +226,7 @@ function memberByMemInfo(memInfo){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.memberList);
+//      console.log(res.data.memberList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.memberList.map(member=>{
       // 탈퇴한 회원 제외하기, sns 계정 회원 제외하기
@@ -212,7 +234,6 @@ function memberByMemInfo(memInfo){
         // 날짜 포맷 변경
         const memcdate = member.memcdate.substr(0,10);
         if (member.memstatus === 'JOIN' && member.memcode != 'SNS') {
-//        if (member.memstatus == 'JOIN') {
           result =
             `<tr>
               <td>${member.memno}</td>
@@ -239,7 +260,7 @@ function delMember(memid){
       },
     }).then(res=>res.json())
       .then(data=>{
-        console.log(data);
+//        console.log(data);
         memberAll();
       }).catch(err=>console.log(err));
 }
@@ -252,6 +273,8 @@ function managePost(){
   document.querySelector('.th__2').textContent = "제목";
   document.querySelector('.th__3').textContent = "작성자";
   document.querySelector('.th__4').textContent = "작성날짜";
+  const post = "post";
+  changeStyle(post);
 }
 
 // 게시물 - 전체 게시글
@@ -286,7 +309,7 @@ function boardAll(){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.boardAll);
+//      console.log(res.data.boardAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.boardAll.map(board=>{
         const date = board.bdcdate.replace("T"," ");
@@ -314,7 +337,7 @@ function boardByTitle(title){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.boardList);
+//      console.log(res.data.boardList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.boardList.map(board=>{
         const date = board.bdcdate.replace("T"," ");
@@ -342,7 +365,7 @@ function boardByMemInfo(memInfo){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.boardList);
+//      console.log(res.data.boardList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.boardList.map(board=>{
         const date = board.bdcdate.replace("T"," ");
@@ -372,7 +395,7 @@ function delBoard(bdno){
       },
     }).then(res=>res.json())
       .then(data=>{
-        console.log(data);
+//        console.log(data);
         boardAll();
       }).catch(err=>console.log(err));
 }
@@ -411,7 +434,7 @@ function replyAll(){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.replyAll);
+//      console.log(res.data.replyAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.replyAll.map(reply=>{
         const date = reply.rpCDate.replace("T"," ");
@@ -439,7 +462,7 @@ function replyByContent(content){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.replyList);
+//      console.log(res.data.replyList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.replyList.map(reply=>{
         const date = reply.rpCDate.replace("T"," ");
@@ -467,7 +490,7 @@ function replyByMemInfo(memInfo){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.replyList);
+//      console.log(res.data.replyList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.replyList.map(reply=>{
         const date = reply.rpCDate.replace("T"," ");
@@ -497,7 +520,7 @@ function delReply(rpno){
       },
     }).then(res=>res.json())
       .then(data=>{
-        console.log(data);
+//        console.log(data);
         replyAll();
       }).catch(err=>console.log(err));
 }
@@ -535,7 +558,7 @@ function reviewAll(){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.reviewAll);
+//      console.log(res.data.reviewAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.reviewAll.map(review=>{
         const result =
@@ -561,7 +584,7 @@ function reviewByContent(content){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.reviewList);
+//      console.log(res.data.reviewList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.reviewList.map(review=>{
         const result =
@@ -587,7 +610,7 @@ function reviewByFcName(fcName){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.reviewList);
+//      console.log(res.data.reviewList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.reviewList.map(review=>{
         const result =
@@ -613,7 +636,7 @@ function reviewByMemInfo(memInfo){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.reviewList);
+//      console.log(res.data.reviewList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.reviewList.map(review=>{
         const result =
@@ -641,7 +664,7 @@ function delReview(rvno){
       },
     }).then(res=>res.json())
       .then(data=>{
-        console.log(data);
+//        console.log(data);
         reviewAll();
       }).catch(err=>console.log(err));
 }
@@ -680,7 +703,7 @@ function noticeAll(){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.noticeAll);
+//      console.log(res.data.noticeAll);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.noticeAll.map(notice=>{
         const date = notice.bdcdate.replace("T"," ");
@@ -708,7 +731,7 @@ function noticeByTitle(title){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.noticeList);
+//      console.log(res.data.noticeList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.noticeList.map(notice=>{
         const date = notice.bdcdate.replace("T"," ");
@@ -736,7 +759,7 @@ function noticeByMemInfo(memInfo){
     }
   }).then(res=>res.json())
     .then(res=>{
-      console.log(res.data.noticeList);
+//      console.log(res.data.noticeList);
       document.querySelector('#container .content .list-table tbody').innerHTML =
       res.data.noticeList.map(notice=>{
         const date = notice.bdcdate.replace("T"," ");
@@ -766,10 +789,7 @@ function delNotice(bdno){
       },
     }).then(res=>res.json())
       .then(data=>{
-        console.log(data);
+//        console.log(data);
         noticeAll();
       }).catch(err=>console.log(err));
 }
-
-
-// ** 운동시설 정보 수정 **

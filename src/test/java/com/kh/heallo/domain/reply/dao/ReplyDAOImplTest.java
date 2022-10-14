@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ class ReplyDAOImplTest {
   @Test
   @DisplayName("댓글 수")
   void count() {
-    Long bdno = 12L;
+    Long bdno = 14L;
 
     int count = replyDAO.count(bdno);
     log.info("댓글 수={}", count);
@@ -31,21 +32,22 @@ class ReplyDAOImplTest {
   @Test
   @DisplayName("댓글 목록")
   void all() {
-    Long bdno = 12L;
+    Long bdno = 14L;
 
     List<Reply> replyAll = replyDAO.all(bdno);
     log.info("replyAll={}", replyAll.size());
 
-//    replyAll.stream().forEach(reply -> {
-//      log.info("reply={}", reply);
-//    });
+    replyAll.stream().forEach(reply -> {
+      log.info("reply={}", reply.getRpComment());
+    });
   }
 
   @Test
+  @Transactional
   @DisplayName("댓글 저장")
   void save() {
-    Long bdno = 12L;
-    Long memno = 12L;
+    Long bdno = 14L;
+    Long memno = 10L;
     String status = "POST";
 
     Reply reply = new Reply();
@@ -58,10 +60,16 @@ class ReplyDAOImplTest {
     reply.setRpStatus(status);
 
     replyDAO.save(bdno, memno, reply);
-    List<Reply> replies = adminDAO.replyListByContent(reply.getRpComment());
+    List<Reply> all = replyDAO.all(bdno);
+    Object[] objects = all.stream().filter(reply1 ->
+        reply1.getRpComment().equals(reply.getRpComment())
+    ).toArray();
 
-    log.info("reply={}", replies.size());
 
+//    Assertions.assertThat(Arrays.stream(objects).findAny()).isEqualTo()
+
+    log.info("reply={}", objects);
+//    log.info(objects.);
   }
 
   @Test
