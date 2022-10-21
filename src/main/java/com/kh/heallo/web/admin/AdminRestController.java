@@ -214,7 +214,7 @@ public class AdminRestController {
   // 게시물 - 리뷰 삭제
   @DeleteMapping("review/{rvno}")
   public ResponseEntity<ResponseMsg> reviewDel(@PathVariable Long rvno) {
-    reviewSVC.delete(rvno);
+    reviewSVC.delete(rvno,reviewSVC.findByRvno(rvno).getFcno());
 
     // Create ResponseEntity
     ResponseMsg responseMsg = new ResponseMsg()
